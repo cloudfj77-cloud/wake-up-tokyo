@@ -1,3 +1,6 @@
+import {MISSIONS,missionReady} from './missions.js';
+export {MISSIONS,missionReady};
+
 export const LEVEL_CAP=30;
 export const EVOLVE_CAP=50;
 export const BASE_NEED=4;
@@ -82,6 +85,7 @@ export function makeState(){
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   clip:0,clipMax:0,weapon:-1,gunId:null,
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
+  tutorialStep:0,tutorialValue:0,tutorialDone:false,tutorialSkipped:false,
   frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow'
  };
 }
@@ -355,5 +359,3 @@ export function hurtMother(s,damage,source='秩序火力',sprinting=false){
  s.hp=Math.max(0,s.hp-info.taken);
  return s.hp===0;
 }
-export function missionReady(s){return [()=>s.infected>=3,()=>s.infected>=10&&s.towers>=1,()=>s.highestEnemy>=5&&s.towers>=2,()=>s.infected>=40&&s.towers===3,()=>s.bossDefeated][s.mission]?.()??false;}
-export const MISSIONS=[['叫醒第一个人','累计感染 3 人'],['让街区失控','感染 10 人，摧毁首座中枢'],['突破镇压','击败 / 转化净化工兵或持枪特警，摧毁两座中枢'],['唤出巨像','累计感染 40 人，摧毁三座中枢'],['东京人觉醒','击败中央路口的巨大 Boss']];
