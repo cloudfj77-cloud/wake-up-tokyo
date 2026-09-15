@@ -116,7 +116,7 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
   if (visual.attackTime <= 0) {
     const name = moving ? (visual.kind === 'human' ? 'zombie' : 'walk') : visual.holdingGun ? 'toyAim' : 'idle';
     const action = visual.actions[name];
-    const scale = !moving ? 1 : visual.kind === 'human' ? .42 : visual.kind === 'ally' ? 1.95 : (sprinting ? 1.9 : 1.3);
+    const scale = !moving ? 1 : visual.kind === 'human' ? .38 : visual.kind === 'ally' ? 1.35 : (sprinting ? 1.45 : 1.0);
     if (action) action.setEffectiveTimeScale(scale);
     switchAnimation(visual, name);
   }
