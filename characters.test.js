@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {Box3} from 'three';
-import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual} from './characters.js';
+import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual,characterHeight} from './characters.js';
 const buffer=await readFile(new URL('./assets/character.glb',import.meta.url));
 const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
 const asset=prepareCharacterAsset(gltf);
@@ -16,7 +16,12 @@ test('supplied GLB loads its geometry, eight animations and independent actor sk
   assert.notEqual(a.meshes[0].material,b.meshes[0].material);
   a.holder.updateMatrixWorld(true);
   const bounds=new Box3().setFromObject(a.holder);
-  assert.ok(bounds.max.y>2&&bounds.max.y<3.4);
+  // 人物缩放必须使用统一的现实身高；较高的上限为帽子等职业配饰预留空间。
+  assert.equal(a.model.scale.y,characterHeight('player')/asset.height);
+  assert.ok(bounds.max.y>.8&&bounds.max.y<1.8);
+  // 三个方向必须保持相同倍率，防止模型被横向压扁。
+  assert.equal(a.model.scale.x,a.model.scale.y);
+  assert.equal(a.model.scale.z,a.model.scale.y);
   assert.ok(bounds.min.y>-.2&&bounds.min.y<.2);
 });
 test('walk, infection attack, heavy punch and rush return to locomotion',()=>{
