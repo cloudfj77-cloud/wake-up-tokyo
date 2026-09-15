@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,isRangedEnemy,hostileWindup,hostileSwingConnects} from './rules.js';
+import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -127,6 +127,15 @@ test('stick cops reach only at stick length and telegraph before damage',()=>{
  assert.equal(hostileSwingConnects(cop,1.6,true),false);
  assert.equal(hostileSwingConnects(cop,1.2,true),true);
  assert.equal(hostileSwingConnects(cop,1.2,false),false);
+ const u={aiming:false,aim:0,attackCd:0};
+ assert.equal(stepHostileMelee(u,cop,1.2,true,.016),'start');
+ let t=0,result='windup';
+ while(t<.65){t+=.05;result=stepHostileMelee(u,cop,1.2,true,.05);if(result==='hit')break;}
+ assert.notEqual(result,'hit');
+ assert.equal(stepHostileMelee(u,cop,1.2,true,.2),'hit');
+ const dodge={aiming:false,aim:0,attackCd:0};
+ assert.equal(stepHostileMelee(dodge,cop,1.2,true,0),'start');
+ assert.equal(stepHostileMelee(dodge,cop,2.2,true,.8),'miss');
 });
 test('elite soldiers outlast and outdamage converted workers',()=>{
  const worker=allyTemplate(0),elite=ENEMIES[5];
