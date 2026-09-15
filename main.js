@@ -215,7 +215,7 @@ function clearInput(){mouseHeld=false;dragging=false;Object.keys(keys).forEach(k
 addEventListener('blur',()=>{clearInput();if(mode==='playing')togglePause();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='playing')togglePause();});
 function showDialog(html){$('dialog').classList.remove('choiceLock');$('dialog').innerHTML=html;$('modal').hidden=false;clearInput();}
 function hideDialog(){$('modal').hidden=true;$('dialog').classList.remove('choiceLock');}
-function hideLevelUpFx(){const fx=$('levelUpFx');if(!fx)return;fx.classList.remove('play');fx.hidden=true;fx.setAttribute('aria-hidden','true');}
+function hideLevelUpFx(){const fx=$('levelUpFx');if(!fx)return;fx.classList.remove('play');fx.hidden=true;}
 function playLevelUpFx(){
   music.effect('upgrade');
   const y=world.heightAt(player.x,player.z)+player.y+PLAYER_HEIGHT*.72;
@@ -223,13 +223,10 @@ function playLevelUpFx(){
   burst(player.x,y,player.z,0xffc92e,24);
   burst(player.x,y+.4,player.z,0xffe066,14);
   wave(player.x,player.z,3.6,0xffc92e);
-  $('levelUpLv').textContent=state.level;
-  const fx=$('levelUpFx');
-  fx.hidden=false;
-  fx.setAttribute('aria-hidden','false');
-  fx.classList.remove('play');
-  void fx.offsetWidth;
-  fx.classList.add('play');
+}
+function showLevelUpBeat(){
+  playLevelUpFx();
+  showDialog(`<div class="levelUpDialog"><div class="eyebrow">GENETIC RECOMBINATION</div><strong>基因突变</strong><b>LV.${state.level}</b><small>战场暂停 · 即将选择变异</small></div>`);
 }
 function bindUpgradeCards(){
   pendingChoice=-1;
@@ -262,9 +259,13 @@ function confirmChoice(){
   saveRun();
 }
 function openUpgradeDialog(){
-  if(mode==='upgrade'&&!$('modal').hidden)return;
   if(mode!=='levelup')return;
-  if(performance.now()<upgradeOpenAt)return;
+  const remain=upgradeOpenAt-performance.now();
+  if(remain>40){
+    clearTimeout(upgradeTimer);
+    upgradeTimer=setTimeout(()=>{if(mode==='levelup')openUpgradeDialog();},remain);
+    return;
+  }
   clearTimeout(upgradeTimer);
   hideLevelUpFx();
   mode='upgrade';
@@ -278,12 +279,12 @@ function chooseUpgrade(){
   choiceSet=choices(state);
   if(!choiceSet.length){state.pending=0;return;}
   pendingChoice=-1;
-  const wait=1600;
+  const wait=1800;
   upgradeOpenAt=performance.now()+wait;
   mode='levelup';
   music.pause();
   clearInput();
-  playLevelUpFx();
+  showLevelUpBeat();
   clearTimeout(upgradeTimer);
   upgradeTimer=setTimeout(()=>{if(mode==='levelup')openUpgradeDialog();},wait);
 }
