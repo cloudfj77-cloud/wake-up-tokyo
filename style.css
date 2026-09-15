@@ -153,3 +153,32 @@ body.defeated .dialog{width:min(560px,92vw);border-color:#e6646e88;box-shadow:0 
 body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.05);transform:scale(1.012)}
 #menu{background:transparent}
 #menu:after{background:radial-gradient(circle at 68% 44%,transparent 0 30%,#090d1538 72%,#070a116b 100%)}
+
+/* 教程卡只显示当前一步，完成进度从底边向右增长，避免一次塞给玩家整页说明。 */
+#tutorialCard{position:absolute;left:50%;bottom:118px;transform:translateX(-50%);width:370px;display:grid;grid-template-columns:72px 1fr auto;gap:13px;align-items:center;padding:13px 15px;background:#151c29ed;border:1px solid #be82ef77;border-bottom:3px solid #49335d;box-shadow:0 10px 35px #090d14aa;pointer-events:auto}
+#tutorialCard[hidden]{display:none}
+#tutorialCard:after{content:'';position:absolute;left:0;bottom:-3px;width:var(--tutorial-progress);height:3px;background:#ce83ff;box-shadow:0 0 10px #b75bea;transition:width .15s}
+.tutorialTop{position:absolute;left:13px;right:13px;top:-19px;display:flex;justify-content:space-between;color:#ba87dd;font-size:8px;letter-spacing:1px}.tutorialTop b{font-weight:400}
+#tutorialKey{display:grid;height:48px;place-items:center;background:#a260d2;color:#fff;font-size:10px;white-space:normal;text-align:center}
+#tutorialCard strong{display:block;font-size:14px}#tutorialCard p{margin:5px 0 0;color:#9daabc;font-size:9px}
+#skipTutorial{align-self:start;border:0;background:transparent;color:#778494;font-size:8px;padding:3px}#skipTutorial:hover{color:#e1c4f5}
+
+/* 任务追踪器把复合目标拆成可勾选条目，并给出当前导航距离。 */
+.objectivePanel{width:275px}
+#objectiveSteps{display:grid;gap:5px;margin-top:10px}
+#objectiveSteps span{display:flex;align-items:center;gap:6px;color:#a8b5c0;font-size:9px}
+#objectiveSteps span i{width:7px;height:7px;border:1px solid #a16dc4;border-radius:50%}
+#objectiveSteps span b{margin-left:auto;color:#e3cef2;font-weight:400}
+#objectiveSteps span.done{color:#9e80b4;text-decoration:line-through}#objectiveSteps span.done i{background:#b873e7;box-shadow:0 0 7px #a24cdd}
+#objectiveDistance{min-height:14px;margin-top:8px;color:#dfadff;font-size:9px;letter-spacing:.5px}
+#taskLogButton{width:100%;margin-top:4px;padding:6px;border:1px solid #9369ad44;background:#9c62c914;color:#bfa7ce;font-size:8px;text-align:left}
+#taskLogButton:disabled{display:none}
+#missionComplete{display:grid;gap:3px;min-width:300px;text-align:center;pointer-events:none}
+#missionComplete b{color:#dab4ff;font-size:9px;letter-spacing:3px}#missionComplete strong{font-size:16px}#missionComplete small{color:#c6b3d4;font-size:9px}
+
+.missionList{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.missionEntry{min-height:145px;padding:15px;border:1px solid #ffffff18;background:#202e3b;color:#94a3af}
+.missionEntry.current{border-color:#b675e688;background:#30253e;color:#edf0f4}.missionEntry.completed{opacity:.65}.missionEntry.locked{filter:saturate(.25);opacity:.45}
+.missionEntry>small{display:block;color:#a66fd0;font-size:8px;letter-spacing:1px}.missionEntry>strong{display:block;margin:8px 0;font-size:16px}.missionEntry p{margin:0 0 9px!important;font-size:9px!important;line-height:1.5!important}
+.missionEntry div{display:grid;gap:4px}.missionEntry div span{font-size:9px}.missionEntry div span.done{color:#bd8bdd}
+@media(max-width:900px){#tutorialCard{bottom:105px;width:330px}.objectivePanel{width:235px}.missionList{grid-template-columns:1fr}}
