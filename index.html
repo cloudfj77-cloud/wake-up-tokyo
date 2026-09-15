@@ -4,13 +4,34 @@
  <section class="playerPanel panel"><div class="eyebrow"><span class="purpleDot"></span> 零号母体 <span id="hpText">100 / 100</span></div><div class="bar hp"><i id="hpBar"></i></div><div class="bar stamina"><i id="staminaBar"></i></div><div id="abilitySlots"></div><div class="counters"><span>存活队伍 <b id="team">0</b></span><span>累计感染 <b id="total">0</b></span></div></section>
  <section class="alertPanel panel"><div class="eyebrow">城市警戒 <span id="clock">00:00</span></div><div id="alertLevels"><b class="on">I</b><b>II</b><b>III</b></div><p id="reinforcement">巡逻编组 · 十字路口</p></section>
  <section class="mapPanel panel"><div class="eyebrow">東京 / RIVERSIDE <span>N ↑</span></div><canvas id="map" width="200" height="160"></canvas><div class="mapLegend">紫 · 感染区域　红 · 秩序　橙 · 增援</div></section>
- <div id="infectionFeedback"></div><div id="missionComplete"></div><section id="bossHud" class="panel" hidden><div class="eyebrow">终局 · 秩序巨像 <span id="bossValue">6000 / 6000</span></div><div class="bar"><i id="bossHp"></i></div><small id="bossPhase"></small><p id="bossWarning"></p></section><div id="crosshair"><i></i><span></span></div><div id="targetHint"></div><div id="toast"></div><div id="hurtVignette"></div>
- <section class="controlsPanel"><div class="skillkeys"><span><kbd>左键 / J</kbd> <b id="primaryLabel">轻击</b></span><span><kbd>右键 / K</kbd> 重击</span><span><kbd>空格</kbd> 跳跃 <b id="breakCd">就绪</b></span><span><kbd>SHIFT</kbd> 奔跑 <b id="rushCd">步行</b></span></div><div class="controls"><kbd>WASD</kbd> 移动 <kbd>C</kbd> 蹲伏 <kbd>鼠标 / 拖动</kbd> 视角<br><kbd>1</kbd> 徒手 <kbd>2–6</kbd> 枪械 <kbd>Tab</kbd> 变异 <kbd>ESC / P</kbd> 暂停 <kbd>F3</kbd> 调参 <button id="sound">♫ 音乐 开</button></div></section>
- <section class="xpPanel panel"><div class="levelBadge">LV<b id="level">1</b></div><div><div class="eyebrow">变异因子 <span id="xpText">0 / 4</span></div><div class="bar"><i id="xpBar"></i></div><small>感染即可升级 · 点卡后需确定 · Tab 立刻选卡</small></div></section>
- <section class="objectivePanel panel"><div class="eyebrow">当前目标 <span id="percent">0%</span></div><strong id="objective">感染路口的人群</strong><small id="objectiveSub">让东京，从这里醒来。</small><div id="ammo"></div></section>
+ <div id="infectionFeedback"></div><aside id="infectionFeed" aria-live="polite"></aside><div id="missionComplete"></div><div id="policeAlert" role="status" aria-live="assertive"></div><section id="bossHud" class="panel" hidden><div class="eyebrow">终局 · 秩序巨像 <span id="bossValue">6000 / 6000</span></div><div class="bar"><i id="bossHp"></i></div><small id="bossPhase"></small><p id="bossWarning"></p></section><div id="crosshair"><i></i><span></span></div><div id="targetHint"></div><div id="reloadIndicator">换弹中 <b></b><i></i></div><div id="toast"></div><div id="hurtVignette"></div>
+ <section class="controlsPanel"><div class="skillkeys"><span><kbd>左键 / J</kbd> <b id="primaryLabel">终末注射枪</b></span><span><kbd>空格</kbd> 跳跃 <b id="breakCd">就绪</b></span><span><kbd>SHIFT</kbd> 翻滚 <b id="rushCd">就绪</b></span></div><div class="controls"><kbd>WASD</kbd> 移动 <kbd>C</kbd> 蹲伏 <kbd>鼠标 / 拖动</kbd> 视角<br><kbd>1 / 2</kbd> 武器 <kbd>ESC / P</kbd> 暂停 <button id="sound">♫ 音乐 开</button></div></section>
+ <section class="xpPanel panel"><div class="levelBadge">LV<b id="level">1</b></div><div><div class="eyebrow">变异因子 <span id="xpText">0 / 4</span></div><div class="bar"><i id="xpBar"></i></div><small>变异就绪后按 1 / 2 / 3 选择</small></div></section>
+ <section class="objectivePanel panel"><div class="eyebrow"><span id="taskNumber">主线任务 01</span><span id="percent">0%</span></div><strong id="objective">唤醒街角</strong><small id="objectiveSub">扩大最初的觉醒群落。</small><div id="objectiveSteps"></div><div id="objectiveDistance"></div><button id="taskLogButton">M　任务列表</button><div id="chargeText">感染炮弹蓄力 <b>0 / 6</b></div><div id="ammo"></div></section>
+ <section id="tutorialCard" hidden><div class="tutorialTop"><span>新手引导</span><b id="tutorialCount">1 / 7</b></div><kbd id="tutorialKey">WASD</kbd><div><strong id="tutorialTitle">移动身体</strong><p id="tutorialDetail">使用 WASD 移动 3 米</p><i id="tutorialProgress"></i></div><button id="skipTutorial">跳过引导</button></section>
  <button id="pauseButton" aria-label="暂停游戏">Ⅱ</button><div id="damageVignette"></div>
 </div>
+<div id="menu">
+ <div class="menuShade"></div><div class="menuGrid"></div><div class="menuNoise"></div>
+ <header class="gameLogo" aria-label="Wake up 都给我醒醒！"><span>Wake up</span><strong>都给我醒醒<span>！</span></strong><small>紫色感染 · 觉醒基因</small><p>唤醒全东京的人，重塑这座城市。</p></header>
+ <main class="menuContent mainMenuNav">
+  <button id="start" class="primary" disabled><span>东京街区载入中…</span><i>↵</i></button>
+  <button id="continue" hidden></button>
+  <button id="settings">选项设置</button>
+  <button id="about">游戏说明</button>
+  <div class="menuStatus"><span class="liveDot"></span><p id="loading">正在建立城市模拟</p></div>
+ </main>
+ <aside class="menuIntel">
+  <div class="intelHeader"><span>觉醒进度</span><strong id="menuProgress">0.0%</strong></div>
+  <dl><div><dt>已感染人数</dt><dd id="menuInfected">0</dd></div><div><dt>已唤醒人数</dt><dd id="menuAwakened">0</dd></div><div><dt>觉醒区域</dt><dd>河畔区</dd></div></dl>
+  <section class="genePreview"><h2>觉醒基因</h2><div><i class="active">☣</i><i>◇</i><i>◇</i><i>◇</i></div></section>
+  <div class="bioMark">☣</div>
+  <div class="menuMap" aria-label="东京河畔街区简图"><span class="mapRoad roadA"></span><span class="mapRoad roadB"></span><span class="mapRoad roadC"></span><i></i><b>N</b></div>
+ </aside>
+ <div class="infectionNotice"><b>☣</b><p><strong>警告：紫色感染扩散中</strong><span>接触者觉醒的可能性：高</span></p></div>
+ <div class="menuFooter"><span>浏览　<kbd>↑</kbd><kbd>↓</kbd></span><span>选择　<kbd>↵</kbd></span><span>返回　<kbd>Esc</kbd></span><b>WAKE UP PROJECT / PLAYTEST 04</b></div>
+</div>
+
 <aside id="tuneHud" hidden></aside>
-<div id="menu"><div class="menuShade"></div><div class="menuContent"><div class="eyebrow">WAKE UP TOKYO / PLAYTEST 04</div><div class="menuLocation">東京 <span>河畔・体素街区</span></div><h1>都给我醒过来！<span>WAKE UP<br>TOKYO<span class="purple">.</span></span></h1><p class="tagline">整座城市都在服从。<br>你，负责让它醒来。</p><div class="menuLine"></div><button id="start" class="primary" disabled>载入东京街区… <span>↗</span></button><button id="continue" hidden></button><div class="menuSecondary"><button id="settings">设置 / 操作</button><button id="about">试玩说明</button></div><p id="loading">越肩视角 · 职业感染群落 · 体素破坏</p><small>桌面键鼠体验 · 建议开启声音</small></div><div class="locationStamp"><span class="liveDot"></span> LIVE SIMULATION<br><strong>秩序崩塌前的东京</strong><small>35°39′ N　139°42′ E / FICTIONAL BLOCK</small></div></div>
 <div id="levelUpFx" hidden><div class="levelUpBurst"></div><div class="levelUpCopy"><div class="eyebrow">GENETIC RECOMBINATION</div><strong>基因突变</strong><b>LV.<span id="levelUpLv">1</span></b><small>战场暂停 · 即将选择变异</small></div></div>
-<div id="modal" hidden><div id="dialog" class="dialog"></div></div><script type="module" src="/main.js?v=beat3"></script></body></html>
+<div id="modal" hidden><div id="dialog" class="dialog"></div></div><script type="module" src="/main.js"></script></body></html>
