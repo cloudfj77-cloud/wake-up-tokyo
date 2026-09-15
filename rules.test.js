@@ -4,6 +4,7 @@ import * as T from 'three';
 import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,hurtMother,missionReady} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
+test('new run starts with syringe equipped and an empty six-step charge',()=>{const s=makeState();assert.equal(s.weapon,0);assert.equal(s.charge,0);});
 test('mother survives one bullet and dies on second; abilities never increase max HP',()=>{const s=makeState();s.pending=3;for(let i=0;i<3;i++)upgrade(s,'vital');reward(s,makeUnit(1,2,0,0),true);assert.equal(s.maxHp,100);assert.equal(hurtMother(s,50),false);assert.equal(s.hp,50);assert.equal(hurtMother(s,50),true);assert.equal(outcome(s),'ended');});
 test('citizen requires three fists; final infection cancels damage',()=>{const s=makeState(),u=makeUnit(1,0,0,0);assert.equal(hit(s,u,20,18),'hit');assert.equal(hit(s,u,20,18),'hit');assert.equal(u.hp,44);assert.equal(hit(s,u,20,18),'converted');assert.equal(u.hp,44);assert.equal(s.infected,1);assert.equal(hit(s,u,20,18),'none');});
 test('needle requires six hits at base infection and does low damage',()=>{const s=makeState(),u=makeUnit(1,0,0,0);for(let i=0;i<5;i++)assert.equal(hit(s,u,10,4),'hit');assert.equal(hit(s,u,10,4),'converted');assert.equal(u.hp,60);});
