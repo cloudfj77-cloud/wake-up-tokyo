@@ -8,7 +8,7 @@
 .levelUpDialog .eyebrow{justify-content:center;letter-spacing:3px;color:#ffe9b8}
 .levelUpDialog strong{display:block;font-size:clamp(32px,5vw,52px);letter-spacing:.28em;color:#fff4c8;margin:18px 0 10px;text-shadow:0 0 28px #ffc92e99}
 .levelUpDialog b{display:block;font-size:28px;color:#ffc92e}
-.levelUpDialog .action{margin:22px 0 0}
+.levelUpDialog .action{display:block;margin:22px auto 0}
 #levelUpFx{position:fixed;inset:0;z-index:8;display:none;pointer-events:none}
 .levelUpBurst{position:absolute;left:50%;top:58%;width:min(46vw,360px);height:min(46vw,360px);margin:-180px 0 0 -180px;border-radius:50%;background:radial-gradient(circle,#ffe066bb 0%,#ffc92e44 30%,transparent 70%);animation:levelPulse 1.45s ease-out;pointer-events:none}
 .levelUpCopy{position:relative;text-align:center;text-shadow:0 0 28px #ffc92e99}
