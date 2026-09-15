@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap} from './rules.js';
+import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -22,7 +22,8 @@ test('citizen converts on two light attacks; final infection cancels damage',()=
  assert.equal(hit(s,u,light.infection,light.damage),'hit');
  assert.equal(u.hp,30);
  assert.equal(hit(s,u,light.infection,light.damage),'converted');
- assert.equal(u.hp,30);
+ assert.equal(u.hp,60);
+ assert.equal(u.maxHp,60);
  assert.equal(s.infected,1);
 });
 test('one heavy attack converts a citizen',()=>{
@@ -62,7 +63,7 @@ test('card selection pauses time, corpse expiration and infection growth',()=>{
 test('purifier drains infection and reverses after conversion',()=>{
  const s=makeState(),p=makeUnit(1,4,1,0),u=makeUnit(2,3,0,0);u.infection=80;
  tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,72);
- hit(s,p,300,0);assert.equal(p.converted,true);
+ hit(s,p,340,0);assert.equal(p.converted,true);
  tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,80);
 });
 test('shield halves frontal damage only',()=>{
@@ -78,7 +79,36 @@ test('city alert is time-gated, not infection-gated',()=>{
 test('early spawn plan only sends fodder',()=>{
  const s=makeState();const units=[makeUnit(1,0,0,0),makeUnit(2,1,1,1)];
  const plan=spawnPlan(s,units,()=>0);assert.equal(plan.threatN,0);
- assert.ok(plan.types.every(t=>ENEMIES[t].fodder));assert.ok(plan.interval>=6);
+ assert.ok(plan.types.every(t=>ENEMIES[t].fodder));assert.ok(plan.interval>=5);
+});
+test('empty field dumps many fodder; army size raises uncapped threats',()=>{
+ const s=makeState();
+ const empty=spawnPlan(s,[],()=>0);
+ assert.ok(empty.fodderN>=10);
+ assert.ok(empty.types.filter(t=>ENEMIES[t].fodder).length>=10);
+ s.time=90;s.level=8;
+ const army=Array.from({length:20},(_,i)=>{const u=makeUnit(i,0,0,0);u.converted=true;u.kind='ally';return u;});
+ const plan=spawnPlan(s,army,()=>0);
+ assert.ok(plan.threatN>3);
+ const bigger=Array.from({length:40},(_,i)=>{const u=makeUnit(100+i,0,0,0);u.converted=true;u.kind='ally';return u;});
+ const later=spawnPlan(s,bigger,()=>0);
+ assert.ok(later.threatN>plan.threatN);
+});
+test('live convert restores a full ally; corpse convert is sixty percent',()=>{
+ const s=makeState(),live=makeUnit(1,1,0,0);
+ live.hp=12;
+ convert(s,live);
+ const tpl=allyTemplate(1);
+ assert.equal(live.hp,tpl.hp);assert.equal(live.maxHp,tpl.hp);assert.equal(live.atk,tpl.atk);
+ const corpse=makeUnit(2,0,0,0);corpse.kind='corpse';corpse.hp=0;
+ convert(s,corpse);
+ assert.equal(corpse.hp,Math.ceil(allyTemplate(0).hp*.6));
+});
+test('elite soldiers outlast and outdamage converted workers',()=>{
+ const worker=allyTemplate(0),elite=ENEMIES[5];
+ assert.ok(elite.hp>worker.hp*3);
+ assert.ok(elite.threshold>=200);
+ assert.ok(elite.damage*3>=worker.hp);
 });
 test('tune console can move alert gates without infection',()=>{
  const s=makeState();s.time=40;assert.equal(threat(s),1);

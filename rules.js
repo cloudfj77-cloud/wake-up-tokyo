@@ -12,13 +12,13 @@ export const MELEE={
 export const WALK_SPEED=4.6;
 export const SPRINT_MULT=1.38;
 export const ENEMIES=[
- {name:'苦逼打工人',level:1,hp:50,threshold:20,speed:2.2,damage:5,range:1.6,interval:1.5,aim:.2,fodder:true},
- {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:10,range:1.9,interval:1.2,aim:.35,fodder:true},
- {name:'持枪巡警',level:3,hp:120,threshold:60,speed:2.45,damage:12,range:12,interval:1.5,aim:1.05},
- {name:'持盾特警',level:4,hp:180,threshold:110,speed:2.3,damage:14,range:2.3,interval:1.5,aim:.4,shield:true},
- {name:'净化工兵',level:6,hp:200,threshold:300,speed:2.05,damage:10,range:2.8,interval:1.5,aim:.45,purifier:true,aura:8,drain:8},
- {name:'大兵',level:6,hp:200,threshold:200,speed:2.5,damage:20,range:24,interval:1.1,aim:.9},
- {name:'持枪特警',level:5,hp:130,threshold:150,speed:2.7,damage:18,range:14,interval:1.2,aim:1.05,burst:true}
+ {name:'苦逼打工人',level:1,hp:50,threshold:20,speed:2.2,damage:5,range:1.6,interval:1.5,aim:.2,fodder:true,allyName:'普通狂暴者',allyHp:60,allyAtk:8},
+ {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:10,range:1.9,interval:1.2,aim:.35,fodder:true,allyName:'狂暴持棍巡警',allyHp:110,allyAtk:14},
+ {name:'持枪巡警',level:3,hp:120,threshold:60,speed:2.45,damage:12,range:12,interval:1.5,aim:1.05,allyName:'狂暴持枪巡警',allyHp:100,allyAtk:13},
+ {name:'持盾特警',level:4,hp:180,threshold:110,speed:2.3,damage:16,range:2.3,interval:1.5,aim:.4,shield:true,allyName:'狂暴盾卫',allyHp:190,allyAtk:15},
+ {name:'净化工兵',level:6,hp:240,threshold:340,speed:2.05,damage:14,range:2.8,interval:1.5,aim:.45,purifier:true,aura:8,drain:8,allyName:'狂暴净化士兵',allyHp:220,allyAtk:16},
+ {name:'大兵',level:6,hp:280,threshold:260,speed:2.45,damage:28,range:24,interval:1.05,aim:.9,allyName:'狂暴大兵',allyHp:260,allyAtk:32},
+ {name:'持枪特警',level:5,hp:170,threshold:180,speed:2.65,damage:24,range:14,interval:1.15,aim:1.05,burst:true,allyName:'狂暴突击手',allyHp:140,allyAtk:20}
 ];
 export const ABILITIES=[
  {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:[
@@ -169,9 +169,18 @@ export function applyRankBoost(u){
  u.hp=Math.max(u.hp,Math.ceil(u.maxHp*.45));
  return u;
 }
+export function allyTemplate(type){
+ const e=ENEMIES[type];
+ return {name:e.allyName||e.name,hp:e.allyHp??Math.ceil(e.hp*1.2),atk:e.allyAtk??Math.max(8,Math.ceil(e.damage*1.4))};
+}
 export function convert(s,u){
  if(u.converted||u.dead)return false;
- u.converted=true;u.kind='ally';u.hp=Math.max(u.hp,Math.ceil(u.maxHp*.4));u.corpseTime=0;u.infection=u.threshold;u.wander=0;
+ const fromCorpse=u.kind==='corpse';
+ const tpl=allyTemplate(u.type);
+ u.converted=true;u.kind='ally';
+ u.maxHp=tpl.hp;u.hp=fromCorpse?Math.ceil(tpl.hp*.6):tpl.hp;u.atk=tpl.atk;
+ u.aiming=false;u.aim=0;u.attackCd=.15;u.hurt=0;
+ u.corpseTime=0;u.infection=u.threshold;u.wander=0;u.tagged=false;
  if(s.abilities.evolve>=3)applyRankBoost(u);
  reward(s,u,true);
  return true;
@@ -238,7 +247,7 @@ export function incomingDamage(s,damage){
 }
 export const TUNE_DEFAULTS={
  alert:{stage2At:90,stage3At:180,maxLevel1:2,maxLevel2:4,maxLevel3:6,pressureTime:0},
- difficulty:{armyWeight:.35,fodderBase:4,fodderDiv:3,fodderMin:1,threatWeight:3,threatMax:3,intervalBase:15,intervalPerWeight:.85,intervalMin:6,fodderSlowAt:8,fodderSlowAdd:2},
+ difficulty:{armyWeight:.4,fodderTarget:10,fodderDump:12,threatPerLevel:.55,threatPerAlly:.4,intervalBase:14,intervalPerWeight:.45,intervalMin:5},
  activity:{shambleSpeed:.55,shambleRadius:4,shambleIdle:6,fleeSpeed:.7,awakeSpeed:3.8,awakeRadius:34,awakeIdle:1.05,chaseSpeed:3.6,followSpeed:4.4,structureSpeed:3.2}
 };
 export const TUNE=structuredClone(TUNE_DEFAULTS);
@@ -259,19 +268,20 @@ export function fodderCount(units){return units.filter(u=>!u.dead&&!u.converted&
 export function spawnPlan(s,units,random=Math.random){
  const alert=cityAlert(s);
  const d=TUNE.difficulty;
- const weight=difficultyWeight(s,units);
+ const army=teamCount(units);
+ const weight=s.level+army*(d.armyWeight??.4);
  const fodder=fodderCount(units);
  const pool=ENEMIES.map((e,i)=>({e,i})).filter(({e})=>e.level<=alert.maxLevel);
  const fodderPool=pool.filter(({e})=>e.fodder);
  const threatPool=pool.filter(({e})=>!e.fodder);
  const pick=list=>{if(!list.length)return 0;return list[Math.min(list.length-1,Math.floor(random()*list.length))].i;};
- const fodderN=Math.max(d.fodderMin,d.fodderBase-Math.floor(fodder/d.fodderDiv));
- const threatN=alert.maxLevel<=TUNE.alert.maxLevel1?0:Math.min(d.threatMax,1+Math.floor(weight/d.threatWeight));
+ const fodderN=fodder<=0?d.fodderDump:Math.max(0,d.fodderTarget-fodder);
+ const threatN=alert.maxLevel<=TUNE.alert.maxLevel1?0:Math.max(1,Math.round(s.level*(d.threatPerLevel??.55)+army*(d.threatPerAlly??.4)));
  const types=[];
- for(let i=0;i<fodderN;i++)types.push(pick(fodderPool));
- for(let i=0;i<threatN;i++)types.push(pick(threatPool.length?threatPool:fodderPool));
- const interval=Math.max(d.intervalMin,d.intervalBase-weight*d.intervalPerWeight+(fodder>d.fodderSlowAt?d.fodderSlowAdd:0));
- return {types,interval,weight,fodder,fodderN,threatN,...alert};
+ for(let i=0;i<fodderN;i++)types.push(pick(fodderPool.length?fodderPool:pool));
+ for(let i=0;i<threatN;i++)types.push(pick(threatPool.length?threatPool:fodderPool.length?fodderPool:pool));
+ const interval=Math.max(d.intervalMin,d.intervalBase-weight*(d.intervalPerWeight??.45));
+ return {types,interval,weight,fodder,fodderN,threatN,army,...alert};
 }
 export function outcome(s){return s.hp<=0?'ended':s.bossDefeated?'won':null;}
 export function hasteBonus(s){return s.abilities.haste>=3?1:s.abilities.haste>=1?.5:0;}
