@@ -43,6 +43,8 @@ test('infection changes only the infected actor and selects zombie locomotion',(
   assert.equal(b.meshes[0].material.color.getHex(),original);
   assert.notEqual(a.meshes[0].material.color.getHex(),original);
   assert.equal(a.marker.visible,true);
+  assert.equal(a.infectionAura.visible,true);
+  assert.ok(a.meshes[0].material.emissiveIntensity>=.45);
   updateCharacterVisual(a,true,.1,80);assert.equal(a.holder.visible,false);
   updateCharacterVisual(a,true,.1,10);assert.equal(a.holder.visible,true);
 });
