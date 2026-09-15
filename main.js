@@ -10,7 +10,7 @@ const $=id=>document.getElementById(id),canvas=$('game');
 const music=new Soundtrack();let mode='loading',state=makeState(),units=[],player={x:0,z:-7,y:0,vy:0,crouch:false,roll:0,rollX:0,rollZ:1},world,assets;let hurtTimer=0,lastHp=null;
 const PLAYER_HEIGHT=characterHeight('player'),STANDING_CHEST=PLAYER_HEIGHT*.72,CROUCH_CHEST=PLAYER_HEIGHT*.45;
 const FX_SCALE=PLAYER_HEIGHT/2.25;
-let yaw=0,pitch=.08,cameraDistance=2.7,mouseHeld=false,dragging=false,lastMouse=null,attackCd=0,breakCd=0,rushCd=0,reinforceTimer=24,reinforceDirection=0,reinforceAnnounced=false,totalReinforcements=0,invincible=0,toastTime=0,saveTimer=0,shake=0,target=null,frameDelta=0,choiceSet=[],pendingChoice=-1,upgradeLock=0,upgradeTimer=0,upgradeOpenAt=0;
+let yaw=0,pitch=.08,cameraDistance=2.7,mouseHeld=false,dragging=false,lastMouse=null,attackCd=0,breakCd=0,rushCd=0,reinforceTimer=24,reinforceDirection=0,reinforceAnnounced=false,totalReinforcements=0,invincible=0,toastTime=0,saveTimer=0,shake=0,target=null,frameDelta=0,choiceSet=[],pendingChoice=-1,upgradeLock=0,upgradeTimer=0;
 let settings={volume:.38,sensitivity:1,quality:'standard'};const SAVE_KEY='wake-up-tokyo-riverside-v4';const debugQuery=new URLSearchParams(location.search);let showDebug=debugQuery.has('debug');let alerted=false,switchTime=0,nextWeapon=-1,reloadTime=0,conversionCount=0,conversionTimer=0,missionTimer=0,nextActorId=800,ramTimer=0;let squadIds=new Set();
 try{settings={...settings,...JSON.parse(localStorage.getItem('groundzero-settings')||'{}')};}catch{}
 music.volume=settings.volume;
@@ -226,7 +226,10 @@ function playLevelUpFx(){
 }
 function showLevelUpBeat(){
   playLevelUpFx();
-  showDialog(`<div class="levelUpDialog"><div class="eyebrow">GENETIC RECOMBINATION</div><strong>基因突变</strong><b>LV.${state.level}</b><small>战场暂停 · 即将选择变异</small></div>`);
+  showDialog(`<div class="levelUpDialog"><div class="eyebrow">GENETIC RECOMBINATION</div><strong>基因突变</strong><b>LV.${state.level}</b><small>战场暂停 · 看完黄光后再选变异</small><button type="button" class="action" id="enterUpgrade" disabled>进入选择</button></div>`);
+  $('enterUpgrade').onclick=()=>openUpgradeDialog();
+  clearTimeout(upgradeTimer);
+  upgradeTimer=setTimeout(()=>{const btn=$('enterUpgrade');if(btn)btn.disabled=false;},800);
 }
 function bindUpgradeCards(){
   pendingChoice=-1;
@@ -260,12 +263,6 @@ function confirmChoice(){
 }
 function openUpgradeDialog(){
   if(mode!=='levelup')return;
-  const remain=upgradeOpenAt-performance.now();
-  if(remain>40){
-    clearTimeout(upgradeTimer);
-    upgradeTimer=setTimeout(()=>{if(mode==='levelup')openUpgradeDialog();},remain);
-    return;
-  }
   clearTimeout(upgradeTimer);
   hideLevelUpFx();
   mode='upgrade';
@@ -279,14 +276,10 @@ function chooseUpgrade(){
   choiceSet=choices(state);
   if(!choiceSet.length){state.pending=0;return;}
   pendingChoice=-1;
-  const wait=1800;
-  upgradeOpenAt=performance.now()+wait;
   mode='levelup';
   music.pause();
   clearInput();
   showLevelUpBeat();
-  clearTimeout(upgradeTimer);
-  upgradeTimer=setTimeout(()=>{if(mode==='levelup')openUpgradeDialog();},wait);
 }
 function saveRun(){if(import.meta.env.DEV&&new URLSearchParams(location.search).has('test'))return;if(!assets||['loading','menu','ended','won'].includes(mode)||boss.active)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:7,state,units,player,yaw,pitch,cameraDistance,attackCd,breakCd,rushCd,reinforceTimer,reinforceDirection,totalReinforcements,alerted,objects:world.destructibles.map(o=>({hp:o.hp,dead:o.dead,removed:o.removed?[...o.removed]:[]}))}));}catch{}}
 function loadSaved(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));return s?.version===7&&s.state?.hp>0&&s.units?.length?s:null;}catch{return null;}}
