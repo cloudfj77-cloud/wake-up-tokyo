@@ -34,6 +34,11 @@ export const ABILITIES=[
   '解锁步枪与狙击枪。3 级及以上：步枪 +10、狙击 +3；一级补弹量翻倍。',
   '解锁 RPG。4 级及以上 +1 发。枪械造成攻击力一半的感染。'
  ]},
+ {id:'launcher',name:'可感染发射器',icon:'◎',group:'武器系',descriptions:[
+  '开局即可发射感染针。命中造成感染，适合叫醒路人。',
+  '针剂感染与伤害提高，并可穿透多名敌人。',
+  '连续释放 6 次后，下一次打出强化炮弹。'
+ ]},
  {id:'frenzy',name:'狂杀',icon:'⚔',group:'母体系',descriptions:[
   '每次击杀或同化 +1 生命与等量上限。',
   '生命上限达到 500 与 1000 时，各额外获得一次能力进化。',
@@ -73,19 +78,43 @@ export const GUNS=[
  {id:'rpg',name:'RPG',unlock:3,damage:80,range:26,cd:1.8,pellets:1,spread:0,clip:1,speed:20,color:0xf08a4a,splash:4}
 ];
 export const WEAPONS=GUNS;
+// 发射器占用独立武器槽，避免和「枪？枪！」的 0–4 枪械下标挤在一起。
+export const LAUNCHER_SLOT=-2;
 export function makeState(){
  return {
   hp:BASE_HP,maxHp:BASE_HP,stamina:STAMINA_MAX,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,
   xp:0,need:xpNeedFor(1),level:1,pending:1,time:0,alert:1,peakAlert:1,
-  abilities:{air:0,guns:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
+  abilities:{air:0,guns:0,launcher:1,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
   history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
-  clip:0,clipMax:0,weapon:-1,gunId:null,
+  clip:0,clipMax:0,weapon:LAUNCHER_SLOT,gunId:null,launcherCharge:0,
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
-  frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow'
+  frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
+  tutorialStep:0,tutorialValue:0,tutorialDone:false,tutorialSkipped:false
  };
 }
-export function choices(s,random=Math.random){return ABILITIES.filter(a=>s.abilities[a.id]<3).map(a=>({a,r:random()})).sort((a,b)=>a.r-b.r).slice(0,3).map(v=>v.a);}
+export function availableAbilities(s){return ABILITIES.filter(a=>s.abilities[a.id]<3);}
+export function choices(s,random=Math.random){return availableAbilities(s).map(a=>({a,r:random()})).sort((a,b)=>a.r-b.r).slice(0,3).map(v=>v.a);}
+function blockedIds(current,seen){
+ const blocked=new Set(seen||[]);
+ for(const a of current||[])if(a?.id)blocked.add(a.id);
+ return blocked;
+}
+// 只换指定那一张。本轮已经出过的（含刚刷掉的）和满级能力都不会再出现。
+export function rerollChoice(s,current,index,random=Math.random,seen){
+ if(!Array.isArray(current)||index<0||index>=current.length)return null;
+ const blocked=blockedIds(current,seen);
+ const pool=availableAbilities(s).filter(a=>!blocked.has(a.id));
+ if(!pool.length)return null;
+ const next=current.slice();
+ next[index]=pool[Math.min(pool.length-1,Math.floor(random()*pool.length))];
+ return next;
+}
+export function hasRerollPool(s,current,seen){
+ if(!Array.isArray(current)||!current.length)return false;
+ const blocked=blockedIds(current,seen);
+ return availableAbilities(s).some(a=>!blocked.has(a.id));
+}
 export function levelCap(s){return s.abilities.evolve>=3?EVOLVE_CAP:LEVEL_CAP;}
 export function xpNeedFor(level){
  if(level<LATE_XP_FROM)return BASE_NEED+2*Math.max(0,level-1);
@@ -127,6 +156,26 @@ export function grantKillAmmo(s,enemyLevel){
  if(g>=3&&enemyLevel>=4)addAmmo(s,'rpg',1);
 }
 export function gunInfection(s,damage){return s.abilities.guns>=3?damage*.5:0;}
+export function hasLauncher(s){return (s.abilities.launcher||0)>=1;}
+// 发射器数值：1 级感染针，2 级加伤并穿透，3 级保留穿透、额外走 6 次充能。
+export function launcherSpec(s,empowered=false){
+ const lv=s.abilities.launcher||0;
+ if(lv<1)return null;
+ const pierce=lv>=2?2:0;
+ const base=lv>=2
+  ?{infection:20,damage:8,range:28,cd:.36,speed:36,pierce,color:0xd48aff,life:.9}
+  :{infection:12,damage:4,range:24,cd:.42,speed:32,pierce,color:0xc078ff,life:.85};
+ if(empowered)return {...base,infection:45,damage:12,speed:14,pierce:4,splash:6,life:4,strong:true,color:0xe4adff};
+ return {...base,splash:0,strong:false};
+}
+// 只有 3 级才计次。前 6 发普通针，第 7 发强化炮弹并清零。
+export function consumeLauncherCharge(s){
+ if((s.abilities.launcher||0)<3)return false;
+ s.launcherCharge=s.launcherCharge||0;
+ if(s.launcherCharge>=6){s.launcherCharge=0;return true;}
+ s.launcherCharge++;
+ return false;
+}
 export function upgrade(s,id){
  if(!ABILITIES.some(a=>a.id===id)||s.abilities[id]>=3||s.pending<=0)return false;
  s.abilities[id]++;s.pending--;s.history.push({id,level:s.abilities[id],time:s.time});s.lastPick=s.time;
@@ -135,6 +184,7 @@ export function upgrade(s,id){
   if(s.abilities.guns===2){addAmmo(s,'rifle',30);addAmmo(s,'sniper',9);s.mags.rifle=GUNS[2].clip;s.mags.sniper=GUNS[3].clip;}
   if(s.abilities.guns===3){addAmmo(s,'rpg',2);s.mags.rpg=1;}
  }
+ if(id==='launcher'&&s.abilities.launcher===1&&s.weapon===-1)s.weapon=LAUNCHER_SLOT;
  if(id==='frenzy'||id==='evolve')refreshStats(s);
  if(id==='command')s.needGuards=true;
  return true;

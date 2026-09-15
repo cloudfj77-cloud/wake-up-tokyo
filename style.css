@@ -217,4 +217,10 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 #tuneHud input[type=number]{width:68px;background:#1b2c38;color:#eef6fa;border:1px solid #4d6a7a;padding:3px 5px;font:11px ui-monospace,Menlo,Consolas,monospace}
 #tuneHud footer{display:flex;flex-wrap:wrap;gap:6px}
 #tuneHud footer button{background:#2a3f50;border:1px solid #6d8aa0;color:#e8f4fb;padding:6px 9px;font-size:11px}
-#tuneHud footer button:hover{background:#3a5468}
+.choiceLock{pointer-events:none}
+.choiceSlot{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.choiceSlot .card{flex:1}
+.card.picked{border-color:#d7b2fa;box-shadow:inset 0 0 0 1px #c69be5,0 8px 22px #7a3cc433;background:#343e53}
+.reroll{background:#ffffff0c;border:1px solid #8aa0b366;color:#d5e2ee;padding:8px 10px;font-size:11px;letter-spacing:1px}
+.reroll:hover:not(:disabled){background:#b478f122;border-color:#c69be5;color:#f0e3ff}
+.reroll:disabled{opacity:.45;cursor:not-allowed}

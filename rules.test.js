@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap} from './rules.js';
+import {makeState,makeUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -40,6 +40,31 @@ test('guns level 3 convert infection is half weapon damage',()=>{
  assert.equal(hit(s,u,8,16),'hit');
  assert.equal(u.infection,16);
  assert.equal(hit(s,u,8,16),'converted');
+});
+test('launcher starts equipped; level 2 pierces; level 3 empowers after six casts',()=>{
+ const s=makeState();
+ assert.equal(s.abilities.launcher,1);
+ assert.equal(s.weapon,LAUNCHER_SLOT);
+ assert.equal(hasLauncher(s),true);
+ const lv1=launcherSpec(s);
+ assert.equal(lv1.pierce,0);
+ assert.equal(lv1.infection,12);
+ assert.equal(consumeLauncherCharge(s),false);
+ s.pending=2;
+ upgrade(s,'launcher');
+ const lv2=launcherSpec(s);
+ assert.equal(s.abilities.launcher,2);
+ assert.ok(lv2.infection>lv1.infection);
+ assert.equal(lv2.pierce,2);
+ upgrade(s,'launcher');
+ assert.equal(s.abilities.launcher,3);
+ let empowered=0;
+ for(let i=0;i<7;i++)if(consumeLauncherCharge(s))empowered++;
+ assert.equal(empowered,1);
+ assert.equal(s.launcherCharge,0);
+ const boom=launcherSpec(s,true);
+ assert.equal(boom.strong,true);
+ assert.ok(boom.infection>=40);
 });
 test('allied death does not subtract cumulative infection',()=>{
  const s=makeState(),u=makeUnit(1,0,0,0);
@@ -176,6 +201,45 @@ test('early XP follows Feishu player growth: 4 then +2 per level, XP equals enem
  s.level=8;assert.equal(upgradeAutoGap(s),8);
  s.pending=40;for(const a of ABILITIES)while(s.abilities[a.id]<3)upgrade(s,a.id);
  assert.deepEqual(choices(s),[]);assert.equal(levelCap(s),50);
+});
+test('reroll replaces one offered card with an unshown ability',()=>{
+ const s=makeState();
+ const first=choices(s,()=>0);
+ assert.equal(first.length,3);
+ assert.equal(hasRerollPool(s,first),true);
+ const next=rerollChoice(s,first,1,()=>0);
+ assert.ok(next);
+ assert.equal(next[0].id,first[0].id);
+ assert.equal(next[2].id,first[2].id);
+ assert.notEqual(next[1].id,first[1].id);
+ assert.equal(first.some(a=>a.id===next[1].id),false);
+ assert.ok(s.abilities[next[1].id]<3);
+});
+test('reroll never brings back an ability already seen this round',()=>{
+ const s=makeState();
+ const first=choices(s,()=>0);
+ const seen=new Set(first.map(a=>a.id));
+ const after=rerollChoice(s,first,1,()=>0,seen);
+ assert.ok(after);
+ seen.add(after[1].id);
+ assert.equal(seen.has(first[1].id),true);
+ const again=rerollChoice(s,after,0,()=>0,seen);
+ assert.ok(again);
+ assert.equal(seen.has(again[0].id),false);
+ assert.notEqual(again[0].id,first[1].id);
+ const other=rerollChoice(s,after,2,()=>0,seen);
+ assert.ok(other);
+ assert.equal(seen.has(other[2].id),false);
+ assert.notEqual(other[2].id,first[1].id);
+});
+test('reroll is empty when every remaining ability is already on the table',()=>{
+ const s=makeState();s.pending=80;
+ for(const a of ABILITIES)while(s.abilities[a.id]<3)upgrade(s,a.id);
+ s.abilities.air=2;s.abilities.guns=2;s.abilities.dot=2;
+ const offered=choices(s,()=>0);
+ assert.equal(offered.length,3);
+ assert.equal(hasRerollPool(s,offered),false);
+ assert.equal(rerollChoice(s,offered,0,()=>0),null);
 });
 test('evolve adds life from player level',()=>{
  const s=makeState();s.pending=1;s.level=4;upgrade(s,'evolve');refreshStats(s);
