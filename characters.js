@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 
-const colors = { player: 0xe2b7ff, ally: 0xdbb2ed, human: 0xffffff, guard: 0xabc9ea };
+const colors = { player: 0xe2b7ff, ally: 0xe0c7ec, human: 0xffffff, guard: 0xabc9ea };
 const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee };
 
 // 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
@@ -96,9 +96,12 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   marker.rotation.x = -Math.PI / 2;
   marker.position.y = .055;
   holder.add(marker);
+  // 感染者额外拥有一圈呼吸式紫色光环，远距离也不会和普通市民混在一起。
+  const infectionAura = new THREE.Mesh(new THREE.RingGeometry(.26,.34,32),new THREE.MeshBasicMaterial({color:0xd48aff,transparent:true,opacity:.46,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false}));
+  infectionAura.rotation.x=-Math.PI/2;infectionAura.position.y=.065;infectionAura.visible=false;holder.add(infectionAura);
   const mixer = new THREE.AnimationMixer(root);
   const actions = Object.fromEntries(asset.clips.map(clip => [clip.name, mixer.clipAction(clip)]));
-  const visual = { holder, root, model, meshes, materials, marker, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0 };
+  const visual = { holder, root, model, meshes, materials, marker, infectionAura, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0 };
   setCharacterKind(visual, kind, variant);
   switchAnimation(visual, 'idle', .0);
   mixer.update(variant * .27);
@@ -148,6 +151,7 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
   // 远处人物降低骨骼刷新频率，玩家看不出区别，但能明显减轻渲染压力。
   visual.holder.visible = distance < 58;
   const shadows = distance < 18;
+  if(visual.infectionAura.visible){const pulse=1+Math.sin(performance.now()*.008+visual.accumulated)*.1;visual.infectionAura.scale.setScalar(pulse);visual.infectionAura.material.opacity=.4+(pulse-1)*.5;}
   for (const mesh of visual.meshes) mesh.castShadow = shadows;
   visual.accumulated += dt;
   if (distance < 16 || visual.accumulated >= (distance < 45 ? 1 / 20 : 1 / 10)) {

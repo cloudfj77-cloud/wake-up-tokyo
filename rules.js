@@ -1,3 +1,6 @@
+import {MISSIONS,missionReady} from './missions.js';
+export {MISSIONS,missionReady};
+
 export const LEVEL_CAP=12;
 export const POPULATION=58;
 // Values absent from the supplied UI reference are explicit Demo tuning.
@@ -18,7 +21,7 @@ export const ABILITIES=[
  {id:'guns',name:'感染注射器',icon:'⌐',group:'武器系',descriptions:['针剂感染 +5，弹匣容量 +4。','针剂感染 +10，装填时间 −25%。','针剂感染 +15，命中后向周围 2 米溅射感染。']}
 ];
 export const WEAPONS=[{name:'终末注射枪',damage:4,range:24,cooldown:.42}];
-export function makeState(){return {hp:100,maxHp:100,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,xp:0,need:12,level:1,pending:1,time:0,alert:1,peakAlert:1,abilities:{air:0,dot:0,vital:0,haste:0,guns:0},history:[],ammo:[120],clip:16,clipMax:16,weapon:-1,first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[]};}
+export function makeState(){return {hp:100,maxHp:100,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,xp:0,need:12,level:1,pending:1,time:0,alert:1,peakAlert:1,abilities:{air:0,dot:0,vital:0,haste:0,guns:0},history:[],ammo:[120],clip:16,clipMax:16,weapon:0,charge:0,first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,tutorialStep:0,tutorialValue:0,tutorialDone:false,tutorialSkipped:false,lastPick:-60,killRewards:[]};}
 export function choices(s,random=Math.random){return ABILITIES.filter(a=>s.abilities[a.id]<3).map(a=>({a,r:random()})).sort((a,b)=>a.r-b.r).slice(0,3).map(v=>v.a);}
 export function upgrade(s,id){if(!ABILITIES.some(a=>a.id===id)||s.abilities[id]>=3||s.pending<=0)return false;s.abilities[id]++;s.pending--;s.history.push({id,level:s.abilities[id],time:s.time});if(id==='guns'&&s.abilities.guns===1){s.clipMax=20;s.clip+=4;}s.lastPick=s.time;return true;}
 export function reward(s,u,converted){if(converted){s.infected++;if(u.city)s.cityInfected++;s.first??={name:ENEMIES[u.type].name,time:s.time};if(u.type===4)s.purifiers++;}else s.kills++;s.highestEnemy=Math.max(s.highestEnemy,ENEMIES[u.type].level);if(ENEMIES[u.type].level>=2)s.ammo[0]=Math.min(999,s.ammo[0]+8);if(u.rewarded)return;u.rewarded=true;if(s.level<LEVEL_CAP){s.xp+=u.type===0?1:2;while(s.xp>=s.need&&s.level<LEVEL_CAP){s.xp-=s.need;s.level++;s.need=Math.ceil(s.need*1.4+3);s.pending++;}if(s.level===LEVEL_CAP)s.xp=0;}}
@@ -36,5 +39,3 @@ export function teamCount(units){return units.filter(u=>u.kind==='ally'&&!u.dead
 export function stepSimulation(s,units,player,dt,mode){if(mode!=='playing')return;s.time+=dt;tickInfection(s,units,player,dt);}
 
 export function hurtMother(s,damage,source='秩序火力'){s.lastDamage=source+' · '+damage+' 伤害';s.damageLog??=[];s.damageLog.push({time:s.time,source,damage,before:s.hp});s.damageLog=s.damageLog.slice(-5);s.hp=Math.max(0,s.hp-damage);return s.hp===0;}
-export function missionReady(s){return [()=>s.infected>=3,()=>s.infected>=10&&s.towers>=1,()=>s.highestEnemy>=5&&s.towers>=2,()=>s.infected>=40&&s.towers===3,()=>s.bossDefeated][s.mission]?.()??false;}
-export const MISSIONS=[['叫醒第一个人','累计感染 3 人'],['让街区失控','感染 10 人，摧毁首座中枢'],['突破镇压','击败 / 转化净化士兵，摧毁两座中枢'],['唤出巨像','累计感染 40 人，摧毁三座中枢'],['东京人觉醒','击败中央路口的巨大 Boss']];
