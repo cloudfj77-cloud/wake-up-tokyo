@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee} from './rules.js';
+import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -165,10 +165,15 @@ test('killing level 2+ units restocks pistol and shotgun ammo',()=>{
  const before=s.ammo.pistol;grantKillAmmo(s,2);
  assert.equal(s.ammo.pistol,before+3);assert.equal(s.ammo.shotgun,9);
 });
-test('higher XP requirements and capped ability pool',()=>{
+test('early XP follows Feishu player growth: 4 then +2 per level, XP equals enemy rank',()=>{
  const s=makeState();upgrade(s,'air');
- for(let i=0;i<11;i++)reward(s,makeUnit(i,0,0,0),true);
- assert.equal(s.level,1);reward(s,makeUnit(12,0,0,0),true);assert.equal(s.level,2);assert.ok(s.need>=20);
+ assert.equal(s.need,4);assert.equal(xpNeedFor(1),4);assert.equal(xpNeedFor(2),6);assert.equal(xpNeedFor(9),20);
+ assert.equal(xpFromUnit(makeUnit(1,0,0,0)),1);assert.equal(xpFromUnit(makeUnit(2,1,0,0)),2);
+ for(let i=0;i<3;i++){reward(s,makeUnit(i,0,0,0),true);assert.equal(s.level,1);}
+ reward(s,makeUnit(3,0,0,0),true);assert.equal(s.level,2);assert.equal(s.need,6);assert.equal(s.pending,1);
+ const cop=makeUnit(20,1,0,0);reward(s,cop,true);assert.equal(s.xp,2);
+ assert.equal(upgradeAutoGap(s),3);
+ s.level=8;assert.equal(upgradeAutoGap(s),8);
  s.pending=40;for(const a of ABILITIES)while(s.abilities[a.id]<3)upgrade(s,a.id);
  assert.deepEqual(choices(s),[]);assert.equal(levelCap(s),50);
 });

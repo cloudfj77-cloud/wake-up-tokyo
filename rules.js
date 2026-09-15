@@ -1,5 +1,8 @@
 export const LEVEL_CAP=30;
 export const EVOLVE_CAP=50;
+export const BASE_NEED=4;
+export const LATE_XP_FROM=10;
+export const UPGRADE_AUTO_GAP=8;
 export const POPULATION=58;
 export const BASE_HP=100;
 export const BASE_ATK=20;
@@ -73,7 +76,7 @@ export const WEAPONS=GUNS;
 export function makeState(){
  return {
   hp:BASE_HP,maxHp:BASE_HP,stamina:STAMINA_MAX,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,
-  xp:0,need:12,level:1,pending:1,time:0,alert:1,peakAlert:1,
+  xp:0,need:xpNeedFor(1),level:1,pending:1,time:0,alert:1,peakAlert:1,
   abilities:{air:0,guns:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
   history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
@@ -84,6 +87,14 @@ export function makeState(){
 }
 export function choices(s,random=Math.random){return ABILITIES.filter(a=>s.abilities[a.id]<3).map(a=>({a,r:random()})).sort((a,b)=>a.r-b.r).slice(0,3).map(v=>v.a);}
 export function levelCap(s){return s.abilities.evolve>=3?EVOLVE_CAP:LEVEL_CAP;}
+export function xpNeedFor(level){
+ if(level<LATE_XP_FROM)return BASE_NEED+2*Math.max(0,level-1);
+ let n=BASE_NEED+2*(LATE_XP_FROM-2);
+ for(let l=LATE_XP_FROM;l<=level;l++)n=Math.ceil(n*1.35+3);
+ return n;
+}
+export function xpFromUnit(u){return ENEMIES[u.type]?.level||1;}
+export function upgradeAutoGap(s){return s.level<=6?3:UPGRADE_AUTO_GAP;}
 export function evolveCoeff(s){
  if(!s.abilities.evolve)return 0;
  let c=1;
@@ -149,9 +160,9 @@ export function reward(s,u,converted){
  if(u.rewarded)return;u.rewarded=true;
  const cap=levelCap(s);
  if(s.level<cap){
-  s.xp+=u.type===0?1:2;
+  s.xp+=xpFromUnit(u);
   while(s.xp>=s.need&&s.level<cap){
-   s.xp-=s.need;s.level++;s.need=Math.ceil(s.need*1.4+3);
+   s.xp-=s.need;s.level++;s.need=xpNeedFor(s.level);
    if(s.level<=LEVEL_CAP)s.pending++;
    refreshStats(s);
   }
