@@ -83,15 +83,15 @@ function move(u,dx,dz,detour=false){const ox=u.x,oz=u.z;if(world.free(u.x+dx,u.z
 function forward(){return {x:Math.sin(yaw),z:Math.cos(yaw)};}
 function acquire(range=3.1){let best=null,score=-Infinity;const f=forward();for(const u of units){if(u.dead||u.converted||u.kind==='corpse')continue;const d=distance(player,u);if(d>range||!world.clear(player,u))continue;const dot=((u.x-player.x)*f.x+(u.z-player.z)*f.z)/(d||1);if(dot<.3)continue;const value=dot*4-d/range;if(value>score){score=value;best=u;}}return best;}
 // 场景可捡道具：紫液补给箱，橙色特效包裹，出现到被拾取为止。
-const pickups=[],pickupGeometry=new T.BoxGeometry(.5,.34,.34),crossGeometry=new T.BoxGeometry(1,1,1);
+const pickups=[],crossBarGeometry=new T.BoxGeometry(1,1,1);
+// 立体十字：一竖一横两根长方体拼成加号，不再是一个贴了十字的箱子。
 function spawnPickup(x,z){
  if(pickups.length>=8)return;
- const body=new T.Group();body.position.set(x,world.heightAt(x,z)+.35,z);
- const box=new T.Mesh(pickupGeometry,new T.MeshStandardMaterial({color:0x2fd15a,emissive:0x1b8f36,emissiveIntensity:.85,roughness:.3}));
- box.castShadow=true;body.add(box);
- const crossMat=new T.MeshStandardMaterial({color:0xf4fff7,emissive:0xcfffdc,emissiveIntensity:.55,roughness:.4});
- const hBar=new T.Mesh(crossGeometry,crossMat);hBar.scale.set(.26,.08,.04);hBar.position.set(0,0,.18);body.add(hBar);
- const vBar=new T.Mesh(crossGeometry,crossMat);vBar.scale.set(.08,.26,.04);vBar.position.set(0,0,.18);body.add(vBar);
+ const body=new T.Group();body.position.set(x,world.heightAt(x,z)+.45,z);
+ const mat=new T.MeshStandardMaterial({color:0x2fd15a,emissive:0x1b8f36,emissiveIntensity:.85,roughness:.3});
+ const vBar=new T.Mesh(crossBarGeometry,mat);vBar.scale.set(.15,.5,.15);body.add(vBar);
+ const hBar=new T.Mesh(crossBarGeometry,mat);hBar.scale.set(.5,.15,.15);body.add(hBar);
+ body.traverse(o=>{if(o.isMesh)o.castShadow=true;});
  scene.add(body);
  pickups.push({m:body,aura:makeAura(body,AURA_COLORS.pickup,{coreSize:1.1,moteSize:.26,radius:.42}),x,z,phase:Math.random()*6.283});
 }
@@ -99,7 +99,7 @@ function scatterPickups(){for(let i=0;i<6;i++){let x=0,z=0;for(let t=0;t<60;t++)
 function updatePickups(dt){
  for(let i=pickups.length-1;i>=0;i--){
   const p=pickups[i];
-  p.phase+=dt*2.2;p.m.rotation.y+=dt*1.5;p.m.position.y=world.heightAt(p.x,p.z)+.35+Math.sin(p.phase)*.09;
+  p.phase+=dt*2.2;p.m.rotation.y+=dt*1.5;p.m.position.y=world.heightAt(p.x,p.z)+.45+Math.sin(p.phase)*.09;
   if(distance(player,p)<1.5){removeAura(p.aura);scene.remove(p.m);pickups.splice(i,1);const healed=Math.min(25,state.maxHp-state.hp);state.hp+=healed;toast(healed>0?`拾取医疗血包 · 生命 +${healed}`:'拾取医疗血包 · 生命已满',1.6);music.effect('upgrade');}
  }
 }
