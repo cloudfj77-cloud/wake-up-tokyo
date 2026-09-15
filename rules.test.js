@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate} from './rules.js';
+import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -80,6 +80,19 @@ test('early spawn plan only sends fodder',()=>{
  const s=makeState();const units=[makeUnit(1,0,0,0),makeUnit(2,1,1,1)];
  const plan=spawnPlan(s,units,()=>0);assert.equal(plan.threatN,0);
  assert.ok(plan.types.every(t=>ENEMIES[t].fodder));assert.ok(plan.interval>=5);
+});
+test('city civilians do not fill the combat fodder quota',()=>{
+ const s=makeState();
+ const street=Array.from({length:48},(_,i)=>makeUnit(i,0,0,0,true));
+ assert.equal(fodderCount(street),0);
+ const dump=spawnPlan(s,street,()=>0);
+ assert.equal(dump.fodder,0);
+ assert.equal(dump.fodderN,12);
+ assert.ok(dump.types.every(t=>t!==0));
+ const mixed=street.concat(Array.from({length:4},(_,i)=>makeUnit(100+i,1,0,0,true)));
+ const plan=spawnPlan(s,mixed,()=>0);
+ assert.equal(plan.fodder,4);
+ assert.equal(plan.fodderN,6);
 });
 test('empty field dumps many fodder; army size raises uncapped threats',()=>{
  const s=makeState();

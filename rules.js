@@ -264,7 +264,12 @@ export function cityAlert(s){
 }
 export function threat(s){return cityAlert(s).stage;}
 export function difficultyWeight(s,units){return s.level+teamCount(units)*TUNE.difficulty.armyWeight;}
-export function fodderCount(units){return units.filter(u=>!u.dead&&!u.converted&&u.kind!=='corpse'&&ENEMIES[u.type].fodder).length;}
+export function isCombatFodder(u){
+ if(!u||u.dead||u.converted||u.kind==='corpse')return false;
+ const e=ENEMIES[u.type];
+ return !!(e?.fodder&&u.type!==0);
+}
+export function fodderCount(units){return units.filter(isCombatFodder).length;}
 export function spawnPlan(s,units,random=Math.random){
  const alert=cityAlert(s);
  const d=TUNE.difficulty;
@@ -272,7 +277,7 @@ export function spawnPlan(s,units,random=Math.random){
  const weight=s.level+army*(d.armyWeight??.4);
  const fodder=fodderCount(units);
  const pool=ENEMIES.map((e,i)=>({e,i})).filter(({e})=>e.level<=alert.maxLevel);
- const fodderPool=pool.filter(({e})=>e.fodder);
+ const fodderPool=pool.filter(({e,i})=>e.fodder&&i!==0);
  const threatPool=pool.filter(({e})=>!e.fodder);
  const pick=list=>{if(!list.length)return 0;return list[Math.min(list.length-1,Math.floor(random()*list.length))].i;};
  const fodderN=fodder<=0?d.fodderDump:Math.max(0,d.fodderTarget-fodder);

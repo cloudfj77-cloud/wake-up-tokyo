@@ -36,7 +36,7 @@ const TUNE_FIELDS=[
  {path:'alert.maxLevel2',label:'II 档最高兵级',min:1,max:6,step:1},
  {path:'alert.maxLevel3',label:'III 档最高兵级',min:1,max:6,step:1},
  {path:'alert.pressureTime',label:'击杀+转化折算秒数',min:0,max:8,step:.1},
- {group:'动态难度',note:'耗材只看场上还剩多少：没了就大量补。威胁人数跟等级和存活友军走，没有上限。城市会一直派人。'},
+ {group:'动态难度',note:'耗材只算持棍巡警等战斗杂兵，不含街区打工人。清光了就大量补。威胁人数跟等级和存活友军走，没有上限。城市会一直派人。'},
  {path:'difficulty.armyWeight',label:'间隔用的群落权重',min:0,max:2,step:.05},
  {path:'difficulty.fodderTarget',label:'场上耗材维持数量',min:0,max:24,step:1},
  {path:'difficulty.fodderDump',label:'场上没耗材时补多少',min:1,max:24,step:1},
@@ -84,7 +84,7 @@ function setTuneOpen(open){showDebug=open;buildTuneHud();const box=$('tuneHud');
 function toggleDebug(){setTuneOpen(!showDebug);}
 function updateTuneLive(){const live=$('tuneLive');if(!live||!showDebug)return;const plan=spawnPlan(state,units);const names=plan.types.map(t=>ENEMIES[t].name);const count=names.reduce((m,n)=>(m[n]=(m[n]||0)+1,m),{});const mix=Object.entries(count).map(([n,c])=>`${n}×${c}`).join(' · ')||'无';live.textContent=`时间 ${state.time.toFixed(1)}s · 警戒 ${['','I','II','III'][plan.stage]}${plan.final?' 终局':''} · 最高兵级 ${plan.maxLevel}
 权重 ${plan.weight.toFixed(2)} = 等级 ${state.level} + 群落 ${teamCount(units)} × ${TUNE.difficulty.armyWeight}
-场上杂兵 ${plan.fodder} · 下波 耗材×${plan.fodderN} 威胁×${plan.threatN}（无上限） · 间隔 ${plan.interval.toFixed(1)}s · 倒计时 ${Math.max(0,reinforceTimer).toFixed(1)}s
+场上耗材 ${plan.fodder} · 下波 耗材×${plan.fodderN} 威胁×${plan.threatN}（无上限） · 间隔 ${plan.interval.toFixed(1)}s · 倒计时 ${Math.max(0,reinforceTimer).toFixed(1)}s
 预览 ${mix}`;}
 loadTune();if(showDebug)setTuneOpen(true);
 function actorVisual(u){const v=createCharacterVisual(asset,u.kind==='ally'?'ally':u.type===0?'human':'guard',u.profession);v.holder.position.set(u.x,world.heightAt(u.x,u.z),u.z);v.holder.rotation.y=Math.random()*6.28;scene.add(v.holder);visuals.set(u.id,{v,oldKind:u.kind});return v;}
