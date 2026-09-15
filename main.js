@@ -10,7 +10,7 @@ const $=id=>document.getElementById(id),canvas=$('game');
 const music=new Soundtrack();let mode='loading',state=makeState(),units=[],player={x:0,z:-7,y:0,vy:0,crouch:false,roll:0,rollX:0,rollZ:1},world,assets;let hurtTimer=0,lastHp=null;
 const PLAYER_HEIGHT=characterHeight('player'),STANDING_CHEST=PLAYER_HEIGHT*.72,CROUCH_CHEST=PLAYER_HEIGHT*.45;
 const FX_SCALE=PLAYER_HEIGHT/2.25;
-let yaw=0,pitch=.08,cameraDistance=2.7,mouseHeld=false,dragging=false,lastMouse=null,attackCd=0,breakCd=0,rushCd=0,reinforceTimer=24,reinforceDirection=0,reinforceAnnounced=false,totalReinforcements=0,invincible=0,toastTime=0,saveTimer=0,shake=0,target=null,frameDelta=0,choiceSet=[],pendingChoice=-1,upgradeReveal=0,upgradeLock=0;
+let yaw=0,pitch=.08,cameraDistance=2.7,mouseHeld=false,dragging=false,lastMouse=null,attackCd=0,breakCd=0,rushCd=0,reinforceTimer=24,reinforceDirection=0,reinforceAnnounced=false,totalReinforcements=0,invincible=0,toastTime=0,saveTimer=0,shake=0,target=null,frameDelta=0,choiceSet=[],pendingChoice=-1,upgradeReveal=0,upgradeLock=0,upgradeTimer=0;
 let settings={volume:.38,sensitivity:1,quality:'standard'};const SAVE_KEY='wake-up-tokyo-riverside-v4';const debugQuery=new URLSearchParams(location.search);let showDebug=debugQuery.has('debug');let alerted=false,switchTime=0,nextWeapon=-1,reloadTime=0,conversionCount=0,conversionTimer=0,missionTimer=0,nextActorId=800,ramTimer=0;let squadIds=new Set();
 try{settings={...settings,...JSON.parse(localStorage.getItem('groundzero-settings')||'{}')};}catch{}
 music.volume=settings.volume;
@@ -215,7 +215,7 @@ function clearInput(){mouseHeld=false;dragging=false;Object.keys(keys).forEach(k
 addEventListener('blur',()=>{clearInput();if(mode==='playing')togglePause();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='playing')togglePause();});
 function showDialog(html){$('dialog').classList.remove('choiceLock');$('dialog').innerHTML=html;$('modal').hidden=false;clearInput();}
 function hideDialog(){$('modal').hidden=true;$('dialog').classList.remove('choiceLock');}
-function hideLevelUpFx(){const fx=$('levelUpFx');fx.classList.remove('play');fx.hidden=true;}
+function hideLevelUpFx(){const fx=$('levelUpFx');if(!fx)return;fx.classList.remove('play');fx.hidden=true;fx.setAttribute('aria-hidden','true');}
 function playLevelUpFx(){
   music.effect('upgrade');
   const y=world.heightAt(player.x,player.z)+player.y+PLAYER_HEIGHT*.72;
@@ -226,6 +226,7 @@ function playLevelUpFx(){
   $('levelUpLv').textContent=state.level;
   const fx=$('levelUpFx');
   fx.hidden=false;
+  fx.setAttribute('aria-hidden','false');
   fx.classList.remove('play');
   void fx.offsetWidth;
   fx.classList.add('play');
@@ -248,6 +249,7 @@ function confirmChoice(){
   if(mode!=='upgrade'||pendingChoice<0||upgradeLock>0)return;
   const a=choiceSet[pendingChoice];
   if(!a||!upgrade(state,a.id))return;
+  clearTimeout(upgradeTimer);
   hideDialog();
   hideLevelUpFx();
   pendingChoice=-1;
@@ -260,6 +262,8 @@ function confirmChoice(){
   saveRun();
 }
 function openUpgradeDialog(){
+  if(mode==='upgrade'&&!$('modal').hidden)return;
+  clearTimeout(upgradeTimer);
   hideLevelUpFx();
   mode='upgrade';
   upgradeLock=.45;
@@ -277,6 +281,8 @@ function chooseUpgrade(){
   clearInput();
   playLevelUpFx();
   upgradeReveal=1.55;
+  clearTimeout(upgradeTimer);
+  upgradeTimer=setTimeout(()=>{if(mode==='levelup')openUpgradeDialog();},1550);
 }
 function saveRun(){if(import.meta.env.DEV&&new URLSearchParams(location.search).has('test'))return;if(!assets||['loading','menu','ended','won'].includes(mode)||boss.active)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:7,state,units,player,yaw,pitch,cameraDistance,attackCd,breakCd,rushCd,reinforceTimer,reinforceDirection,totalReinforcements,alerted,objects:world.destructibles.map(o=>({hp:o.hp,dead:o.dead,removed:o.removed?[...o.removed]:[]}))}));}catch{}}
 function loadSaved(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));return s?.version===7&&s.state?.hp>0&&s.units?.length?s:null;}catch{return null;}}
@@ -379,10 +385,9 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.04,(now-last
  if(alerted){reinforceTimer-=dt;if(reinforceTimer<=0){const plan=spawnReinforcement();reinforceTimer=plan?.interval??12;reinforceAnnounced=false;}}
  if(state.infected>conversionCount){conversionTimer=1.1;$('infectionFeedback').innerHTML=`<span>☣</span><b>觉醒成功 ×${state.infected-conversionCount}</b><small>加入反抗群落</small>`;conversionCount=state.infected;music.effect('convert');}const result=outcome(state);if(result)finish(result);else if(state.pending&&state.time-state.lastPick>=upgradeAutoGap(state))chooseUpgrade();saveTimer+=dt;if(saveTimer>5){saveRun();saveTimer=0;}if(lastHp!==null&&state.hp<lastHp)hurtTimer=.6;lastHp=state.hp;
  }else if(mode==='levelup'||mode==='upgrade'){
-  updateEffects(dt);
-  if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);
   if(mode==='levelup'){upgradeReveal-=dt;if(upgradeReveal<=0)openUpgradeDialog();}
-  else if(upgradeLock>0){upgradeLock=Math.max(0,upgradeLock-dt);if(upgradeLock<=0)$('dialog').classList.remove('choiceLock');}
+  else if(upgradeLock>0){upgradeLock=Math.max(0,upgradeLock-dt);if(upgradeLock<=0)$('dialog')?.classList.remove('choiceLock');}
+  try{updateEffects(dt);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}catch{}
  }else if(mode==='menu'){for(const {v}of visuals.values())updateCharacterVisual(v,false,dt,0);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}
  updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}renderer.render(scene,camera);
 }

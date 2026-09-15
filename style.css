@@ -4,9 +4,9 @@
 
 #bossHud{top:22px;width:450px;padding:11px 16px}#bossHud .bar{margin:7px 0}#bossWarning{margin:4px 0 0}#infectionFeedback{top:34%}
 #modal{z-index:12}
-#levelUpFx{position:fixed;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:11vh;pointer-events:auto;background:linear-gradient(to bottom,#101820d8 0%,#10182066 36%,#10182022 100%);opacity:0}
-#levelUpFx.play{opacity:1;transition:opacity .22s ease}
-#levelUpFx[hidden]{display:none}
+#levelUpFx{position:fixed;inset:0;z-index:8;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:11vh;pointer-events:none;background:linear-gradient(to bottom,#101820d8 0%,#10182066 36%,#10182022 100%);opacity:0}
+#levelUpFx.play{display:flex;opacity:1;pointer-events:auto;transition:opacity .22s ease}
+#levelUpFx[hidden]{display:none!important;pointer-events:none!important;opacity:0!important}
 .levelUpBurst{position:absolute;left:50%;top:58%;width:min(46vw,360px);height:min(46vw,360px);margin:-180px 0 0 -180px;border-radius:50%;background:radial-gradient(circle,#ffe066bb 0%,#ffc92e44 30%,transparent 70%);animation:levelPulse 1.45s ease-out;pointer-events:none}
 .levelUpCopy{position:relative;text-align:center;text-shadow:0 0 28px #ffc92e99}
 .levelUpCopy .eyebrow{justify-content:center;letter-spacing:3px;color:#ffe9b8}
