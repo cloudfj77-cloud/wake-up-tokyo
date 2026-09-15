@@ -19,33 +19,33 @@ try{world=await loadRiverside(scene);}catch(error){console.error(error);$('loadi
 const visuals=new Map(),particles=[],waves=[],tracers=[],auraVisuals=new Map();let playerVisual;
 // 光环特效：贴图取自 Realistic Mesh FX 的光点图，叠加混合。
 const awakenGlow=new T.TextureLoader().load(new URL('./assets/vfx/glow.webp',import.meta.url).href);
-// 打工人感染=紫，警卫感染=红，主角升级=黄，场景道具=橙。
-const galaxyTexture=new T.TextureLoader().load(new URL('./assets/vfx/galaxy.webp',import.meta.url).href);
-const galaxyGeometry=new T.SphereGeometry(1,24,16);
-galaxyTexture.colorSpace=T.SRGBColorSpace;
-// 星云球保留贴图原色，只让边缘按菲涅尔发光，避免糊成一个纯色球。
-function makeGalaxyMaterial(tint){
- return new T.ShaderMaterial({
-  uniforms:{nebula:{value:galaxyTexture},tint:{value:new T.Color(tint)}},
-  vertexShader:'varying vec2 vUv;varying vec3 vN;varying vec3 vV;void main(){vUv=uv;vec4 mv=modelViewMatrix*vec4(position,1.);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}',
-  fragmentShader:'uniform sampler2D nebula;uniform vec3 tint;varying vec2 vUv;varying vec3 vN;varying vec3 vV;void main(){vec4 t=texture2D(nebula,vUv);float rim=pow(1.-abs(dot(normalize(vN),normalize(vV))),2.2);vec3 col=t.rgb*1.35+tint*rim*1.7;gl_FragColor=vec4(col,clamp(t.a*.4+rim*.66,0.,1.));\n#include <colorspace_fragment>\n}',
-  transparent:true,blending:T.AdditiveBlending,depthWrite:false,side:T.DoubleSide
- });
+// 感染统一走 Galaxy；主角升级=黄，场景道具=绿。
+const smokeTexture=new T.TextureLoader().load(new URL('./assets/vfx/smoke.webp',import.meta.url).href);
+smokeTexture.colorSpace=T.SRGBColorSpace;
+// Galaxy 是一团絮状紫烟而非球体：从 8x8 烟雾图集随机取帧，用多张大号 billboard 叠出云团。
+const GALAXY_MOTE_COLORS=[0xffffff,0xffd9f5,0xffe066,0x9be7ff];
+function makeSmokeSprite(tint,size,opacity){
+ const t=smokeTexture.clone();t.repeat.set(1/8,1/8);
+ const frame=Math.floor(Math.random()*64);
+ t.offset.set((frame%8)/8,1-(Math.floor(frame/8)+1)/8);t.needsUpdate=true;
+ // 白天街景很亮，叠加混合的紫烟几乎看不见，改用普通透明混合。
+ const s=new T.Sprite(new T.SpriteMaterial({map:t,color:tint,transparent:true,depthWrite:false,opacity}));
+ s.scale.set(size,size,1);
+ return s;
 }
-// 感染统一走 Galaxy：紫色星云球包裹身体，白色星尘环绕。
-const galaxyAura={core:0x9701ff,mote:0xe8d4ff,galaxy:true,count:11,moteSize:.24,radius:.52};
+const galaxyAura={core:0xc44dff,mote:0xffffff,galaxy:true,smokes:13,coreSize:.85,moteSize:.2,radius:.54};
 const AURA_COLORS={worker:galaxyAura,guard:galaxyAura,level:{core:0xffc92e,mote:0xffe066},pickup:{core:0x2fd15a,mote:0x8dffab}};
 const activeAuras=[];
-function makeAura(holder,palette,{coreSize=1.7,moteSize=palette.moteSize??.44,count=palette.count??5,radius=palette.radius??.3,life=0}={}){
+function makeAura(holder,palette,{coreSize=palette.coreSize??1.7,moteSize=palette.moteSize??.44,count=palette.count??5,radius=palette.radius??.3,life=0}={}){
  const g=new T.Group();
  const sprite=(size,color,opacity,map)=>{const s=new T.Sprite(new T.SpriteMaterial({map:map??awakenGlow,color,transparent:true,blending:T.AdditiveBlending,depthWrite:false,opacity}));s.scale.set(size,size,1);g.add(s);return s;};
- let ball=null;
- if(palette.galaxy){ball=new T.Mesh(galaxyGeometry,makeGalaxyMaterial(palette.core));ball.position.y=coreSize*.55;ball.scale.setScalar(coreSize*.72);g.add(ball);const halo=sprite(coreSize*2.4,palette.core,.15);halo.position.y=coreSize*.55;g.add(halo);}
+ const smokes=[];
+ if(palette.galaxy){for(let i=0;i<palette.smokes;i++){const size=coreSize*(1.5+Math.random()*1.5);const s=makeSmokeSprite(i%3?palette.core:0xff8ae8,size,.5+Math.random()*.3);const ang=Math.random()*6.283,rad=.24+Math.random()*.52;s.position.set(Math.cos(ang)*rad,.35+Math.random()*1.5,Math.sin(ang)*rad);s.material.rotation=Math.random()*6.283;s.userData={angle:ang,radius:rad,baseY:s.position.y,spin:(Math.random()<.5?-1:1)*(.2+Math.random()*.45),turn:(Math.random()<.5?-1:1)*(.15+Math.random()*.3),size,pulse:1+Math.random()*.8,phase:Math.random()*6.283};g.add(s);smokes.push(s);}}
  const core=sprite(coreSize,palette.core,.42,palette.coreMap);
  const motes=[];
- for(let i=0;i<count;i++){const m=sprite(moteSize,palette.mote,.9,palette.map);if(palette.moteAspect)m.scale.set(moteSize*palette.moteAspect[0],moteSize*palette.moteAspect[1],1);m.userData={angle:(i/count)*6.283+Math.random(),radius:radius+Math.random()*.26,speed:.8+Math.random()*.9,phase:Math.random(),turn:Math.random()*6.283};motes.push(m);}
+ for(let i=0;i<count;i++){const m=sprite(moteSize,palette.mote,.9,palette.map);if(palette.moteAspect)m.scale.set(moteSize*palette.moteAspect[0],moteSize*palette.moteAspect[1],1);if(palette.galaxy)m.material.color.setHex(GALAXY_MOTE_COLORS[i%GALAXY_MOTE_COLORS.length]);m.userData={angle:(i/count)*6.283+Math.random(),radius:radius+Math.random()*.26,speed:.8+Math.random()*.9,phase:Math.random(),turn:Math.random()*6.283};motes.push(m);}
  holder.add(g);
- const aura={g,core,motes,ball,time:0,life,coreSize,spin:palette.spin??0};
+ const aura={g,core,motes,smokes,time:0,life,coreSize,spin:palette.spin??0};
  activeAuras.push(aura);
  return aura;
 }
@@ -55,7 +55,7 @@ function updateAura(aura,dt){
  aura.core.scale.set(s,s,1);
  aura.core.material.opacity=.34+.12*Math.sin(aura.time*6.5);
  for(const m of aura.motes){const d=m.userData;d.angle+=dt*d.speed*2.2;const y=(d.phase+aura.time*.5)%1.25;m.position.set(Math.cos(d.angle)*d.radius,y+.05,Math.sin(d.angle)*d.radius);m.material.opacity=.9*Math.max(0,1-y/1.3);if(aura.spin){d.turn+=dt*aura.spin;m.material.rotation=Math.sin(d.turn)*.32;}}
- if(aura.ball){aura.ball.rotation.y+=dt*.32;aura.ball.rotation.x+=dt*.11;const bs=aura.coreSize*.72*(1+.07*Math.sin(aura.time*2.1));aura.ball.scale.setScalar(bs);}
+ for(const s of aura.smokes||[]){const d=s.userData;d.angle+=dt*d.spin*.5;s.position.x=Math.cos(d.angle)*d.radius;s.position.z=Math.sin(d.angle)*d.radius;s.position.y=d.baseY+Math.sin(aura.time*d.pulse+d.phase)*.18;s.material.rotation+=dt*d.turn;const sc=d.size*(1+.14*Math.sin(aura.time*1.6+d.phase));s.scale.set(sc,sc,1);}
 }
 function removeAura(aura){
  const i=activeAuras.indexOf(aura);if(i>=0)activeAuras.splice(i,1);
