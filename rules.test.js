@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate} from './rules.js';
+import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,isRangedEnemy,hostileWindup,hostileSwingConnects} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -116,6 +116,17 @@ test('live convert restores a full ally; corpse convert is sixty percent',()=>{
  const corpse=makeUnit(2,0,0,0);corpse.kind='corpse';corpse.hp=0;
  convert(s,corpse);
  assert.equal(corpse.hp,Math.ceil(allyTemplate(0).hp*.6));
+});
+test('stick cops reach only at stick length and telegraph before damage',()=>{
+ const cop=ENEMIES[1];
+ assert.ok(cop.range<=1.4);
+ assert.ok(cop.aim>=.5);
+ assert.ok(cop.interval>=1.5);
+ assert.equal(isRangedEnemy(cop),false);
+ assert.ok(hostileWindup(cop)>=.5);
+ assert.equal(hostileSwingConnects(cop,1.6,true),false);
+ assert.equal(hostileSwingConnects(cop,1.2,true),true);
+ assert.equal(hostileSwingConnects(cop,1.2,false),false);
 });
 test('elite soldiers outlast and outdamage converted workers',()=>{
  const worker=allyTemplate(0),elite=ENEMIES[5];

@@ -98,15 +98,16 @@ function switchAnimation(visual, name, fade = .18) {
   visual.current = next;
 }
 
-export function playCharacterAttack(visual, type) {
+export function playCharacterAttack(visual, type, duration = .65) {
   const name = type === 'shoot' ? 'toyRecoil' : type === 'break' ? 'heavyPunch' : type === 'rush' ? 'jump' : 'flurry';
   const action = visual.actions[name];
   if (!action) return;
-  // 原动画约三秒，战斗中太拖沓，因此压缩到 0.65 秒以保证操作响应。
+  // 原动画约三秒，战斗中太拖沓；近战前摇可把时长拉到挥击命中点。
+  const span = Math.max(.35, duration);
   action.setLoop(THREE.LoopOnce, 1);
   action.clampWhenFinished = true;
-  action.setEffectiveTimeScale(action.getClip().duration / .65);
-  visual.attackTime = .65;
+  action.setEffectiveTimeScale(action.getClip().duration / span);
+  visual.attackTime = span;
   if (visual.current === action) action.reset().play();
   else switchAnimation(visual, name, .07);
 }

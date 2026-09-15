@@ -13,7 +13,7 @@ export const WALK_SPEED=4.6;
 export const SPRINT_MULT=1.38;
 export const ENEMIES=[
  {name:'苦逼打工人',level:1,hp:50,threshold:20,speed:2.2,damage:5,range:1.6,interval:1.5,aim:.2,fodder:true,allyName:'普通狂暴者',allyHp:60,allyAtk:8},
- {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:10,range:1.9,interval:1.2,aim:.35,fodder:true,allyName:'狂暴持棍巡警',allyHp:110,allyAtk:14},
+ {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:10,range:1.35,interval:1.6,aim:.55,fodder:true,allyName:'狂暴持棍巡警',allyHp:110,allyAtk:14},
  {name:'持枪巡警',level:3,hp:120,threshold:60,speed:2.45,damage:12,range:12,interval:1.5,aim:1.05,allyName:'狂暴持枪巡警',allyHp:100,allyAtk:13},
  {name:'持盾特警',level:4,hp:180,threshold:110,speed:2.3,damage:16,range:2.3,interval:1.5,aim:.4,shield:true,allyName:'狂暴盾卫',allyHp:190,allyAtk:15},
  {name:'净化工兵',level:6,hp:240,threshold:340,speed:2.05,damage:14,range:2.8,interval:1.5,aim:.45,purifier:true,aura:8,drain:8,allyName:'狂暴净化士兵',allyHp:220,allyAtk:16},
@@ -269,6 +269,9 @@ export function isCombatFodder(u){
  const e=ENEMIES[u.type];
  return !!(e?.fodder&&u.type!==0);
 }
+export function isRangedEnemy(spec){return (spec?.range??0)>3;}
+export function hostileWindup(spec){return spec.aim||(isRangedEnemy(spec)?1:.4);}
+export function hostileSwingConnects(spec,distance,clear=true){return clear&&distance<spec.range;}
 export function fodderCount(units){return units.filter(isCombatFodder).length;}
 export function spawnPlan(s,units,random=Math.random){
  const alert=cityAlert(s);
