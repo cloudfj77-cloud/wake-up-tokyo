@@ -33,14 +33,14 @@ function makeSmokeSprite(tint,size,opacity){
  s.scale.set(size,size,1);
  return s;
 }
-const galaxyAura={core:0xc44dff,mote:0xffffff,galaxy:true,smokes:13,coreSize:.85,moteSize:.2,radius:.54};
+const galaxyAura={core:0xb026ff,mote:0xffffff,galaxy:true,smokes:9,coreSize:.85,moteSize:.2,radius:.54};
 const AURA_COLORS={worker:galaxyAura,guard:galaxyAura,level:{core:0xffc92e,mote:0xffe066},pickup:{core:0x2fd15a,mote:0x8dffab}};
 const activeAuras=[];
 function makeAura(holder,palette,{coreSize=palette.coreSize??1.7,moteSize=palette.moteSize??.44,count=palette.count??5,radius=palette.radius??.3,life=0}={}){
  const g=new T.Group();
  const sprite=(size,color,opacity,map)=>{const s=new T.Sprite(new T.SpriteMaterial({map:map??awakenGlow,color,transparent:true,blending:T.AdditiveBlending,depthWrite:false,opacity}));s.scale.set(size,size,1);g.add(s);return s;};
  const smokes=[];
- if(palette.galaxy){for(let i=0;i<palette.smokes;i++){const size=coreSize*(1.5+Math.random()*1.5);const s=makeSmokeSprite(i%3?palette.core:0xff8ae8,size,.5+Math.random()*.3);const ang=Math.random()*6.283,rad=.24+Math.random()*.52;s.position.set(Math.cos(ang)*rad,.35+Math.random()*1.5,Math.sin(ang)*rad);s.material.rotation=Math.random()*6.283;s.userData={angle:ang,radius:rad,baseY:s.position.y,spin:(Math.random()<.5?-1:1)*(.2+Math.random()*.45),turn:(Math.random()<.5?-1:1)*(.15+Math.random()*.3),size,pulse:1+Math.random()*.8,phase:Math.random()*6.283};g.add(s);smokes.push(s);}}
+ if(palette.galaxy){for(let i=0;i<palette.smokes;i++){const size=coreSize*(1.5+Math.random()*1.5);const s=makeSmokeSprite(i%3?palette.core:0xd96bff,size,.24+Math.random()*.18);const ang=Math.random()*6.283,rad=.24+Math.random()*.52;s.position.set(Math.cos(ang)*rad,.35+Math.random()*1.5,Math.sin(ang)*rad);s.material.rotation=Math.random()*6.283;s.userData={angle:ang,radius:rad,baseY:s.position.y,spin:(Math.random()<.5?-1:1)*(.2+Math.random()*.45),turn:(Math.random()<.5?-1:1)*(.15+Math.random()*.3),size,pulse:1+Math.random()*.8,phase:Math.random()*6.283};g.add(s);smokes.push(s);}}
  const core=sprite(coreSize,palette.core,.42,palette.coreMap);
  const motes=[];
  for(let i=0;i<count;i++){const m=sprite(moteSize,palette.mote,.9,palette.map);if(palette.moteAspect)m.scale.set(moteSize*palette.moteAspect[0],moteSize*palette.moteAspect[1],1);if(palette.galaxy)m.material.color.setHex(GALAXY_MOTE_COLORS[i%GALAXY_MOTE_COLORS.length]);m.userData={angle:(i/count)*6.283+Math.random(),radius:radius+Math.random()*.26,speed:.8+Math.random()*.9,phase:Math.random(),turn:Math.random()*6.283};motes.push(m);}
