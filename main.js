@@ -3,7 +3,7 @@ import {createBoss,hitBoss,animateBoss} from './boss.js';
 import {createFirearms} from './guns.js';
 import {loadCharacterAssets,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual,characterHeight,PROFESSIONS} from './characters.js';
 import {block} from './world.js';
-import {loadRiverside} from './riverside-world.js';
+import {bridgeDeckHeight,loadRiverside} from './riverside-world.js';
 import {Soundtrack} from './music.js';
 import {ABILITIES,ENEMIES,GUNS,POPULATION,STAMINA_MAX,makeState,makeUnit,hit,upgrade,choices,stepSimulation,damageAlly,distance,threat,outcome,speed,teamCount,hurtMother,missionReady,MISSIONS,spawnPlan,TUNE,resetTune,applyTune,setTuneValue,meleeSpec,gunInfection,guardWanted,levelCap,isRangedEnemy,hostileWindup,stepHostileMelee,upgradeAutoGap} from './rules.js';
 const $=id=>document.getElementById(id),canvas=$('game');
@@ -38,7 +38,9 @@ function makeSmokeSprite(tint,size,opacity){
  return s;
 }
 const galaxyAura={core:0xe83cff,mote:0xffffff,galaxy:true,smokes:9,coreSize:1,moteSize:.2,radius:.54};
-const AURA_COLORS={worker:galaxyAura,guard:galaxyAura,level:{core:0xffc92e,mote:0xffe066},pickup:{core:0x2fd15a,mote:0x8dffab}};
+// 觉醒市民使用 Galaxy 紫烟；被感染的秩序单位保留 Bloodlust 红光，远处也能辨认来源阵营。
+const bloodlustAura={core:0xff293d,mote:0xff9275,coreSize:1.35,moteSize:.3,radius:.46,spin:2.4,count:8};
+const AURA_COLORS={worker:galaxyAura,guard:bloodlustAura,level:{core:0xffc92e,mote:0xffe066},pickup:{core:0x2fd15a,mote:0x8dffab}};
 const activeAuras=[];
 function makeAura(holder,palette,{coreSize=(palette.coreSize??1.7)*FX_SCALE,moteSize=(palette.moteSize??.44)*FX_SCALE,count=palette.count??5,radius=(palette.radius??.3)*FX_SCALE,life=0}={}){
  const g=new T.Group();
@@ -163,6 +165,21 @@ function ensureGuards(announce=false){
 function initUnits(){let rng=7142;const random=()=>{rng=(rng*1664525+1013904223)>>>0;return rng/4294967296;};units=[];for(let i=0;i<48;i++){let x,z;if(i<10){x=(i%5-2)*2.1;z=player.z-5-Math.floor(i/5)*3.5;x+=player.x;({x,z}=world.nearest(x,z,1));}else{do{x=(random()-.5)*114;z=(random()-.5)*114;}while(!world.free(x,z,1));}const citizen=makeUnit(i,0,x,z,true,i%5);if(i<10){citizen.wander=18;citizen.tx=x;citizen.tz=z;}units.push(citizen);}const positions=[[-7,22],[8,-24],[23,7],[-25,8],[-8,39],[39,-8],[-39,-7],[7,-39],[48,5],[-6,50]];positions.forEach((p,i)=>{const q=world.nearest(p[0],p[1],1);units.push(makeUnit(48+i,1,q.x,q.z,true,i%5));});units.forEach(u=>{const v=actorVisual(u);v.holder.visible=distance(player,u)<38;});}
 function move(u,dx,dz,detour=false){const ox=u.x,oz=u.z;if(world.free(u.x+dx,u.z))u.x+=dx;if(world.free(u.x,u.z+dz))u.z+=dz;if(detour&&Math.hypot(u.x-ox,u.z-oz)<Math.hypot(dx,dz)*.3){const side=u.id%2?1:-1;if(world.free(u.x-dz*side,u.z+dx*side)){u.x-=dz*side;u.z+=dx*side;}}return Math.hypot(u.x-ox,u.z-oz)>.001;}
 function forward(){return {x:Math.sin(yaw),z:Math.cos(yaw)};}
+function nearestMissionTarget(items){return items.filter(item=>item&&!item.dead).sort((a,b)=>distance(player,a)-distance(player,b))[0]??null;}
+function selectMissionTarget(){
+ const tutorial=tutorialStep(state);if(tutorial)return ['shoot','hit','infect'].includes(tutorial.action)?nearestMissionTarget(units.filter(unit=>unit.type===0&&!unit.converted&&unit.kind!=='corpse')):null;
+ const view=missionView(state);if(!view)return null;const next=view.objectives.find(item=>!item.done);if(!next)return null;
+ if(next.targetKind==='human')return nearestMissionTarget(units.filter(unit=>unit.type===0&&!unit.converted&&unit.kind!=='corpse'));
+ if(next.targetKind==='tower')return nearestMissionTarget(world.towers.filter(tower=>!tower.dead));
+ if(next.targetKind==='purifier')return nearestMissionTarget(units.filter(unit=>unit.type===4&&!unit.converted&&unit.kind!=='corpse'))||nearestMissionTarget(world.towers.filter(tower=>!tower.dead));
+ if(next.targetKind==='boss')return boss.active&&!boss.dead?boss:null;
+ return null;
+}
+function updateMissionGuidance(){
+ missionTarget=selectMissionTarget();missionBeacon.visible=!!missionTarget;if(!missionTarget){$('objectiveDistance').textContent='';return;}
+ const ground=world.heightAt(missionTarget.x,missionTarget.z),pulse=1+Math.sin(performance.now()*.006)*.15;missionBeacon.position.set(missionTarget.x,ground+.08,missionTarget.z);beaconRing.scale.setScalar(pulse);beaconBeam.material.opacity=.22+(pulse-1)*.5;$('objectiveDistance').textContent=`◆ 目标距离 ${Math.ceil(distance(player,missionTarget))} 米`;
+}
+function drawMissionMapMarker(){if(!missionTarget)return;const ctx=$('map').getContext('2d'),x=(missionTarget.x+66)/132*200,z=160-(missionTarget.z+66)/132*160;ctx.save();ctx.translate(x,z);ctx.rotate(Math.PI/4);ctx.fillStyle='#f0b6ff';ctx.shadowColor='#c56cff';ctx.shadowBlur=7;ctx.fillRect(-4,-4,8,8);ctx.restore();}
 function acquire(range=3.1){let best=null,score=-Infinity;const f=forward();for(const u of units){if(u.dead||u.converted||u.kind==='corpse')continue;const d=distance(player,u);if(d>range||!world.clear(player,u))continue;const dot=((u.x-player.x)*f.x+(u.z-player.z)*f.z)/(d||1);if(dot<.3)continue;const value=dot*4-d/range;if(value>score){score=value;best=u;}}return best;}
 const pickups=[],crossBarGeometry=new T.BoxGeometry(1,1,1);
 function spawnPickup(x,z){
@@ -358,7 +375,12 @@ for(const a of auraVisuals.values())a.visible=false;if(state.abilities.air)aura(
 function updateEffects(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.v.y-=9*dt;p.m.position.addScaledVector(p.v,dt);p.m.rotation.x+=dt*4;if(p.life<=0){scene.remove(p.m);particles.splice(i,1);}}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.t+=dt;w.m.scale.setScalar(w.r*Math.min(1,w.t/.35));w.m.material.opacity=Math.max(0,1-w.t/.6);if(w.t>.6){scene.remove(w.m);w.m.geometry.dispose();w.m.material.dispose();waves.splice(i,1);}}
 for(let i=tracers.length-1;i>=0;i--){const b=tracers[i];b.life-=dt;if(b.m){b.x+=b.vx*dt;b.z+=b.vz*dt;b.m.position.set(b.x,b.y??STANDING_CHEST,b.z);if(world.solid(b.x,b.z,.1)){if(b.friendly)world.breakAt(b.x,b.z,b.splash||.75,18,burst);b.life=0;}else if(b.friendly){const splash=b.splash||0;const hitR=splash||.72;if(boss.active&&!boss.dead&&distance(b,boss)<3.4+splash){hitBoss(boss,b.damage||24);burst(b.x,3,b.z,b.m.material.color.getHex(),12);b.life=0;}else for(const u of units)if(!u.dead&&!u.converted&&u.kind!=='corpse'&&distance(b,u)<hitR){applyHit(u,b.infection||0,b.damage||8);burst(b.x,STANDING_CHEST,b.z,0xb76bff,12);if(splash)for(const n of units)if(n!==u&&!n.dead&&!n.converted&&distance(n,u)<splash)applyHit(n,(b.infection||0)*.5,(b.damage||8)*.5);b.life=0;break;}}else if(distance(b,player)<.58&&(b.y??STANDING_CHEST)>world.heightAt(player.x,player.z)+player.y+.12&&(b.y??STANDING_CHEST)<world.heightAt(player.x,player.z)+player.y+(player.crouch||player.roll>0?CROUCH_CHEST+.12:PLAYER_HEIGHT+.08)&&invincible<=0){playerHurt(b.damage||12,b.from||'秩序火力');b.life=0;}else for(const a of units)if(a.kind==='ally'&&!a.dead&&distance(b,a)<.6){damageAlly(a,b.damage,state);b.life=0;break;}}if(b.life<=0){scene.remove(b.m||b.line);if(b.line){b.line.geometry.dispose();b.line.material.dispose();}tracers.splice(i,1);}}}
 
-function updateCamera(dt){if(mode==='menu'||mode==='loading'){camera.position.lerp(new T.Vector3(world.spawn.x-5,5.3,world.spawn.z+7),1-Math.exp(-dt*2));camera.lookAt(0,4,18);return;}const f=forward(),right={x:-Math.cos(yaw),z:Math.sin(yaw)},bodyHeight=player.crouch?CROUCH_CHEST:PLAYER_HEIGHT*.9,anchor=new T.Vector3(player.x,world.heightAt(player.x,player.z)+player.y+bodyHeight,player.z);
+function updateCamera(dt){if(mode==='menu'||mode==='loading'){
+ // 主菜单直接取游戏实景：主角位于左侧前景，远处同时能看到摩天轮、东京塔和河岸建筑。
+ const cityTarget=new T.Vector3(20,8,-17),direction=new T.Vector3(cityTarget.x-menuHero.x,0,cityTarget.z-menuHero.z).normalize(),drift=Math.sin(performance.now()*.00018)*.35,desired=new T.Vector3(-8+drift,6.2,18);
+ if(camera.fov!==70){camera.fov=70;camera.updateProjectionMatrix();}camera.position.lerp(desired,1-Math.exp(-dt*2.5));camera.lookAt(cityTarget);if(playerVisual){playerVisual.holder.position.set(menuHero.x,world.heightAt(menuHero.x,menuHero.z),menuHero.z);playerVisual.holder.rotation.y=Math.atan2(direction.x,direction.z);playerVisual.holder.visible=true;}return;
+ }const f=forward(),right={x:-Math.cos(yaw),z:Math.sin(yaw)},bodyHeight=player.crouch?CROUCH_CHEST:PLAYER_HEIGHT*.9,anchor=new T.Vector3(player.x,world.heightAt(player.x,player.z)+player.y+bodyHeight,player.z);
+if(camera.fov!==64){camera.fov=64;camera.updateProjectionMatrix();}
 // 镜头略高于肩膀并向右偏一点，比例对应缩小前的经典越肩视角。
 const cameraHeight=player.crouch?PLAYER_HEIGHT*.82:PLAYER_HEIGHT*1.15;let desired=new T.Vector3(player.x-f.x*cameraDistance+right.x*.36,world.heightAt(player.x,player.z)+player.y+cameraHeight+pitch*2.1,player.z-f.z*cameraDistance+right.z*.36);const delta=desired.clone().sub(anchor),length=delta.length();for(let t=.3;t<length;t+=.18){const point=anchor.clone().addScaledVector(delta,t/length);if(world.solid(point.x,point.z,.16)){desired=anchor.clone().addScaledVector(delta,Math.max(.12,t-.25)/length);break;}}camera.position.lerp(desired,1-Math.exp(-dt*15));camera.lookAt(player.x+f.x*8,world.heightAt(player.x,player.z)+player.y+bodyHeight-pitch*4.7,player.z+f.z*8);if(shake>0){camera.position.x+=Math.sin(performance.now()*.13)*shake;shake=Math.max(0,shake-dt);}playerVisual.holder.visible=camera.position.distanceTo(anchor)>.65;}
 function drawMap(){const ctx=$('map').getContext('2d');const px=x=>(x+66)/132*200,pz=z=>160-(z+66)/132*160;ctx.fillStyle='#283d49';ctx.fillRect(0,0,200,160);ctx.fillStyle='#416e86';ctx.fillRect(px(-9),0,18/132*200,160);ctx.fillStyle='#a3aaa3';for(const z of [26.4,-15.4])ctx.fillRect(px(-14.5),pz(z+2),29/132*200,4/132*160);for(const b of world.buildings){ctx.fillStyle=b.dead?'#566273':'#869397';ctx.fillRect(px(b.x-b.w/2),pz(b.z+b.d/2),b.w/132*200,b.d/132*160);}for(const u of units){if(u.dead||u.kind==='corpse')continue;ctx.fillStyle=u.converted?'#b976ed44':u.type?'#e27c68':'#e6e7d5';if(u.converted){ctx.fillRect(px(u.x)-5,pz(u.z)-5,10,10);ctx.fillStyle='#c190ef';}ctx.fillRect(px(u.x)-1,pz(u.z)-1,2.5,2.5);}for(const o of world.towers)if(!o.dead){ctx.fillStyle='#efab6f';ctx.fillRect(px(o.x)-2,pz(o.z)-2,4,4);}ctx.fillStyle='#e5c8ff';ctx.beginPath();ctx.arc(px(player.x),pz(player.z),3,0,7);ctx.fill();const f=forward();ctx.strokeStyle='#e6cfff';ctx.beginPath();ctx.moveTo(px(player.x),pz(player.z));ctx.lineTo(px(player.x+f.x*7),pz(player.z+f.z*7));ctx.stroke();if(reinforceTimer<7&&state.towers<3){const p=world.entries[reinforceDirection];ctx.fillStyle='#f49c67';ctx.font='bold 15px sans-serif';ctx.fillText('▼',px(p[0])-6,pz(p[1])+4);}}
