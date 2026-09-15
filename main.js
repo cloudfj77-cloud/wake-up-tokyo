@@ -10,7 +10,7 @@ const $=id=>document.getElementById(id),canvas=$('game');
 const music=new Soundtrack();let mode='loading',state=makeState(),units=[],player={x:0,z:-7,y:0,vy:0,crouch:false,roll:0,rollX:0,rollZ:1},world,assets;let hurtTimer=0,lastHp=null;
 const PLAYER_HEIGHT=characterHeight('player'),STANDING_CHEST=PLAYER_HEIGHT*.72,CROUCH_CHEST=PLAYER_HEIGHT*.45;
 const FX_SCALE=PLAYER_HEIGHT/2.25;
-let yaw=0,pitch=.08,cameraDistance=2.7,mouseHeld=false,dragging=false,lastMouse=null,attackCd=0,breakCd=0,rushCd=0,reinforceTimer=24,reinforceDirection=0,reinforceAnnounced=false,totalReinforcements=0,invincible=0,toastTime=0,saveTimer=0,shake=0,target=null,frameDelta=0,choiceSet=[];
+let yaw=0,pitch=.08,cameraDistance=2.7,mouseHeld=false,dragging=false,lastMouse=null,attackCd=0,breakCd=0,rushCd=0,reinforceTimer=24,reinforceDirection=0,reinforceAnnounced=false,totalReinforcements=0,invincible=0,toastTime=0,saveTimer=0,shake=0,target=null,frameDelta=0,choiceSet=[],pendingChoice=-1,upgradeReveal=0,upgradeLock=0;
 let settings={volume:.38,sensitivity:1,quality:'standard'};const SAVE_KEY='wake-up-tokyo-riverside-v4';const debugQuery=new URLSearchParams(location.search);let showDebug=debugQuery.has('debug');let alerted=false,switchTime=0,nextWeapon=-1,reloadTime=0,conversionCount=0,conversionTimer=0,missionTimer=0,nextActorId=800,ramTimer=0;let squadIds=new Set();
 try{settings={...settings,...JSON.parse(localStorage.getItem('groundzero-settings')||'{}')};}catch{}
 music.volume=settings.volume;
@@ -209,14 +209,75 @@ function primary(){meleeStrike('light');}
 function heavy(){meleeStrike('heavy');}
 function reloadGun(){const gun=activeGun();if(!gun||reloadTime||switchTime||state.clip>=gun.clip)return;if((state.ammo[gun.id]||0)<=0){toast(gun.name+'备弹耗尽 · 击杀或同化对应等级敌人补充');return;}reloadTime=1.15;toast('装填 '+gun.name+'…',1);}
 function weaponSelect(index){if(switchTime)return;if(index>=0){const gun=GUNS[index];if(!gun)return;if(state.abilities.guns<gun.unlock){toast('尚未解锁 '+gun.name+' · 先点「枪？枪！」');return;}}if(index===state.weapon)return;nextWeapon=index;switchTime=.35;attackCd=Math.max(attackCd,.35);toast(index<0?'切换 · 徒手':'切换 · '+GUNS[index].name,.7);}
-const keys={};addEventListener('keydown',e=>{const typing=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Tab','F3'].includes(e.code)&&!typing)e.preventDefault();if(e.code==='F3'){e.preventDefault();toggleDebug();return;}if(typing)return;keys[e.code]=true;if(e.repeat)return;if(mode==='upgrade'&&/^Digit[123]$/.test(e.code)){selectChoice(Number(e.code.slice(-1))-1);return;}if(e.code==='Escape'||e.code==='KeyP'){togglePause();return;}if(mode!=='playing')return;if(e.code==='KeyJ')primary();if(e.code==='KeyK')heavy();if(e.code==='Digit1')weaponSelect(-1);if(e.code==='Digit2')weaponSelect(0);if(e.code==='Digit3')weaponSelect(1);if(e.code==='Digit4')weaponSelect(2);if(e.code==='Digit5')weaponSelect(3);if(e.code==='Digit6')weaponSelect(4);if(e.code==='Space'&&player.y<=.01&&player.roll<=0){player.crouch=false;player.vy=7;}if(e.code==='KeyC'&&player.roll<=0)player.crouch=!player.crouch;if(e.code==='KeyR'){if(squadIds.size){squadIds.clear();toast('群落已解散 · 自主行动');}else{const cap=state.abilities.command?Math.max(6,guardWanted(state).count):6;units.filter(u=>u.converted&&!u.dead&&distance(player,u)<22).sort((a,b)=>distance(player,a)-distance(player,b)).slice(0,cap).forEach(u=>squadIds.add(u.id));toast((state.abilities.command?'号令召集 ':'已召集 ')+squadIds.size+' 名同伴');}}if(e.code==='KeyE')reloadGun();if(e.code==='Tab'&&state.pending)chooseUpgrade();});addEventListener('keyup',e=>keys[e.code]=false);
+const keys={};addEventListener('keydown',e=>{const typing=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Tab','F3'].includes(e.code)&&!typing)e.preventDefault();if(e.code==='F3'){e.preventDefault();toggleDebug();return;}if(typing)return;keys[e.code]=true;if(e.repeat)return;if(e.code==='Escape'||e.code==='KeyP'){togglePause();return;}if(mode!=='playing')return;if(e.code==='KeyJ')primary();if(e.code==='KeyK')heavy();if(e.code==='Digit1')weaponSelect(-1);if(e.code==='Digit2')weaponSelect(0);if(e.code==='Digit3')weaponSelect(1);if(e.code==='Digit4')weaponSelect(2);if(e.code==='Digit5')weaponSelect(3);if(e.code==='Digit6')weaponSelect(4);if(e.code==='Space'&&player.y<=.01&&player.roll<=0){player.crouch=false;player.vy=7;}if(e.code==='KeyC'&&player.roll<=0)player.crouch=!player.crouch;if(e.code==='KeyR'){if(squadIds.size){squadIds.clear();toast('群落已解散 · 自主行动');}else{const cap=state.abilities.command?Math.max(6,guardWanted(state).count):6;units.filter(u=>u.converted&&!u.dead&&distance(player,u)<22).sort((a,b)=>distance(player,a)-distance(player,b)).slice(0,cap).forEach(u=>squadIds.add(u.id));toast((state.abilities.command?'号令召集 ':'已召集 ')+squadIds.size+' 名同伴');}}if(e.code==='KeyE')reloadGun();if(e.code==='Tab'&&state.pending)chooseUpgrade();});addEventListener('keyup',e=>keys[e.code]=false);
 canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('pointerdown',e=>{if(mode!=='playing')return;if(e.button===0){mouseHeld=true;primary();if(!showDebug&&!document.pointerLockElement)canvas.requestPointerLock?.()?.catch?.(()=>{});}else if(e.button===2){if(document.pointerLockElement===canvas)heavy();else{dragging=true;lastMouse={x:e.clientX,y:e.clientY};}}});addEventListener('pointerup',()=>{mouseHeld=false;dragging=false;});addEventListener('pointermove',e=>{if(mode!=='playing')return;let dx=0,dy=0;if(document.pointerLockElement===canvas){dx=e.movementX;dy=e.movementY;}else if(dragging&&lastMouse){dx=e.clientX-lastMouse.x;dy=e.clientY-lastMouse.y;lastMouse={x:e.clientX,y:e.clientY};}yaw-=dx*.0025*settings.sensitivity;pitch=T.MathUtils.clamp(pitch+dy*.0018*settings.sensitivity,-.25,.55);});canvas.addEventListener('wheel',e=>{e.preventDefault();cameraDistance=T.MathUtils.clamp(cameraDistance+e.deltaY*.003,1.9,4.5);},{passive:false});document.addEventListener('pointerlockerror',()=>toast('未锁定鼠标时：拖动右键转向，K 键重击',2));
 function clearInput(){mouseHeld=false;dragging=false;Object.keys(keys).forEach(k=>keys[k]=false);document.exitPointerLock?.();}
 addEventListener('blur',()=>{clearInput();if(mode==='playing')togglePause();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='playing')togglePause();});
-function showDialog(html){$('dialog').innerHTML=html;$('modal').hidden=false;clearInput();}
-function hideDialog(){ $('modal').hidden=true; }
-function selectChoice(index){const a=choiceSet[index];if(!a||mode!=='upgrade')return;if(!upgrade(state,a.id))return;music.effect('upgrade');if(playerVisual)makeAura(playerVisual.holder,AURA_COLORS.level,{coreSize:2.3,moteSize:.52,radius:.46,life:1});hideDialog();mode='playing';music.resume();if(a.id==='command')ensureGuards(true);if(a.id==='guns'&&state.abilities.guns===1)toast('解锁手枪 / 霰弹枪 · 按 2 / 3 切换',2.4);else toast(`获得 ${a.name} Lv.${state.abilities[a.id]}`,2);saveRun();}
-function chooseUpgrade(){mode='upgrade';music.pause();choiceSet=choices(state);if(!choiceSet.length){state.pending=0;mode='playing';music.resume();return;}showDialog(`<div class="eyebrow">GENETIC RECOMBINATION / LV.${state.level}</div><h2>${state.history.length?'反抗，正在进化。':'选择你的第一种变异。'}</h2><p>战场已暂停。八种能力，各三级。按 1 / 2 / 3 选择。<br>空气传播、枪？枪！、狂杀、持续感染、急速、皮糙肉厚、生存与进化、听我号令。</p><div class="cards">${choiceSet.map((a,i)=>`<button class="card" data-choice="${i}"><kbd>${i+1}</kbd><span class="type">${a.group} / ${state.abilities[a.id]?'强化能力':'新能力'}</span><span class="icon">${a.icon}</span><strong>${a.name}</strong><em>Lv.${state.abilities[a.id]} → Lv.${state.abilities[a.id]+1}</em><small>${a.descriptions[state.abilities[a.id]]}</small></button>`).join('')}</div>`);document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>selectChoice(+b.dataset.choice));}
+function showDialog(html){$('dialog').classList.remove('choiceLock');$('dialog').innerHTML=html;$('modal').hidden=false;clearInput();}
+function hideDialog(){$('modal').hidden=true;$('dialog').classList.remove('choiceLock');}
+function hideLevelUpFx(){const fx=$('levelUpFx');fx.classList.remove('play');fx.hidden=true;}
+function playLevelUpFx(){
+  music.effect('upgrade');
+  const y=world.heightAt(player.x,player.z)+player.y+PLAYER_HEIGHT*.72;
+  if(playerVisual)makeAura(playerVisual.holder,AURA_COLORS.level,{coreSize:2.8,moteSize:.62,count:8,radius:.58,life:1.7});
+  burst(player.x,y,player.z,0xffc92e,24);
+  burst(player.x,y+.4,player.z,0xffe066,14);
+  wave(player.x,player.z,3.6,0xffc92e);
+  $('levelUpLv').textContent=state.level;
+  const fx=$('levelUpFx');
+  fx.hidden=false;
+  fx.classList.remove('play');
+  void fx.offsetWidth;
+  fx.classList.add('play');
+}
+function bindUpgradeCards(){
+  pendingChoice=-1;
+  document.querySelectorAll('[data-choice]').forEach(b=>{
+    b.onclick=()=>{
+      if(upgradeLock>0||mode!=='upgrade')return;
+      pendingChoice=+b.dataset.choice;
+      document.querySelectorAll('[data-choice]').forEach(c=>c.classList.toggle('picked',c===b));
+      const confirm=$('confirmUpgrade');
+      confirm.disabled=false;
+      confirm.textContent=`确定 · ${choiceSet[pendingChoice].name}`;
+    };
+  });
+  $('confirmUpgrade').onclick=confirmChoice;
+}
+function confirmChoice(){
+  if(mode!=='upgrade'||pendingChoice<0||upgradeLock>0)return;
+  const a=choiceSet[pendingChoice];
+  if(!a||!upgrade(state,a.id))return;
+  hideDialog();
+  hideLevelUpFx();
+  pendingChoice=-1;
+  mode='playing';
+  music.resume();
+  if(playerVisual)makeAura(playerVisual.holder,AURA_COLORS.level,{coreSize:1.6,moteSize:.36,radius:.38,life:.7});
+  if(a.id==='command')ensureGuards(true);
+  if(a.id==='guns'&&state.abilities.guns===1)toast('解锁手枪 / 霰弹枪 · 按 2 / 3 切换',2.4);
+  else toast(`获得 ${a.name} Lv.${state.abilities[a.id]}`,2);
+  saveRun();
+}
+function openUpgradeDialog(){
+  hideLevelUpFx();
+  mode='upgrade';
+  upgradeLock=.45;
+  showDialog(`<div class="eyebrow">GENETIC RECOMBINATION / LV.${state.level}</div><h2>${state.history.length?'反抗，正在进化。':'选择你的第一种变异。'}</h2><p>战场已暂停。先点一张卡片预览，再点确定才会生效。<br>空气传播、枪？枪！、狂杀、持续感染、急速、皮糙肉厚、生存与进化、听我号令。</p><div class="cards">${choiceSet.map((a,i)=>`<button type="button" class="card" data-choice="${i}"><span class="type">${a.group} / ${state.abilities[a.id]?'强化能力':'新能力'}</span><span class="icon">${a.icon}</span><strong>${a.name}</strong><em>Lv.${state.abilities[a.id]} → Lv.${state.abilities[a.id]+1}</em><small>${a.descriptions[state.abilities[a.id]]}</small></button>`).join('')}</div><div class="choiceBar"><button type="button" class="action" id="confirmUpgrade" disabled>先点一张卡片</button></div>`);
+  $('dialog').classList.add('choiceLock');
+  bindUpgradeCards();
+}
+function chooseUpgrade(){
+  if(mode==='upgrade'||mode==='levelup')return;
+  choiceSet=choices(state);
+  if(!choiceSet.length){state.pending=0;return;}
+  pendingChoice=-1;
+  mode='levelup';
+  music.pause();
+  clearInput();
+  playLevelUpFx();
+  upgradeReveal=1.55;
+}
 function saveRun(){if(import.meta.env.DEV&&new URLSearchParams(location.search).has('test'))return;if(!assets||['loading','menu','ended','won'].includes(mode)||boss.active)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:7,state,units,player,yaw,pitch,cameraDistance,attackCd,breakCd,rushCd,reinforceTimer,reinforceDirection,totalReinforcements,alerted,objects:world.destructibles.map(o=>({hp:o.hp,dead:o.dead,removed:o.removed?[...o.removed]:[]}))}));}catch{}}
 function loadSaved(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));return s?.version===7&&s.state?.hp>0&&s.units?.length?s:null;}catch{return null;}}
 function restore(saved){state=saved.state;units=saved.units;player=saved.player;yaw=saved.yaw;pitch=saved.pitch;cameraDistance=T.MathUtils.clamp(saved.cameraDistance??2.7,1.9,4.5);attackCd=saved.attackCd;breakCd=saved.breakCd;rushCd=saved.rushCd;reinforceTimer=saved.reinforceTimer;reinforceDirection=saved.reinforceDirection;totalReinforcements=saved.totalReinforcements;alerted=saved.alerted;for(const a of visuals.values())scene.remove(a.v.holder);visuals.clear();units.forEach(actorVisual);saved.objects.forEach((o,i)=>{const w=world.destructibles[i];w.hp=o.hp;w.dead=o.dead;w.g.visible=!o.dead;if(w.instances){const d=new T.Object3D();d.scale.setScalar(0);d.updateMatrix();for(const ix of o.removed){w.removed.add(ix);w.instances.setMatrixAt(ix,d.matrix);}w.instances.instanceMatrix.needsUpdate=true;}});}
@@ -317,6 +378,11 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.04,(now-last
  state.towers=world.towers.filter(o=>o.dead).length;state.destroyed=world.destructibles.filter(o=>o.dead&&o.type!=='tower').length;updateMissions();updateBoss(dt);const next=threat(state);if(next>state.alert){state.alert=next;state.peakAlert=Math.max(state.peakAlert,next);if(!boss.active)toast('敌方单位更强大了',3);}music.alert=state.alert;
  if(alerted){reinforceTimer-=dt;if(reinforceTimer<=0){const plan=spawnReinforcement();reinforceTimer=plan?.interval??12;reinforceAnnounced=false;}}
  if(state.infected>conversionCount){conversionTimer=1.1;$('infectionFeedback').innerHTML=`<span>☣</span><b>觉醒成功 ×${state.infected-conversionCount}</b><small>加入反抗群落</small>`;conversionCount=state.infected;music.effect('convert');}const result=outcome(state);if(result)finish(result);else if(state.pending&&state.time-state.lastPick>=upgradeAutoGap(state))chooseUpgrade();saveTimer+=dt;if(saveTimer>5){saveRun();saveTimer=0;}if(lastHp!==null&&state.hp<lastHp)hurtTimer=.6;lastHp=state.hp;
+ }else if(mode==='levelup'||mode==='upgrade'){
+  updateEffects(dt);
+  if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);
+  if(mode==='levelup'){upgradeReveal-=dt;if(upgradeReveal<=0)openUpgradeDialog();}
+  else if(upgradeLock>0){upgradeLock=Math.max(0,upgradeLock-dt);if(upgradeLock<=0)$('dialog').classList.remove('choiceLock');}
  }else if(mode==='menu'){for(const {v}of visuals.values())updateCharacterVisual(v,false,dt,0);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}
  updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}renderer.render(scene,camera);
 }
