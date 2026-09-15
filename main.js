@@ -20,18 +20,22 @@ const visuals=new Map(),particles=[],waves=[],tracers=[],auraVisuals=new Map();l
 // 光环特效：贴图取自 Realistic Mesh FX 的光点图，叠加混合。
 const awakenGlow=new T.TextureLoader().load(new URL('./assets/vfx/glow.webp',import.meta.url).href);
 // 打工人感染=紫，警卫感染=红，主角升级=黄，场景道具=橙。
-const bloodGlow=new T.TextureLoader().load(new URL('./assets/vfx/blood.webp',import.meta.url).href);
-// 警卫感染走 Bloodlust 狂暴：血红带旋转上涌。
-const AURA_COLORS={worker:{core:0x9b4dff,mote:0xc478ff},guard:{core:0xff2d14,mote:0xff4a2a,map:bloodGlow,spin:2.6,count:7,moteSize:.6,radius:.34,moteAspect:[3.6,.9]},level:{core:0xffc92e,mote:0xffe066},pickup:{core:0xff8a1f,mote:0xffb45c}};
+const galaxyTexture=new T.TextureLoader().load(new URL('./assets/vfx/galaxy.webp',import.meta.url).href);
+const galaxyGeometry=new T.SphereGeometry(1,20,14);
+// 感染统一走 Galaxy：紫色星云球包裹身体，白色星尘环绕。
+const galaxyAura={core:0x9701ff,mote:0xffffff,galaxy:true,count:6,moteSize:.3,radius:.44};
+const AURA_COLORS={worker:galaxyAura,guard:galaxyAura,level:{core:0xffc92e,mote:0xffe066},pickup:{core:0xff8a1f,mote:0xffb45c}};
 const activeAuras=[];
 function makeAura(holder,palette,{coreSize=1.7,moteSize=palette.moteSize??.44,count=palette.count??5,radius=palette.radius??.3,life=0}={}){
  const g=new T.Group();
  const sprite=(size,color,opacity,map)=>{const s=new T.Sprite(new T.SpriteMaterial({map:map??awakenGlow,color,transparent:true,blending:T.AdditiveBlending,depthWrite:false,opacity}));s.scale.set(size,size,1);g.add(s);return s;};
+ let ball=null;
+ if(palette.galaxy){ball=new T.Mesh(galaxyGeometry,new T.MeshBasicMaterial({map:galaxyTexture,color:palette.core,transparent:true,blending:T.AdditiveBlending,depthWrite:false,side:T.DoubleSide,opacity:.46}));ball.position.y=coreSize*.55;ball.scale.setScalar(coreSize*.72);g.add(ball);}
  const core=sprite(coreSize,palette.core,.42,palette.coreMap);
  const motes=[];
  for(let i=0;i<count;i++){const m=sprite(moteSize,palette.mote,.9,palette.map);if(palette.moteAspect)m.scale.set(moteSize*palette.moteAspect[0],moteSize*palette.moteAspect[1],1);m.userData={angle:(i/count)*6.283+Math.random(),radius:radius+Math.random()*.26,speed:.8+Math.random()*.9,phase:Math.random(),turn:Math.random()*6.283};motes.push(m);}
  holder.add(g);
- const aura={g,core,motes,time:0,life,coreSize,spin:palette.spin??0};
+ const aura={g,core,motes,ball,time:0,life,coreSize,spin:palette.spin??0};
  activeAuras.push(aura);
  return aura;
 }
@@ -41,6 +45,7 @@ function updateAura(aura,dt){
  aura.core.scale.set(s,s,1);
  aura.core.material.opacity=.34+.12*Math.sin(aura.time*6.5);
  for(const m of aura.motes){const d=m.userData;d.angle+=dt*d.speed*2.2;const y=(d.phase+aura.time*.5)%1.25;m.position.set(Math.cos(d.angle)*d.radius,y+.05,Math.sin(d.angle)*d.radius);m.material.opacity=.9*Math.max(0,1-y/1.3);if(aura.spin){d.turn+=dt*aura.spin;m.material.rotation=Math.sin(d.turn)*.32;}}
+ if(aura.ball){aura.ball.rotation.y+=dt*.32;aura.ball.rotation.x+=dt*.11;const bs=aura.coreSize*.72*(1+.07*Math.sin(aura.time*2.1));aura.ball.scale.setScalar(bs);}
 }
 function removeAura(aura){
  const i=activeAuras.indexOf(aura);if(i>=0)activeAuras.splice(i,1);
