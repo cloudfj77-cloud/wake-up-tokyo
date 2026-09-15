@@ -182,7 +182,7 @@ test('evolve adds life from player level',()=>{
  assert.equal(s.maxHp,140);
 });
 test('complete mission chain requires boss defeat, high infection alone never wins',()=>{
- const s=makeState();s.tutorialDone=true;s.infected=40;s.towers=3;s.highestEnemy=5;
+ const s=makeState();s.infected=40;s.towers=3;s.highestEnemy=5;
  for(let i=0;i<4;i++){assert.equal(missionReady(s),true);s.mission++;}
  assert.equal(missionReady(s),false);assert.equal(outcome(s),null);s.bossDefeated=true;assert.equal(outcome(s),'won');
 });
