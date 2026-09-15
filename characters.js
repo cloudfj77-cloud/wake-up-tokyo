@@ -18,7 +18,35 @@ export async function loadCharacterAsset() {
   return prepareCharacterAsset(gltf);
 }
 
-export function createCharacterVisual(asset, kind, variant = 0) {
+// 分型角色模型：主人公 / 觉醒后 / 秩序警卫 / 变身前打工人（男女各半）。
+const CHARACTER_MODEL_FILES = {
+  player: './assets/characters/player.glb',
+  ally: './assets/characters/awakened.glb',
+  guard: './assets/characters/guard.glb',
+  humanMale: './assets/characters/worker-man.glb',
+  humanFemale: './assets/characters/worker-woman.glb',
+};
+
+export async function loadCharacterAssets() {
+  const entries = await Promise.all(Object.entries(CHARACTER_MODEL_FILES).map(async ([key, file]) => {
+    const gltf = await new GLTFLoader().loadAsync(new URL(file, import.meta.url).href);
+    return [key, prepareCharacterAsset(gltf)];
+  }));
+  return Object.fromEntries(entries);
+}
+
+// 单个资产（旧写法）直接透传；资产集按角色类型选模型，打工人男女各一半。
+function selectCharacterAsset(assets, kind) {
+  if (assets.scene) return assets;
+  if (kind === 'player' && assets.player) return assets.player;
+  if (kind === 'ally' && assets.ally) return assets.ally;
+  if (kind === 'guard' && assets.guard) return assets.guard;
+  if (assets.humanMale && assets.humanFemale) return Math.random() < .5 ? assets.humanMale : assets.humanFemale;
+  return assets.player ?? Object.values(assets)[0];
+}
+
+export function createCharacterVisual(assets, kind, variant = 0) {
+  const asset = selectCharacterAsset(assets, kind);
   // SkeletonUtils gives every actor independent bones; geometry stays shared.
   const root = clone(asset.scene);
   const model = new THREE.Group();
