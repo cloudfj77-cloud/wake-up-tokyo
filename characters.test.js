@@ -37,13 +37,13 @@ test('walk, infection attack, heavy punch and rush return to locomotion',()=>{
 });
 test('unconverted humans shamble; converted allies switch to a fast walk',()=>{
   const a=createCharacterVisual(asset,'human'),b=createCharacterVisual(asset,'human');
-  const original=b.meshes[0].material.color.getHex();
+  const original=a.meshes[0].material.color.getHex();
+  const markerBefore=a.marker.material.color.getHex();
   updateCharacterVisual(a,true,.1);
   assert.equal(a.current.getClip().name,'zombie');
   setCharacterKind(a,'ally');updateCharacterVisual(a,true,.1);
   assert.equal(a.current.getClip().name,'walk');
-  assert.equal(b.meshes[0].material.color.getHex(),original);
-  // 阵营差异只体现在脚下光环
+  assert.equal(a.meshes[0].material.color.getHex(),original);
   assert.notEqual(a.marker.material.color.getHex(),markerBefore);
   assert.equal(a.marker.visible,true);
   assert.equal(b.marker.visible,false);
