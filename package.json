@@ -1,0 +1,14 @@
+{
+  "name": "ground-zero",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5200 --strictPort",
+    "build": "vite build",
+    "test": "node --test rules.test.js characters.test.js terrain.test.js"
+  },
+  "dependencies": {
+    "three": "^0.180.0",
+    "vite": "^7.1.7"
+  }
+}

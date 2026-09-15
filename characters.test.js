@@ -1,0 +1,43 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {Box3} from 'three';
+import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual} from './characters.js';
+const buffer=await readFile(new URL('./assets/character.glb',import.meta.url));
+const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
+const asset=prepareCharacterAsset(gltf);
+test('supplied GLB loads its geometry, eight animations and independent actor skeletons',()=>{
+  assert.equal(asset.clips.length,8);
+  const a=createCharacterVisual(asset,'player'),b=createCharacterVisual(asset,'human');
+  assert.ok(a.meshes.length>=15);
+  assert.notEqual(a.meshes[0].skeleton.bones[0],b.meshes[0].skeleton.bones[0]);
+  assert.equal(a.meshes[0].geometry,b.meshes[0].geometry);
+  assert.notEqual(a.meshes[0].material,b.meshes[0].material);
+  a.holder.updateMatrixWorld(true);
+  const bounds=new Box3().setFromObject(a.holder);
+  assert.ok(bounds.max.y>2&&bounds.max.y<3.4);
+  assert.ok(bounds.min.y>-.2&&bounds.min.y<.2);
+});
+test('walk, infection attack, heavy punch and rush return to locomotion',()=>{
+  const a=createCharacterVisual(asset,'player');
+  updateCharacterVisual(a,true,.1);
+  assert.equal(a.current.getClip().name,'walk');
+  for(const [input,clip]of [['infect','flurry'],['break','heavyPunch'],['rush','jump']]){
+    playCharacterAttack(a,input);updateCharacterVisual(a,true,.2);
+    assert.equal(a.current.getClip().name,clip);
+    updateCharacterVisual(a,true,.5);
+    assert.equal(a.current.getClip().name,'walk');
+  }
+});
+test('infection changes only the infected actor and selects zombie locomotion',()=>{
+  const a=createCharacterVisual(asset,'human'),b=createCharacterVisual(asset,'human');
+  const original=b.meshes[0].material.color.getHex();
+  setCharacterKind(a,'ally');updateCharacterVisual(a,true,.1);
+  assert.equal(a.current.getClip().name,'zombie');
+  assert.equal(b.meshes[0].material.color.getHex(),original);
+  assert.notEqual(a.meshes[0].material.color.getHex(),original);
+  assert.equal(a.marker.visible,true);
+  updateCharacterVisual(a,true,.1,80);assert.equal(a.holder.visible,false);
+  updateCharacterVisual(a,true,.1,10);assert.equal(a.holder.visible,true);
+});
