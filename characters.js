@@ -97,9 +97,10 @@ export function playCharacterAttack(visual, type) {
 export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false) {
   if (visual.attackTime > 0) visual.attackTime -= dt;
   if (visual.attackTime <= 0) {
-    const name = moving ? (visual.kind === 'ally' ? 'zombie' : 'walk') : visual.holdingGun ? 'toyAim' : 'idle';
+    const name = moving ? (visual.kind === 'human' ? 'zombie' : 'walk') : visual.holdingGun ? 'toyAim' : 'idle';
     const action = visual.actions[name];
-    if (action) action.setEffectiveTimeScale(moving ? (sprinting ? 1.9 : 1.3) : 1);
+    const scale = !moving ? 1 : visual.kind === 'human' ? .42 : visual.kind === 'ally' ? 1.95 : (sprinting ? 1.9 : 1.3);
+    if (action) action.setEffectiveTimeScale(scale);
     switchAnimation(visual, name);
   }
   // Skip off-range models and throttle distant skeleton updates.

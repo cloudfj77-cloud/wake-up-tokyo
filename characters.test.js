@@ -30,11 +30,13 @@ test('walk, infection attack, heavy punch and rush return to locomotion',()=>{
     assert.equal(a.current.getClip().name,'walk');
   }
 });
-test('infection changes only the infected actor and selects zombie locomotion',()=>{
+test('unconverted humans shamble; converted allies switch to a fast walk',()=>{
   const a=createCharacterVisual(asset,'human'),b=createCharacterVisual(asset,'human');
   const original=b.meshes[0].material.color.getHex();
-  setCharacterKind(a,'ally');updateCharacterVisual(a,true,.1);
+  updateCharacterVisual(a,true,.1);
   assert.equal(a.current.getClip().name,'zombie');
+  setCharacterKind(a,'ally');updateCharacterVisual(a,true,.1);
+  assert.equal(a.current.getClip().name,'walk');
   assert.equal(b.meshes[0].material.color.getHex(),original);
   assert.notEqual(a.meshes[0].material.color.getHex(),original);
   assert.equal(a.marker.visible,true);

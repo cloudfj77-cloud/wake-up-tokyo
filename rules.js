@@ -28,35 +28,46 @@ export function choices(s,random=Math.random){return ABILITIES.filter(a=>s.abili
 export function upgrade(s,id){if(!ABILITIES.some(a=>a.id===id)||s.abilities[id]>=3||s.pending<=0)return false;s.abilities[id]++;s.pending--;s.history.push({id,level:s.abilities[id],time:s.time});if(id==='guns'&&s.abilities.guns===1){s.clipMax=20;s.clip+=4;}s.lastPick=s.time;return true;}
 export function reward(s,u,converted){if(converted){s.infected++;if(u.city)s.cityInfected++;s.first??={name:ENEMIES[u.type].name,time:s.time};if(u.type===4)s.purifiers++;}else s.kills++;s.highestEnemy=Math.max(s.highestEnemy,ENEMIES[u.type].level);if(ENEMIES[u.type].level>=2)s.ammo[0]=Math.min(999,s.ammo[0]+8);if(u.rewarded)return;u.rewarded=true;if(s.level<LEVEL_CAP){s.xp+=u.type===0?1:2;while(s.xp>=s.need&&s.level<LEVEL_CAP){s.xp-=s.need;s.level++;s.need=Math.ceil(s.need*1.4+3);s.pending++;}if(s.level===LEVEL_CAP)s.xp=0;}}
 export function makeUnit(id,type,x,z,city=true,profession=0){const t=ENEMIES[type];return{id,type,x,z,city,profession,kind:type===0?'human':'guard',hp:t.hp,maxHp:t.hp,infection:0,threshold:t.threshold,corpseTime:0,dead:false,converted:false,tagged:false,attackCd:Math.random(),wander:0,tx:x,tz:z,purified:0,hurt:0};}
-export function convert(s,u){if(u.converted||u.dead)return false;u.converted=true;u.kind='ally';u.hp=Math.max(u.hp,Math.ceil(u.maxHp*.4));u.corpseTime=0;u.infection=u.threshold;reward(s,u,true);return true;}
+export function convert(s,u){if(u.converted||u.dead)return false;u.converted=true;u.kind='ally';u.hp=Math.max(u.hp,Math.ceil(u.maxHp*.4));u.corpseTime=0;u.infection=u.threshold;u.wander=0;reward(s,u,true);return true;}
 export function hit(s,u,infection,damage,fromFront=false){if(u.dead||u.converted||u.kind==='corpse')return 'none';if(ENEMIES[u.type].shield&&fromFront)damage*=.5;u.infection=Math.min(u.threshold,u.infection+infection);u.tagged||=infection>0;if(u.infection>=u.threshold){convert(s,u);return 'converted';}u.hp=Math.max(0,u.hp-damage);u.hurt=2;if(u.hp<=0){u.kind='corpse';u.corpseTime=12;reward(s,u,false);return 'killed';}return 'hit';}
 export function damageAlly(u,damage){u.hp=Math.max(0,u.hp-damage);u.hurt=2;if(u.hp===0){u.kind='fallen';u.dead=true;}}
 export function distance(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
 export function tickInfection(s,units,player,dt){let chain=0;const air=s.abilities.air;const purifiers=units.filter(u=>!u.dead&&u.kind!=='corpse'&&u.type===4);const emitters=air===3?units.filter(u=>u.kind==='ally'&&!u.dead):[];for(const u of units){u.purified=0;if(u.dead||u.converted)continue;const corpse=u.kind==='corpse';let positive=0,negative=0;for(const p of purifiers){if(p===u||distance(p,u)>(ENEMIES[p.type].aura||8))continue;if(p.kind==='ally')positive+=ENEMIES[p.type].drain||8;else negative+=ENEMIES[p.type].drain||8;}if(air&&(!corpse||air>=2)){if(distance(player,u)<=4+air)positive+=air*2;for(const a of emitters)if(distance(a,u)<5)positive+=2;}if(!corpse&&u.tagged)positive+=s.abilities.dot*2;if(corpse&&air<2)positive=0;u.infection=Math.max(0,Math.min(u.threshold,u.infection+(positive-negative)*dt));u.purified=negative;if(u.infection>=u.threshold){if(convert(s,u))chain++;continue;}if(corpse){u.corpseTime-=dt;if(u.corpseTime<=0){u.dead=true;u.kind='expired';}}}s.maxChain=Math.max(s.maxChain,chain);return chain;}
+export const TUNE_DEFAULTS={
+ alert:{stage2At:90,stage3At:180,maxLevel1:2,maxLevel2:4,maxLevel3:6,pressureTime:0},
+ difficulty:{armyWeight:.35,fodderBase:4,fodderDiv:3,fodderMin:1,threatWeight:3,threatMax:3,intervalBase:15,intervalPerWeight:.85,intervalMin:6,fodderSlowAt:8,fodderSlowAdd:2},
+ activity:{shambleSpeed:.65,shambleRadius:4,shambleIdle:6,fleeSpeed:.85,awakeSpeed:5.6,awakeRadius:34,awakeIdle:1.05,chaseSpeed:5.4,followSpeed:6.1,structureSpeed:4.6}
+};
+export const TUNE=structuredClone(TUNE_DEFAULTS);
+export function resetTune(){applyTune(TUNE_DEFAULTS);}
+export function applyTune(data){if(!data)return TUNE;for(const group of ['alert','difficulty','activity']){if(!data[group])continue;for(const [k,v] of Object.entries(data[group])){if(k in TUNE[group]&&Number.isFinite(+v))TUNE[group][k]=+v;}}return TUNE;}
+export function setTuneValue(path,value){const [group,key]=path.split('.');if(TUNE[group]&&key in TUNE[group]&&Number.isFinite(+value))TUNE[group][key]=+value;return TUNE[group][key];}
 export function cityAlert(s){
- const t=s.time;
- let stage=1,maxLevel=2,final=false;
- if(t>=180){stage=3;maxLevel=6;final=true;}
- else if(t>=90){stage=2;maxLevel=4;}
- return {stage,maxLevel,final,time:t,pressure:s.kills+s.infected};
+ const a=TUNE.alert;
+ const t=s.time+(s.kills+s.infected)*(a.pressureTime||0);
+ let stage=1,maxLevel=a.maxLevel1,final=false;
+ if(t>=a.stage3At){stage=3;maxLevel=a.maxLevel3;final=true;}
+ else if(t>=a.stage2At){stage=2;maxLevel=a.maxLevel2;}
+ return {stage,maxLevel,final,time:s.time,pressure:s.kills+s.infected,clock:t};
 }
 export function threat(s){return cityAlert(s).stage;}
-export function difficultyWeight(s,units){return s.level+teamCount(units)*.35;}
+export function difficultyWeight(s,units){return s.level+teamCount(units)*TUNE.difficulty.armyWeight;}
 export function fodderCount(units){return units.filter(u=>!u.dead&&!u.converted&&u.kind!=='corpse'&&ENEMIES[u.type].fodder).length;}
 export function spawnPlan(s,units,random=Math.random){
  const alert=cityAlert(s);
+ const d=TUNE.difficulty;
  const weight=difficultyWeight(s,units);
  const fodder=fodderCount(units);
  const pool=ENEMIES.map((e,i)=>({e,i})).filter(({e})=>e.level<=alert.maxLevel);
  const fodderPool=pool.filter(({e})=>e.fodder);
  const threatPool=pool.filter(({e})=>!e.fodder);
  const pick=list=>{if(!list.length)return 0;return list[Math.min(list.length-1,Math.floor(random()*list.length))].i;};
- const fodderN=Math.max(1,4-Math.floor(fodder/3));
- const threatN=alert.maxLevel<=2?0:Math.min(3,1+Math.floor(weight/3));
+ const fodderN=Math.max(d.fodderMin,d.fodderBase-Math.floor(fodder/d.fodderDiv));
+ const threatN=alert.maxLevel<=TUNE.alert.maxLevel1?0:Math.min(d.threatMax,1+Math.floor(weight/d.threatWeight));
  const types=[];
  for(let i=0;i<fodderN;i++)types.push(pick(fodderPool));
  for(let i=0;i<threatN;i++)types.push(pick(threatPool.length?threatPool:fodderPool));
- const interval=Math.max(6,15-weight*.85+(fodder>8?2:0));
+ const interval=Math.max(d.intervalMin,d.intervalBase-weight*d.intervalPerWeight+(fodder>d.fodderSlowAt?d.fodderSlowAdd:0));
  return {types,interval,weight,fodder,fodderN,threatN,...alert};
 }
 export function outcome(s){return s.hp<=0?'ended':s.bossDefeated?'won':null;}

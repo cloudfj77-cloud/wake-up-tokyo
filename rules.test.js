@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,MELEE,hurtMother,missionReady,cityAlert,threat,spawnPlan,speed,WALK_SPEED,SPRINT_MULT} from './rules.js';
+import {makeState,makeUnit,hit,upgrade,choices,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,MELEE,hurtMother,missionReady,cityAlert,threat,spawnPlan,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
 test('mother survives one bullet and dies on second; abilities never increase max HP',()=>{const s=makeState();s.pending=3;for(let i=0;i<3;i++)upgrade(s,'vital');reward(s,makeUnit(1,2,0,0),true);assert.equal(s.maxHp,100);assert.equal(hurtMother(s,50),false);assert.equal(s.hp,50);assert.equal(hurtMother(s,50),true);assert.equal(outcome(s),'ended');});
@@ -15,6 +15,7 @@ test('purifier drains infection and reverses after conversion',()=>{const s=make
 test('shield halves frontal damage only',()=>{const s=makeState(),u=makeUnit(1,3,0,0);assert.ok(ENEMIES[3].shield);hit(s,u,0,20,true);assert.equal(u.hp,170);hit(s,u,0,20,false);assert.equal(u.hp,150);});
 test('city alert is time-gated, not infection-gated',()=>{const s=makeState();assert.equal(cityAlert(s).maxLevel,2);assert.equal(threat(s),1);s.infected=40;s.kills=20;s.time=10;assert.equal(threat(s),1);s.time=90;assert.equal(cityAlert(s).stage,2);assert.equal(cityAlert(s).maxLevel,4);s.time=180;assert.equal(cityAlert(s).stage,3);assert.equal(cityAlert(s).final,true);assert.equal(cityAlert(s).maxLevel,6);});
 test('early spawn plan only sends fodder',()=>{const s=makeState();const units=[makeUnit(1,0,0,0),makeUnit(2,1,1,1)];const plan=spawnPlan(s,units,()=>0);assert.equal(plan.threatN,0);assert.ok(plan.types.every(t=>ENEMIES[t].fodder));assert.ok(plan.interval>=6);});
+test('tune console can move alert gates without infection',()=>{const s=makeState();s.time=40;assert.equal(threat(s),1);try{setTuneValue('alert.stage2At',30);assert.equal(threat(s),2);setTuneValue('difficulty.intervalMin',20);assert.ok(spawnPlan(s,[],()=>0).interval>=20);}finally{resetTune();}});
 test('sprint multiplies walk speed',()=>{const s=makeState();assert.equal(speed(s),WALK_SPEED);assert.equal(speed(s,true),WALK_SPEED*SPRINT_MULT);});
 test('higher XP requirements and capped ability pool',()=>{const s=makeState();upgrade(s,'air');for(let i=0;i<11;i++)reward(s,makeUnit(i,0,0,0),true);assert.equal(s.level,1);reward(s,makeUnit(12,0,0,0),true);assert.equal(s.level,2);assert.ok(s.need>=20);s.pending=30;for(const a of ABILITIES)while(s.abilities[a.id]<3)upgrade(s,a.id);assert.deepEqual(choices(s),[]);});
 test('complete mission chain requires boss defeat, high infection alone never wins',()=>{const s=makeState();s.infected=40;s.towers=3;s.highestEnemy=5;for(let i=0;i<4;i++){assert.equal(missionReady(s),true);s.mission++;}assert.equal(missionReady(s),false);assert.equal(outcome(s),null);s.bossDefeated=true;assert.equal(outcome(s),'won');});
