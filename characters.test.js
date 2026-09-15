@@ -43,8 +43,10 @@ test('unconverted humans shamble; converted allies switch to a fast walk',()=>{
   setCharacterKind(a,'ally');updateCharacterVisual(a,true,.1);
   assert.equal(a.current.getClip().name,'walk');
   assert.equal(b.meshes[0].material.color.getHex(),original);
-  assert.notEqual(a.meshes[0].material.color.getHex(),original);
+  // 阵营差异只体现在脚下光环
+  assert.notEqual(a.marker.material.color.getHex(),markerBefore);
   assert.equal(a.marker.visible,true);
+  assert.equal(b.marker.visible,false);
   updateCharacterVisual(a,true,.1,80);assert.equal(a.holder.visible,false);
   updateCharacterVisual(a,true,.1,10);assert.equal(a.holder.visible,true);
 });
