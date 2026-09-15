@@ -5,6 +5,22 @@ import { clone } from 'three/addons/utils/SkeletonUtils.js';
 const colors = { player: 0xe2b7ff, ally: 0xdbb2ed, human: 0xffffff, guard: 0xabc9ea };
 const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee };
 
+// 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
+// 例如现实中 1.82 米的主角，在游戏画面里应约为 1 个单位，才能和汽车比例一致。
+const CITY_MODEL_SCALE = 0.55;
+export const CHARACTER_HEIGHTS = {
+  player: 1.7 * CITY_MODEL_SCALE,
+  guard: 1.75 * CITY_MODEL_SCALE,
+  humanBase: 1.58 * CITY_MODEL_SCALE,
+  humanVariantStep: 0.025 * CITY_MODEL_SCALE,
+};
+
+export function characterHeight(kind, variant = 0) {
+  if (kind === 'player') return CHARACTER_HEIGHTS.player;
+  if (kind === 'guard') return CHARACTER_HEIGHTS.guard;
+  return CHARACTER_HEIGHTS.humanBase + variant * CHARACTER_HEIGHTS.humanVariantStep;
+}
+
 export function prepareCharacterAsset(gltf) {
   gltf.scene.updateMatrixWorld(true);
   const bounds = new THREE.Box3().setFromObject(gltf.scene);
@@ -19,12 +35,13 @@ export async function loadCharacterAsset() {
 }
 
 export function createCharacterVisual(asset, kind, variant = 0) {
-  // SkeletonUtils gives every actor independent bones; geometry stays shared.
+  // 每个人共用模型网格，但必须拥有独立骨骼，否则一个人抬手会带着全城一起动。
   const root = clone(asset.scene);
   const model = new THREE.Group();
-  const height = kind === 'player' ? 2.25 : kind === 'guard' ? 2.15 : 2.05 + variant * 0.035;
+  const height = characterHeight(kind, variant);
   const scale = height / asset.height;
   const center = asset.bounds.getCenter(new THREE.Vector3());
+  // 三个方向必须使用同一个倍率，否则人物会被压扁或拉长。
   model.scale.setScalar(scale);
   root.position.set(-center.x, -asset.bounds.min.y, -center.z);
   model.add(root);
@@ -36,7 +53,7 @@ export function createCharacterVisual(asset, kind, variant = 0) {
     if (!node.isMesh) return;
     node.castShadow = true;
     node.receiveShadow = true;
-    // Animated limbs can leave the original mesh bounds.
+    // 动画中的手脚会超出模型原始边界，关闭自动裁剪可避免动作时身体突然消失。
     node.frustumCulled = false;
     const copyMaterial = source => {
       if (!materials.has(node)) {const m=source.clone();m.vertexColors=false;const skin=/head|wrist/.test(node.name);const legs=/hip|knee|ankle/.test(node.name);const shirt=kind==='guard'?0x526c83:[0xe7e0cd,0xd8dfd9,0xd7a15b,0x779a7e,0xb19b79][variant%5];m.userData.baseTone=skin?0xc7a487:legs?0x53616a:shirt;m.color.setHex(m.userData.baseTone);materials.set(node,m);}
@@ -46,7 +63,7 @@ export function createCharacterVisual(asset, kind, variant = 0) {
     meshes.push(node);
   });
   const markerMaterial = new THREE.MeshBasicMaterial({ color: accents[kind], side: THREE.DoubleSide });
-  const marker = new THREE.Mesh(new THREE.RingGeometry(kind === 'player' ? .62 : .38, kind === 'player' ? .73 : .44, 24), markerMaterial);
+  const marker = new THREE.Mesh(new THREE.RingGeometry(kind === 'player' ? .27 : .18, kind === 'player' ? .34 : .23, 24), markerMaterial);
   marker.rotation.x = -Math.PI / 2;
   marker.position.y = .055;
   holder.add(marker);
@@ -85,7 +102,7 @@ export function playCharacterAttack(visual, type) {
   const name = type === 'shoot' ? 'toyRecoil' : type === 'break' ? 'heavyPunch' : type === 'rush' ? 'jump' : 'flurry';
   const action = visual.actions[name];
   if (!action) return;
-  // Fit authored three-second clips to responsive ability timings.
+  // 原动画约三秒，战斗中太拖沓，因此压缩到 0.65 秒以保证操作响应。
   action.setLoop(THREE.LoopOnce, 1);
   action.clampWhenFinished = true;
   action.setEffectiveTimeScale(action.getClip().duration / .65);
@@ -102,7 +119,7 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
     if (action) action.setEffectiveTimeScale(moving ? (sprinting ? 1.9 : 1.3) : 1);
     switchAnimation(visual, name);
   }
-  // Skip off-range models and throttle distant skeleton updates.
+  // 远处人物降低骨骼刷新频率，玩家看不出区别，但能明显减轻渲染压力。
   visual.holder.visible = distance < 58;
   const shadows = distance < 18;
   for (const mesh of visual.meshes) mesh.castShadow = shadows;
