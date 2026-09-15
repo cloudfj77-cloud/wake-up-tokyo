@@ -20,16 +20,18 @@ const visuals=new Map(),particles=[],waves=[],tracers=[],auraVisuals=new Map();l
 // 光环特效：贴图取自 Realistic Mesh FX 的光点图，叠加混合。
 const awakenGlow=new T.TextureLoader().load(new URL('./assets/vfx/glow.webp',import.meta.url).href);
 // 打工人感染=紫，警卫感染=红，主角升级=黄，场景道具=橙。
-const AURA_COLORS={worker:{core:0x9b4dff,mote:0xc478ff},guard:{core:0xd4391f,mote:0xff5a33},level:{core:0xffc92e,mote:0xffe066},pickup:{core:0xff8a1f,mote:0xffb45c}};
+const bloodGlow=new T.TextureLoader().load(new URL('./assets/vfx/blood.webp',import.meta.url).href);
+// 警卫感染走 Bloodlust 狂暴：血红带旋转上涌。
+const AURA_COLORS={worker:{core:0x9b4dff,mote:0xc478ff},guard:{core:0xff2d14,mote:0xff4a2a,map:bloodGlow,spin:2.6,count:7,moteSize:.6,radius:.34,moteAspect:[3.6,.9]},level:{core:0xffc92e,mote:0xffe066},pickup:{core:0xff8a1f,mote:0xffb45c}};
 const activeAuras=[];
-function makeAura(holder,palette,{coreSize=1.7,moteSize=.44,count=5,radius=.3,life=0}={}){
+function makeAura(holder,palette,{coreSize=1.7,moteSize=palette.moteSize??.44,count=palette.count??5,radius=palette.radius??.3,life=0}={}){
  const g=new T.Group();
- const sprite=(size,color,opacity)=>{const s=new T.Sprite(new T.SpriteMaterial({map:awakenGlow,color,transparent:true,blending:T.AdditiveBlending,depthWrite:false,opacity}));s.scale.set(size,size,1);g.add(s);return s;};
- const core=sprite(coreSize,palette.core,.42);core.position.y=coreSize*.62;
+ const sprite=(size,color,opacity,map)=>{const s=new T.Sprite(new T.SpriteMaterial({map:map??awakenGlow,color,transparent:true,blending:T.AdditiveBlending,depthWrite:false,opacity}));s.scale.set(size,size,1);g.add(s);return s;};
+ const core=sprite(coreSize,palette.core,.42,palette.coreMap);
  const motes=[];
- for(let i=0;i<count;i++){const m=sprite(moteSize,palette.mote,.9);m.userData={angle:(i/count)*6.283+Math.random(),radius:radius+Math.random()*.26,speed:.8+Math.random()*.9,phase:Math.random()};motes.push(m);}
+ for(let i=0;i<count;i++){const m=sprite(moteSize,palette.mote,.9,palette.map);if(palette.moteAspect)m.scale.set(moteSize*palette.moteAspect[0],moteSize*palette.moteAspect[1],1);m.userData={angle:(i/count)*6.283+Math.random(),radius:radius+Math.random()*.26,speed:.8+Math.random()*.9,phase:Math.random(),turn:Math.random()*6.283};motes.push(m);}
  holder.add(g);
- const aura={g,core,motes,time:0,life,coreSize};
+ const aura={g,core,motes,time:0,life,coreSize,spin:palette.spin??0};
  activeAuras.push(aura);
  return aura;
 }
@@ -38,7 +40,7 @@ function updateAura(aura,dt){
  const pulse=1+.14*Math.sin(aura.time*6.5),s=aura.coreSize*pulse;
  aura.core.scale.set(s,s,1);
  aura.core.material.opacity=.34+.12*Math.sin(aura.time*6.5);
- for(const m of aura.motes){const d=m.userData;d.angle+=dt*d.speed*2.2;const y=(d.phase+aura.time*.5)%1.25;m.position.set(Math.cos(d.angle)*d.radius,y+.05,Math.sin(d.angle)*d.radius);m.material.opacity=.9*Math.max(0,1-y/1.3);}
+ for(const m of aura.motes){const d=m.userData;d.angle+=dt*d.speed*2.2;const y=(d.phase+aura.time*.5)%1.25;m.position.set(Math.cos(d.angle)*d.radius,y+.05,Math.sin(d.angle)*d.radius);m.material.opacity=.9*Math.max(0,1-y/1.3);if(aura.spin){d.turn+=dt*aura.spin;m.material.rotation=Math.sin(d.turn)*.32;}}
 }
 function removeAura(aura){
  const i=activeAuras.indexOf(aura);if(i>=0)activeAuras.splice(i,1);
