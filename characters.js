@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 
-const colors = { player: 0xe2b7ff, ally: 0xe0c7ec, human: 0xffffff, guard: 0xabc9ea };
 const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee };
 
 // 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
@@ -36,25 +35,27 @@ export async function loadCharacterAsset() {
 
 // 分型角色模型：主人公 / 秩序警卫 / 打工人（男女各半，感染前后共用同一模型）。
 const CHARACTER_MODEL_FILES = {
-  player: './assets/characters/player.glb',
-  guard: './assets/characters/guard.glb',
-  humanMale: './assets/characters/worker-man.glb',
-  humanFemale: './assets/characters/worker-woman.glb',
+  // 使用字面量 URL，确保 Vite 在生产构建时能发现并发布每个角色资源。
+  player: new URL('./assets/characters/player.glb', import.meta.url).href,
+  ally: new URL('./assets/characters/awakened.glb', import.meta.url).href,
+  guard: new URL('./assets/characters/guard.glb', import.meta.url).href,
+  humanMale: new URL('./assets/characters/worker-man.glb', import.meta.url).href,
+  humanFemale: new URL('./assets/characters/worker-woman.glb', import.meta.url).href,
 };
 
 export async function loadCharacterAssets() {
   const entries = await Promise.all(Object.entries(CHARACTER_MODEL_FILES).map(async ([key, file]) => {
-    const gltf = await new GLTFLoader().loadAsync(new URL(file, import.meta.url).href);
+    const gltf = await new GLTFLoader().loadAsync(file);
     return [key, prepareCharacterAsset(gltf)];
   }));
   return Object.fromEntries(entries);
 }
 
-// 单个资产（旧写法）直接透传；资产集按角色类型选模型。
-// 市民与觉醒者共用西装打工人模型（男女各半），感染前后只有动作和特效不同。
+// 单个资产（旧写法）直接透传；资产集按主人公、觉醒者、警卫和打工人选择专属模型。
 function selectCharacterAsset(assets, kind) {
   if (assets.scene) return assets;
   if (kind === 'player' && assets.player) return assets.player;
+  if (kind === 'ally' && assets.ally) return assets.ally;
   if (kind === 'guard' && assets.guard) return assets.guard;
   if (assets.humanMale && assets.humanFemale) return Math.random() < .5 ? assets.humanMale : assets.humanFemale;
   if (assets.ally) return assets.ally;
@@ -96,12 +97,9 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   marker.rotation.x = -Math.PI / 2;
   marker.position.y = .055;
   holder.add(marker);
-  // 感染者额外拥有一圈呼吸式紫色光环，远距离也不会和普通市民混在一起。
-  const infectionAura = new THREE.Mesh(new THREE.RingGeometry(.26,.34,32),new THREE.MeshBasicMaterial({color:0xd48aff,transparent:true,opacity:.46,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false}));
-  infectionAura.rotation.x=-Math.PI/2;infectionAura.position.y=.065;infectionAura.visible=false;holder.add(infectionAura);
   const mixer = new THREE.AnimationMixer(root);
   const actions = Object.fromEntries(asset.clips.map(clip => [clip.name, mixer.clipAction(clip)]));
-  const visual = { holder, root, model, meshes, materials, marker, infectionAura, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0 };
+  const visual = { holder, root, model, meshes, materials, marker, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0 };
   setCharacterKind(visual, kind, variant);
   switchAnimation(visual, 'idle', .0);
   mixer.update(variant * .27);
@@ -110,7 +108,7 @@ export function createCharacterVisual(assets, kind, variant = 0) {
 
 export function setCharacterKind(visual, kind) {
   visual.kind = kind;
-  // 阵营只用脚下光环区分，模型外观沿用美术自带的贴图与顶点色。
+  // 保留专属模型的美术原材质；阵营辨识由脚下标记和场景 Galaxy / Bloodlust 光环承担。
   visual.marker.material.color.setHex(accents[kind]);
   visual.marker.visible = kind !== 'human';
 }
@@ -151,7 +149,6 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
   // 远处人物降低骨骼刷新频率，玩家看不出区别，但能明显减轻渲染压力。
   visual.holder.visible = distance < 58;
   const shadows = distance < 18;
-  if(visual.infectionAura.visible){const pulse=1+Math.sin(performance.now()*.008+visual.accumulated)*.1;visual.infectionAura.scale.setScalar(pulse);visual.infectionAura.material.opacity=.4+(pulse-1)*.5;}
   for (const mesh of visual.meshes) mesh.castShadow = shadows;
   visual.accumulated += dt;
   if (distance < 16 || visual.accumulated >= (distance < 45 ? 1 / 20 : 1 / 10)) {

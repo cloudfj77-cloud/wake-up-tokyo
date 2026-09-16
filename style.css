@@ -4,8 +4,6 @@
 
 #bossHud{top:22px;width:450px;padding:11px 16px}#bossHud .bar{margin:7px 0}#bossWarning{margin:4px 0 0}#infectionFeedback{top:34%}
 
-/* 受击提示：屏幕四周泛红，中心保持通透 */
-#hurtVignette{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,48,48,0) 42%,rgba(255,32,32,.68) 100%);}
 /* 普通命中只让准星短促脉冲，不遮挡玩家继续瞄准。 */
 #crosshair.hit{border-color:#dfb2ff;background:#b66cff33;box-shadow:0 0 8px #c067ff,0 0 22px #9d38e9;animation:hitPulse .18s ease-out}
 @keyframes hitPulse{0%{transform:translate(-50%,-50%) scale(.7) rotate(0)}55%{transform:translate(-50%,-50%) scale(1.65) rotate(45deg)}100%{transform:translate(-50%,-50%) scale(1) rotate(45deg)}}
@@ -184,3 +182,13 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 .missionEntry>small{display:block;color:#a66fd0;font-size:8px;letter-spacing:1px}.missionEntry>strong{display:block;margin:8px 0;font-size:16px}.missionEntry p{margin:0 0 9px!important;font-size:9px!important;line-height:1.5!important}
 .missionEntry div{display:grid;gap:4px}.missionEntry div span{font-size:9px}.missionEntry div span.done{color:#bd8bdd}
 @media(max-width:900px){#tutorialCard{bottom:105px;width:330px}.objectivePanel{width:235px}.missionList{grid-template-columns:1fr}}
+
+/* 刷新按钮属于单张能力卡：三列布局不变，只在卡片下方增加一次独立换牌机会。 */
+.choiceSlot{display:flex;min-width:0;flex:1;flex-direction:column;gap:7px}
+.choiceSlot .card{width:100%;height:100%}
+.reroll{padding:8px 10px;border:1px solid #8aa0b366;background:#ffffff0c;color:#d5e2ee;font-size:10px;letter-spacing:1px}
+.reroll:hover:not(:disabled){border-color:#c69be5;background:#b478f122;color:#f0e3ff}
+.reroll:disabled{cursor:not-allowed;opacity:.42}
+
+/* 受击红屏：屏幕四周泛红，中心保持通透 */
+#damageFlash{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,48,48,0) 42%,rgba(255,32,32,.68) 100%);}
