@@ -14,7 +14,7 @@ export const ENEMIES=[
  {name:'重装指挥官',level:7,hp:340,threshold:220,speed:2.2,damage:50,range:26}
 ];
 export const ABILITIES=[
- {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:['5 米范围内，每秒增加 2 点感染。','半径 6 米，每秒 +4 感染；可转化尸体。','母体半径 7 米，每秒 +6；友军获得 5 米 +2/s 光环。']},
+ {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:['5 米范围内，每秒增加 2 点感染。','半径 6 米，每秒 +4 感染；可转化尸体。','母体半径 7 米，每秒 +6；友军获得 5 米 +2/s 不叠加光环。']},
  {id:'dot',name:'持续感染',icon:'⌁',group:'感染系',descriptions:['被命中的活体持续获得 +2/s 感染。','持续感染提高至 +4/s。','持续感染提高至 +6/s。']},
  {id:'vital',name:'潜行适应',icon:'✚',group:'母体系',descriptions:['蹲伏移速 +20%，敌人发现距离 −15%。','蹲伏移速 +40%，敌人发现距离 −25%。','蹲伏移速 +60%，敌人发现距离 −35%。']},
  {id:'haste',name:'急速',icon:'↟',group:'机动系',descriptions:['移动速度 +15%，近战与翻滚冷却 −15%。','移动速度 +30%，近战与翻滚冷却 −25%。','移动速度 +45%，近战与翻滚冷却 −35%。']},
@@ -39,7 +39,10 @@ export function convert(s,u){if(u.converted||u.dead)return false;u.converted=tru
 export function hit(s,u,infection,damage){if(u.dead||u.converted||u.kind==='corpse')return 'none';u.infection=Math.min(u.threshold,u.infection+infection);u.tagged||=infection>0;if(u.infection>=u.threshold){convert(s,u);return 'converted';}u.hp=Math.max(0,u.hp-damage);u.hurt=2;if(u.hp<=0){u.kind='corpse';u.corpseTime=12;reward(s,u,false);return 'killed';}return 'hit';}
 export function damageAlly(u,damage){u.hp=Math.max(0,u.hp-damage);u.hurt=2;if(u.hp===0){u.kind='fallen';u.dead=true;}}
 export function distance(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
-export function tickInfection(s,units,player,dt){let chain=0;const air=s.abilities.air;const purifiers=units.filter(u=>!u.dead&&u.kind!=='corpse'&&u.type===4);const emitters=air===3?units.filter(u=>u.kind==='ally'&&!u.dead):[];for(const u of units){u.purified=0;if(u.dead||u.converted)continue;const corpse=u.kind==='corpse';let positive=0,negative=0;for(const p of purifiers){if(p===u||distance(p,u)>6)continue;if(p.kind==='ally')positive+=8;else negative+=8;}if(air&&(!corpse||air>=2)){if(distance(player,u)<=4+air)positive+=air*2;for(const a of emitters)if(distance(a,u)<5)positive+=2;}if(!corpse&&u.tagged)positive+=s.abilities.dot*2;if(corpse&&air<2)positive=0;u.infection=Math.max(0,Math.min(u.threshold,u.infection+(positive-negative)*dt));u.purified=negative;if(u.infection>=u.threshold){if(convert(s,u))chain++;continue;}if(corpse){u.corpseTime-=dt;if(u.corpseTime<=0){u.dead=true;u.kind='expired';}}}s.maxChain=Math.max(s.maxChain,chain);return chain;}
+export function tickInfection(s,units,player,dt){let chain=0;const air=s.abilities.air;const purifiers=units.filter(u=>!u.dead&&u.kind!=='corpse'&&u.type===4);const emitters=air===3?units.filter(u=>u.kind==='ally'&&!u.dead):[];for(const u of units){u.purified=0;if(u.dead||u.converted)continue;const corpse=u.kind==='corpse';let positive=0,negative=0;for(const p of purifiers){if(p===u||distance(p,u)>6)continue;if(p.kind==='ally')positive+=8;else negative+=8;}if(air&&(!corpse||air>=2)){if(distance(player,u)<=4+air)positive+=air*2;
+  // 友军传播只看“有没有被光环覆盖”，不能按感染者数量重复相加，否则人群越密感染速度越失控。
+  if(emitters.some(a=>distance(a,u)<5))positive+=2;
+ }if(!corpse&&u.tagged)positive+=s.abilities.dot*2;if(corpse&&air<2)positive=0;u.infection=Math.max(0,Math.min(u.threshold,u.infection+(positive-negative)*dt));u.purified=negative;if(u.infection>=u.threshold){if(convert(s,u))chain++;continue;}if(corpse){u.corpseTime-=dt;if(u.corpseTime<=0){u.dead=true;u.kind='expired';}}}s.maxChain=Math.max(s.maxChain,chain);return chain;}
 export function threat(s){return s.infected>=25||s.towers>=2||s.time>=180?3:s.infected>=10||s.towers>=1||s.time>=90?2:1;}
 export function outcome(s){return s.hp<=0?'ended':s.bossDefeated?'won':null;}
 export function speed(s){return 5.8*(1+s.abilities.haste*.15);}
