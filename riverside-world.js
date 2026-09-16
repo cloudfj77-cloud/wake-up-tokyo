@@ -14,6 +14,17 @@ export function hitsBridgeRail(x,z,r=.45){
  // 桥模型缩放后的实际长度约 28.8 米，护栏位于桥中心线两侧约 2.05 米。
  return BRIDGES.some(bridge=>Math.abs(x)<bridge.halfLength&&Math.abs(Math.abs(z-bridge.z)-bridge.railOffset)<.18+r);
 }
+export function isRiverChannel(x,z,r=0){
+ // 河面只按河道宽度封闭；桥面仍可通行。岸上未烘焙到的广场不能当成虚空墙。
+ if(bridgeDeckHeight(x,z)!==null)return false;
+ return Math.abs(x)<9+r;
+}
+export function terrainHeightAt(x,z){
+ const ix=Math.round((x-terrain.minX)/terrain.step),iz=Math.round((z-terrain.minZ)/terrain.step);
+ const baked=ix<0||iz<0||ix>=terrain.size||iz>=terrain.size?-99:terrain.heights[iz*terrain.size+ix];
+ if(baked>-2)return baked;
+ return isRiverChannel(x,z)?-99:0;
+}
 
 export async function loadRiverside(scene){
  const draco=new DRACOLoader().setDecoderPath('/draco/');
@@ -59,10 +70,11 @@ export async function loadRiverside(scene){
   return added;
  }
  function add(g,type,hp){const box=new T.Box3().setFromObject(g),size=box.getSize(new T.Vector3()),c=box.getCenter(new T.Vector3());const o={g,x:c.x,z:c.z,w:size.x,d:size.z,h:size.y,hp,maxHp:hp,type,dead:false};attachCarve(o);obstacles.push(o);destructibles.push(o);if(type==='building')buildings.push(o);return o;}
- for(const g of root.children){if(/^(Machiya|Urban_building|Urban building)/.test(g.name))add(g,'building',220);else if(/^(Tokyo_Tower|Tokyo Tower|Ferris_wheel|Ferris wheel)/.test(g.name)){const box=new T.Box3().setFromObject(g),c=box.getCenter(new T.Vector3()),sz=box.getSize(new T.Vector3());obstacles.push({x:c.x,z:c.z,w:sz.x,d:sz.z,dead:false});}}
- function heightAt(x,z){const bridgeHeight=bridgeDeckHeight(x,z),ix=Math.round((x-terrain.minX)/terrain.step),iz=Math.round((z-terrain.minZ)/terrain.step),terrainHeight=ix<0||iz<0||ix>=terrain.size||iz>=terrain.size?-99:terrain.heights[iz*terrain.size+ix];return bridgeHeight===null?terrainHeight:Math.max(bridgeHeight,terrainHeight);}
- function solid(x,z,r=.45){return x<=-60||x>=60||z<=-68||z>=57||hitsBridgeRail(x,z,r)||obstacles.some(o=>!o.dead&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r)||[[0,0],[r,0],[-r,0],[0,r],[0,-r]].some(([dx,dz])=>{const ix=Math.round((x+dx-terrain.minX)/terrain.step),iz=Math.round((z+dz-terrain.minZ)/terrain.step);return terrain.blocked?.[iz*terrain.size+ix]===1;});}
- function free(x,z,r=.45){return !solid(x,z,r)&&[[0,0],[r,0],[-r,0],[0,r],[0,-r]].every(([dx,dz])=>heightAt(x+dx,z+dz)>-2);}
+ // 只给真正的建筑做碰撞盒。东京塔、摩天轮的整体包围盒会在 Boss 广场拉出看不见的空气墙。
+ for(const g of root.children){if(/^(Machiya|Urban_building|Urban building)/.test(g.name))add(g,'building',220);}
+ function heightAt(x,z){const bridgeHeight=bridgeDeckHeight(x,z),terrainHeight=terrainHeightAt(x,z);return bridgeHeight===null?terrainHeight:Math.max(bridgeHeight,terrainHeight);}
+ function solid(x,z,r=.45){return x<=-60||x>=60||z<=-68||z>=57||hitsBridgeRail(x,z,r)||isRiverChannel(x,z,r)||obstacles.some(o=>!o.dead&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r);}
+ function free(x,z,r=.45){return !solid(x,z,r);}
  function waypoint(u,x,z){if(u.x*x<0&&Math.abs(x)>9){const bz=[26.4,-15.4].sort((a,b)=>Math.abs(a-u.z)+Math.abs(a-z)-Math.abs(b-u.z)-Math.abs(b-z))[0];if(Math.abs(u.z-bz)>1.2)return {x:Math.sign(u.x)*12.5,z:bz};return {x:Math.sign(x)*13,z:bz};}return {x,z};}
  function nearest(x,z,r=.7){if(free(x,z,r))return {x,z};for(let radius=.5;radius<130;radius+=.5)for(let i=0;i<24;i++){const a=i*Math.PI/12,xx=x+Math.cos(a)*radius,zz=z+Math.sin(a)*radius;if(free(xx,zz,r))return {x:xx,z:zz};}throw Error('No walkable spawn');}
  // 主角从西北侧开阔街口开始，远离桥头、任务塔和首批巡逻队。
