@@ -90,7 +90,7 @@ function aura(key,x,z,r,color){let a=auraVisuals.get(key);if(!a){const pts=[];fo
 function toast(text,duration=3){$('toast').textContent=text;$('toast').style.opacity=1;toastTime=duration;}
 function showBossArrival(){
  const alert=$('policeAlert');
- alert.innerHTML='<strong>BOSS</strong><b>BOSS现身：蛙来！</b><small>秩序巨像已降临河岸</small>';
+ alert.innerHTML='<strong>蛙</strong><small>BOSS现身</small><b>蛙来！</b>';
  alert.classList.remove('active','upgrade','boss');void alert.offsetWidth;
  alert.classList.add('active','boss');policeAlertTimer=2.8;music.effect('alertUp');
 }
@@ -537,7 +537,7 @@ function detonateGrenade(b){
   if(dmg>0)hurtHostileTarget(t,dmg,b.from);
  }
 }
-const BOSS_ORB_RADIUS=2.6,BOSS_ORB_WINDUP=1;
+const BOSS_ORB_RADIUS=2.6,BOSS_ORB_WINDUP=.5;
 function createBossTargetMarker(x,y,z){
  const r=BOSS_ORB_RADIUS,group=new T.Group(),disk=new T.Mesh(new T.CircleGeometry(r,48),new T.MeshBasicMaterial({color:0xffc928,transparent:true,opacity:.13,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending})),ring=new T.Mesh(new T.RingGeometry(r-.4,r,64),new T.MeshBasicMaterial({color:0xffe45b,transparent:true,opacity:.82,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));
  disk.rotation.x=ring.rotation.x=-Math.PI/2;group.add(disk,ring);group.position.set(x,y+.06,z);group.userData.effects=[disk,ring];scene.add(group);return group;
