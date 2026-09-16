@@ -155,13 +155,6 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 #menu:after{background:radial-gradient(circle at 68% 44%,transparent 0 30%,#090d1538 72%,#070a116b 100%)}
 
 /* 教程卡只显示当前一步，完成进度从底边向右增长，避免一次塞给玩家整页说明。 */
-#tutorialCard{position:absolute;left:50%;bottom:118px;transform:translateX(-50%);width:370px;display:grid;grid-template-columns:72px 1fr auto;gap:13px;align-items:center;padding:13px 15px;background:#151c29ed;border:1px solid #be82ef77;border-bottom:3px solid #49335d;box-shadow:0 10px 35px #090d14aa;pointer-events:auto}
-#tutorialCard[hidden]{display:none}
-#tutorialCard:after{content:'';position:absolute;left:0;bottom:-3px;width:var(--tutorial-progress);height:3px;background:#ce83ff;box-shadow:0 0 10px #b75bea;transition:width .15s}
-.tutorialTop{position:absolute;left:13px;right:13px;top:-19px;display:flex;justify-content:space-between;color:#ba87dd;font-size:8px;letter-spacing:1px}.tutorialTop b{font-weight:400}
-#tutorialKey{display:grid;height:48px;place-items:center;background:#a260d2;color:#fff;font-size:10px;white-space:normal;text-align:center}
-#tutorialCard strong{display:block;font-size:14px}#tutorialCard p{margin:5px 0 0;color:#9daabc;font-size:9px}
-#skipTutorial{align-self:start;border:0;background:transparent;color:#778494;font-size:8px;padding:3px}#skipTutorial:hover{color:#e1c4f5}
 
 /* 任务追踪器把复合目标拆成可勾选条目，并给出当前导航距离。 */
 .objectivePanel{width:275px}
@@ -181,7 +174,7 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 .missionEntry.current{border-color:#b675e688;background:#30253e;color:#edf0f4}.missionEntry.completed{opacity:.65}.missionEntry.locked{filter:saturate(.25);opacity:.45}
 .missionEntry>small{display:block;color:#a66fd0;font-size:8px;letter-spacing:1px}.missionEntry>strong{display:block;margin:8px 0;font-size:16px}.missionEntry p{margin:0 0 9px!important;font-size:9px!important;line-height:1.5!important}
 .missionEntry div{display:grid;gap:4px}.missionEntry div span{font-size:9px}.missionEntry div span.done{color:#bd8bdd}
-@media(max-width:900px){#tutorialCard{bottom:105px;width:330px}.objectivePanel{width:235px}.missionList{grid-template-columns:1fr}}
+@media(max-width:900px){.objectivePanel{width:235px}.missionList{grid-template-columns:1fr}}
 
 /* liang 战斗界面：体力条、受伤闪红、升级演出、F3 调参。main 样式里没有这些。 */
 .bar.stamina{height:5px;margin:-6px 0 12px}

@@ -46,7 +46,7 @@ WASD 移动；鼠标锁定后转向，未锁定时右键拖动转向；空格跳
 - Blender 原始工程与原说明：`art/scenes/`（原文件完整复制，未修改）。
 - 浏览器资源：`assets/scenes/riverside.glb`，Draco 压缩、顶点色材质；解码器随站点提供。
 - 地形与静态碰撞：`assets/scenes/terrain.json`，0.5 米采样；包含河岸、桥面、车辆和护栏。
-- 地图加载与任务布置：`riverside-world.js`；人物、三座秩序中枢和巨像出生点落在可行走位置。跨河 AI 经桥梁寻路。
+- 地图加载与任务布置：`riverside-world.js`；人物、两座黄色发光中枢和巨像出生点落在可行走位置。跨河 AI 经桥梁寻路。
 - 导出脚本：`scripts/export_scene.py`。用 Blender 后台模式打开 `art/scenes/日式河畔城市_体素版.blend`，再通过 `--python` 执行此脚本重新导出。
 - 原场景静态行人由现有可感染角色替代。新地图独立存档，避免旧街区坐标错位。
 

@@ -90,8 +90,7 @@ export function makeState(){
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   clip:0,clipMax:0,weapon:-1,gunId:null,launcherCharge:0,
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
-  frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
-  tutorialStep:0,tutorialValue:0,tutorialDone:false,tutorialSkipped:false
+  frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow'
  };
 }
 export function availableAbilities(s){return ABILITIES.filter(a=>s.abilities[a.id]<3);}
@@ -457,6 +456,6 @@ export function hurtMother(s,damage,source='秩序火力',sprinting=false){
  s.hp=Math.max(0,s.hp-info.taken);
  return s.hp===0;
 }
-export function bossReady(s){return s.towers>=3;}
+export function bossReady(s){return s.towers>=2;}
 export function missionReady(s){return [()=>s.infected>=3,()=>s.infected>=10&&s.towers>=1,()=>s.highestEnemy>=3&&s.towers>=2,()=>bossReady(s),()=>s.bossDefeated][s.mission]?.()??false;}
-export const MISSIONS=[['叫醒第一个人','累计感染 3 人'],['让街区失控','感染 10 人，摧毁首座中枢'],['突破镇压','击败 / 转化净化工兵或持枪特警，摧毁两座中枢'],['唤出巨像','摧毁全部三个秩序中枢'],['东京人觉醒','击败中央路口的巨大 Boss']];
+export const MISSIONS=[['叫醒第一个人','累计感染 3 人'],['让街区失控','感染 10 人，摧毁首座中枢'],['突破镇压','击败 / 转化净化工兵或持枪特警，摧毁两座中枢'],['唤出巨像','摧毁全部两个秩序中枢'],['东京人觉醒','击败中央路口的巨大 Boss']];

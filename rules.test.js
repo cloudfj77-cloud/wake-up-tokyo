@@ -278,11 +278,11 @@ test('evolve adds life from player level',()=>{
  assert.equal(s.maxHp,140);
 });
 test('complete mission chain requires boss defeat, high infection alone never wins',()=>{
- const s=makeState();s.infected=40;s.towers=3;s.highestEnemy=3;
+ const s=makeState();s.infected=40;s.towers=2;s.highestEnemy=3;
  for(let i=0;i<4;i++){assert.equal(missionReady(s),true);s.mission++;}
  assert.equal(missionReady(s),false);assert.equal(outcome(s),null);s.bossDefeated=true;assert.equal(outcome(s),'won');
 });
-test('destroying all three order hubs unlocks the boss without infection requirements',()=>{const s=makeState();s.infected=0;s.towers=2;assert.equal(bossReady(s),false);s.towers=3;assert.equal(bossReady(s),true);});
+test('destroying both order hubs unlocks the boss without infection requirements',()=>{const s=makeState();s.infected=0;s.towers=1;assert.equal(bossReady(s),false);s.towers=2;assert.equal(bossReady(s),true);});
 test('boss has 6000 HP, changes stages and takes extra weak-point damage',()=>{
  const b=createBoss(new T.Scene());assert.equal(b.hp,6000);b.active=true;hitBoss(b,100);assert.equal(b.hp,5935);b.weak=2;assert.equal(hitBoss(b,100),250);
  for(let i=0;i<30;i++)hitBoss(b,100);assert.equal(b.dead,true);assert.equal(b.hp,0);
