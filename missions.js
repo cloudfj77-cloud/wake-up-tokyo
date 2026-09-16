@@ -4,7 +4,7 @@ export const MISSIONS=[
  {id:'break-order',title:'切断第一道命令',description:'感染人群，并摧毁控制街区的秩序中枢。',objectives:[objective('infected','累计感染人数',10,s=>s.infected,'human'),objective('towers','摧毁秩序中枢',1,s=>s.towers,'tower')],reward:{ammo:32,hp:20}},
  {id:'break-line',title:'突破镇压线',description:'处理净化士兵，继续瓦解秩序网络。',objectives:[objective('purifier','处理净化士兵',1,s=>s.purifiers>=1||s.highestEnemy>=3?1:0,'purifier'),objective('towers','摧毁秩序中枢',2,s=>s.towers,'tower')],reward:{ammo:40,hp:25}},
  {id:'lose-control',title:'让城市失控',description:'关闭最后的秩序中枢，直接引出巨像。',objectives:[objective('towers','摧毁秩序中枢',2,s=>s.towers,'tower')],reward:{ammo:48,hp:25}},
- {id:'final-awakening',title:'推翻秩序巨像',description:'前往中央路口，击败秩序最后的象征。',objectives:[objective('boss','击败秩序巨像',1,s=>s.bossDefeated?1:0,'boss')],reward:{ammo:0,hp:0}},
+ {id:'final-awakening',title:'带领市民们逃离规训',description:'击败奶蛙龙，带领市民们逃离规训。',objectives:[objective('boss','击败奶蛙龙',1,s=>s.bossDefeated?1:0,'boss')],reward:{ammo:0,hp:0}},
 ];
 
 export function missionView(state,index=state.mission){

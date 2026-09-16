@@ -9,7 +9,7 @@ volume(root,[0,8.7,1.5],[.65,.17,.55],0xb99135,.2);
 const mouthGlow=new T.Mesh(new T.IcosahedronGeometry(.28,1),new T.MeshStandardMaterial({color:0xffe45b,emissive:0xffbd18,emissiveIntensity:3,roughness:.25}));
 mouthGlow.position.set(0,8.7,1.92);mouthGlow.visible=false;root.add(mouthGlow);
 const core=new T.Mesh(new T.BoxGeometry(.8,.8,.3),new T.MeshStandardMaterial({color:0xbc77f3,emissive:0x9a39ef,emissiveIntensity:1}));core.position.set(0,5.2,2.43);root.add(core);
-const b={root,legs,arms,core,mouthGlow,x:0,z:0,hp:6000,maxHp:6000,phase:1,attack:3,warning:0,orbWindup:0,pendingOrb:null,announced:false,attackCount:0,weak:0,active:false,dead:false,time:0,attackPoint:null};root.visible=false;return b;}
+const b={root,legs,arms,core,mouthGlow,x:0,z:0,hp:6000,maxHp:6000,phase:1,attack:3,warning:0,orbWindup:0,pendingOrb:null,announced:false,missionAnnounced:false,attackCount:0,weak:0,active:false,dead:false,time:0,attackPoint:null};root.visible=false;return b;}
 export function hitBoss(b,amount){if(!b.active||b.dead)return 0;const damage=amount*(b.weak>0?2.5:b.phase===1?.65:1);b.hp=Math.max(0,b.hp-damage);b.phase=b.hp>4200?1:b.hp>2100?2:3;if(!b.hp)b.dead=true;return damage;}
 // 河面位于地图中间，炮弹只覆盖 Boss 当前所在一侧的岸区，避免隔河追着玩家轰炸。
 export function canBossBombTarget(b,target,maxRange=28){const sameBank=b.x>=0?target.x>10:target.x<-10;return sameBank&&Math.hypot(target.x-b.x,target.z-b.z)<=maxRange;}

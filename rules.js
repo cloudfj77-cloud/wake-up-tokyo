@@ -429,7 +429,7 @@ export function sprintResist(s){
  if(s.abilities.haste>=2)return .3;
  return 0;
 }
-export function cooldownScale(s){return 1;}
+export function cooldownScale(s){return [1,.85,.75,.65][s.abilities.haste];}
 export function teamCount(units){return units.filter(u=>u.kind==='ally'&&!u.dead).length;}
 export function guardWanted(s){
  const lv=s.abilities.command;
@@ -458,4 +458,4 @@ export function hurtMother(s,damage,source='秩序火力',sprinting=false){
 }
 export function bossReady(s){return s.towers>=2;}
 export function missionReady(s){return [()=>s.infected>=3,()=>s.infected>=10&&s.towers>=1,()=>s.highestEnemy>=3&&s.towers>=2,()=>bossReady(s),()=>s.bossDefeated][s.mission]?.()??false;}
-export const MISSIONS=[['叫醒第一个人','累计感染 3 人'],['让街区失控','感染 10 人，摧毁首座中枢'],['突破镇压','击败 / 转化净化工兵或持枪特警，摧毁两座中枢'],['唤出巨像','摧毁全部两个秩序中枢'],['东京人觉醒','击败中央路口的巨大 Boss']];
+export const MISSIONS=[['叫醒第一个人','累计感染 3 人'],['让街区失控','感染 10 人，摧毁首座中枢'],['突破镇压','击败 / 转化净化工兵或持枪特警，摧毁两座中枢'],['唤出巨像','摧毁全部两个秩序中枢'],['带领市民们逃离规训','击败奶蛙龙']];
