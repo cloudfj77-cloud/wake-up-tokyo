@@ -531,21 +531,29 @@ function detonateGrenade(b){
   if(dmg>0)hurtHostileTarget(t,dmg,b.from);
  }
 }
+function createBossTargetMarker(x,y,z){
+ const group=new T.Group(),disk=new T.Mesh(new T.CircleGeometry(5.5,48),new T.MeshBasicMaterial({color:0xffc928,transparent:true,opacity:.13,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending})),ring=new T.Mesh(new T.RingGeometry(5.05,5.5,64),new T.MeshBasicMaterial({color:0xffe45b,transparent:true,opacity:.82,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));
+ disk.rotation.x=ring.rotation.x=-Math.PI/2;group.add(disk,ring);group.position.set(x,y+.06,z);group.userData.effects=[disk,ring];scene.add(group);return group;
+}
 function throwBossOrb(){
  if(!canBossBombTarget(boss,player))return false;
  boss.root.updateMatrixWorld(true);const mouth=boss.root.localToWorld(new T.Vector3(0,8.7,2)),targetX=player.x,targetZ=player.z,targetY=world.heightAt(targetX,targetZ),flight=T.MathUtils.clamp(distance(player,boss)/18,.9,1.45);
  const material=new T.MeshStandardMaterial({color:0xffe44f,emissive:0xffbd16,emissiveIntensity:3.5,roughness:.2}),orb=new T.Mesh(new T.IcosahedronGeometry(.48,1),material);orb.position.copy(mouth);orb.add(new T.PointLight(0xffd52d,3.6,8,1.5));scene.add(orb);
- tracers.push({m:orb,bossOrb:true,life:flight,total:flight,sx:mouth.x,sy:mouth.y,sz:mouth.z,tx:targetX,ty:targetY,tz:targetZ,x:mouth.x,y:mouth.y,z:mouth.z,detonated:false});
+ tracers.push({m:orb,marker:createBossTargetMarker(targetX,targetY,targetZ),bossOrb:true,life:flight,total:flight,sx:mouth.x,sy:mouth.y,sz:mouth.z,tx:targetX,ty:targetY,tz:targetZ,x:mouth.x,y:mouth.y,z:mouth.z,detonated:false});
  burst(mouth.x,mouth.y,mouth.z,0xffe158,18);music.effect('bossThrow');return true;
 }
 function detonateBossOrb(projectile){
  if(projectile.detonated)return;projectile.detonated=true;const radius=5.5,ground=world.heightAt(projectile.tx,projectile.tz);projectile.x=projectile.tx;projectile.z=projectile.tz;
+ if(projectile.marker){scene.remove(projectile.marker);for(const effect of projectile.marker.userData.effects||[]){effect.geometry.dispose();effect.material.dispose();}projectile.marker=null;}
  wave(projectile.tx,projectile.tz,radius,0xffd83d);burst(projectile.tx,ground+.5,projectile.tz,0xffe45b,45);world.breakAt(projectile.tx,projectile.tz,radius,75,burst,ground+.5);
  for(const target of [player,...units.filter(unit=>unit.kind==='ally'&&!unit.dead)]){const gap=Math.hypot(target.x-projectile.tx,target.z-projectile.tz);if(gap<radius)hurtHostileTarget(target,Math.round(60*(1-gap/radius*.65)),'巨像黄色炮弹');}
  music.effect('bossImpact');
 }
 function updateBossOrb(projectile){
- const progress=T.MathUtils.clamp(1-projectile.life/projectile.total,0,1);projectile.x=T.MathUtils.lerp(projectile.sx,projectile.tx,progress);projectile.z=T.MathUtils.lerp(projectile.sz,projectile.tz,progress);projectile.y=T.MathUtils.lerp(projectile.sy,projectile.ty+.45,progress)+Math.sin(progress*Math.PI)*4.5;projectile.m.position.set(projectile.x,projectile.y,projectile.z);projectile.m.rotation.x+=frameDelta*5;projectile.m.rotation.z+=frameDelta*7;aura('bossOrbTarget',projectile.tx,projectile.tz,5.5,0xffd83d);if(projectile.life<=0)detonateBossOrb(projectile);
+ const progress=T.MathUtils.clamp(1-projectile.life/projectile.total,0,1);projectile.x=T.MathUtils.lerp(projectile.sx,projectile.tx,progress);projectile.z=T.MathUtils.lerp(projectile.sz,projectile.tz,progress);projectile.y=T.MathUtils.lerp(projectile.sy,projectile.ty+.45,progress)+Math.sin(progress*Math.PI)*4.5;projectile.m.position.set(projectile.x,projectile.y,projectile.z);projectile.m.rotation.x+=frameDelta*5;projectile.m.rotation.z+=frameDelta*7;
+ // 黄色圆环从出膛一直保留到落地，临近爆炸时加快闪烁，完整显示 5.5 米危险范围。
+ if(projectile.marker){const flash=.55+.35*Math.sin(performance.now()*(.006+progress*.018));projectile.marker.userData.effects[0].material.opacity=.1+progress*.13;projectile.marker.userData.effects[1].material.opacity=flash;projectile.marker.scale.setScalar(1+Math.sin(performance.now()*.01)*.025);}
+ if(projectile.life<=0)detonateBossOrb(projectile);
 }
 function enemyFire(u,spec,victim){
  const ranged=isRangedEnemy(spec);
