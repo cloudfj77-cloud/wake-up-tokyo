@@ -84,11 +84,13 @@ function updateAuras(dt){
 function applyQuality(){renderer.setPixelRatio(settings.quality==='low'?1:Math.min(devicePixelRatio,1.5));sun.castShadow=settings.quality!=='low';renderer.shadowMap.enabled=settings.quality!=='low';renderer.setSize(innerWidth,innerHeight);}
 applyQuality();function resize(){renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();}addEventListener('resize',resize);resize();
 const particlesGeometry=new T.BoxGeometry(.12,.12,.12),particleMaterials=new Map();
-function burst(x,y,z,color,count=10){if(particles.length>220)return;let mat=particleMaterials.get(color);if(!mat){mat=new T.MeshBasicMaterial({color});particleMaterials.set(color,mat);}for(let i=0;i<count;i++){const m=new T.Mesh(particlesGeometry,mat);m.position.set(x,y,z);m.scale.setScalar(.8+Math.random()*1.5);scene.add(m);particles.push({m,v:new T.Vector3((Math.random()-.5)*5,Math.random()*4+1,(Math.random()-.5)*5),life:.4+Math.random()*.6});}}
+function burst(x,y,z,color,count=10,speed=5){if(particles.length>420)return;let mat=particleMaterials.get(color);if(!mat){mat=new T.MeshBasicMaterial({color});particleMaterials.set(color,mat);}const room=Math.max(0,420-particles.length);count=Math.min(count,room);for(let i=0;i<count;i++){const m=new T.Mesh(particlesGeometry,mat);m.position.set(x,y,z);m.scale.setScalar(.8+Math.random()*1.5);scene.add(m);particles.push({m,v:new T.Vector3((Math.random()-.5)*speed,Math.random()*speed*.9+1,(Math.random()-.5)*speed),life:.4+Math.random()*.7});}}
 function wave(x,z,r,color=0xb473ec){const m=new T.Mesh(new T.RingGeometry(.92,1,40),new T.MeshBasicMaterial({color,transparent:true,side:T.DoubleSide}));m.rotation.x=-Math.PI/2;m.position.set(x,.15,z);scene.add(m);waves.push({m,r,t:0});}
 function aura(key,x,z,r,color){let a=auraVisuals.get(key);if(!a){const pts=[];for(let i=0;i<64;i+=2){pts.push(new T.Vector3(Math.cos(i/64*Math.PI*2),0,Math.sin(i/64*Math.PI*2)),new T.Vector3(Math.cos((i+1)/64*Math.PI*2),0,Math.sin((i+1)/64*Math.PI*2)));}a=new T.LineSegments(new T.BufferGeometry().setFromPoints(pts),new T.LineBasicMaterial({color,transparent:true,opacity:.7}));scene.add(a);auraVisuals.set(key,a);}a.position.set(x,.12,z);a.scale.set(r,1,r);a.material.color.setHex(color);a.visible=true;return a;}
 function toast(text,duration=3){$('toast').textContent=text;$('toast').style.opacity=1;toastTime=duration;}
 function showBossArrival(){
+ if(boss.announced||!boss.active||boss.dead)return;
+ boss.announced=true;
  const alert=$('policeAlert');
  alert.innerHTML='<strong>蛙</strong><small>BOSS现身</small><b>蛙来！</b>';
  alert.classList.remove('active','upgrade','boss');void alert.offsetWidth;
@@ -537,7 +539,7 @@ function detonateGrenade(b){
   if(dmg>0)hurtHostileTarget(t,dmg,b.from);
  }
 }
-const BOSS_ORB_RADIUS=2.6,BOSS_ORB_WINDUP=.5;
+const BOSS_ORB_RADIUS=2.6,BOSS_ORB_WINDUP=0;
 function createBossTargetMarker(x,y,z){
  const r=BOSS_ORB_RADIUS,group=new T.Group(),disk=new T.Mesh(new T.CircleGeometry(r,48),new T.MeshBasicMaterial({color:0xffc928,transparent:true,opacity:.13,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending})),ring=new T.Mesh(new T.RingGeometry(r-.4,r,64),new T.MeshBasicMaterial({color:0xffe45b,transparent:true,opacity:.82,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));
  disk.rotation.x=ring.rotation.x=-Math.PI/2;group.add(disk,ring);group.position.set(x,y+.06,z);group.userData.effects=[disk,ring];scene.add(group);return group;
@@ -559,6 +561,7 @@ function beginBossOrbCharge(){
  if(boss.pendingOrb||!canBossBombTarget(boss,player))return false;
  const x=player.x,z=player.z,y=world.heightAt(x,z);
  boss.pendingOrb={x,y,z,marker:createBossTargetMarker(x,y,z)};
+ if(BOSS_ORB_WINDUP<=0)return throwBossOrb();
  boss.orbWindup=BOSS_ORB_WINDUP;return true;
 }
 function throwBossOrb(){
@@ -569,10 +572,22 @@ function throwBossOrb(){
  tracers.push({m:orb,marker:pending.marker,bossOrb:true,life:flight,total:flight,sx:mouth.x,sy:mouth.y,sz:mouth.z,tx:pending.x,ty:pending.y,tz:pending.z,x:mouth.x,y:mouth.y,z:mouth.z,detonated:false});
  boss.pendingOrb=null;burst(mouth.x,mouth.y,mouth.z,0xffe158,18);music.effect('bossThrow');return true;
 }
+function releaseBossExplosion(x,z){
+ const ground=world.heightAt(x,z);
+ wave(x,z,10,0xffe45b);wave(x,z,7.2,0xff9a14);wave(x,z,4.4,0xfff4c0);
+ burst(x,ground+.7,z,0xffe45b,70,14);burst(x,ground+1.8,z,0xff7a18,48,11);burst(x,ground+3.2,z,0xfff1a8,28,8);
+ for(const [radius,color,opacity] of [[8.4,0xffc428,.9],[6.2,0xff6a10,.55],[3.6,0xfff6c8,.42]]){
+  const blast=new T.Mesh(new T.SphereGeometry(1,22,16),new T.MeshBasicMaterial({color,transparent:true,opacity,blending:T.AdditiveBlending,depthWrite:false}));
+  blast.position.set(x,ground+1.15,z);if(radius>7)blast.add(new T.PointLight(0xffd000,16,20,1.5));scene.add(blast);waves.push({m:blast,r:radius,t:0,fade:.85,grow:.28,opacity});
+ }
+ const flash=new T.Mesh(new T.CircleGeometry(1,36),new T.MeshBasicMaterial({color:0xfff3a8,transparent:true,opacity:.95,side:T.DoubleSide,blending:T.AdditiveBlending,depthWrite:false}));
+ flash.rotation.x=-Math.PI/2;flash.position.set(x,ground+.08,z);scene.add(flash);waves.push({m:flash,r:9.5,t:0,fade:.7,grow:.22,opacity:.95});
+ if(Math.hypot(player.x-x,player.z-z)<24)shake=Math.max(shake,.62);
+}
 function detonateBossOrb(projectile){
  if(projectile.detonated)return;projectile.detonated=true;const radius=BOSS_ORB_RADIUS,ground=world.heightAt(projectile.tx,projectile.tz);projectile.x=projectile.tx;projectile.z=projectile.tz;
  if(projectile.marker){disposeBossMarker(projectile.marker);projectile.marker=null;}
- wave(projectile.tx,projectile.tz,radius,0xffd83d);burst(projectile.tx,ground+.5,projectile.tz,0xffe45b,45);world.breakAt(projectile.tx,projectile.tz,radius,75,burst,ground+.5);
+ releaseBossExplosion(projectile.tx,projectile.tz);world.breakAt(projectile.tx,projectile.tz,radius,75,burst,ground+.5);
  for(const target of [player,...units.filter(unit=>unit.kind==='ally'&&!unit.dead)]){const gap=Math.hypot(target.x-projectile.tx,target.z-projectile.tz);if(gap<radius)hurtHostileTarget(target,Math.round(60*(1-gap/radius*.65)),'巨像黄色炮弹');}
  music.effect('bossImpact');
 }
@@ -616,7 +631,7 @@ else{if((!alerted&&state.time<8)||d>(player.crouch?15:27+state.alert*3)){u.aimin
 if(u.kind==='ally'&&state.abilities.haste>=3)pace*=1.3;({x:tx,z:tz}=world.waypoint(u,tx,tz));const len=Math.hypot(tx-u.x,tz-u.z);let moving=false;if(pace&&len>.6){const vx=(tx-u.x)/len*pace*dt,vz=(tz-u.z)/len*pace*dt;moving=move(u,vx,vz,true);if(moving)visuals.get(u.id).v.holder.rotation.y=Math.atan2(vx,vz);}const v=visuals.get(u.id)?.v;if(v)updateCharacterVisual(v,moving,dt,d);}}
 function updateVisuals(dt){for(const {v} of visuals.values())v.marker.visible=false;for(const u of units){const entry=visuals.get(u.id);if(!entry)continue;const {v}=entry;v.holder.visible=distance(player,u)<38;v.holder.position.set(u.x,world.heightAt(u.x,u.z),u.z);if(u.converted&&!u.dead&&!v.aura)v.aura=makeAura(v.holder,u.type===0?AURA_COLORS.worker:AURA_COLORS.guard);if(v.aura){if(u.dead){removeAura(v.aura);v.aura=null;}else v.aura.g.visible=v.holder.visible&&distance(player,u)<34;}if(u.dead){v.holder.visible=false;continue;}if(entry.oldKind!==u.kind){if(u.kind==='ally'){setCharacterKind(v,'ally');v.holder.rotation.x=0;burst(u.x,1,u.z,0xba77ed,12);music.effect('convert');}if(u.kind==='corpse'){v.holder.rotation.x=Math.PI/2;v.holder.position.y=world.heightAt(u.x,u.z)+.3;}entry.oldKind=u.kind;}if(u.kind==='corpse'){v.holder.position.y=world.heightAt(u.x,u.z)+.3;v.holder.visible=distance(player,u)<45;}}
 for(const a of auraVisuals.values())a.visible=false;if(state.abilities.air)aura('mother',player.x,player.z,[0,5,10,15][state.abilities.air],0xb377e7);for(const u of units){if(u.dead||u.kind==='corpse')continue;if(u.aiming&&!isRangedEnemy(ENEMIES[u.type])&&distance(player,u)<22)aura('melee'+u.id,u.x,u.z,ENEMIES[u.type].range+.2,0xf08a4a);else if(u.type===4&&distance(player,u)<32)aura(u.id,u.x,u.z,ENEMIES[4].aura||8,u.converted?0xb377e7:0x69bce8);else if(u.kind==='ally'&&state.abilities.air===3&&distance(player,u)<22)aura(u.id,u.x,u.z,5,0xb377e7);}}
-function updateEffects(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.v.y-=9*dt;p.m.position.addScaledVector(p.v,dt);p.m.rotation.x+=dt*4;if(p.life<=0){scene.remove(p.m);particles.splice(i,1);}}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.t+=dt;w.m.scale.setScalar(w.r*Math.min(1,w.t/.35));w.m.material.opacity=Math.max(0,1-w.t/.6);if(w.t>.6){scene.remove(w.m);w.m.geometry.dispose();w.m.material.dispose();waves.splice(i,1);}}
+function updateEffects(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.v.y-=9*dt;p.m.position.addScaledVector(p.v,dt);p.m.rotation.x+=dt*4;if(p.life<=0){scene.remove(p.m);particles.splice(i,1);}}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.t+=dt;const fade=w.fade||.6,grow=w.grow||.35;w.m.scale.setScalar(w.r*Math.min(1,w.t/grow));if(w.m.material){if(w.opacity==null)w.opacity=w.m.material.opacity||1;w.m.material.opacity=Math.max(0,w.opacity*(1-w.t/fade));}if(w.t>fade){scene.remove(w.m);w.m.geometry?.dispose?.();w.m.material?.dispose?.();waves.splice(i,1);}}
 for(let i=tracers.length-1;i>=0;i--){const b=tracers[i];b.life-=dt;if(b.m){
  if(b.bossOrb)updateBossOrb(b);
  else if(b.isPower){
@@ -669,17 +684,18 @@ function hud(){if(import.meta.env.DEV)canvas.dataset.scene=JSON.stringify({build
 
 function updateMissions(){while(missionReady(state)&&state.mission<4){const done=MISSIONS[state.mission][0];state.mission++;state.hp=Math.min(state.maxHp,state.hp+25);toast('任务完成 · '+done+' | 生命 +25',4);music.effect('upgrade');$('missionComplete').textContent='✓ '+done+' · 完成';missionTimer=3;saveRun();}
  // 演示版不再等待感染人数或前置任务：两个中枢一旦全部摧毁，就立即进入 Boss 战。
- if(bossReady(state)&&!boss.active){state.mission=Math.max(state.mission,4);saveRun();spawnQueue.jobs.length=0;spawnQueue.wait=0;alerted=false;boss.active=true;boss.root.visible=true;boss.x=world.bossSpawn.x;boss.z=world.bossSpawn.z;boss.attack=4;showBossArrival();}
+ if(bossReady(state)&&!boss.active){state.mission=Math.max(state.mission,4);saveRun();spawnQueue.jobs.length=0;spawnQueue.wait=0;alerted=false;boss.active=true;boss.root.visible=true;boss.x=world.bossSpawn.x;boss.z=world.bossSpawn.z;boss.attack=4;toast('巨像已降临 · 进入它所在河岸',4);}
 }
 function updateBoss(dt){
  missionTimer=Math.max(0,missionTimer-dt);$('missionComplete').style.opacity=missionTimer>0?1:0;$('bossHud').hidden=!boss.active;document.querySelector('.alertPanel').style.display=boss.active?'none':'';if(!boss.active)return;
  animateBoss(boss,dt);$('bossHp').style.width=boss.hp/boss.maxHp*100+'%';$('bossValue').textContent=Math.ceil(boss.hp)+' / 6000';$('bossPhase').textContent=['','Ⅰ 炮火苏醒','Ⅱ 连续轰击','Ⅲ 狂热炮击'][boss.phase]+(boss.weak>0?' · 核心过热':'');
  if(boss.dead){clearPendingOrb();state.bossDefeated=true;for(let i=0;i<8;i++)burst(boss.x,Math.random()*9,boss.z,0xd59cff,15);return;}
  boss.weak=Math.max(0,boss.weak-dt);boss.attack-=dt;const gap=distance(player,boss),canBomb=canBossBombTarget(boss,player);boss.root.rotation.y=Math.atan2(player.x-boss.x,player.z-boss.z);
+ if(canBomb)showBossArrival();
  if(gap>9){const pace=boss.phase===3?2:1.2,nx=boss.x+(player.x-boss.x)/gap*dt*pace,nz=boss.z+(player.z-boss.z)/gap*dt*pace;if(world.free(nx,nz,3)){boss.x=nx;boss.z=nz;}else world.breakAt(nx,nz,3,dt*90,burst);}
- // 预警环在蓄力开始时就落到预定落点，比炮弹出手早 1 秒，给玩家离开黄圈的时间。
- if(boss.orbWindup>0){if(!canBomb){boss.orbWindup=0;boss.attack=.4;clearPendingOrb();$('bossWarning').textContent='炮击范围仅限巨像所在河岸';}else{pulseBossMarker(boss.pendingOrb?.marker,1-boss.orbWindup/BOSS_ORB_WINDUP);boss.orbWindup=Math.max(0,boss.orbWindup-dt);$('bossWarning').textContent='⚠ 落点预警 · 离开黄色圆环';if(!boss.orbWindup&&throwBossOrb()){boss.weak=2.2;boss.attack=[0,4.6,3.7,2.8][boss.phase];}}}
- else{$('bossWarning').textContent=boss.weak>0?'核心过热 · 集中攻击！':canBomb?'':'进入巨像所在河岸后，炮击才会开始';if(boss.attack<=0&&canBomb)beginBossOrbCharge();}
+ // 预警环在炮弹出手时出现，飞行约 0.9 秒后落地并炸开。
+ if(boss.orbWindup>0){if(!canBomb){boss.orbWindup=0;boss.attack=.4;clearPendingOrb();$('bossWarning').textContent='炮击范围仅限巨像所在河岸';}else{pulseBossMarker(boss.pendingOrb?.marker,BOSS_ORB_WINDUP?1-boss.orbWindup/BOSS_ORB_WINDUP:1);boss.orbWindup=Math.max(0,boss.orbWindup-dt);$('bossWarning').textContent='⚠ 落点预警 · 离开黄色圆环';if(!boss.orbWindup&&throwBossOrb()){boss.weak=2.2;boss.attack=[0,4.6,3.7,2.8][boss.phase];}}}
+ else{$('bossWarning').textContent=boss.weak>0?'核心过热 · 集中攻击！':canBomb?'':'进入巨像所在河岸后，炮击才会开始';if(boss.attack<=0&&canBomb&&beginBossOrbCharge()&&boss.orbWindup<=0){boss.weak=2.2;boss.attack=[0,4.6,3.7,2.8][boss.phase];}}
 }
 
 let last=performance.now(),hudTimer=0;
