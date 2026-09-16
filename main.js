@@ -13,7 +13,7 @@ const PLAYER_HEIGHT=characterHeight('player'),STANDING_CHEST=PLAYER_HEIGHT*.72,C
 const FX_SCALE=PLAYER_HEIGHT/2.25;
 let yaw=0,pitch=.08,cameraDistance=2.7,mouseHeld=false,dragging=false,lastMouse=null,attackCd=0,breakCd=0,rushCd=0,reinforceTimer=24,reinforceDirection=0,reinforceAnnounced=false,totalReinforcements=0,invincible=0,toastTime=0,saveTimer=0,shake=0,target=null,frameDelta=0,choiceSet=[],pendingChoice=-1,upgradeLock=0,upgradeTimer=0;
 // 中枢从三座改成两座后，旧存档的可破坏物索引已不兼容，必须换版本避免读取时错位。
-let settings={volume:.38,sensitivity:1,quality:'standard'};const SAVE_KEY='wake-up-tokyo-riverside-v4',SAVE_VERSION=8;const debugQuery=new URLSearchParams(location.search);let showDebug=debugQuery.has('debug');let alerted=false,switchTime=0,nextWeapon=-1,reloadTime=0,conversionCount=0,conversionTimer=0,missionTimer=0,nextActorId=800,ramTimer=0;let squadIds=new Set(),choiceRerolls=[false,false,false],choiceSeen=new Set();
+let settings={volume:.38,sensitivity:1,quality:'standard'};const SAVE_KEY='wake-up-tokyo-riverside-v4',SAVE_VERSION=8;const debugQuery=new URLSearchParams(location.search);let showDebug=debugQuery.has('debug');let alerted=false,switchTime=0,nextWeapon=-1,reloadTime=0,conversionCount=0,conversionTimer=0,missionTimer=0,policeAlertTimer=0,nextActorId=800,ramTimer=0;let squadIds=new Set(),choiceRerolls=[false,false,false],choiceSeen=new Set();
 const spawnQueue=makeSpawnQueue(),unitPool=[],recentSpawnPoints=[];
 try{settings={...settings,...JSON.parse(localStorage.getItem('groundzero-settings')||'{}')};}catch{}
 music.volume=settings.volume;
@@ -88,6 +88,12 @@ function burst(x,y,z,color,count=10){if(particles.length>220)return;let mat=part
 function wave(x,z,r,color=0xb473ec){const m=new T.Mesh(new T.RingGeometry(.92,1,40),new T.MeshBasicMaterial({color,transparent:true,side:T.DoubleSide}));m.rotation.x=-Math.PI/2;m.position.set(x,.15,z);scene.add(m);waves.push({m,r,t:0});}
 function aura(key,x,z,r,color){let a=auraVisuals.get(key);if(!a){const pts=[];for(let i=0;i<64;i+=2){pts.push(new T.Vector3(Math.cos(i/64*Math.PI*2),0,Math.sin(i/64*Math.PI*2)),new T.Vector3(Math.cos((i+1)/64*Math.PI*2),0,Math.sin((i+1)/64*Math.PI*2)));}a=new T.LineSegments(new T.BufferGeometry().setFromPoints(pts),new T.LineBasicMaterial({color,transparent:true,opacity:.7}));scene.add(a);auraVisuals.set(key,a);}a.position.set(x,.12,z);a.scale.set(r,1,r);a.material.color.setHex(color);a.visible=true;return a;}
 function toast(text,duration=3){$('toast').textContent=text;$('toast').style.opacity=1;toastTime=duration;}
+function showBossArrival(){
+ const alert=$('policeAlert');
+ alert.innerHTML='<strong>BOSS</strong><b>BOSS现身：蛙来！</b><small>秩序巨像已降临河岸</small>';
+ alert.classList.remove('active','upgrade','boss');void alert.offsetWidth;
+ alert.classList.add('active','boss');policeAlertTimer=2.8;music.effect('alertUp');
+}
 function createChargeRing(){
  // 充能环跟在脚下，不跟着人物转身，六格对应六次普通释放。
  const fullTurn=Math.PI*2,slot=fullTurn/6;
@@ -531,29 +537,48 @@ function detonateGrenade(b){
   if(dmg>0)hurtHostileTarget(t,dmg,b.from);
  }
 }
-const BOSS_ORB_RADIUS=2.6;
+const BOSS_ORB_RADIUS=2.6,BOSS_ORB_WINDUP=1;
 function createBossTargetMarker(x,y,z){
  const r=BOSS_ORB_RADIUS,group=new T.Group(),disk=new T.Mesh(new T.CircleGeometry(r,48),new T.MeshBasicMaterial({color:0xffc928,transparent:true,opacity:.13,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending})),ring=new T.Mesh(new T.RingGeometry(r-.4,r,64),new T.MeshBasicMaterial({color:0xffe45b,transparent:true,opacity:.82,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));
  disk.rotation.x=ring.rotation.x=-Math.PI/2;group.add(disk,ring);group.position.set(x,y+.06,z);group.userData.effects=[disk,ring];scene.add(group);return group;
 }
+function pulseBossMarker(marker,progress=0){
+ if(!marker)return;
+ const flash=.55+.35*Math.sin(performance.now()*(.006+progress*.018));
+ marker.userData.effects[0].material.opacity=.1+progress*.13;
+ marker.userData.effects[1].material.opacity=flash;
+ marker.scale.setScalar(1+Math.sin(performance.now()*.01)*.025);
+}
+function disposeBossMarker(marker){
+ if(!marker)return;scene.remove(marker);for(const effect of marker.userData.effects||[]){effect.geometry.dispose();effect.material.dispose();}
+}
+function clearPendingOrb(){
+ const pending=boss.pendingOrb;if(!pending)return;disposeBossMarker(pending.marker);boss.pendingOrb=null;
+}
+function beginBossOrbCharge(){
+ if(boss.pendingOrb||!canBossBombTarget(boss,player))return false;
+ const x=player.x,z=player.z,y=world.heightAt(x,z);
+ boss.pendingOrb={x,y,z,marker:createBossTargetMarker(x,y,z)};
+ boss.orbWindup=BOSS_ORB_WINDUP;return true;
+}
 function throwBossOrb(){
- if(!canBossBombTarget(boss,player))return false;
- boss.root.updateMatrixWorld(true);const mouth=boss.root.localToWorld(new T.Vector3(0,8.7,2)),targetX=player.x,targetZ=player.z,targetY=world.heightAt(targetX,targetZ),flight=T.MathUtils.clamp(distance(player,boss)/18,.9,1.45);
+ const pending=boss.pendingOrb;
+ if(!pending||!canBossBombTarget(boss,{x:pending.x,z:pending.z})){clearPendingOrb();return false;}
+ boss.root.updateMatrixWorld(true);const mouth=boss.root.localToWorld(new T.Vector3(0,8.7,2)),flight=T.MathUtils.clamp(Math.hypot(pending.x-boss.x,pending.z-boss.z)/18,.9,1.45);
  const material=new T.MeshStandardMaterial({color:0xffe44f,emissive:0xffbd16,emissiveIntensity:3.5,roughness:.2}),orb=new T.Mesh(new T.IcosahedronGeometry(.48,1),material);orb.position.copy(mouth);orb.add(new T.PointLight(0xffd52d,3.6,8,1.5));scene.add(orb);
- tracers.push({m:orb,marker:createBossTargetMarker(targetX,targetY,targetZ),bossOrb:true,life:flight,total:flight,sx:mouth.x,sy:mouth.y,sz:mouth.z,tx:targetX,ty:targetY,tz:targetZ,x:mouth.x,y:mouth.y,z:mouth.z,detonated:false});
- burst(mouth.x,mouth.y,mouth.z,0xffe158,18);music.effect('bossThrow');return true;
+ tracers.push({m:orb,marker:pending.marker,bossOrb:true,life:flight,total:flight,sx:mouth.x,sy:mouth.y,sz:mouth.z,tx:pending.x,ty:pending.y,tz:pending.z,x:mouth.x,y:mouth.y,z:mouth.z,detonated:false});
+ boss.pendingOrb=null;burst(mouth.x,mouth.y,mouth.z,0xffe158,18);music.effect('bossThrow');return true;
 }
 function detonateBossOrb(projectile){
  if(projectile.detonated)return;projectile.detonated=true;const radius=BOSS_ORB_RADIUS,ground=world.heightAt(projectile.tx,projectile.tz);projectile.x=projectile.tx;projectile.z=projectile.tz;
- if(projectile.marker){scene.remove(projectile.marker);for(const effect of projectile.marker.userData.effects||[]){effect.geometry.dispose();effect.material.dispose();}projectile.marker=null;}
+ if(projectile.marker){disposeBossMarker(projectile.marker);projectile.marker=null;}
  wave(projectile.tx,projectile.tz,radius,0xffd83d);burst(projectile.tx,ground+.5,projectile.tz,0xffe45b,45);world.breakAt(projectile.tx,projectile.tz,radius,75,burst,ground+.5);
  for(const target of [player,...units.filter(unit=>unit.kind==='ally'&&!unit.dead)]){const gap=Math.hypot(target.x-projectile.tx,target.z-projectile.tz);if(gap<radius)hurtHostileTarget(target,Math.round(60*(1-gap/radius*.65)),'巨像黄色炮弹');}
  music.effect('bossImpact');
 }
 function updateBossOrb(projectile){
  const progress=T.MathUtils.clamp(1-projectile.life/projectile.total,0,1);projectile.x=T.MathUtils.lerp(projectile.sx,projectile.tx,progress);projectile.z=T.MathUtils.lerp(projectile.sz,projectile.tz,progress);projectile.y=T.MathUtils.lerp(projectile.sy,projectile.ty+.45,progress)+Math.sin(progress*Math.PI)*4.5;projectile.m.position.set(projectile.x,projectile.y,projectile.z);projectile.m.rotation.x+=frameDelta*5;projectile.m.rotation.z+=frameDelta*7;
- // 黄色圆环从出膛一直保留到落地，临近爆炸时加快闪烁；半径 2.6 米，步行约 0.6 秒即可离开。
- if(projectile.marker){const flash=.55+.35*Math.sin(performance.now()*(.006+progress*.018));projectile.marker.userData.effects[0].material.opacity=.1+progress*.13;projectile.marker.userData.effects[1].material.opacity=flash;projectile.marker.scale.setScalar(1+Math.sin(performance.now()*.01)*.025);}
+ pulseBossMarker(projectile.marker,progress);
  if(projectile.life<=0)detonateBossOrb(projectile);
 }
 function enemyFire(u,spec,victim){
@@ -644,17 +669,17 @@ function hud(){if(import.meta.env.DEV)canvas.dataset.scene=JSON.stringify({build
 
 function updateMissions(){while(missionReady(state)&&state.mission<4){const done=MISSIONS[state.mission][0];state.mission++;state.hp=Math.min(state.maxHp,state.hp+25);toast('任务完成 · '+done+' | 生命 +25',4);music.effect('upgrade');$('missionComplete').textContent='✓ '+done+' · 完成';missionTimer=3;saveRun();}
  // 演示版不再等待感染人数或前置任务：两个中枢一旦全部摧毁，就立即进入 Boss 战。
- if(bossReady(state)&&!boss.active){state.mission=Math.max(state.mission,4);saveRun();spawnQueue.jobs.length=0;spawnQueue.wait=0;alerted=false;boss.active=true;boss.root.visible=true;boss.x=world.bossSpawn.x;boss.z=world.bossSpawn.z;boss.attack=4;toast('两个秩序中枢已摧毁 · 巨像降临！',5);}
+ if(bossReady(state)&&!boss.active){state.mission=Math.max(state.mission,4);saveRun();spawnQueue.jobs.length=0;spawnQueue.wait=0;alerted=false;boss.active=true;boss.root.visible=true;boss.x=world.bossSpawn.x;boss.z=world.bossSpawn.z;boss.attack=4;showBossArrival();}
 }
 function updateBoss(dt){
  missionTimer=Math.max(0,missionTimer-dt);$('missionComplete').style.opacity=missionTimer>0?1:0;$('bossHud').hidden=!boss.active;document.querySelector('.alertPanel').style.display=boss.active?'none':'';if(!boss.active)return;
  animateBoss(boss,dt);$('bossHp').style.width=boss.hp/boss.maxHp*100+'%';$('bossValue').textContent=Math.ceil(boss.hp)+' / 6000';$('bossPhase').textContent=['','Ⅰ 炮火苏醒','Ⅱ 连续轰击','Ⅲ 狂热炮击'][boss.phase]+(boss.weak>0?' · 核心过热':'');
- if(boss.dead){state.bossDefeated=true;for(let i=0;i<8;i++)burst(boss.x,Math.random()*9,boss.z,0xd59cff,15);return;}
+ if(boss.dead){clearPendingOrb();state.bossDefeated=true;for(let i=0;i<8;i++)burst(boss.x,Math.random()*9,boss.z,0xd59cff,15);return;}
  boss.weak=Math.max(0,boss.weak-dt);boss.attack-=dt;const gap=distance(player,boss),canBomb=canBossBombTarget(boss,player);boss.root.rotation.y=Math.atan2(player.x-boss.x,player.z-boss.z);
  if(gap>9){const pace=boss.phase===3?2:1.2,nx=boss.x+(player.x-boss.x)/gap*dt*pace,nz=boss.z+(player.z-boss.z)/gap*dt*pace;if(world.free(nx,nz,3)){boss.x=nx;boss.z=nz;}else world.breakAt(nx,nz,3,dt*90,burst);}
- // Boss 不再砸地：嘴部蓄光结束后只会抛出黄色炮弹，血量越低发射越频繁。
- if(boss.orbWindup>0){if(!canBomb){boss.orbWindup=0;boss.attack=.4;$('bossWarning').textContent='炮击范围仅限巨像所在河岸';}else{boss.orbWindup=Math.max(0,boss.orbWindup-dt);$('bossWarning').textContent='⚠ 嘴部蓄能 · 黄色炮弹即将发射';if(!boss.orbWindup&&throwBossOrb()){boss.weak=2.2;boss.attack=[0,4.6,3.7,2.8][boss.phase];}}}
- else{$('bossWarning').textContent=boss.weak>0?'核心过热 · 集中攻击！':canBomb?'':'进入巨像所在河岸后，炮击才会开始';if(boss.attack<=0&&canBomb)boss.orbWindup=.85;}
+ // 预警环在蓄力开始时就落到预定落点，比炮弹出手早 1 秒，给玩家离开黄圈的时间。
+ if(boss.orbWindup>0){if(!canBomb){boss.orbWindup=0;boss.attack=.4;clearPendingOrb();$('bossWarning').textContent='炮击范围仅限巨像所在河岸';}else{pulseBossMarker(boss.pendingOrb?.marker,1-boss.orbWindup/BOSS_ORB_WINDUP);boss.orbWindup=Math.max(0,boss.orbWindup-dt);$('bossWarning').textContent='⚠ 落点预警 · 离开黄色圆环';if(!boss.orbWindup&&throwBossOrb()){boss.weak=2.2;boss.attack=[0,4.6,3.7,2.8][boss.phase];}}}
+ else{$('bossWarning').textContent=boss.weak>0?'核心过热 · 集中攻击！':canBomb?'':'进入巨像所在河岸后，炮击才会开始';if(boss.attack<=0&&canBomb)beginBossOrbCharge();}
 }
 
 let last=performance.now(),hudTimer=0;
@@ -682,7 +707,7 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.04,(now-last
   if(mode==='upgrade'&&upgradeLock>0){upgradeLock=Math.max(0,upgradeLock-dt);if(upgradeLock<=0)$('dialog')?.classList.remove('choiceLock');}
   try{updateEffects(dt);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}catch{}
  }else if(mode==='menu'){for(const {v}of visuals.values())updateCharacterVisual(v,false,dt,0);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}
- updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}renderer.render(scene,camera);
+ updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;policeAlertTimer=Math.max(0,policeAlertTimer-dt);if(!policeAlertTimer)$('policeAlert').classList.remove('active','upgrade','boss');updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}renderer.render(scene,camera);
 }
 requestAnimationFrame(frame);
 try{assets=await loadCharacterAssets();playerVisual=createCharacterVisual(assets,'player',1);scene.add(playerVisual.holder);playerVisual.holder.position.set(player.x,world.heightAt(player.x,player.z),player.z);playerVisual.holder.rotation.y=Math.PI;initUnits();scatterPickups();if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='boss'){state.infected=40;state.highestEnemy=5;state.mission=4;state.pending=0;state.weapon=0;state.abilities.guns=3;player.z=-15;world.towers.forEach(o=>{o.dead=true;o.g.visible=false;});units.forEach(u=>{u.dead=true;visuals.get(u.id).v.holder.visible=false;});}if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='melee'){state.pending=0;alerted=true;units.forEach(u=>{u.dead=true;visuals.get(u.id).v.holder.visible=false;});const p=world.nearest(player.x,player.z+1.15,1);const cop=makeUnit(900,1,p.x,p.z,false,0);cop.attackCd=0;units.push(cop);actorVisual(cop);}if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='launcher'){state.pending=0;state.abilities.launcher=3;state.weapon=LAUNCHER_SLOT;state.launcherCharge=6;}mode='menu';$('start').disabled=false;$('start').innerHTML='都给我醒过来！ <span>↗</span>';$('loading').textContent='开局 Lv.1 · 先选择一次变异能力';const saved=loadSaved();if(saved){$('continue').hidden=false;$('continue').textContent=`继续 · Lv.${saved.state.level} · 城市已感染 ${Math.floor(saved.state.cityInfected/POPULATION*100)}%`;}}

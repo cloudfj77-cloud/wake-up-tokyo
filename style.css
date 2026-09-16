@@ -112,7 +112,12 @@ body.defeated .dialog{width:min(560px,92vw);border-color:#e6646e88;box-shadow:0 
 #policeAlert strong{position:absolute;left:calc(50% - 230px);top:31px;font:900 56px/.8 Impact,'Arial Black',sans-serif;color:#ffb2bb55}
 #policeAlert small{display:block;margin-top:8px;color:#ffd8dd;font-size:10px;letter-spacing:2px}
 @keyframes policeAlert{0%{opacity:0;transform:scaleY(.15)}10%,72%{opacity:1;transform:scaleY(1)}82%{opacity:1;transform:scaleY(1) translateX(-4px)}86%{transform:scaleY(1) translateX(4px)}100%{opacity:0;transform:scaleY(.6)}}
-@media(prefers-reduced-motion:reduce){#policeAlert.active{animation:policeAlertFade 2.1s ease both}@keyframes policeAlertFade{10%,75%{opacity:1;transform:none}100%{opacity:0;transform:none}}}
+#policeAlert.boss{background:linear-gradient(90deg,transparent,#8a6208e8 14%,#d7a116f5 50%,#8a6208e8 86%,transparent);border-color:#ffe45b88;color:#fff8d4}
+#policeAlert.boss:before,#policeAlert.boss:after{content:'/// BOSS 现身 /// 蛙来 /// BOSS 现身 /// 蛙来 /// BOSS 现身 ///';color:#ffe9a888}
+#policeAlert.boss b{letter-spacing:4px;font-size:34px;color:#ffe45b;text-shadow:0 0 18px #ffbf1a,0 2px 10px #4a2a00}
+#policeAlert.boss strong{color:#ffe45b55}
+#policeAlert.boss.active{animation-duration:2.8s}
+@media(prefers-reduced-motion:reduce){#policeAlert.active{animation:policeAlertFade 2.1s ease both}#policeAlert.boss.active{animation-duration:2.8s}@keyframes policeAlertFade{10%,75%{opacity:1;transform:none}100%{opacity:0;transform:none}}}
 
 /* 主菜单参考街机式开放世界界面：标题、纵向菜单和状态面板都浮在实时城市背景上。 */
 #menu .menuShade{background:linear-gradient(90deg,#090915c7 0,#0e0a187d 34%,transparent 61%,#080b1347 100%)}
