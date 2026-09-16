@@ -41,16 +41,20 @@ test('guns level 3 convert infection is half weapon damage',()=>{
  assert.equal(u.infection,16);
  assert.equal(hit(s,u,8,16),'converted');
 });
-test('launcher starts equipped; level 2 pierces; level 3 empowers after six casts',()=>{
+test('launcher is chosen like other skills; level 2 pierces; level 3 empowers after six casts',()=>{
  const s=makeState();
+ assert.equal(s.abilities.launcher,0);
+ assert.equal(s.weapon,-1);
+ assert.equal(hasLauncher(s),false);
+ assert.equal(launcherSpec(s),null);
+ s.pending=3;
+ assert.equal(upgrade(s,'launcher'),true);
  assert.equal(s.abilities.launcher,1);
  assert.equal(s.weapon,LAUNCHER_SLOT);
- assert.equal(hasLauncher(s),true);
  const lv1=launcherSpec(s);
  assert.equal(lv1.pierce,0);
  assert.equal(lv1.infection,12);
  assert.equal(consumeLauncherCharge(s),false);
- s.pending=2;
  upgrade(s,'launcher');
  const lv2=launcherSpec(s);
  assert.equal(s.abilities.launcher,2);

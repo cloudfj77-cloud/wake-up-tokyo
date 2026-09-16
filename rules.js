@@ -35,7 +35,7 @@ export const ABILITIES=[
   '解锁 RPG。4 级及以上 +1 发。枪械造成攻击力一半的感染。'
  ]},
  {id:'launcher',name:'可感染发射器',icon:'◎',group:'武器系',descriptions:[
-  '开局即可发射感染针。命中造成感染，适合叫醒路人。',
+  '解锁感染针。命中造成感染，适合叫醒路人。按 2 切换。',
   '针剂感染与伤害提高，并可穿透多名敌人。',
   '连续释放 6 次后，下一次打出强化炮弹。'
  ]},
@@ -84,10 +84,10 @@ export function makeState(){
  return {
   hp:BASE_HP,maxHp:BASE_HP,stamina:STAMINA_MAX,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,
   xp:0,need:xpNeedFor(1),level:1,pending:1,time:0,alert:1,peakAlert:1,
-  abilities:{air:0,guns:0,launcher:1,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
+  abilities:{air:0,guns:0,launcher:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
   history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
-  clip:0,clipMax:0,weapon:LAUNCHER_SLOT,gunId:null,launcherCharge:0,
+  clip:0,clipMax:0,weapon:-1,gunId:null,launcherCharge:0,
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
   frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
   tutorialStep:0,tutorialValue:0,tutorialDone:false,tutorialSkipped:false
@@ -184,6 +184,7 @@ export function upgrade(s,id){
   if(s.abilities.guns===2){addAmmo(s,'rifle',30);addAmmo(s,'sniper',9);s.mags.rifle=GUNS[2].clip;s.mags.sniper=GUNS[3].clip;}
   if(s.abilities.guns===3){addAmmo(s,'rpg',2);s.mags.rpg=1;}
  }
+ // 第一次点出发射器时自动装备，和点出枪械后上手手枪一样。
  if(id==='launcher'&&s.abilities.launcher===1&&s.weapon===-1)s.weapon=LAUNCHER_SLOT;
  if(id==='frenzy'||id==='evolve')refreshStats(s);
  if(id==='command')s.needGuards=true;
