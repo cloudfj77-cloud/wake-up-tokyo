@@ -531,6 +531,21 @@ function detonateGrenade(b){
   if(dmg>0)hurtHostileTarget(t,dmg,b.from);
  }
 }
+function throwBossOrb(){
+ boss.root.updateMatrixWorld(true);const mouth=boss.root.localToWorld(new T.Vector3(0,8.7,2)),targetX=player.x,targetZ=player.z,targetY=world.heightAt(targetX,targetZ),flight=T.MathUtils.clamp(distance(player,boss)/18,.9,1.45);
+ const material=new T.MeshStandardMaterial({color:0xffe44f,emissive:0xffbd16,emissiveIntensity:3.5,roughness:.2}),orb=new T.Mesh(new T.IcosahedronGeometry(.48,1),material);orb.position.copy(mouth);orb.add(new T.PointLight(0xffd52d,3.6,8,1.5));scene.add(orb);
+ tracers.push({m:orb,bossOrb:true,life:flight,total:flight,sx:mouth.x,sy:mouth.y,sz:mouth.z,tx:targetX,ty:targetY,tz:targetZ,x:mouth.x,y:mouth.y,z:mouth.z,detonated:false});
+ burst(mouth.x,mouth.y,mouth.z,0xffe158,18);music.effect('bossThrow');
+}
+function detonateBossOrb(projectile){
+ if(projectile.detonated)return;projectile.detonated=true;const radius=5.5,ground=world.heightAt(projectile.tx,projectile.tz);projectile.x=projectile.tx;projectile.z=projectile.tz;
+ wave(projectile.tx,projectile.tz,radius,0xffd83d);burst(projectile.tx,ground+.5,projectile.tz,0xffe45b,45);world.breakAt(projectile.tx,projectile.tz,radius,75,burst,ground+.5);
+ for(const target of [player,...units.filter(unit=>unit.kind==='ally'&&!unit.dead)]){const gap=Math.hypot(target.x-projectile.tx,target.z-projectile.tz);if(gap<radius)hurtHostileTarget(target,Math.round(60*(1-gap/radius*.65)),'巨像黄色炮弹');}
+ music.effect('bossImpact');
+}
+function updateBossOrb(projectile){
+ const progress=T.MathUtils.clamp(1-projectile.life/projectile.total,0,1);projectile.x=T.MathUtils.lerp(projectile.sx,projectile.tx,progress);projectile.z=T.MathUtils.lerp(projectile.sz,projectile.tz,progress);projectile.y=T.MathUtils.lerp(projectile.sy,projectile.ty+.45,progress)+Math.sin(progress*Math.PI)*4.5;projectile.m.position.set(projectile.x,projectile.y,projectile.z);projectile.m.rotation.x+=frameDelta*5;projectile.m.rotation.z+=frameDelta*7;aura('bossOrbTarget',projectile.tx,projectile.tz,5.5,0xffd83d);if(projectile.life<=0)detonateBossOrb(projectile);
+}
 function enemyFire(u,spec,victim){
  const ranged=isRangedEnemy(spec);
  const visual=visuals.get(u.id)?.v;
@@ -568,7 +583,8 @@ function updateVisuals(dt){for(const {v} of visuals.values())v.marker.visible=fa
 for(const a of auraVisuals.values())a.visible=false;if(state.abilities.air)aura('mother',player.x,player.z,[0,5,10,15][state.abilities.air],0xb377e7);for(const u of units){if(u.dead||u.kind==='corpse')continue;if(u.aiming&&!isRangedEnemy(ENEMIES[u.type])&&distance(player,u)<22)aura('melee'+u.id,u.x,u.z,ENEMIES[u.type].range+.2,0xf08a4a);else if(u.type===4&&distance(player,u)<32)aura(u.id,u.x,u.z,ENEMIES[4].aura||8,u.converted?0xb377e7:0x69bce8);else if(u.kind==='ally'&&state.abilities.air===3&&distance(player,u)<22)aura(u.id,u.x,u.z,5,0xb377e7);}}
 function updateEffects(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.v.y-=9*dt;p.m.position.addScaledVector(p.v,dt);p.m.rotation.x+=dt*4;if(p.life<=0){scene.remove(p.m);particles.splice(i,1);}}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.t+=dt;w.m.scale.setScalar(w.r*Math.min(1,w.t/.35));w.m.material.opacity=Math.max(0,1-w.t/.6);if(w.t>.6){scene.remove(w.m);w.m.geometry.dispose();w.m.material.dispose();waves.splice(i,1);}}
 for(let i=tracers.length-1;i>=0;i--){const b=tracers[i];b.life-=dt;if(b.m){
- if(b.isPower){
+ if(b.bossOrb)updateBossOrb(b);
+ else if(b.isPower){
   updatePowerShot(b,dt);
   if(b.life>0){
    let boom=false;
@@ -594,7 +610,7 @@ for(let i=tracers.length-1;i>=0;i--){const b=tracers[i];b.life-=dt;if(b.m){
   }else if(distance(b,player)<.58&&(b.y??STANDING_CHEST)>world.heightAt(player.x,player.z)+player.y+.12&&(b.y??STANDING_CHEST)<world.heightAt(player.x,player.z)+player.y+(player.crouch||player.roll>0?CROUCH_CHEST+.12:PLAYER_HEIGHT+.08)&&invincible<=0){playerHurt(b.damage||12,b.from||'秩序火力');b.life=0;}
   else for(const a of units)if(a.kind==='ally'&&!a.dead&&distance(b,a)<.6){damageAlly(a,b.damage,state);b.life=0;break;}
  }
-}if(b.life<=0){if(b.grenade)detonateGrenade(b);scene.remove(b.m||b.line);if(b.line){b.line.geometry.dispose();b.line.material.dispose();}if(b.isPower){b.m.geometry?.dispose?.();b.m.material?.dispose?.();}tracers.splice(i,1);}}}
+}if(b.life<=0){if(b.grenade)detonateGrenade(b);if(b.bossOrb)detonateBossOrb(b);scene.remove(b.m||b.line);if(b.line){b.line.geometry.dispose();b.line.material.dispose();}if(b.isPower||b.bossOrb){b.m.geometry?.dispose?.();b.m.material?.dispose?.();}tracers.splice(i,1);}}}
 
 function updateCamera(dt){if(mode==='menu'||mode==='loading'){
  // 主菜单直接取游戏实景：主角位于左侧前景，远处同时能看到摩天轮、东京塔和河岸建筑。
@@ -620,7 +636,16 @@ function updateMissions(){while(missionReady(state)&&state.mission<4){const done
  // 演示版不再等待感染人数或前置任务：两个中枢一旦全部摧毁，就立即进入 Boss 战。
  if(bossReady(state)&&!boss.active){state.mission=Math.max(state.mission,4);saveRun();spawnQueue.jobs.length=0;spawnQueue.wait=0;alerted=false;boss.active=true;boss.root.visible=true;boss.x=world.bossSpawn.x;boss.z=world.bossSpawn.z;boss.attack=4;toast('两个秩序中枢已摧毁 · 巨像降临！',5);}
 }
-function updateBoss(dt){missionTimer=Math.max(0,missionTimer-dt);$('missionComplete').style.opacity=missionTimer>0?1:0;$('bossHud').hidden=!boss.active;document.querySelector('.alertPanel').style.display=boss.active?'none':'';if(!boss.active)return;animateBoss(boss,dt);$('bossHp').style.width=boss.hp/boss.maxHp*100+'%';$('bossValue').textContent=Math.ceil(boss.hp)+' / 6000';$('bossPhase').textContent=['','Ⅰ 装甲镇压','Ⅱ 净化封锁','Ⅲ 核心暴露'][boss.phase]+(boss.weak>0?' · 核心可重创':'');if(boss.dead){state.bossDefeated=true;for(let i=0;i<8;i++)burst(boss.x,Math.random()*9,boss.z,0xd59cff,15);return;}boss.weak=Math.max(0,boss.weak-dt);boss.attack-=dt;const d=distance(player,boss);boss.root.rotation.y=Math.atan2(player.x-boss.x,player.z-boss.z);if(boss.warning>0){boss.warning-=dt;const p=boss.attackPoint;aura('bossAttack',p.x,p.z,boss.phase===3?6:4,0xf18953);$('bossWarning').textContent='⚠ 巨像重击 · 离开橙色区域';if(boss.warning<=0){const radius=boss.phase===3?6:4;if(distance(player,p)<radius&&player.y<1&&invincible<=0){playerHurt(80,'巨像重击');}world.breakAt(p.x,p.z,radius,65,burst);wave(p.x,p.z,radius,0xf19b58);boss.weak=3;boss.attack=boss.phase===3?3:4.5;for(const u of units)if(u.converted&&!u.dead&&distance(u,p)<radius)damageAlly(u,45,state);}}else{ $('bossWarning').textContent=boss.weak>0?'核心暴露 · 集中攻击！':'';if(d>7){const pace=boss.phase===3?2:1.2;const nx=boss.x+(player.x-boss.x)/d*dt*pace,nz=boss.z+(player.z-boss.z)/d*dt*pace;if(world.free(nx,nz,3)){boss.x=nx;boss.z=nz;}else world.breakAt(nx,nz,3,dt*90,burst);}if(boss.attack<=0){boss.warning=1.2;boss.attackPoint={x:player.x,z:player.z};}}}
+function updateBoss(dt){
+ missionTimer=Math.max(0,missionTimer-dt);$('missionComplete').style.opacity=missionTimer>0?1:0;$('bossHud').hidden=!boss.active;document.querySelector('.alertPanel').style.display=boss.active?'none':'';if(!boss.active)return;
+ animateBoss(boss,dt);$('bossHp').style.width=boss.hp/boss.maxHp*100+'%';$('bossValue').textContent=Math.ceil(boss.hp)+' / 6000';$('bossPhase').textContent=['','Ⅰ 炮火苏醒','Ⅱ 连续轰击','Ⅲ 狂热炮击'][boss.phase]+(boss.weak>0?' · 核心过热':'');
+ if(boss.dead){state.bossDefeated=true;for(let i=0;i<8;i++)burst(boss.x,Math.random()*9,boss.z,0xd59cff,15);return;}
+ boss.weak=Math.max(0,boss.weak-dt);boss.attack-=dt;const gap=distance(player,boss);boss.root.rotation.y=Math.atan2(player.x-boss.x,player.z-boss.z);
+ if(gap>9){const pace=boss.phase===3?2:1.2,nx=boss.x+(player.x-boss.x)/gap*dt*pace,nz=boss.z+(player.z-boss.z)/gap*dt*pace;if(world.free(nx,nz,3)){boss.x=nx;boss.z=nz;}else world.breakAt(nx,nz,3,dt*90,burst);}
+ // Boss 不再砸地：嘴部蓄光结束后只会抛出黄色炮弹，血量越低发射越频繁。
+ if(boss.orbWindup>0){boss.orbWindup=Math.max(0,boss.orbWindup-dt);$('bossWarning').textContent='⚠ 嘴部蓄能 · 黄色炮弹即将发射';if(!boss.orbWindup){throwBossOrb();boss.weak=2.2;boss.attack=[0,4.6,3.7,2.8][boss.phase];}}
+ else{$('bossWarning').textContent=boss.weak>0?'核心过热 · 集中攻击！':'';if(boss.attack<=0)boss.orbWindup=.85;}
+}
 
 let last=performance.now(),hudTimer=0;
 function frame(now){requestAnimationFrame(frame);const dt=Math.min(.04,(now-last)/1000);last=now;frameDelta=dt;if(mode==='playing'){
