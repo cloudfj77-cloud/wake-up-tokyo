@@ -99,7 +99,7 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   holder.add(marker);
   const mixer = new THREE.AnimationMixer(root);
   const actions = Object.fromEntries(asset.clips.map(clip => [clip.name, mixer.clipAction(clip)]));
-  const visual = { holder, root, model, meshes, materials, marker, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0 };
+  const visual = { holder, root, model, meshes, materials, marker, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0, poolKey: visualPoolKey(kind) };
   setCharacterKind(visual, kind, variant);
   switchAnimation(visual, 'idle', .0);
   mixer.update(variant * .27);
@@ -121,15 +121,16 @@ function switchAnimation(visual, name, fade = .18) {
   visual.current = next;
 }
 
-export function playCharacterAttack(visual, type) {
+export function playCharacterAttack(visual, type, duration = .65) {
   const name = type === 'shoot' ? 'toyRecoil' : type === 'break' ? 'heavyPunch' : type === 'rush' ? 'jump' : 'flurry';
   const action = visual.actions[name];
   if (!action) return;
-  // 原动画约三秒，战斗中太拖沓，因此压缩到 0.65 秒以保证操作响应。
+  // 原动画约三秒，战斗中太拖沓；近战前摇可把时长拉到挥击命中点。
+  const span = Math.max(.35, duration);
   action.setLoop(THREE.LoopOnce, 1);
   action.clampWhenFinished = true;
-  action.setEffectiveTimeScale(action.getClip().duration / .65);
-  visual.attackTime = .65;
+  action.setEffectiveTimeScale(action.getClip().duration / span);
+  visual.attackTime = span;
   if (visual.current === action) action.reset().play();
   else switchAnimation(visual, name, .07);
 }
@@ -137,13 +138,10 @@ export function playCharacterAttack(visual, type) {
 export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false) {
   if (visual.attackTime > 0) visual.attackTime -= dt;
   if (visual.attackTime <= 0) {
-    // 感染前是麻木蹒跚的丧尸步，感染后是亢奋癫狂的蹦跳。
-    const rabid = visual.kind === 'ally';
-    const name = moving
-      ? (rabid ? 'jump' : visual.kind === 'human' ? 'zombie' : 'walk')
-      : (visual.holdingGun ? 'toyAim' : rabid ? 'jump' : 'idle');
+    const name = moving ? (visual.kind === 'human' ? 'zombie' : 'walk') : visual.holdingGun ? 'toyAim' : 'idle';
     const action = visual.actions[name];
-    if (action) action.setEffectiveTimeScale(rabid ? (moving ? (sprinting ? 2.8 : 2.2) : 1.4) : moving ? (sprinting ? 1.9 : 1.3) : 1);
+    const scale = !moving ? 1 : visual.kind === 'human' ? .38 : visual.kind === 'ally' ? 1.35 : (sprinting ? 1.45 : 1.0);
+    if (action) action.setEffectiveTimeScale(scale);
     switchAnimation(visual, name);
   }
   // 远处人物降低骨骼刷新频率，玩家看不出区别，但能明显减轻渲染压力。
@@ -158,3 +156,65 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
 }
 
 export const PROFESSIONS=['厨师','医生','建筑工人','配送员','教师'];
+
+const POOL_CAP=24;
+const visualPools={human:[],guard:[],ally:[]};
+export function visualPoolKey(kind){return kind==='human'||kind==='ally'?kind:'guard';}
+function parkPooledVisual(visual){
+ visual.holder.visible=false;
+ visual.holder.position.set(0,-120,0);
+ visual.holder.rotation.set(0,0,0);
+ visual.holdingGun=false;
+ visual.attackTime=0;
+ visual.accumulated=0;
+ visual.mixer.stopAllAction();
+ visual.current=null;
+}
+function disposeCharacterVisual(visual){
+ visual.mixer.stopAllAction();
+ visual.holder.removeFromParent();
+ for(const mesh of visual.meshes){
+  const mats=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+  for(const mat of mats)mat?.dispose?.();
+ }
+ visual.marker.geometry.dispose();
+ visual.marker.material.dispose();
+}
+export function acquireCharacterVisual(assets,kind,variant=0){
+ const key=visualPoolKey(kind);
+ const pooled=visualPools[key].pop();
+ if(pooled){
+  setCharacterKind(pooled,kind);
+  pooled.holder.visible=true;
+  pooled.holder.rotation.set(0,0,0);
+  switchAnimation(pooled,'idle',0);
+  pooled.mixer.update(variant*.05);
+  return pooled;
+ }
+ return createCharacterVisual(assets,kind,variant);
+}
+export function releaseCharacterVisual(visual){
+ if(!visual)return false;
+ // 按建模时的模型类型归还，不能按当前阵营：转化后的警卫仍是警卫模型。
+ const key=visual.poolKey||visualPoolKey(visual.kind);
+ parkPooledVisual(visual);
+ if(visualPools[key].length>=POOL_CAP){disposeCharacterVisual(visual);return false;}
+ visualPools[key].push(visual);
+ return true;
+}
+export function warmCharacterPool(assets,kind,count=6){
+ const key=visualPoolKey(kind);
+ while(visualPools[key].length<count){
+  const visual=createCharacterVisual(assets,kind,0);
+  visual.poolKey=key;
+  parkPooledVisual(visual);
+  visualPools[key].push(visual);
+ }
+ return visualPools[key].length;
+}
+export function clearCharacterPool(){
+ for(const pool of Object.values(visualPools)){
+  while(pool.length)disposeCharacterVisual(pool.pop());
+ }
+}
+export function characterPoolSize(kind){return visualPools[visualPoolKey(kind)]?.length||0;}

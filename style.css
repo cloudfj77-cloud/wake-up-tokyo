@@ -50,6 +50,10 @@
 
 body.defeated #modal{background:#170d14e8}
 body.defeated .dialog{width:min(560px,92vw);border-color:#e6646e88;box-shadow:0 0 80px #a51f2f55;text-align:center}
+body.awakened #modal{background:#1a1408e8}
+body.awakened .dialog{border-color:#ffe45b88;box-shadow:0 0 80px #e8b40e55;text-align:center}
+.winTitle{margin:6px 0 10px;font:900 44px/.95 'PingFang SC','Arial Black',sans-serif;letter-spacing:3px;color:#ffe45b;text-shadow:0 0 18px #ffd000,0 0 36px #ff9a00,0 4px 0 #6a3d00}
+.winSub{margin:0 0 18px;font-size:20px;font-weight:800;color:#fff3c4;letter-spacing:1px}
 .defeatEyebrow{justify-content:center;color:#e9959d}
 .defeatTitle{color:#ffb5bb;letter-spacing:2px}
 .defeatHint{margin:22px 0 4px;padding:13px;border:1px solid #c55d6b55;background:#8d263322;color:#e7bdc1;font-size:12px}
@@ -112,7 +116,23 @@ body.defeated .dialog{width:min(560px,92vw);border-color:#e6646e88;box-shadow:0 
 #policeAlert strong{position:absolute;left:calc(50% - 230px);top:31px;font:900 56px/.8 Impact,'Arial Black',sans-serif;color:#ffb2bb55}
 #policeAlert small{display:block;margin-top:8px;color:#ffd8dd;font-size:10px;letter-spacing:2px}
 @keyframes policeAlert{0%{opacity:0;transform:scaleY(.15)}10%,72%{opacity:1;transform:scaleY(1)}82%{opacity:1;transform:scaleY(1) translateX(-4px)}86%{transform:scaleY(1) translateX(4px)}100%{opacity:0;transform:scaleY(.6)}}
-@media(prefers-reduced-motion:reduce){#policeAlert.active{animation:policeAlertFade 2.1s ease both}@keyframes policeAlertFade{10%,75%{opacity:1;transform:none}100%{opacity:0;transform:none}}}
+#policeAlert.boss{height:168px;background:linear-gradient(90deg,transparent,#8a6208f0 10%,#e8b40ef8 50%,#8a6208f0 90%,transparent);border-color:#ffe45bcc;color:#fff8d4;z-index:30}
+#policeAlert.boss:before,#policeAlert.boss:after{content:'/// 蛙来 /// 蛙来 /// 蛙来 /// 蛙来 /// 蛙来 /// 蛙来 ///';color:#ffe45b99;letter-spacing:10px;font-size:11px}
+#policeAlert.boss small{margin:0 0 2px;color:#fff3c4;font-size:13px;letter-spacing:10px}
+#policeAlert.boss b{font:900 86px/.8 Impact,'Arial Black','PingFang SC',sans-serif;letter-spacing:10px;color:#fff7b0;-webkit-text-stroke:3px #6a3d00;text-shadow:0 0 12px #fff,0 0 28px #ffd000,0 0 54px #ff9a00,0 6px 0 #5a2f00}
+#policeAlert.boss strong{left:50%;top:18px;transform:translateX(-50%);font-size:140px;color:#ffe45b22;letter-spacing:-8px}
+#policeAlert.boss.active{animation:bossFrogAlert 2.8s ease both}
+#policeAlert.boss.win{height:228px}
+#policeAlert.boss.win:before,#policeAlert.boss.win:after{content:'/// 击败奶蛙龙 /// 觉醒成功 /// 击败奶蛙龙 /// 觉醒成功 ///'}
+#policeAlert.boss.win b{font-size:64px;letter-spacing:4px}
+#policeAlert.boss.win em{display:block;margin-top:10px;font:800 22px/1.25 'PingFang SC',sans-serif;font-style:normal;letter-spacing:2px;color:#fff7b0;text-shadow:0 0 16px #ffd000,0 0 28px #ff9a00}
+#policeAlert.boss.win.active{animation:bossFrogAlert 3.6s ease both}
+#policeAlert.boss.quest{height:188px}
+#policeAlert.boss.quest:before,#policeAlert.boss.quest:after{content:'/// 逃离规训 /// 任务 /// 逃离规训 /// 任务 ///'}
+#policeAlert.boss.quest b{font-size:42px;letter-spacing:3px;line-height:1.05}
+#policeAlert.boss.quest.active{animation:bossFrogAlert 3.4s ease both}
+@keyframes bossFrogAlert{0%{opacity:0;transform:scaleY(.15) scale(.7)}8%{opacity:1;transform:scaleY(1) scale(1.12)}16%,70%{opacity:1;transform:scaleY(1) scale(1)}78%{opacity:1;transform:scaleY(1) translateX(-6px)}84%{transform:scaleY(1) translateX(6px)}100%{opacity:0;transform:scaleY(.6) scale(.96)}}
+@media(prefers-reduced-motion:reduce){#policeAlert.active{animation:policeAlertFade 2.1s ease both}#policeAlert.boss.active{animation:policeAlertFade 2.8s ease both}#policeAlert.boss.win.active,#policeAlert.boss.quest.active{animation:policeAlertFade 3.4s ease both}@keyframes policeAlertFade{10%,75%{opacity:1;transform:none}100%{opacity:0;transform:none}}}
 
 /* 主菜单参考街机式开放世界界面：标题、纵向菜单和状态面板都浮在实时城市背景上。 */
 #menu .menuShade{background:linear-gradient(90deg,#090915c7 0,#0e0a187d 34%,transparent 61%,#080b1347 100%)}
@@ -155,13 +175,6 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 #menu:after{background:radial-gradient(circle at 68% 44%,transparent 0 30%,#090d1538 72%,#070a116b 100%)}
 
 /* 教程卡只显示当前一步，完成进度从底边向右增长，避免一次塞给玩家整页说明。 */
-#tutorialCard{position:absolute;left:50%;bottom:118px;transform:translateX(-50%);width:370px;display:grid;grid-template-columns:72px 1fr auto;gap:13px;align-items:center;padding:13px 15px;background:#151c29ed;border:1px solid #be82ef77;border-bottom:3px solid #49335d;box-shadow:0 10px 35px #090d14aa;pointer-events:auto}
-#tutorialCard[hidden]{display:none}
-#tutorialCard:after{content:'';position:absolute;left:0;bottom:-3px;width:var(--tutorial-progress);height:3px;background:#ce83ff;box-shadow:0 0 10px #b75bea;transition:width .15s}
-.tutorialTop{position:absolute;left:13px;right:13px;top:-19px;display:flex;justify-content:space-between;color:#ba87dd;font-size:8px;letter-spacing:1px}.tutorialTop b{font-weight:400}
-#tutorialKey{display:grid;height:48px;place-items:center;background:#a260d2;color:#fff;font-size:10px;white-space:normal;text-align:center}
-#tutorialCard strong{display:block;font-size:14px}#tutorialCard p{margin:5px 0 0;color:#9daabc;font-size:9px}
-#skipTutorial{align-self:start;border:0;background:transparent;color:#778494;font-size:8px;padding:3px}#skipTutorial:hover{color:#e1c4f5}
 
 /* 任务追踪器把复合目标拆成可勾选条目，并给出当前导航距离。 */
 .objectivePanel{width:275px}
@@ -181,11 +194,46 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 .missionEntry.current{border-color:#b675e688;background:#30253e;color:#edf0f4}.missionEntry.completed{opacity:.65}.missionEntry.locked{filter:saturate(.25);opacity:.45}
 .missionEntry>small{display:block;color:#a66fd0;font-size:8px;letter-spacing:1px}.missionEntry>strong{display:block;margin:8px 0;font-size:16px}.missionEntry p{margin:0 0 9px!important;font-size:9px!important;line-height:1.5!important}
 .missionEntry div{display:grid;gap:4px}.missionEntry div span{font-size:9px}.missionEntry div span.done{color:#bd8bdd}
-@media(max-width:900px){#tutorialCard{bottom:105px;width:330px}.objectivePanel{width:235px}.missionList{grid-template-columns:1fr}}
+@media(max-width:900px){.objectivePanel{width:235px}.missionList{grid-template-columns:1fr}}
 
-/* 刷新按钮属于单张能力卡：三列布局不变，只在卡片下方增加一次独立换牌机会。 */
-.choiceSlot{display:flex;min-width:0;flex:1;flex-direction:column;gap:7px}
-.choiceSlot .card{width:100%;height:100%}
-.reroll{padding:8px 10px;border:1px solid #8aa0b366;background:#ffffff0c;color:#d5e2ee;font-size:10px;letter-spacing:1px}
-.reroll:hover:not(:disabled){border-color:#c69be5;background:#b478f122;color:#f0e3ff}
-.reroll:disabled{cursor:not-allowed;opacity:.42}
+/* liang 战斗界面：体力条、受伤闪红、升级演出、F3 调参。main 样式里没有这些。 */
+.bar.stamina{height:5px;margin:-6px 0 12px}
+.bar.stamina i{background:#7ad0c4;width:100%}
+#hurtVignette{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:6;background:radial-gradient(ellipse at center,rgba(255,48,48,0) 42%,rgba(255,32,32,.68) 100%)}
+.levelUpDialog{text-align:center;padding:28px 12px 12px;min-height:220px}
+.levelUpDialog .eyebrow{justify-content:center;letter-spacing:3px;color:#ffe9b8}
+.levelUpDialog strong{display:block;font-size:clamp(32px,5vw,52px);letter-spacing:.28em;color:#fff4c8;margin:18px 0 10px;text-shadow:0 0 28px #ffc92e99}
+.levelUpDialog b{display:block;font-size:28px;color:#ffc92e}
+.levelUpDialog .action{display:block;margin:22px auto 0}
+#levelUpFx{position:fixed;inset:0;z-index:8;display:none;pointer-events:none}
+#levelUpFx:not([hidden]){display:block}
+.levelUpBurst{position:absolute;left:50%;top:58%;width:min(46vw,360px);height:min(46vw,360px);margin:-180px 0 0 -180px;border-radius:50%;background:radial-gradient(circle,#ffe066bb 0%,#ffc92e44 30%,transparent 70%);animation:levelPulse 1.45s ease-out;pointer-events:none}
+.levelUpCopy{position:relative;text-align:center;text-shadow:0 0 28px #ffc92e99}
+.levelUpCopy .eyebrow{justify-content:center;letter-spacing:3px;color:#ffe9b8}
+.levelUpCopy strong{display:block;font-size:clamp(28px,5vw,48px);letter-spacing:.28em;color:#fff4c8;margin:12px 0 8px}
+.levelUpCopy b{display:block;font-size:28px;color:#ffc92e}
+.levelUpCopy small{display:block;margin-top:14px;font-size:12px;letter-spacing:2px;color:#d7c7a4}
+@keyframes levelPulse{0%{transform:scale(.35);opacity:.95}100%{transform:scale(2.6);opacity:0}}
+#tuneHud{position:fixed;left:16px;top:198px;width:min(360px,calc(100vw - 32px));max-height:calc(100vh - 230px);overflow:auto;z-index:40;background:#101820f2;border:1px solid #7ad0ff66;color:#d7eef8;padding:12px 12px 10px;pointer-events:auto;box-shadow:0 10px 40px #0006}
+#tuneHud[hidden]{display:none}
+#tuneHud header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+#tuneHud header strong{font-size:13px;letter-spacing:1px}
+#tuneHud header span{font-size:10px;color:#8fb4c8}
+#tuneLive{font:11px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#071018;border:1px solid #2b4a5c;padding:8px;white-space:pre-wrap;color:#9fe7ff;margin-bottom:10px}
+#tuneHud section{margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid #ffffff14}
+#tuneHud h3{margin:0 0 4px;font-size:12px;color:#c9a4ff}
+#tuneHud section>p{margin:0 0 8px;font-size:10px;line-height:1.5;color:#8fa8b8}
+#tuneHud label{display:block;margin:6px 0}
+#tuneHud label>span{display:block;font-size:10px;color:#c5d6e0;margin-bottom:3px}
+#tuneHud label div{display:flex;gap:6px;align-items:center}
+#tuneHud input[type=range]{flex:1;accent-color:#8d6ad6}
+#tuneHud input[type=number]{width:68px;background:#1b2c38;color:#eef6fa;border:1px solid #4d6a7a;padding:3px 5px;font:11px ui-monospace,Menlo,Consolas,monospace}
+#tuneHud footer{display:flex;flex-wrap:wrap;gap:6px}
+#tuneHud footer button{background:#2a3f50;border:1px solid #6d8aa0;color:#e8f4fb;padding:6px 9px;font-size:11px}
+.choiceLock{pointer-events:none}
+.choiceSlot{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.choiceSlot .card{flex:1}
+.card.picked{border-color:#d7b2fa;box-shadow:inset 0 0 0 1px #c69be5,0 8px 22px #7a3cc433;background:#343e53}
+.reroll{background:#ffffff0c;border:1px solid #8aa0b366;color:#d5e2ee;padding:8px 10px;font-size:11px;letter-spacing:1px}
+.reroll:hover:not(:disabled){background:#b478f122;border-color:#c69be5;color:#f0e3ff}
+.reroll:disabled{opacity:.45;cursor:not-allowed}

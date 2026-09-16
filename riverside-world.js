@@ -14,6 +14,17 @@ export function hitsBridgeRail(x,z,r=.45){
  // 桥模型缩放后的实际长度约 28.8 米，护栏位于桥中心线两侧约 2.05 米。
  return BRIDGES.some(bridge=>Math.abs(x)<bridge.halfLength&&Math.abs(Math.abs(z-bridge.z)-bridge.railOffset)<.18+r);
 }
+export function isRiverChannel(x,z,r=0){
+ // 河面只按河道宽度封闭；桥面仍可通行。岸上未烘焙到的广场不能当成虚空墙。
+ if(bridgeDeckHeight(x,z)!==null)return false;
+ return Math.abs(x)<9+r;
+}
+export function terrainHeightAt(x,z){
+ const ix=Math.round((x-terrain.minX)/terrain.step),iz=Math.round((z-terrain.minZ)/terrain.step);
+ const baked=ix<0||iz<0||ix>=terrain.size||iz>=terrain.size?-99:terrain.heights[iz*terrain.size+ix];
+ if(baked>-2)return baked;
+ return isRiverChannel(x,z)?-99:0;
+}
 
 export async function loadRiverside(scene){
  const draco=new DRACOLoader().setDecoderPath('/draco/');
@@ -59,15 +70,17 @@ export async function loadRiverside(scene){
   return added;
  }
  function add(g,type,hp){const box=new T.Box3().setFromObject(g),size=box.getSize(new T.Vector3()),c=box.getCenter(new T.Vector3());const o={g,x:c.x,z:c.z,w:size.x,d:size.z,h:size.y,hp,maxHp:hp,type,dead:false};attachCarve(o);obstacles.push(o);destructibles.push(o);if(type==='building')buildings.push(o);return o;}
- for(const g of root.children){if(/^(Machiya|Urban_building|Urban building)/.test(g.name))add(g,'building',220);else if(/^(Tokyo_Tower|Tokyo Tower|Ferris_wheel|Ferris wheel)/.test(g.name)){const box=new T.Box3().setFromObject(g),c=box.getCenter(new T.Vector3()),sz=box.getSize(new T.Vector3());obstacles.push({x:c.x,z:c.z,w:sz.x,d:sz.z,dead:false});}}
- function heightAt(x,z){const bridgeHeight=bridgeDeckHeight(x,z),ix=Math.round((x-terrain.minX)/terrain.step),iz=Math.round((z-terrain.minZ)/terrain.step),terrainHeight=ix<0||iz<0||ix>=terrain.size||iz>=terrain.size?-99:terrain.heights[iz*terrain.size+ix];return bridgeHeight===null?terrainHeight:Math.max(bridgeHeight,terrainHeight);}
- function solid(x,z,r=.45){return x<=-60||x>=60||z<=-68||z>=57||hitsBridgeRail(x,z,r)||obstacles.some(o=>!o.dead&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r)||[[0,0],[r,0],[-r,0],[0,r],[0,-r]].some(([dx,dz])=>{const ix=Math.round((x+dx-terrain.minX)/terrain.step),iz=Math.round((z+dz-terrain.minZ)/terrain.step);return terrain.blocked?.[iz*terrain.size+ix]===1;});}
- function free(x,z,r=.45){return !solid(x,z,r)&&[[0,0],[r,0],[-r,0],[0,r],[0,-r]].every(([dx,dz])=>heightAt(x+dx,z+dz)>-2);}
+ // 只给真正的建筑做碰撞盒。东京塔、摩天轮的整体包围盒会在 Boss 广场拉出看不见的空气墙。
+ for(const g of root.children){if(/^(Machiya|Urban_building|Urban building)/.test(g.name))add(g,'building',220);}
+ function heightAt(x,z){const bridgeHeight=bridgeDeckHeight(x,z),terrainHeight=terrainHeightAt(x,z);return bridgeHeight===null?terrainHeight:Math.max(bridgeHeight,terrainHeight);}
+ function solid(x,z,r=.45){return x<=-60||x>=60||z<=-68||z>=57||hitsBridgeRail(x,z,r)||isRiverChannel(x,z,r)||obstacles.some(o=>!o.dead&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r);}
+ function free(x,z,r=.45){return !solid(x,z,r);}
  function waypoint(u,x,z){if(u.x*x<0&&Math.abs(x)>9){const bz=[26.4,-15.4].sort((a,b)=>Math.abs(a-u.z)+Math.abs(a-z)-Math.abs(b-u.z)-Math.abs(b-z))[0];if(Math.abs(u.z-bz)>1.2)return {x:Math.sign(u.x)*12.5,z:bz};return {x:Math.sign(x)*13,z:bz};}return {x,z};}
  function nearest(x,z,r=.7){if(free(x,z,r))return {x,z};for(let radius=.5;radius<130;radius+=.5)for(let i=0;i<24;i++){const a=i*Math.PI/12,xx=x+Math.cos(a)*radius,zz=z+Math.sin(a)*radius;if(free(xx,zz,r))return {x:xx,z:zz};}throw Error('No walkable spawn');}
- // 主角从西北侧开阔街口开始，远离桥头、任务塔和首批巡逻队。
+ // 主角从西北侧开阔街口开始。两座中枢都在出生点这一岸，打完后再过桥去对岸打 Boss。
  const spawn=nearest(-34,34,1),bossSpawn=nearest(33,-24,4);
- for(const p of [[-35,14],[34,-12],[12,-52]]){const {x,z}=nearest(...p,2),g=new T.Group();g.position.set(x,heightAt(x,z),z);scene.add(g);block(g,2.4,.5,2.4,0x657575,0,.25,0);block(g,1.4,3,1.4,0x425c64,0,1.8,0);block(g,1.7,.25,1.7,0xd7865a,0,3.5,0);block(g,.15,2,.15,0x576b70,0,4.5,0);block(g,1.5,.5,.3,0x62b1d0,0,5.5,0);towers.push(add(g,'tower',180));}
+ const glowingBlock=(group,w,h,d,color,x,y,z)=>{const mesh=block(group,w,h,d,color,x,y,z);mesh.material=mesh.material.clone();mesh.material.emissive=new T.Color(0xffc400);mesh.material.emissiveIntensity=1.6;mesh.material.roughness=.35;return mesh;};
+ for(const p of [[-35,14],[-35,-12]]){const {x,z}=nearest(...p,2),g=new T.Group();g.position.set(x,heightAt(x,z),z);scene.add(g);glowingBlock(g,2.4,.5,2.4,0xb89312,0,.25,0);glowingBlock(g,1.4,3,1.4,0xffcf21,0,1.8,0);glowingBlock(g,1.7,.25,1.7,0xffed6a,0,3.5,0);glowingBlock(g,.15,2,.15,0xffd52f,0,4.5,0);glowingBlock(g,1.5,.5,.3,0xffff9a,0,5.5,0);const halo=new T.Mesh(new T.SphereGeometry(1.05,14,9),new T.MeshBasicMaterial({color:0xffe75c,transparent:true,opacity:.22,blending:T.AdditiveBlending,depthWrite:false}));halo.position.y=4.9;g.add(halo);const light=new T.PointLight(0xffd83d,4.2,13,1.5);light.position.y=4.5;g.add(light);towers.push(add(g,'tower',180));}
  const entries=[[34,40],[-35,40],[-35,-57],[34,-57]].map(p=>{const q=nearest(...p,2);return[q.x,q.z];});
  function clear(a,b,r=.1){const d=Math.hypot(a.x-b.x,a.z-b.z),n=Math.ceil(d/.7);for(let i=1;i<n;i++)if(solid(a.x+(b.x-a.x)*i/n,a.z+(b.z-a.z)*i/n,r))return false;return true;}
  function breakAt(x,z,r,damage,emit,impactY){let count=0;for(const o of destructibles){if(o.dead)continue;const nx=T.MathUtils.clamp(x,o.x-o.w/2,o.x+o.w/2),nz=T.MathUtils.clamp(z,o.z-o.d/2,o.z+o.d/2);if(Math.hypot(x-nx,z-nz)>r)continue;o.hp-=damage;const tint=o.type==='tower'?0xe5a374:0xbab3a2,hitY=impactY??heightAt(nx,nz)+Math.min(1,o.h*.35);if(!carve(o,nx,hitY,nz,Math.min(r,.9),emit,tint))emit?.(nx,hitY,nz,tint,12);if(o.hp<=0){o.dead=true;o.g.visible=false;count++;emit?.(o.x,2,o.z,0xb5ae9f,35);}}return count;}

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {Box3} from 'three';
-import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual,characterHeight} from './characters.js';
+import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual,characterHeight,acquireCharacterVisual,releaseCharacterVisual,clearCharacterPool,characterPoolSize} from './characters.js';
 const buffer=await readFile(new URL('./assets/character.glb',import.meta.url));
 const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
 const asset=prepareCharacterAsset(gltf);
@@ -35,23 +35,30 @@ test('walk, infection attack, heavy punch and rush return to locomotion',()=>{
     assert.equal(a.current.getClip().name,'walk');
   }
 });
-test('infection keeps the authored look and switches from shambling to rabid locomotion',()=>{
+test('unconverted humans shamble; converted allies switch to a fast walk',()=>{
   const a=createCharacterVisual(asset,'human'),b=createCharacterVisual(asset,'human');
   const original=a.meshes[0].material.color.getHex();
   const markerBefore=a.marker.material.color.getHex();
-  // 感染前：打工人麻木蹒跚
   updateCharacterVisual(a,true,.1);
   assert.equal(a.current.getClip().name,'zombie');
-  // 感染后：亢奋癫狂
   setCharacterKind(a,'ally');updateCharacterVisual(a,true,.1);
-  assert.equal(a.current.getClip().name,'jump');
-  // 模型外观沿用美术自带材质，感染不再重新染色
+  assert.equal(a.current.getClip().name,'walk');
   assert.equal(a.meshes[0].material.color.getHex(),original);
-  assert.equal(b.meshes[0].material.color.getHex(),original);
-  // 阵营差异只体现在脚下光环
   assert.notEqual(a.marker.material.color.getHex(),markerBefore);
   assert.equal(a.marker.visible,true);
   assert.equal(b.marker.visible,false);
   updateCharacterVisual(a,true,.1,80);assert.equal(a.holder.visible,false);
   updateCharacterVisual(a,true,.1,10);assert.equal(a.holder.visible,true);
+});
+test('character visual pool reuses the same skeleton instead of cloning again',()=>{
+  clearCharacterPool();
+  const a=acquireCharacterVisual(asset,'guard');
+  const skeleton=a.meshes[0].skeleton.bones[0];
+  releaseCharacterVisual(a);
+  assert.equal(characterPoolSize('guard'),1);
+  const b=acquireCharacterVisual(asset,'guard');
+  assert.equal(b,a);
+  assert.equal(b.meshes[0].skeleton.bones[0],skeleton);
+  assert.equal(characterPoolSize('guard'),0);
+  clearCharacterPool();
 });

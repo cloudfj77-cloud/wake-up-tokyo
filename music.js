@@ -14,6 +14,9 @@ export class Soundtrack {
   if(type==='powerImpact'){this.note(110,t,.45,.2,'sawtooth',.35);this.note(560,t,.5,.12,'sine',2);return;}
   // 炮弹出手、撞墙和触地爆炸各用不同声音，光听声音也能判断当前阶段。
   if(type==='powerThrow'){this.note(140,t,.32,.14,'sawtooth',3.2);this.note(440,t+.05,.2,.07,'triangle',1.5);return;}
+  // Boss 炮弹使用低沉喷吐和明亮爆炸，不能与玩家的紫色强化炮弹听起来一样。
+  if(type==='bossThrow'){this.note(86,t,.38,.18,'sawtooth',2.4);this.note(620,t+.06,.22,.08,'square',.55);return;}
+  if(type==='bossImpact'){this.note(48,t,.85,.32,'sawtooth',.42);this.note(72,t,.7,.28,'square',.35);this.note(210,t,.5,.18,'sawtooth',1.1);this.note(520,t+.04,.38,.12,'triangle',1.6);this.note(880,t+.08,.28,.08,'sine',.9);return;}
   if(type==='defeat'){this.note(180,t,.7,.14,'sawtooth',.45);this.note(120,t+.22,.9,.11,'sine',.4);return;}
   // 警力提示使用交替警笛，警戒升级则叠加低频重击，和普通战斗声音明确分开。
   if(type==='police'){for(let i=0;i<4;i++){this.note(i%2?520:740,t+i*.14,.16,.055,'sine',i%2?1.25:.78);}return;}

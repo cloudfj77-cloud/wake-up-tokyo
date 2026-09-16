@@ -5,7 +5,12 @@ function volume(parent,center,radii,color,step=.38){const cells=[];for(let x=-ra
 volume(root,[0,5.4,0],[3,4,2.25],0xe6af29);volume(root,[0,9,.05],[1.8,2.2,1.6],0xeebc32);volume(root,[0,5.3,1.85],[2.2,2.7,.55],0xefcf85);
 const legs=[],arms=[];for(const sign of [-1,1]){const leg=new T.Group();root.add(leg);leg.position.set(sign*1.25,2.4,0);volume(leg,[0,-.9,0],[.85,1.8,.85],0xdca12b);volume(leg,[0,-2.05,.65],[.9,.42,1.25],0x9b7834);legs.push(leg);const arm=new T.Group();root.add(arm);arm.position.set(sign*2.2,6.5,0);volume(arm,[sign*.25,-.8,.75],[.65,1.55,.75],0xe8b330);volume(arm,[-sign*.2,-1.7,1.55],[.65,.55,.5],0x917535);arms.push(arm);volume(root,[sign*.84,9.45,1.37],[.59,.65,.32],0x91bb75,.2);volume(root,[sign*.84,9.45,1.65],[.29,.35,.15],0x172c28,.15);}
 volume(root,[0,8.7,1.5],[.65,.17,.55],0xb99135,.2);
+// 第三阶段开炮前，嘴里的黄色核心会先亮起，让玩家知道炮弹确实从嘴部发射。
+const mouthGlow=new T.Mesh(new T.IcosahedronGeometry(.28,1),new T.MeshStandardMaterial({color:0xffe45b,emissive:0xffbd18,emissiveIntensity:3,roughness:.25}));
+mouthGlow.position.set(0,8.7,1.92);mouthGlow.visible=false;root.add(mouthGlow);
 const core=new T.Mesh(new T.BoxGeometry(.8,.8,.3),new T.MeshStandardMaterial({color:0xbc77f3,emissive:0x9a39ef,emissiveIntensity:1}));core.position.set(0,5.2,2.43);root.add(core);
-const b={root,legs,arms,core,x:0,z:0,hp:6000,maxHp:6000,phase:1,attack:3,warning:0,weak:0,active:false,dead:false,time:0,attackPoint:null};root.visible=false;return b;}
+const b={root,legs,arms,core,mouthGlow,x:0,z:0,hp:6000,maxHp:6000,phase:1,attack:3,warning:0,orbWindup:0,pendingOrb:null,announced:false,missionAnnounced:false,attackCount:0,weak:0,active:false,dead:false,time:0,attackPoint:null};root.visible=false;return b;}
 export function hitBoss(b,amount){if(!b.active||b.dead)return 0;const damage=amount*(b.weak>0?2.5:b.phase===1?.65:1);b.hp=Math.max(0,b.hp-damage);b.phase=b.hp>4200?1:b.hp>2100?2:3;if(!b.hp)b.dead=true;return damage;}
-export function animateBoss(b,dt){b.time+=dt;b.root.position.set(b.x,b.dead?-Math.min(12,b.time*2):0,b.z);b.arms.forEach((a,i)=>a.rotation.x=b.warning>0?-1.5:Math.sin(b.time*1.8+i)*.15);b.legs.forEach((a,i)=>a.rotation.x=Math.sin(b.time*1.4+i*Math.PI)*.13);b.core.material.emissiveIntensity=b.weak>0?2.5: .7;}
+// 河面位于地图中间，炮弹只覆盖 Boss 当前所在一侧的岸区，避免隔河追着玩家轰炸。
+export function canBossBombTarget(b,target,maxRange=28){const sameBank=b.x>=0?target.x>10:target.x<-10;return sameBank&&Math.hypot(target.x-b.x,target.z-b.z)<=maxRange;}
+export function animateBoss(b,dt){b.time+=dt;b.root.position.set(b.x,b.dead?-Math.min(12,b.time*2):0,b.z);b.arms.forEach((a,i)=>a.rotation.x=b.warning>0?-1.5:Math.sin(b.time*1.8+i)*.15);b.legs.forEach((a,i)=>a.rotation.x=Math.sin(b.time*1.4+i*Math.PI)*.13);b.core.material.emissiveIntensity=b.weak>0?2.5: .7;if(b.mouthGlow){b.mouthGlow.visible=b.orbWindup>0&&!b.dead;const pulse=1+Math.sin(b.time*18)*.28;b.mouthGlow.scale.setScalar(pulse);}}
