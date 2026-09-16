@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {createBoss,hitBoss,animateBoss} from './boss.js';
+import {createBoss,hitBoss,animateBoss,canBossBombTarget} from './boss.js';
 import {createFirearms} from './guns.js';
 import {createSyringe} from './syringe.js';
 import {loadCharacterAssets,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual,characterHeight,PROFESSIONS,acquireCharacterVisual,releaseCharacterVisual,warmCharacterPool} from './characters.js';
@@ -532,10 +532,11 @@ function detonateGrenade(b){
  }
 }
 function throwBossOrb(){
+ if(!canBossBombTarget(boss,player))return false;
  boss.root.updateMatrixWorld(true);const mouth=boss.root.localToWorld(new T.Vector3(0,8.7,2)),targetX=player.x,targetZ=player.z,targetY=world.heightAt(targetX,targetZ),flight=T.MathUtils.clamp(distance(player,boss)/18,.9,1.45);
  const material=new T.MeshStandardMaterial({color:0xffe44f,emissive:0xffbd16,emissiveIntensity:3.5,roughness:.2}),orb=new T.Mesh(new T.IcosahedronGeometry(.48,1),material);orb.position.copy(mouth);orb.add(new T.PointLight(0xffd52d,3.6,8,1.5));scene.add(orb);
  tracers.push({m:orb,bossOrb:true,life:flight,total:flight,sx:mouth.x,sy:mouth.y,sz:mouth.z,tx:targetX,ty:targetY,tz:targetZ,x:mouth.x,y:mouth.y,z:mouth.z,detonated:false});
- burst(mouth.x,mouth.y,mouth.z,0xffe158,18);music.effect('bossThrow');
+ burst(mouth.x,mouth.y,mouth.z,0xffe158,18);music.effect('bossThrow');return true;
 }
 function detonateBossOrb(projectile){
  if(projectile.detonated)return;projectile.detonated=true;const radius=5.5,ground=world.heightAt(projectile.tx,projectile.tz);projectile.x=projectile.tx;projectile.z=projectile.tz;
@@ -640,11 +641,11 @@ function updateBoss(dt){
  missionTimer=Math.max(0,missionTimer-dt);$('missionComplete').style.opacity=missionTimer>0?1:0;$('bossHud').hidden=!boss.active;document.querySelector('.alertPanel').style.display=boss.active?'none':'';if(!boss.active)return;
  animateBoss(boss,dt);$('bossHp').style.width=boss.hp/boss.maxHp*100+'%';$('bossValue').textContent=Math.ceil(boss.hp)+' / 6000';$('bossPhase').textContent=['','Ⅰ 炮火苏醒','Ⅱ 连续轰击','Ⅲ 狂热炮击'][boss.phase]+(boss.weak>0?' · 核心过热':'');
  if(boss.dead){state.bossDefeated=true;for(let i=0;i<8;i++)burst(boss.x,Math.random()*9,boss.z,0xd59cff,15);return;}
- boss.weak=Math.max(0,boss.weak-dt);boss.attack-=dt;const gap=distance(player,boss);boss.root.rotation.y=Math.atan2(player.x-boss.x,player.z-boss.z);
+ boss.weak=Math.max(0,boss.weak-dt);boss.attack-=dt;const gap=distance(player,boss),canBomb=canBossBombTarget(boss,player);boss.root.rotation.y=Math.atan2(player.x-boss.x,player.z-boss.z);
  if(gap>9){const pace=boss.phase===3?2:1.2,nx=boss.x+(player.x-boss.x)/gap*dt*pace,nz=boss.z+(player.z-boss.z)/gap*dt*pace;if(world.free(nx,nz,3)){boss.x=nx;boss.z=nz;}else world.breakAt(nx,nz,3,dt*90,burst);}
  // Boss 不再砸地：嘴部蓄光结束后只会抛出黄色炮弹，血量越低发射越频繁。
- if(boss.orbWindup>0){boss.orbWindup=Math.max(0,boss.orbWindup-dt);$('bossWarning').textContent='⚠ 嘴部蓄能 · 黄色炮弹即将发射';if(!boss.orbWindup){throwBossOrb();boss.weak=2.2;boss.attack=[0,4.6,3.7,2.8][boss.phase];}}
- else{$('bossWarning').textContent=boss.weak>0?'核心过热 · 集中攻击！':'';if(boss.attack<=0)boss.orbWindup=.85;}
+ if(boss.orbWindup>0){if(!canBomb){boss.orbWindup=0;boss.attack=.4;$('bossWarning').textContent='炮击范围仅限巨像所在河岸';}else{boss.orbWindup=Math.max(0,boss.orbWindup-dt);$('bossWarning').textContent='⚠ 嘴部蓄能 · 黄色炮弹即将发射';if(!boss.orbWindup&&throwBossOrb()){boss.weak=2.2;boss.attack=[0,4.6,3.7,2.8][boss.phase];}}}
+ else{$('bossWarning').textContent=boss.weak>0?'核心过热 · 集中攻击！':canBomb?'':'进入巨像所在河岸后，炮击才会开始';if(boss.attack<=0&&canBomb)boss.orbWindup=.85;}
 }
 
 let last=performance.now(),hudTimer=0;

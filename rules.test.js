@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
 import {makeState,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,bossReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,takeSpawnJobs} from './rules.js';
-import {createBoss,hitBoss} from './boss.js';
+import {createBoss,hitBoss,canBossBombTarget} from './boss.js';
 import {createSyringe} from './syringe.js';
 
 test('mother survives one bullet and dies on second; tough does not raise max HP',()=>{
@@ -287,6 +287,7 @@ test('boss has 6000 HP, changes stages and takes extra weak-point damage',()=>{
  const b=createBoss(new T.Scene());assert.equal(b.hp,6000);assert.ok(b.mouthGlow);assert.equal(b.orbWindup,0);b.active=true;hitBoss(b,100);assert.equal(b.hp,5935);b.weak=2;assert.equal(hitBoss(b,100),250);
  for(let i=0;i<30;i++)hitBoss(b,100);assert.equal(b.dead,true);assert.equal(b.hp,0);
 });
+test('boss bombs only target its nearby river bank',()=>{const b={x:33,z:-24};assert.equal(canBossBombTarget(b,{x:28,z:-12}),true);assert.equal(canBossBombTarget(b,{x:-20,z:-12}),false);assert.equal(canBossBombTarget(b,{x:30,z:20}),false);});
 test('syringe has visible reservoir and forward muzzle',()=>{
  const s=createSyringe();assert.ok(s.g.children.length>10);assert.ok(s.muzzle.position.z>1.5);assert.ok(s.liquid.material.emissiveIntensity>0);
 });
