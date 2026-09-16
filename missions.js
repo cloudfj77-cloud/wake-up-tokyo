@@ -4,8 +4,8 @@ export const TUTORIAL_STEPS=[
  {id:'look',action:'look',title:'观察街区',detail:'移动鼠标或方向键转动视角',target:120,key:'鼠标'},
  {id:'jump',action:'jump',title:'跨越障碍',detail:'按空格键跳跃一次',target:1,key:'空格'},
  {id:'roll',action:'roll',title:'紧急闪避',detail:'按 Shift 完成一次翻滚',target:1,key:'SHIFT'},
- {id:'shoot',action:'shoot',title:'使用注射枪',detail:'按左键或 J 发射一针',target:1,key:'左键 / J'},
- {id:'hit',action:'hit',title:'命中目标',detail:'用注射枪击中一名未感染者',target:1,key:'瞄准射击'},
+ {id:'attack',action:'attack',title:'发动感染攻击',detail:'按左键或 J 挥击一次',target:1,key:'左键 / J'},
+ {id:'hit',action:'hit',title:'命中目标',detail:'靠近并击中一名未感染者',target:1,key:'近身攻击'},
  {id:'infect',action:'infect',title:'完成第一次觉醒',detail:'持续命中并感染一名市民',target:1,key:'感染目标'},
 ];
 
