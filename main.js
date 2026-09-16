@@ -49,7 +49,7 @@ function makeAura(holder,palette,{coreSize=(palette.coreSize??1.7)*FX_SCALE,mote
  const g=new T.Group();
  const sprite=(size,color,opacity,map)=>{const s=new T.Sprite(new T.SpriteMaterial({map:map??awakenGlow,color,transparent:true,blending:T.AdditiveBlending,depthWrite:false,opacity}));s.scale.set(size,size,1);g.add(s);return s;};
  const smokes=[];
- if(palette.galaxy){for(let i=0;i<palette.smokes;i++){const size=coreSize*(1.05+Math.random()*1.05);const s=makeSmokeSprite(i%3?palette.core:0xf47dff,size,.24+Math.random()*.16);s.material.blending=T.AdditiveBlending;s.material.color.multiplyScalar(2.4);const glow=makeSmokeSprite(i%3?palette.core:0xf47dff,.78,.28);glow.material.blending=T.AdditiveBlending;glow.material.color.multiplyScalar(3.4);s.add(glow);const ang=Math.random()*6.283,rad=.2+Math.random()*.36;s.position.set(Math.cos(ang)*rad,(.35+Math.random()*1.5)*FX_SCALE,Math.sin(ang)*rad);s.material.rotation=Math.random()*6.283;s.userData={angle:ang,radius:rad,baseY:s.position.y,spin:(Math.random()<.5?-1:1)*(.2+Math.random()*.45),turn:(Math.random()<.5?-1:1)*(.15+Math.random()*.3),size,pulse:1+Math.random()*.8,phase:Math.random()*6.283};g.add(s);smokes.push(s);}}
+ if(palette.galaxy){for(let i=0;i<palette.smokes;i++){const size=coreSize*(.72+Math.random()*.72);const s=makeSmokeSprite(i%3?palette.core:0xf47dff,size,.24+Math.random()*.16);s.material.blending=T.AdditiveBlending;s.material.color.multiplyScalar(2.4);const glow=makeSmokeSprite(i%3?palette.core:0xf47dff,.78,.28);glow.material.blending=T.AdditiveBlending;glow.material.color.multiplyScalar(3.4);s.add(glow);const ang=Math.random()*6.283,rad=.15+Math.random()*.25;s.position.set(Math.cos(ang)*rad,(.35+Math.random()*1.5)*FX_SCALE,Math.sin(ang)*rad);s.material.rotation=Math.random()*6.283;s.userData={angle:ang,radius:rad,baseY:s.position.y,spin:(Math.random()<.5?-1:1)*(.2+Math.random()*.45),turn:(Math.random()<.5?-1:1)*(.15+Math.random()*.3),size,pulse:1+Math.random()*.8,phase:Math.random()*6.283};g.add(s);smokes.push(s);}}
  const core=sprite(coreSize,palette.core,.42,palette.coreMap);if(palette.galaxy)core.material.color.multiplyScalar(3);
  const motes=[];
  for(let i=0;i<count;i++){const m=sprite(moteSize,palette.mote,.9,palette.map);if(palette.moteAspect)m.scale.set(moteSize*palette.moteAspect[0],moteSize*palette.moteAspect[1],1);if(palette.galaxy){m.material.color.setHex(GALAXY_MOTE_COLORS[i%GALAXY_MOTE_COLORS.length]);m.material.color.multiplyScalar(2.4);}m.userData={angle:(i/count)*6.283+Math.random(),radius:radius+Math.random()*.26,speed:.8+Math.random()*.9,phase:Math.random(),turn:Math.random()*6.283};motes.push(m);}
@@ -215,8 +215,10 @@ function move(u,dx,dz,detour=false){const ox=u.x,oz=u.z;if(world.free(u.x+dx,u.z
 function forward(){return {x:Math.sin(yaw),z:Math.cos(yaw)};}
 function nearestMissionTarget(items){return items.filter(item=>item&&!item.dead).sort((a,b)=>distance(player,a)-distance(player,b))[0]??null;}
 function selectMissionTarget(){
- const tutorial=tutorialStep(state);if(tutorial)return ['shoot','hit','infect'].includes(tutorial.action)?nearestMissionTarget(units.filter(unit=>unit.type===0&&!unit.converted&&unit.kind!=='corpse')):null;
- const view=missionView(state);if(!view)return null;const next=view.objectives.find(item=>!item.done);if(!next)return null;
+ const tutorial=tutorialStep(state);if(tutorial)return ['attack','hit','infect'].includes(tutorial.action)?nearestMissionTarget(units.filter(unit=>unit.type===0&&!unit.converted&&unit.kind!=='corpse')):null;
+ const view=missionView(state);if(!view)return null;
+ // 只要当前任务还要求摧毁中枢，就优先把最近的中枢亮出来；路人遍地都是，不需要抢走导航光柱。
+ const next=view.objectives.find(item=>!item.done&&item.targetKind==='tower')||view.objectives.find(item=>!item.done);if(!next)return null;
  if(next.targetKind==='human')return nearestMissionTarget(units.filter(unit=>unit.type===0&&!unit.converted&&unit.kind!=='corpse'));
  if(next.targetKind==='tower')return nearestMissionTarget(world.towers.filter(tower=>!tower.dead));
  if(next.targetKind==='purifier')return nearestMissionTarget(units.filter(unit=>unit.type===4&&!unit.converted&&unit.kind!=='corpse'))||nearestMissionTarget(world.towers.filter(tower=>!tower.dead));
@@ -225,9 +227,9 @@ function selectMissionTarget(){
 }
 function updateMissionGuidance(){
  missionTarget=selectMissionTarget();missionBeacon.visible=!!missionTarget;if(!missionTarget){$('objectiveDistance').textContent='';return;}
- const ground=world.heightAt(missionTarget.x,missionTarget.z),pulse=1+Math.sin(performance.now()*.006)*.15;missionBeacon.position.set(missionTarget.x,ground+.08,missionTarget.z);beaconRing.scale.setScalar(pulse);beaconBeam.material.opacity=.22+(pulse-1)*.5;$('objectiveDistance').textContent=`◆ 目标距离 ${Math.ceil(distance(player,missionTarget))} 米`;
+ const ground=world.heightAt(missionTarget.x,missionTarget.z),pulse=1+Math.sin(performance.now()*.006)*.15,isTower=world.towers.includes(missionTarget);missionBeacon.position.set(missionTarget.x,ground+.08,missionTarget.z);beaconRing.scale.setScalar(pulse);beaconBeam.material.color.setHex(isTower?0xffa052:0xc56cff);beaconRing.material.color.setHex(isTower?0xffb46c:0xe6b1ff);beaconBeam.material.opacity=.22+(pulse-1)*.5;$('objectiveDistance').textContent=`◆ ${isTower?'秩序中枢':'目标'}距离 ${Math.ceil(distance(player,missionTarget))} 米`;
 }
-function drawMissionMapMarker(){if(!missionTarget)return;const ctx=$('map').getContext('2d'),x=(missionTarget.x+66)/132*200,z=160-(missionTarget.z+66)/132*160;ctx.save();ctx.translate(x,z);ctx.rotate(Math.PI/4);ctx.fillStyle='#f0b6ff';ctx.shadowColor='#c56cff';ctx.shadowBlur=7;ctx.fillRect(-4,-4,8,8);ctx.restore();}
+function drawMissionMapMarker(){if(!missionTarget)return;const ctx=$('map').getContext('2d'),x=(missionTarget.x+66)/132*200,z=160-(missionTarget.z+66)/132*160,isTower=world.towers.includes(missionTarget);ctx.save();ctx.translate(x,z);ctx.rotate(Math.PI/4);ctx.fillStyle=isTower?'#ffb15f':'#f0b6ff';ctx.shadowColor=isTower?'#ff7a2f':'#c56cff';ctx.shadowBlur=10;ctx.fillRect(-5,-5,10,10);ctx.restore();}
 function acquire(range=3.1){let best=null,score=-Infinity;const f=forward();for(const u of units){if(u.dead||u.converted||u.kind==='corpse')continue;const d=distance(player,u);if(d>range||!world.clear(player,u))continue;const dot=((u.x-player.x)*f.x+(u.z-player.z)*f.z)/(d||1);if(dot<.3)continue;const value=dot*4-d/range;if(value>score){score=value;best=u;}}return best;}
 const pickups=[],crossBarGeometry=new T.BoxGeometry(1,1,1);
 function spawnPickup(x,z){
