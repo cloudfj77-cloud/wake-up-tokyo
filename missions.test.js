@@ -48,3 +48,10 @@ test('boss mission remains locked behind all four city objectives',()=>{
  state.bossDefeated=true;
  assert.equal(missionView(state).done,true);
 });
+
+test('third destroyed hub completes the final city objective without an infection quota',()=>{
+ const state=makeState();state.mission=3;state.infected=0;state.towers=3;
+ assert.equal(missionView(state).done,true);
+ assert.ok(advanceMission(state));
+ assert.equal(state.mission,4);
+});
