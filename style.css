@@ -192,3 +192,44 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 
 /* 受击红屏：屏幕四周泛红，中心保持通透 */
 #damageFlash{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,48,48,0) 42%,rgba(255,32,32,.68) 100%);}
+/* liang 战斗界面：体力条、受伤闪红、升级演出、F3 调参。main 样式里没有这些。 */
+.bar.stamina{height:5px;margin:-6px 0 12px}
+.bar.stamina i{background:#7ad0c4;width:100%}
+#hurtVignette{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:6;background:radial-gradient(ellipse at center,rgba(255,48,48,0) 42%,rgba(255,32,32,.68) 100%)}
+.levelUpDialog{text-align:center;padding:28px 12px 12px;min-height:220px}
+.levelUpDialog .eyebrow{justify-content:center;letter-spacing:3px;color:#ffe9b8}
+.levelUpDialog strong{display:block;font-size:clamp(32px,5vw,52px);letter-spacing:.28em;color:#fff4c8;margin:18px 0 10px;text-shadow:0 0 28px #ffc92e99}
+.levelUpDialog b{display:block;font-size:28px;color:#ffc92e}
+.levelUpDialog .action{display:block;margin:22px auto 0}
+#levelUpFx{position:fixed;inset:0;z-index:8;display:none;pointer-events:none}
+#levelUpFx:not([hidden]){display:block}
+.levelUpBurst{position:absolute;left:50%;top:58%;width:min(46vw,360px);height:min(46vw,360px);margin:-180px 0 0 -180px;border-radius:50%;background:radial-gradient(circle,#ffe066bb 0%,#ffc92e44 30%,transparent 70%);animation:levelPulse 1.45s ease-out;pointer-events:none}
+.levelUpCopy{position:relative;text-align:center;text-shadow:0 0 28px #ffc92e99}
+.levelUpCopy .eyebrow{justify-content:center;letter-spacing:3px;color:#ffe9b8}
+.levelUpCopy strong{display:block;font-size:clamp(28px,5vw,48px);letter-spacing:.28em;color:#fff4c8;margin:12px 0 8px}
+.levelUpCopy b{display:block;font-size:28px;color:#ffc92e}
+.levelUpCopy small{display:block;margin-top:14px;font-size:12px;letter-spacing:2px;color:#d7c7a4}
+@keyframes levelPulse{0%{transform:scale(.35);opacity:.95}100%{transform:scale(2.6);opacity:0}}
+#tuneHud{position:fixed;left:16px;top:198px;width:min(360px,calc(100vw - 32px));max-height:calc(100vh - 230px);overflow:auto;z-index:40;background:#101820f2;border:1px solid #7ad0ff66;color:#d7eef8;padding:12px 12px 10px;pointer-events:auto;box-shadow:0 10px 40px #0006}
+#tuneHud[hidden]{display:none}
+#tuneHud header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+#tuneHud header strong{font-size:13px;letter-spacing:1px}
+#tuneHud header span{font-size:10px;color:#8fb4c8}
+#tuneLive{font:11px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#071018;border:1px solid #2b4a5c;padding:8px;white-space:pre-wrap;color:#9fe7ff;margin-bottom:10px}
+#tuneHud section{margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid #ffffff14}
+#tuneHud h3{margin:0 0 4px;font-size:12px;color:#c9a4ff}
+#tuneHud section>p{margin:0 0 8px;font-size:10px;line-height:1.5;color:#8fa8b8}
+#tuneHud label{display:block;margin:6px 0}
+#tuneHud label>span{display:block;font-size:10px;color:#c5d6e0;margin-bottom:3px}
+#tuneHud label div{display:flex;gap:6px;align-items:center}
+#tuneHud input[type=range]{flex:1;accent-color:#8d6ad6}
+#tuneHud input[type=number]{width:68px;background:#1b2c38;color:#eef6fa;border:1px solid #4d6a7a;padding:3px 5px;font:11px ui-monospace,Menlo,Consolas,monospace}
+#tuneHud footer{display:flex;flex-wrap:wrap;gap:6px}
+#tuneHud footer button{background:#2a3f50;border:1px solid #6d8aa0;color:#e8f4fb;padding:6px 9px;font-size:11px}
+.choiceLock{pointer-events:none}
+.choiceSlot{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.choiceSlot .card{flex:1}
+.card.picked{border-color:#d7b2fa;box-shadow:inset 0 0 0 1px #c69be5,0 8px 22px #7a3cc433;background:#343e53}
+.reroll{background:#ffffff0c;border:1px solid #8aa0b366;color:#d5e2ee;padding:8px 10px;font-size:11px;letter-spacing:1px}
+.reroll:hover:not(:disabled){background:#b478f122;border-color:#c69be5;color:#f0e3ff}
+.reroll:disabled{opacity:.45;cursor:not-allowed}
