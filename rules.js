@@ -9,25 +9,26 @@ export const BASE_ATK=20;
 export const BASE_INF=10;
 export const STAMINA_MAX=100;
 export const MELEE={
- light:{mult:1,cd:.75,range:2.8,aoe:0},
- heavy:{mult:2,cd:1.25,range:3.2,aoe:2.6}
+ light:{mult:1,cd:.7,range:2.8,aoe:0},
+ heavy:{mult:2,cd:1.2,range:3.2,aoe:2.6}
 };
 export const WALK_SPEED=4.6;
 export const SPRINT_MULT=1.38;
 export const ENEMIES=[
- {name:'苦逼打工人',level:1,hp:50,threshold:20,speed:2.2,damage:5,range:1.6,interval:1.5,aim:.2,fodder:true,allyName:'普通狂暴者',allyHp:60,allyAtk:8},
- {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:10,range:1.35,interval:1.7,aim:.7,fodder:true,allyName:'狂暴持棍巡警',allyHp:110,allyAtk:14},
- {name:'持枪巡警',level:3,hp:120,threshold:60,speed:2.45,damage:12,range:12,interval:1.5,aim:1.05,allyName:'狂暴持枪巡警',allyHp:100,allyAtk:13},
- {name:'持盾特警',level:4,hp:180,threshold:110,speed:2.3,damage:16,range:2.3,interval:1.5,aim:.4,shield:true,allyName:'狂暴盾卫',allyHp:190,allyAtk:15},
- {name:'净化工兵',level:6,hp:240,threshold:340,speed:2.05,damage:14,range:2.8,interval:1.5,aim:.45,purifier:true,aura:8,drain:8,allyName:'狂暴净化士兵',allyHp:220,allyAtk:16},
- {name:'大兵',level:6,hp:280,threshold:260,speed:2.45,damage:28,range:24,interval:1.05,aim:.9,allyName:'狂暴大兵',allyHp:260,allyAtk:32},
- {name:'持枪特警',level:5,hp:170,threshold:180,speed:2.65,damage:24,range:14,interval:1.15,aim:1.05,burst:true,allyName:'狂暴突击手',allyHp:140,allyAtk:20}
+ // 类型下标保持现有存档含义。数值和技能按飞书《敌人相关系统》6.1；转化后满状态砍半。
+ {name:'苦逼打工人',level:1,hp:50,threshold:20,speed:2.2,damage:0,range:1.6,interval:1.5,aim:.2,fodder:true,allyName:'普通狂暴者',allyHp:20,allyAtk:10},
+ {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:20,range:1.35,interval:1.7,aim:.7,fodder:true,allyName:'狂暴持棍巡警',allyHp:50,allyAtk:10},
+ {name:'持枪巡警',level:2,hp:100,threshold:40,speed:2.45,damage:10,range:12,interval:2,aim:.45,allyName:'狂暴持枪巡警',allyHp:50,allyAtk:5},
+ {name:'持盾特警',level:3,hp:200,threshold:150,speed:2.3,damage:30,range:2.3,interval:1.5,aim:1.5,shield:true,cone:true,allyName:'狂暴持盾特警',allyHp:100,allyAtk:15},
+ {name:'净化工兵',level:4,hp:400,threshold:300,speed:2.05,damage:10,range:8,interval:.5,aim:.25,purifier:true,spray:true,aura:10,drain:4,allyName:'狂暴净化士兵',allyHp:200,allyAtk:5},
+ {name:'大兵',level:4,hp:300,threshold:200,speed:2.45,damage:5,range:24,interval:.1,aim:0,allyName:'狂暴大兵',allyHp:150,allyAtk:2.5,grenade:{radius:5,max:50,min:10,cd:20}},
+ {name:'持枪特警',level:3,hp:150,threshold:100,speed:2.65,damage:10,range:14,interval:.5,aim:.12,allyName:'狂暴持枪特警',allyHp:75,allyAtk:5}
 ];
 export const ABILITIES=[
  {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:[
-  '自身 5m 内敌人每 0.5 秒 +3 感染。',
-  '范围 10m，每 0.5 秒 +5 感染，且可作用于尸体。',
-  '范围 15m，每 0.5 秒 +10 感染；军队获得 1 级同效果。'
+  '自身 5m 内敌人每 0.5 秒 +2 感染。',
+  '范围 10m，每 0.5 秒 +4 感染，且可作用于尸体。',
+  '范围 15m，每 0.5 秒 +6 感染；军队获得 1 级同效果。'
  ]},
  {id:'guns',name:'枪？枪！',icon:'⌐',group:'武器系',descriptions:[
   '解锁手枪与霰弹枪。击杀/同化 2 级及以上敌人：手枪 +3、霰弹 +1 备弹。',
@@ -45,9 +46,9 @@ export const ABILITIES=[
   '提升量翻倍，体型变大。军队的击杀/同化也为你提供 1 级效果。'
  ]},
  {id:'dot',name:'持续感染',icon:'⌁',group:'感染系',descriptions:[
-  '你造成的感染会持续累积，直到同化完成。',
-  '持续感染增强，尸体也会继续上涨。',
-  '你的军队命中也会挂上同样的持续感染。'
+  '你造成的感染会持续累积，直到同化完成。每秒 +1。',
+  '持续感染增强（每秒 +2），尸体也会继续上涨。',
+  '你的军队命中也会挂上同样的持续感染（每秒 +3）。'
  ]},
  {id:'haste',name:'急速',icon:'↟',group:'机动系',descriptions:[
   '额外获得 50 点移速加成。',
@@ -220,9 +221,19 @@ export function reward(s,u,converted){
   if(s.level===cap)s.xp=0;
  }
 }
-export function makeUnit(id,type,x,z,city=true,profession=0){
+export function resetUnit(u,id,type,x,z,city=true,profession=0){
  const t=ENEMIES[type];
- return{id,type,x,z,city,profession,kind:type===0?'human':'guard',hp:t.hp,maxHp:t.hp,infection:0,threshold:t.threshold,corpseTime:0,dead:false,converted:false,tagged:false,attackCd:Math.random(),wander:0,tx:x,tz:z,purified:0,hurt:0,guard:false,fromArmy:false};
+ u.id=id;u.type=type;u.x=x;u.z=z;u.city=city;u.profession=profession;
+ u.kind=type===0?'human':'guard';
+ u.hp=t.hp;u.maxHp=t.hp;u.infection=0;u.threshold=t.threshold;
+ u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;
+ u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
+ u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;
+ u.rankBoost=false;u.rewarded=false;u.atk=undefined;
+ return u;
+}
+export function makeUnit(id,type,x,z,city=true,profession=0){
+ return resetUnit({},id,type,x,z,city,profession);
 }
 export function applyRankBoost(u){
  if(u.rankBoost)return u;
@@ -231,9 +242,23 @@ export function applyRankBoost(u){
  u.hp=Math.max(u.hp,Math.ceil(u.maxHp*.45));
  return u;
 }
+// 转化后满状态按敌方生命/攻击砍半。市民敌方无攻击，表里单独给了 10 点。
 export function allyTemplate(type){
  const e=ENEMIES[type];
- return {name:e.allyName||e.name,hp:e.allyHp??Math.ceil(e.hp*1.2),atk:e.allyAtk??Math.max(8,Math.ceil(e.damage*1.4))};
+ return {name:e.allyName||e.name,hp:e.allyHp??e.hp/2,atk:e.allyAtk??e.damage/2};
+}
+// 普攻按原公式打伤害并带感染，路人和警察都能打。
+export function allyMelee(u){
+ const atk=u.atk||12;
+ return {damage:atk,infection:Math.max(4,Math.round(atk*.45))};
+}
+export function allySeeksHostile(hostile){
+ return !!(hostile&&!hostile.dead&&!hostile.converted&&hostile.kind!=='corpse');
+}
+// 手雷从中心 max 线性降到边缘 min。
+export function grenadeBlast(spec,dist){
+ const g=spec?.grenade;if(!g||dist>g.radius)return 0;
+ return g.max+(g.min-g.max)*(dist/g.radius);
 }
 export function convert(s,u){
  if(u.converted||u.dead)return false;
@@ -265,11 +290,11 @@ export function damageAlly(u,damage,s){
 export function distance(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
 const AIR=[
  {radius:0,perHalf:0,corpse:false,army:false},
- {radius:5,perHalf:3,corpse:false,army:false},
- {radius:10,perHalf:5,corpse:true,army:false},
- {radius:15,perHalf:10,corpse:true,army:true}
+ {radius:5,perHalf:2,corpse:false,army:false},
+ {radius:10,perHalf:4,corpse:true,army:false},
+ {radius:15,perHalf:6,corpse:true,army:true}
 ];
-const DOT_RATE=[0,4,8,8];
+const DOT_RATE=[0,1,2,3];
 export function tickInfection(s,units,player,dt){
  let chain=0;
  const air=AIR[s.abilities.air]||AIR[0];
@@ -287,7 +312,8 @@ export function tickInfection(s,units,player,dt){
   }
   if(air.radius&&(!corpse||air.corpse)){
    if(distance(player,u)<=air.radius)positive+=air.perHalf*2;
-   if(air.army)for(const a of army)if(distance(a,u)<=AIR[1].radius)positive+=AIR[1].perHalf*2;
+   // 军队光环每人一份，但不叠乘，否则十个狂暴者会把整条街秒叫醒。
+   if(air.army&&army.some(a=>distance(a,u)<=AIR[1].radius))positive+=AIR[1].perHalf*2;
   }
   const tagged=u.tagged;
   const playerDot=tagged==='player'||tagged===true;
@@ -308,8 +334,8 @@ export function incomingDamage(s,damage){
  return {taken:damage*(1-dr),reflected:damage*dr,radius:t>=3?30:t>=2?10:0,sprintDr:false};
 }
 export const TUNE_DEFAULTS={
- alert:{stage2At:90,stage3At:180,maxLevel1:2,maxLevel2:4,maxLevel3:6,pressureTime:0},
- difficulty:{armyWeight:.4,fodderTarget:10,fodderDump:12,threatPerLevel:.55,threatPerAlly:.4,intervalBase:14,intervalPerWeight:.45,intervalMin:5},
+ alert:{stage2At:90,stage3At:180,maxLevel1:2,maxLevel2:3,maxLevel3:4,pressureTime:0},
+ difficulty:{armyWeight:.4,fodderTarget:10,fodderDump:12,threatPerLevel:.55,threatPerAlly:.4,intervalBase:14,intervalPerWeight:.45,intervalMin:5,spawnPerBurst:2,spawnGap:.08,spawnQueueMax:18},
  activity:{shambleSpeed:.55,shambleRadius:4,shambleIdle:6,fleeSpeed:.7,awakeSpeed:3.8,awakeRadius:34,awakeIdle:1.05,chaseSpeed:3.6,followSpeed:4.4,structureSpeed:3.2}
 };
 export const TUNE=structuredClone(TUNE_DEFAULTS);
@@ -331,8 +357,11 @@ export function isCombatFodder(u){
  const e=ENEMIES[u.type];
  return !!(e?.fodder&&u.type!==0);
 }
-export function isRangedEnemy(spec){return (spec?.range??0)>3;}
-export function hostileWindup(spec){return spec.aim||(isRangedEnemy(spec)?1:.4);}
+export function isRangedEnemy(spec){return (spec?.range??0)>3&&!spec.spray;}
+export function hostileWindup(spec){
+ if(Number.isFinite(spec.aim))return spec.aim;
+ return isRangedEnemy(spec)?1:.4;
+}
 export function hostileSwingConnects(spec,distance,clear=true){return clear&&distance<spec.range;}
 export function stepHostileMelee(u,spec,distance,clear,dt){
  if(u.aiming){
@@ -342,12 +371,34 @@ export function stepHostileMelee(u,spec,distance,clear,dt){
   return hostileSwingConnects(spec,distance,clear)?'hit':'miss';
  }
  if(distance<spec.range&&(u.attackCd||0)<=0&&clear){
-  u.aiming=true;u.aim=hostileWindup(spec);
+  const wind=hostileWindup(spec);
+  // 自动步枪一类无前摇，进射程立刻出伤。
+  if(wind<=0){
+   u.attackCd=spec.interval;
+   return hostileSwingConnects(spec,distance,clear)?'hit':'miss';
+  }
+  u.aiming=true;u.aim=wind;
   return 'start';
  }
  return 'idle';
 }
 export function fodderCount(units){return units.filter(isCombatFodder).length;}
+export function makeSpawnQueue(){return {jobs:[],wait:0};}
+// 一整波只进队列，真正进场由 takeSpawnJobs 按帧拆开，避免同一帧克隆几十个模型。
+export function enqueueSpawnTypes(queue,types){
+ if(!queue||!types?.length)return 0;
+ for(const type of types)queue.jobs.push({type:type|0});
+ return types.length;
+}
+export function takeSpawnJobs(queue,dt=0,perBurst=2,gap=.08){
+ if(!queue?.jobs.length){if(queue)queue.wait=0;return [];}
+ queue.wait=Math.max(0,(queue.wait||0)-dt);
+ if(queue.wait>0)return [];
+ const n=Math.max(1,Math.min(perBurst|0||1,queue.jobs.length));
+ const batch=queue.jobs.splice(0,n);
+ queue.wait=queue.jobs.length?gap:0;
+ return batch;
+}
 export function spawnPlan(s,units,random=Math.random){
  const alert=cityAlert(s);
  const d=TUNE.difficulty;
@@ -406,5 +457,5 @@ export function hurtMother(s,damage,source='秩序火力',sprinting=false){
  s.hp=Math.max(0,s.hp-info.taken);
  return s.hp===0;
 }
-export function missionReady(s){return [()=>s.infected>=3,()=>s.infected>=10&&s.towers>=1,()=>s.highestEnemy>=5&&s.towers>=2,()=>s.infected>=40&&s.towers===3,()=>s.bossDefeated][s.mission]?.()??false;}
+export function missionReady(s){return [()=>s.infected>=3,()=>s.infected>=10&&s.towers>=1,()=>s.highestEnemy>=3&&s.towers>=2,()=>s.infected>=40&&s.towers===3,()=>s.bossDefeated][s.mission]?.()??false;}
 export const MISSIONS=[['叫醒第一个人','累计感染 3 人'],['让街区失控','感染 10 人，摧毁首座中枢'],['突破镇压','击败 / 转化净化工兵或持枪特警，摧毁两座中枢'],['唤出巨像','累计感染 40 人，摧毁三座中枢'],['东京人觉醒','击败中央路口的巨大 Boss']];

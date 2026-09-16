@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher} from './rules.js';
+import {makeState,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,takeSpawnJobs} from './rules.js';
 import {createBoss,hitBoss} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -22,8 +22,8 @@ test('citizen converts on two light attacks; final infection cancels damage',()=
  assert.equal(hit(s,u,light.infection,light.damage),'hit');
  assert.equal(u.hp,30);
  assert.equal(hit(s,u,light.infection,light.damage),'converted');
- assert.equal(u.hp,60);
- assert.equal(u.maxHp,60);
+ assert.equal(u.hp,20);
+ assert.equal(u.maxHp,20);
  assert.equal(s.infected,1);
 });
 test('one heavy attack converts a citizen',()=>{
@@ -75,14 +75,14 @@ test('allied death does not subtract cumulative infection',()=>{
  hit(s,u,60,0);damageAlly(u,999,s);assert.equal(teamCount([u]),0);assert.equal(s.infected,1);
 });
 test('corpse requires air 2, revives before expiration, does not duplicate experience',()=>{
- const s=makeState(),u=makeUnit(1,2,0,0);u.infection=50;hit(s,u,0,999);
+ const s=makeState(),u=makeUnit(1,2,0,0);u.infection=20;hit(s,u,0,999);
  assert.equal(u.kind,'corpse');const xp=s.xp;
  s.abilities.air=1;tickInfection(s,[u],{x:0,z:0},1);assert.equal(u.kind,'corpse');
  s.abilities.air=2;tickInfection(s,[u],{x:0,z:0},4);assert.equal(u.kind,'ally');assert.equal(s.xp,xp);
 });
-test('air level 1 adds 6 infection per second in 5m',()=>{
+test('air level 1 adds 4 infection per second in 5m',()=>{
  const s=makeState(),u=makeUnit(1,0,1,0);s.abilities.air=1;
- tickInfection(s,[u],{x:0,z:0},1);assert.equal(u.infection,6);
+ tickInfection(s,[u],{x:0,z:0},1);assert.equal(u.infection,4);
 });
 test('card selection pauses time, corpse expiration and infection growth',()=>{
  const s=makeState(),u=makeUnit(1,2,0,0);hit(s,u,0,999);s.abilities.air=2;
@@ -91,19 +91,33 @@ test('card selection pauses time, corpse expiration and infection growth',()=>{
 });
 test('purifier drains infection and reverses after conversion',()=>{
  const s=makeState(),p=makeUnit(1,4,1,0),u=makeUnit(2,3,0,0);u.infection=80;
- tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,72);
+ tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,76);
  hit(s,p,340,0);assert.equal(p.converted,true);
  tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,80);
 });
+test('berserkers can infect and attack civilians as well as order units',()=>{
+ const worker=makeUnit(1,0,0,0);worker.atk=10;
+ const cop=makeUnit(2,1,0,0);
+ assert.deepEqual(allyMelee(worker),{damage:10,infection:5});
+ assert.equal(allySeeksHostile(worker),true);
+ assert.equal(allySeeksHostile(cop),true);
+});
+test('air 3 army aura does not stack per berserker',()=>{
+ const s=makeState();s.abilities.air=3;
+ const a=makeUnit(1,0,0,0),b=makeUnit(2,0,0,0),t=makeUnit(3,0,2,0);
+ convert(s,a);convert(s,b);
+ tickInfection(s,[a,b,t],{x:50,z:50},1);
+ assert.equal(t.infection,4);
+});
 test('shield halves frontal damage only',()=>{
  const s=makeState(),u=makeUnit(1,3,0,0);
- assert.ok(ENEMIES[3].shield);hit(s,u,0,20,true);assert.equal(u.hp,170);hit(s,u,0,20,false);assert.equal(u.hp,150);
+ assert.ok(ENEMIES[3].shield);hit(s,u,0,20,true);assert.equal(u.hp,190);hit(s,u,0,20,false);assert.equal(u.hp,170);
 });
 test('city alert is time-gated, not infection-gated',()=>{
  const s=makeState();assert.equal(cityAlert(s).maxLevel,2);assert.equal(threat(s),1);
  s.infected=40;s.kills=20;s.time=10;assert.equal(threat(s),1);
- s.time=90;assert.equal(cityAlert(s).stage,2);assert.equal(cityAlert(s).maxLevel,4);
- s.time=180;assert.equal(cityAlert(s).stage,3);assert.equal(cityAlert(s).final,true);assert.equal(cityAlert(s).maxLevel,6);
+ s.time=90;assert.equal(cityAlert(s).stage,2);assert.equal(cityAlert(s).maxLevel,3);
+ s.time=180;assert.equal(cityAlert(s).stage,3);assert.equal(cityAlert(s).final,true);assert.equal(cityAlert(s).maxLevel,4);
 });
 test('early spawn plan only sends fodder',()=>{
  const s=makeState();const units=[makeUnit(1,0,0,0),makeUnit(2,1,1,1)];
@@ -146,6 +160,19 @@ test('live convert restores a full ally; corpse convert is sixty percent',()=>{
  convert(s,corpse);
  assert.equal(corpse.hp,Math.ceil(allyTemplate(0).hp*.6));
 });
+test('converted full stats are half of the living enemy, except civilian attack',()=>{
+ for(const [type,hp,atk] of [[0,20,10],[1,50,10],[2,50,5],[3,100,15],[4,200,5],[5,150,2.5],[6,75,5]]){
+  const e=ENEMIES[type],tpl=allyTemplate(type);
+  assert.equal(tpl.hp,hp);
+  assert.equal(tpl.atk,atk);
+  if(type!==0)assert.equal(tpl.hp,e.hp/2);
+ }
+ assert.equal(grenadeBlast(ENEMIES[5],0),50);
+ assert.equal(grenadeBlast(ENEMIES[5],5),10);
+ assert.equal(ENEMIES[2].level,2);
+ assert.equal(ENEMIES[6].level,3);
+ assert.equal(isRangedEnemy(ENEMIES[4]),false);
+});
 test('stick cops reach only at stick length and telegraph before damage',()=>{
  const cop=ENEMIES[1];
  assert.ok(cop.range<=1.4);
@@ -168,9 +195,10 @@ test('stick cops reach only at stick length and telegraph before damage',()=>{
 });
 test('elite soldiers outlast and outdamage converted workers',()=>{
  const worker=allyTemplate(0),elite=ENEMIES[5];
- assert.ok(elite.hp>worker.hp*3);
+ assert.equal(worker.hp,20);
+ assert.ok(elite.hp>=300);
  assert.ok(elite.threshold>=200);
- assert.ok(elite.damage*3>=worker.hp);
+ assert.ok(elite.hp>worker.hp*3);
 });
 test('tune console can move alert gates without infection',()=>{
  const s=makeState();s.time=40;assert.equal(threat(s),1);
@@ -250,7 +278,7 @@ test('evolve adds life from player level',()=>{
  assert.equal(s.maxHp,140);
 });
 test('complete mission chain requires boss defeat, high infection alone never wins',()=>{
- const s=makeState();s.infected=40;s.towers=3;s.highestEnemy=5;
+ const s=makeState();s.infected=40;s.towers=3;s.highestEnemy=3;
  for(let i=0;i<4;i++){assert.equal(missionReady(s),true);s.mission++;}
  assert.equal(missionReady(s),false);assert.equal(outcome(s),null);s.bossDefeated=true;assert.equal(outcome(s),'won');
 });
@@ -260,4 +288,35 @@ test('boss has 6000 HP, changes stages and takes extra weak-point damage',()=>{
 });
 test('syringe has visible reservoir and forward muzzle',()=>{
  const s=createSyringe();assert.ok(s.g.children.length>10);assert.ok(s.muzzle.position.z>1.5);assert.ok(s.liquid.material.emissiveIntensity>0);
+});
+test('spawn queue releases soldiers in small bursts instead of all at once',()=>{
+ const queue=makeSpawnQueue();
+ enqueueSpawnTypes(queue,[1,1,2,2,3,3]);
+ assert.equal(queue.jobs.length,6);
+ const first=takeSpawnJobs(queue,0,2,.08);
+ assert.deepEqual(first.map(j=>j.type),[1,1]);
+ assert.equal(queue.jobs.length,4);
+ assert.ok(queue.wait>0);
+ assert.equal(takeSpawnJobs(queue,.04,2,.08).length,0);
+ const second=takeSpawnJobs(queue,.08,2,.08);
+ assert.deepEqual(second.map(j=>j.type),[2,2]);
+ const rest=takeSpawnJobs(queue,1,2,.08);
+ assert.deepEqual(rest.map(j=>j.type),[3,3]);
+ assert.equal(queue.jobs.length,0);
+ assert.equal(queue.wait,0);
+});
+test('resetUnit clears combat leftovers so pooled records can be reused',()=>{
+ const u=makeUnit(9,6,1,2,false,3);
+ u.kind='fallen';u.dead=true;u.converted=true;u.infection=80;u.aiming=true;u.aim=1;u.guard=true;u.atk=99;
+ resetUnit(u,40,1,-3,8,false,1);
+ assert.equal(u.id,40);
+ assert.equal(u.type,1);
+ assert.equal(u.kind,'guard');
+ assert.equal(u.dead,false);
+ assert.equal(u.converted,false);
+ assert.equal(u.infection,0);
+ assert.equal(u.hp,ENEMIES[1].hp);
+ assert.equal(u.aiming,false);
+ assert.equal(u.guard,false);
+ assert.equal(u.atk,undefined);
 });

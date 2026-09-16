@@ -99,7 +99,7 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   holder.add(marker);
   const mixer = new THREE.AnimationMixer(root);
   const actions = Object.fromEntries(asset.clips.map(clip => [clip.name, mixer.clipAction(clip)]));
-  const visual = { holder, root, model, meshes, materials, marker, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0 };
+  const visual = { holder, root, model, meshes, materials, marker, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0, poolKey: visualPoolKey(kind) };
   setCharacterKind(visual, kind, variant);
   switchAnimation(visual, 'idle', .0);
   mixer.update(variant * .27);
@@ -156,3 +156,65 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
 }
 
 export const PROFESSIONS=['厨师','医生','建筑工人','配送员','教师'];
+
+const POOL_CAP=24;
+const visualPools={human:[],guard:[],ally:[]};
+export function visualPoolKey(kind){return kind==='human'||kind==='ally'?kind:'guard';}
+function parkPooledVisual(visual){
+ visual.holder.visible=false;
+ visual.holder.position.set(0,-120,0);
+ visual.holder.rotation.set(0,0,0);
+ visual.holdingGun=false;
+ visual.attackTime=0;
+ visual.accumulated=0;
+ visual.mixer.stopAllAction();
+ visual.current=null;
+}
+function disposeCharacterVisual(visual){
+ visual.mixer.stopAllAction();
+ visual.holder.removeFromParent();
+ for(const mesh of visual.meshes){
+  const mats=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+  for(const mat of mats)mat?.dispose?.();
+ }
+ visual.marker.geometry.dispose();
+ visual.marker.material.dispose();
+}
+export function acquireCharacterVisual(assets,kind,variant=0){
+ const key=visualPoolKey(kind);
+ const pooled=visualPools[key].pop();
+ if(pooled){
+  setCharacterKind(pooled,kind);
+  pooled.holder.visible=true;
+  pooled.holder.rotation.set(0,0,0);
+  switchAnimation(pooled,'idle',0);
+  pooled.mixer.update(variant*.05);
+  return pooled;
+ }
+ return createCharacterVisual(assets,kind,variant);
+}
+export function releaseCharacterVisual(visual){
+ if(!visual)return false;
+ // 按建模时的模型类型归还，不能按当前阵营：转化后的警卫仍是警卫模型。
+ const key=visual.poolKey||visualPoolKey(visual.kind);
+ parkPooledVisual(visual);
+ if(visualPools[key].length>=POOL_CAP){disposeCharacterVisual(visual);return false;}
+ visualPools[key].push(visual);
+ return true;
+}
+export function warmCharacterPool(assets,kind,count=6){
+ const key=visualPoolKey(kind);
+ while(visualPools[key].length<count){
+  const visual=createCharacterVisual(assets,kind,0);
+  visual.poolKey=key;
+  parkPooledVisual(visual);
+  visualPools[key].push(visual);
+ }
+ return visualPools[key].length;
+}
+export function clearCharacterPool(){
+ for(const pool of Object.values(visualPools)){
+  while(pool.length)disposeCharacterVisual(pool.pop());
+ }
+}
+export function characterPoolSize(kind){return visualPools[visualPoolKey(kind)]?.length||0;}

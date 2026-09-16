@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {Box3} from 'three';
-import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual,characterHeight} from './characters.js';
+import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual,characterHeight,acquireCharacterVisual,releaseCharacterVisual,clearCharacterPool,characterPoolSize} from './characters.js';
 const buffer=await readFile(new URL('./assets/character.glb',import.meta.url));
 const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
 const asset=prepareCharacterAsset(gltf);
@@ -49,4 +49,16 @@ test('unconverted humans shamble; converted allies switch to a fast walk',()=>{
   assert.equal(b.marker.visible,false);
   updateCharacterVisual(a,true,.1,80);assert.equal(a.holder.visible,false);
   updateCharacterVisual(a,true,.1,10);assert.equal(a.holder.visible,true);
+});
+test('character visual pool reuses the same skeleton instead of cloning again',()=>{
+  clearCharacterPool();
+  const a=acquireCharacterVisual(asset,'guard');
+  const skeleton=a.meshes[0].skeleton.bones[0];
+  releaseCharacterVisual(a);
+  assert.equal(characterPoolSize('guard'),1);
+  const b=acquireCharacterVisual(asset,'guard');
+  assert.equal(b,a);
+  assert.equal(b.meshes[0].skeleton.bones[0],skeleton);
+  assert.equal(characterPoolSize('guard'),0);
+  clearCharacterPool();
 });
