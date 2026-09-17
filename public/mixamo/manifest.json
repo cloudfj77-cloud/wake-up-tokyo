@@ -1,0 +1,23 @@
+{
+  "model": "idle.fbx",
+  "modelClip": "idle",
+  "clips": {
+    "idle": "idle.fbx",
+    "walk": "run.fbx",
+    "jump": "jump.fbx",
+    "toyAim": "toyAim.fbx",
+    "toyRecoil": "toyRecoil.fbx",
+    "flurry": "flurry.fbx",
+    "heavyPunch": "flurry.fbx",
+    "roll": "roll.fbx",
+    "fallRoll": "fallRoll.fbx",
+    "strafe": "Strafing.fbx",
+    "diveRoll": "heavyPunch.fbx"
+  },
+  "textures": {
+    "map": "tex/base_color.png",
+    "normalMap": "tex/normal.png",
+    "roughnessMap": "tex/roughness.png",
+    "metalnessMap": "tex/metallic.png"
+  }
+}
