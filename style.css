@@ -196,6 +196,15 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 .missionEntry div{display:grid;gap:4px}.missionEntry div span{font-size:9px}.missionEntry div span.done{color:#bd8bdd}
 @media(max-width:900px){.objectivePanel{width:235px}.missionList{grid-template-columns:1fr}}
 
+/* 刷新按钮属于单张能力卡：三列布局不变，只在卡片下方增加一次独立换牌机会。 */
+.choiceSlot{display:flex;min-width:0;flex:1;flex-direction:column;gap:7px}
+.choiceSlot .card{width:100%;height:100%}
+.reroll{padding:8px 10px;border:1px solid #8aa0b366;background:#ffffff0c;color:#d5e2ee;font-size:10px;letter-spacing:1px}
+.reroll:hover:not(:disabled){border-color:#c69be5;background:#b478f122;color:#f0e3ff}
+.reroll:disabled{cursor:not-allowed;opacity:.42}
+
+/* 受击红屏：屏幕四周泛红，中心保持通透 */
+#damageFlash{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,48,48,0) 42%,rgba(255,32,32,.68) 100%);}
 /* liang 战斗界面：体力条、受伤闪红、升级演出、F3 调参。main 样式里没有这些。 */
 .bar.stamina{height:5px;margin:-6px 0 12px}
 .bar.stamina i{background:#7ad0c4;width:100%}

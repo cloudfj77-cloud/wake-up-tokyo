@@ -1,6 +1,26 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
+import { loadMixamoCharacter } from './mixamo.js';
+import { loadWorkerAsset } from './worker.js';
+import { loadAwakenedAssets } from './awakened.js';
+
+// 逻辑动作名 → 可能的 clip 名。直接同名优先，其次按顺序回退，
+// 这样 Mixamo 的 Idle / Walking / Running 等命名能无缝接进原有的状态机。
+const CLIP_ALIASES = {
+  idle: ['idle', 'idleLoop', 'standing', 'breathingIdle'],
+  walk: ['walk', 'walking', 'run', 'running', 'jog'],
+  zombie: ['zombie', 'zombieWalk', 'shamble', 'walk'],
+  jump: ['jump', 'jumping', 'jumpUp', 'leap', 'roll'],
+  toyAim: ['toyAim', 'aim', 'aiming', 'holdingGun'],
+  toyRecoil: ['toyRecoil', 'recoil', 'shoot', 'firing'],
+  heavyPunch: ['heavyPunch', 'punch', 'punching', 'melee'],
+  flurry: ['flurry', 'attack', 'slash', 'punchCombo'],
+  strafe: ['strafe', 'strafing', 'strafeLeft', 'walk'],
+  // 翻滚是后来加的 Mixamo 专属动作，体素模型没有这两个 clip，要能回退到跳跃。
+  roll: ['roll', 'diveRoll', 'jump'],
+  diveRoll: ['diveRoll', 'roll', 'jump'],
+};
 
 const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee };
 
@@ -44,18 +64,45 @@ const CHARACTER_MODEL_FILES = {
 };
 
 export async function loadCharacterAssets() {
-  const entries = await Promise.all(Object.entries(CHARACTER_MODEL_FILES).map(async ([key, file]) => {
+  // 打工人优先用 public/workers/ 下的 FBX 资源；拿到之后就不再下载原来的体素打工人模型。
+  const worker = await loadWorkerAsset().then(prepareCharacterAsset).catch(error => {
+    console.warn('[characters] 未启用打工人模型：', error.message);
+    return null;
+  });
+  // 觉醒形态：画家与读者两套外观，替代原来的 awakened.glb，感染时随机取一个。
+  let awakenedVariants = [];
+  try {
+    awakenedVariants = (await loadAwakenedAssets()).map(prepareCharacterAsset);
+  } catch (error) {
+    console.warn('[characters] 未启用觉醒形态：', error.message);
+  }
+  const files = Object.entries(CHARACTER_MODEL_FILES)
+    .filter(([key]) => !(worker && (key === 'humanMale' || key === 'humanFemale')) && !(awakenedVariants.length && key === 'ally'));
+  const entries = await Promise.all(files.map(async ([key, file]) => {
     const gltf = await new GLTFLoader().loadAsync(file);
     return [key, prepareCharacterAsset(gltf)];
   }));
-  return Object.fromEntries(entries);
+  const assets = Object.fromEntries(entries);
+  if (worker) { assets.humanMale = worker; assets.humanFemale = worker; }
+  if (awakenedVariants.length) { assets.ally = awakenedVariants[0]; assets.allyVariants = awakenedVariants; }
+  // 若 public/mixamo/manifest.json 存在，主人公改用 Mixamo 角色与动作；否则沿用体素主角。
+  const mixamo = await loadMixamoCharacter().then(prepareCharacterAsset).catch(error => {
+    console.warn('[characters] 未启用 Mixamo 主角：', error.message);
+    return null;
+  });
+  if (mixamo) assets.player = mixamo;
+  return assets;
 }
 
 // 单个资产（旧写法）直接透传；资产集按主人公、觉醒者、警卫和打工人选择专属模型。
 function selectCharacterAsset(assets, kind) {
   if (assets.scene) return assets;
   if (kind === 'player' && assets.player) return assets.player;
-  if (kind === 'ally' && assets.ally) return assets.ally;
+  if (kind === 'ally') {
+    // 觉醒形态有多套外观，随机挑一个，感染出来的人群才不会一个样。
+    if (assets.allyVariants?.length) return assets.allyVariants[Math.floor(Math.random() * assets.allyVariants.length)];
+    if (assets.ally) return assets.ally;
+  }
   if (kind === 'guard' && assets.guard) return assets.guard;
   if (assets.humanMale && assets.humanFemale) return Math.random() < .5 ? assets.humanMale : assets.humanFemale;
   if (assets.ally) return assets.ally;
@@ -113,8 +160,14 @@ export function setCharacterKind(visual, kind) {
   visual.marker.visible = kind !== 'human';
 }
 
+function resolveAction(visual, name) {
+  if (visual.actions[name]) return visual.actions[name];
+  for (const alias of CLIP_ALIASES[name] || []) if (visual.actions[alias]) return visual.actions[alias];
+  return visual.actions.idle || Object.values(visual.actions)[0];
+}
+
 function switchAnimation(visual, name, fade = .18) {
-  const next = visual.actions[name] || visual.actions.idle;
+  const next = resolveAction(visual, name);
   if (!next || visual.current === next) return;
   visual.current?.fadeOut(fade);
   next.reset().setEffectiveWeight(1).fadeIn(fade).play();
@@ -122,9 +175,14 @@ function switchAnimation(visual, name, fade = .18) {
 }
 
 export function playCharacterAttack(visual, type, duration = .65) {
-  const name = type === 'shoot' ? 'toyRecoil' : type === 'break' ? 'heavyPunch' : type === 'rush' ? 'jump' : 'flurry';
-  const action = visual.actions[name];
+  // 翻滚分徒手和持枪两套：徒手是 Stand To Roll，端着枪是 Running Dive Roll。
+  const name = type === 'shoot' ? 'toyRecoil' : type === 'break' ? 'heavyPunch'
+    : type === 'rush' ? (visual.holdingGun ? 'diveRoll' : 'roll') : 'flurry';
+  const action = resolveAction(visual, name);
   if (!action) return;
+  // 同一段攻击还在播的时候直接忽略重复触发：AI 在起手阶段可能连续多帧调用这里，
+  // 每次 reset 都会把动作拉回第一帧，看上去就是原地高频抖动。
+  if (visual.attackTime > 0 && visual.current === action) return;
   // 原动画约三秒，战斗中太拖沓；近战前摇可把时长拉到挥击命中点。
   const span = Math.max(.35, duration);
   action.setLoop(THREE.LoopOnce, 1);
@@ -137,10 +195,21 @@ export function playCharacterAttack(visual, type, duration = .65) {
 
 export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false) {
   if (visual.attackTime > 0) visual.attackTime -= dt;
-  if (visual.attackTime <= 0) {
-    const name = moving ? (visual.kind === 'human' ? 'zombie' : 'walk') : visual.holdingGun ? 'toyAim' : 'idle';
-    const action = visual.actions[name];
-    const scale = !moving ? 1 : visual.kind === 'human' ? .38 : visual.kind === 'ally' ? 1.35 : (sprinting ? 1.45 : 1.0);
+  if (visual.airborne) {
+    // 腾空时固定播 Jump，落地后自然切回走路或站立。
+    const jump = resolveAction(visual, 'jump');
+    if (jump) jump.setEffectiveTimeScale(1);
+    switchAnimation(visual, 'jump', .1);
+  } else if (visual.attackTime <= 0) {
+    // 端着枪移动用 Strafing，徒手移动用跑步（Fast Run），未感染的打工人走蹒跚步。
+    const name = moving
+      ? (visual.kind === 'human' ? 'zombie' : visual.holdingGun ? 'strafe' : 'walk')
+      : (visual.holdingGun ? 'toyAim' : 'idle');
+    const action = resolveAction(visual, name);
+    // 步频要跟实际位移对上，否则脚在原地磨、人在飘，就是滑步。
+    // 打工人 0.55 单位/秒配 Sad Walk（1.47 秒/圈）→ 原速；
+    // 觉醒者 3.8 单位/秒配 Fast Run（0.53 秒/圈，自然步幅约 1.0 单位）→ 需要 2.0 倍速。
+    const scale = !moving ? 1 : visual.kind === 'human' ? 1.0 : visual.kind === 'ally' ? 2.0 : (sprinting ? 1.45 : 1.0);
     if (action) action.setEffectiveTimeScale(scale);
     switchAnimation(visual, name);
   }
@@ -148,11 +217,10 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
   visual.holder.visible = distance < 58;
   const shadows = distance < 18;
   for (const mesh of visual.meshes) mesh.castShadow = shadows;
-  visual.accumulated += dt;
-  if (distance < 16 || visual.accumulated >= (distance < 45 ? 1 / 20 : 1 / 10)) {
-    visual.mixer.update(visual.accumulated);
-    visual.accumulated = 0;
-  }
+  // 骨骼动画不再按距离降频：主角恒按 distance=0 处理从不降频，
+  // 只有 NPC 会被降到 15fps，两个 NPC 在远处凑到一起时就会一卡一卡。
+  // 全场几十个单位的骨骼矩阵开销很小，先保证动作连贯。
+  visual.mixer.update(dt);
 }
 
 export const PROFESSIONS=['厨师','医生','建筑工人','配送员','教师'];

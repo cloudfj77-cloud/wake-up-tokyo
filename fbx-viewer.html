@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FBX 预览 · Wake up</title>
+<style>
+  :root { color-scheme: dark; --line: rgba(255,255,255,.12); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #141519; }
+  body { font: 13px/1.5 -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; color: #e8e9ee; }
+  #stage { display: block; width: 100vw; height: 100vh; }
+  #panel {
+    position: fixed; top: 14px; left: 14px; width: 262px; max-height: calc(100vh - 28px);
+    overflow: auto; padding: 14px 16px 16px; border-radius: 14px;
+    background: rgba(22,23,28,.82); backdrop-filter: blur(14px);
+    border: 1px solid var(--line); box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  }
+  #panel h1 { margin: 0 0 10px; font-size: 14px; letter-spacing: .5px; }
+  #panel h2 { margin: 16px 0 8px; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: #8d92a3; font-weight: 600; }
+  #panel label { display: block; margin: 7px 0; font-size: 12px; color: #c9ccd8; }
+  #panel select, #panel button { width: 100%; margin-top: 3px; padding: 6px 8px; border-radius: 8px;
+    background: #26282f; color: #e8e9ee; border: 1px solid var(--line); font: inherit; cursor: pointer; }
+  #panel button:hover { background: #333640; }
+  input[type=range] { width: 100%; margin-top: 4px; accent-color: #bf78ff; }
+  input[type=checkbox] { accent-color: #bf78ff; margin-right: 6px; vertical-align: -1px; }
+  .row { display: flex; gap: 8px; } .row button { margin-top: 8px; }
+  .val { float: right; color: #8d92a3; font-variant-numeric: tabular-nums; }
+  #stats {
+    position: fixed; right: 14px; top: 14px; padding: 10px 12px; border-radius: 12px;
+    background: rgba(22,23,28,.82); border: 1px solid var(--line); backdrop-filter: blur(14px);
+    font-size: 12px; color: #b6bac7; white-space: pre; line-height: 1.7; max-width: 260px;
+  }
+  #stats b { color: #e8e9ee; font-weight: 600; }
+  #hint {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    padding: 8px 16px; border-radius: 999px; background: rgba(22,23,28,.7);
+    border: 1px solid var(--line); color: #8d92a3; font-size: 12px; pointer-events: none;
+    transition: opacity .2s, background .2s;
+  }
+  #hint.on { background: rgba(191,120,255,.22); color: #efe6ff; border-color: rgba(191,120,255,.5); }
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+
+<aside id="panel">
+  <h1>FBX 预览</h1>
+  <label>模型
+    <select id="model"></select>
+  </label>
+  <label>动作
+    <select id="clip"></select>
+  </label>
+  <div class="row">
+    <button id="play">暂停</button>
+    <button id="reset">重置视角</button>
+  </div>
+  <label>播放速度 <span class="val" id="speedVal">1.00×</span>
+    <input type="range" id="speed" min="0" max="2" step="0.05" value="1">
+  </label>
+  <label>时间轴
+    <input type="range" id="time" min="0" max="1" step="0.001" value="0">
+  </label>
+
+  <h2>贴图通道</h2>
+  <label><input type="checkbox" id="useMap" checked> 基础色 base_color</label>
+  <label><input type="checkbox" id="useNormal" checked> 法线 normal</label>
+  <label><input type="checkbox" id="useRough" checked> 粗糙度 roughness</label>
+  <label><input type="checkbox" id="useMetal" checked> 金属度 metallic</label>
+  <label>粗糙度系数 <span class="val" id="roughVal">1.00</span>
+    <input type="range" id="rough" min="0" max="1.5" step="0.01" value="1">
+  </label>
+  <label>金属度系数 <span class="val" id="metalVal">1.00</span>
+    <input type="range" id="metal" min="0" max="1.5" step="0.01" value="1">
+  </label>
+  <label>法线强度 <span class="val" id="normalScaleVal">1.00</span>
+    <input type="range" id="normalScale" min="0" max="2" step="0.05" value="1">
+  </label>
+  <label><input type="checkbox" id="flipNormalY"> 法线 Y 翻转</label>
+  <label><input type="checkbox" id="flipTextureY" checked> 贴图上下翻转 flipY</label>
+
+  <h2>显示</h2>
+  <label><input type="checkbox" id="recomputeNormals"> 重算法线</label>
+  <label><input type="checkbox" id="wireframe"> 线框</label>
+  <label><input type="checkbox" id="skeleton"> 显示骨骼</label>
+  <label><input type="checkbox" id="autoRotate" checked> 自动旋转</label>
+  <label>曝光 <span class="val" id="exposureVal">1.10</span>
+    <input type="range" id="exposure" min="0.2" max="2.5" step="0.05" value="1.1">
+  </label>
+</aside>
+
+<div id="stats">载入中…</div>
+<div id="hint">把 .fbx 模型或 .png 贴图拖进窗口即可替换</div>
+
+<script type="module" src="/fbx-viewer.js"></script>
+</body>
+</html>
