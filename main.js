@@ -279,7 +279,8 @@ function ensureGuards(announce=false){
  for(let i=0;i<missing;i++)spawnGuard(want.type);
  if(announce&&missing>0)toast(`护卫到场 · ${want.count} 名 ${ENEMIES[want.type].name}`,2);
 }
-function initUnits(){let rng=7142;const random=()=>{rng=(rng*1664525+1013904223)>>>0;return rng/4294967296;};units=[];for(let i=0;i<48;i++){let x,z;if(i<10){x=(i%5-2)*2.1;z=player.z-5-Math.floor(i/5)*3.5;x+=player.x;({x,z}=world.nearest(x,z,1));}else{do{x=(random()-.5)*114;z=(random()-.5)*114;}while(!world.free(x,z,1));}const citizen=makeUnit(i,0,x,z,true,i%5);if(i<10){citizen.wander=18;citizen.tx=x;citizen.tz=z;}units.push(citizen);}const positions=[[-7,22],[8,-24],[23,7],[-25,8],[-8,39],[39,-8],[-39,-7],[7,-39],[48,5],[-6,50]];positions.forEach((p,i)=>{const q=world.nearest(p[0],p[1],1);units.push(makeUnit(48+i,1,q.x,q.z,true,i%5));});units.forEach(u=>{if(distance(player,u)<38)actorVisual(u);});
+// 市民散在全城，并离出生点至少 18 米，避免开局被一圈人围住。
+function initUnits(){let rng=7142;const random=()=>{rng=(rng*1664525+1013904223)>>>0;return rng/4294967296;};units=[];for(let i=0;i<48;i++){let spot=null;for(let t=0;t<80;t++){const x=(random()-.5)*114,z=(random()-.5)*114;if(!world.free(x,z,1))continue;const next=world.nearest(x,z,1);if(distance(player,next)<18)continue;spot=next;break;}if(!spot)spot=world.nearest((random()-.5)*80,(random()-.5)*80,1);units.push(makeUnit(i,0,spot.x,spot.z,true,i%5));}const positions=[[-7,22],[8,-24],[23,7],[-25,8],[-8,39],[39,-8],[-39,-7],[7,-39],[48,5],[-6,50]];positions.forEach((p,i)=>{const q=world.nearest(p[0],p[1],1);units.push(makeUnit(48+i,1,q.x,q.z,true,i%5));});units.forEach(u=>{if(distance(player,u)<38)actorVisual(u);});
  // 开局先克隆一批警卫模型进缓存池，后面增援直接取出，避免战斗中当场克隆卡顿。
  warmCharacterPool(assets,'guard',8);
 }
@@ -288,21 +289,23 @@ function forward(){return {x:Math.sin(yaw),z:Math.cos(yaw)};}
 function weaponKey(id){return weaponSlots(state).find(slot=>slot.id===id)?.key??'?';}
 function acquire(range=3.1){let best=null,score=-Infinity;const f=forward();for(const u of units){if(u.dead||u.converted||u.kind==='corpse')continue;const d=distance(player,u);if(d>range||!world.clear(player,u))continue;const dot=((u.x-player.x)*f.x+(u.z-player.z)*f.z)/(d||1);if(dot<.3)continue;const value=dot*4-d/range;if(value>score){score=value;best=u;}}return best;}
 const pickups=[],crossBarGeometry=new T.BoxGeometry(1,1,1);
+// 血包按街道来定大小。人物缩小后如果还乘 FX_SCALE，十字只剩约 0.2，走在街上几乎看不见。
+const PICKUP_SCALE=.9;
 function spawnPickup(x,z){
  if(pickups.length>=8)return;
- const body=new T.Group();body.position.set(x,world.heightAt(x,z)+.45*FX_SCALE,z);
- const mat=new T.MeshStandardMaterial({color:0x2fd15a,emissive:0x1b8f36,emissiveIntensity:.85,roughness:.3});
- const vBar=new T.Mesh(crossBarGeometry,mat);vBar.scale.set(.15*FX_SCALE,.5*FX_SCALE,.15*FX_SCALE);body.add(vBar);
- const hBar=new T.Mesh(crossBarGeometry,mat);hBar.scale.set(.5*FX_SCALE,.15*FX_SCALE,.15*FX_SCALE);body.add(hBar);
+ const body=new T.Group();body.position.set(x,world.heightAt(x,z)+.55*PICKUP_SCALE,z);
+ const mat=new T.MeshStandardMaterial({color:0x3dff6a,emissive:0x39e85a,emissiveIntensity:1.6,roughness:.25});
+ const vBar=new T.Mesh(crossBarGeometry,mat);vBar.scale.set(.18*PICKUP_SCALE,.62*PICKUP_SCALE,.18*PICKUP_SCALE);body.add(vBar);
+ const hBar=new T.Mesh(crossBarGeometry,mat);hBar.scale.set(.62*PICKUP_SCALE,.18*PICKUP_SCALE,.18*PICKUP_SCALE);body.add(hBar);
  body.traverse(o=>{if(o.isMesh)o.castShadow=true;});
  scene.add(body);
- pickups.push({m:body,aura:makeAura(body,AURA_COLORS.pickup,{coreSize:1.1,moteSize:.26,radius:.42}),x,z,phase:Math.random()*6.283});
+ pickups.push({m:body,aura:makeAura(body,AURA_COLORS.pickup,{coreSize:1.45,moteSize:.34,radius:.62}),x,z,phase:Math.random()*6.283});
 }
 function scatterPickups(){for(let i=0;i<6;i++){let x=0,z=0;for(let t=0;t<60;t++){x=(Math.random()-.5)*104;z=(Math.random()-.5)*104;if(world.free(x,z,1))break;}spawnPickup(x,z);}}
 function updatePickups(dt){
  for(let i=pickups.length-1;i>=0;i--){
   const p=pickups[i];
-  p.phase+=dt*2.2;p.m.rotation.y+=dt*1.5;p.m.position.y=world.heightAt(p.x,p.z)+(.45+Math.sin(p.phase)*.09)*FX_SCALE;
+  p.phase+=dt*2.2;p.m.rotation.y+=dt*1.5;p.m.position.y=world.heightAt(p.x,p.z)+(.55+Math.sin(p.phase)*.12)*PICKUP_SCALE;
   if(distance(player,p)<1.5){removeAura(p.aura);scene.remove(p.m);pickups.splice(i,1);const healed=Math.min(25,state.maxHp-state.hp);state.hp+=healed;toast(healed>0?`拾取医疗血包 · 生命 +${healed}`:'拾取医疗血包 · 生命已满',1.6);music.effect('upgrade');}
  }
 }
@@ -367,7 +370,21 @@ canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventList
 function clearInput(){mouseHeld=false;dragging=false;Object.keys(keys).forEach(k=>keys[k]=false);document.exitPointerLock?.();}
 addEventListener('blur',()=>{clearInput();if(mode==='playing')togglePause();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='playing')togglePause();});
 function showDialog(html){$('dialog').classList.remove('choiceLock');$('dialog').innerHTML=html;$('modal').hidden=false;clearInput();}
-function hideDialog(){$('modal').hidden=true;$('dialog').classList.remove('choiceLock');}
+function hideDialog(){const modal=$('modal');modal.hidden=true;modal.style.opacity='';$('dialog').classList.remove('choiceLock');}
+function fadeModal(to,ms,done){
+  const modal=$('modal');
+  const from=parseFloat(modal.style.opacity===''?getComputedStyle(modal).opacity:modal.style.opacity);
+  const start=performance.now();
+  // 用时间推进透明度。升级时画面已经暂停，不能靠渲染帧来计时。
+  const timer=setInterval(()=>{
+    const t=Math.min(1,(performance.now()-start)/ms);
+    modal.style.opacity=String(from+(to-from)*t);
+    if(t<1)return;
+    clearInterval(timer);
+    modal.style.opacity=String(to);
+    done?.();
+  },16);
+}
 function hideLevelUpFx(){const fx=$('levelUpFx');if(!fx)return;fx.classList.remove('play');fx.hidden=true;}
 function playLevelUpFx(){
   music.effect('upgrade');
@@ -379,10 +396,13 @@ function playLevelUpFx(){
 }
 function showLevelUpBeat(){
   playLevelUpFx();
-  showDialog(`<div class="levelUpDialog"><div class="eyebrow">GENETIC RECOMBINATION</div><strong>基因突变</strong><b>LV.${state.level}</b><small>战场暂停 · 看完黄光后再选变异</small><button type="button" class="action" id="enterUpgrade" disabled>进入选择</button></div>`);
-  $('enterUpgrade').onclick=()=>openUpgradeDialog();
+  // 升级当下只出字，选卡界面等一秒再淡入，避免一升级就挡住画面。
+  hideDialog();
+  const fx=$('levelUpFx');
+  fx.hidden=false;
+  fx.classList.add('play');
   clearTimeout(upgradeTimer);
-  upgradeTimer=setTimeout(()=>{const btn=$('enterUpgrade');if(btn)btn.disabled=false;},800);
+  upgradeTimer=setTimeout(()=>openUpgradeDialog(),1000);
 }
 function bindUpgradeCards(resetPick=true){
   if(resetPick)pendingChoice=-1;
@@ -431,10 +451,16 @@ function refreshChoice(index){
   toast(`第 ${index+1} 张已刷新 · ${choiceSet[index].name}`,1.4);
 }
 function confirmChoice(){
-  if(mode!=='upgrade'||pendingChoice<0||upgradeLock>0)return;
+  const modal=$('modal');
+  if(mode!=='upgrade'||pendingChoice<0||upgradeLock>0||modal.dataset.closing==='1')return;
   const a=choiceSet[pendingChoice];
   if(!a||!upgrade(state,a.id))return;
+  modal.dataset.closing='1';
   clearTimeout(upgradeTimer);
+  fadeModal(0,400,()=>finishUpgrade(a));
+}
+function finishUpgrade(a){
+  $('modal').dataset.closing='';
   hideDialog();
   hideLevelUpFx();
   pendingChoice=-1;
@@ -456,7 +482,11 @@ function openUpgradeDialog(){
   mode='upgrade';
   upgradeLock=.45;
   showDialog(`<div class="eyebrow">GENETIC RECOMBINATION / LV.${state.level}</div><h2>${state.history.length?'反抗，正在进化。':'选择你的第一种变异。'}</h2><p>战场已暂停。先点一张卡片预览，再点确定才会生效。每张卡本级可刷新一次，只换这一张；本轮已经出过的能力不会再刷出来。<br>空气传播、枪？枪！、可感染发射器、狂杀、持续感染、急速、皮糙肉厚、生存与进化、听我号令。</p><div class="cards" id="upgradeCards">${choiceSet.map((a,i)=>choiceSlotHtml(a,i)).join('')}</div><div class="choiceBar"><button type="button" class="action" id="confirmUpgrade" disabled>先点一张卡片</button></div>`);
+  const modal=$('modal');
+  modal.dataset.closing='';
+  modal.style.opacity='0';
   $('dialog').classList.add('choiceLock');
+  fadeModal(1,450,()=>{upgradeLock=0;$('dialog')?.classList.remove('choiceLock');});
   bindUpgradeCards(true);
 }
 function chooseUpgrade(){

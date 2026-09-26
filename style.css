@@ -215,7 +215,8 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 .levelUpDialog b{display:block;font-size:28px;color:#ffc92e}
 .levelUpDialog .action{display:block;margin:22px auto 0}
 #levelUpFx{position:fixed;inset:0;z-index:8;display:none;pointer-events:none}
-#levelUpFx:not([hidden]){display:block}
+#levelUpFx:not([hidden]){display:grid;place-items:center}
+.levelUpWord{font-size:clamp(72px,12vw,128px);letter-spacing:.18em;color:#fff6d0;text-shadow:0 0 18px #ffc92e,0 0 42px #ffc92e99}
 .levelUpBurst{position:absolute;left:50%;top:58%;width:min(46vw,360px);height:min(46vw,360px);margin:-180px 0 0 -180px;border-radius:50%;background:radial-gradient(circle,#ffe066bb 0%,#ffc92e44 30%,transparent 70%);animation:levelPulse 1.45s ease-out;pointer-events:none}
 .levelUpCopy{position:relative;text-align:center;text-shadow:0 0 28px #ffc92e99}
 .levelUpCopy .eyebrow{justify-content:center;letter-spacing:3px;color:#ffe9b8}

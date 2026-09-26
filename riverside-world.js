@@ -77,8 +77,15 @@ export async function loadRiverside(scene){
  function free(x,z,r=.45){return !solid(x,z,r);}
  function waypoint(u,x,z){if(u.x*x<0&&Math.abs(x)>9){const bz=[26.4,-15.4].sort((a,b)=>Math.abs(a-u.z)+Math.abs(a-z)-Math.abs(b-u.z)-Math.abs(b-z))[0];if(Math.abs(u.z-bz)>1.2)return {x:Math.sign(u.x)*12.5,z:bz};return {x:Math.sign(x)*13,z:bz};}return {x,z};}
  function nearest(x,z,r=.7){if(free(x,z,r))return {x,z};for(let radius=.5;radius<130;radius+=.5)for(let i=0;i<24;i++){const a=i*Math.PI/12,xx=x+Math.cos(a)*radius,zz=z+Math.sin(a)*radius;if(free(xx,zz,r))return {x:xx,z:zz};}throw Error('No walkable spawn');}
- // 主角从西北侧开阔街口开始。两座中枢都在出生点这一岸，打完后再过桥去对岸打 Boss。
- const spawn=nearest(-34,34,1),bossSpawn=nearest(33,-24,4);
+ // 每局在中枢这一岸随便找一块空地出生，不再总从西北街口开始。对岸留给 Boss。
+ function pickSpawn(){
+  for(let i=0;i<80;i++){
+   const x=-16-Math.random()*40,z=-50+Math.random()*98;
+   if(free(x,z,1.2))return {x,z};
+  }
+  return nearest(-34,34,1);
+ }
+ const spawn=pickSpawn(),bossSpawn=nearest(33,-24,4);
  const glowingBlock=(group,w,h,d,color,x,y,z)=>{const mesh=block(group,w,h,d,color,x,y,z);mesh.material=mesh.material.clone();mesh.material.emissive=new T.Color(0xffc400);mesh.material.emissiveIntensity=1.6;mesh.material.roughness=.35;return mesh;};
  // 三座削弱设施等镇压倒计时开始才投放到出生点这一岸，倒计时前地图上没有它们。
  let weakenSpawned=false;
