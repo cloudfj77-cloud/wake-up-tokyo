@@ -80,9 +80,17 @@ export async function loadRiverside(scene){
  // 主角从西北侧开阔街口开始。两座中枢都在出生点这一岸，打完后再过桥去对岸打 Boss。
  const spawn=nearest(-34,34,1),bossSpawn=nearest(33,-24,4);
  const glowingBlock=(group,w,h,d,color,x,y,z)=>{const mesh=block(group,w,h,d,color,x,y,z);mesh.material=mesh.material.clone();mesh.material.emissive=new T.Color(0xffc400);mesh.material.emissiveIntensity=1.6;mesh.material.roughness=.35;return mesh;};
- for(const p of [[-35,14],[-35,-12]]){const {x,z}=nearest(...p,2),g=new T.Group();g.position.set(x,heightAt(x,z),z);scene.add(g);glowingBlock(g,2.4,.5,2.4,0xb89312,0,.25,0);glowingBlock(g,1.4,3,1.4,0xffcf21,0,1.8,0);glowingBlock(g,1.7,.25,1.7,0xffed6a,0,3.5,0);glowingBlock(g,.15,2,.15,0xffd52f,0,4.5,0);glowingBlock(g,1.5,.5,.3,0xffff9a,0,5.5,0);const halo=new T.Mesh(new T.SphereGeometry(1.05,14,9),new T.MeshBasicMaterial({color:0xffe75c,transparent:true,opacity:.22,blending:T.AdditiveBlending,depthWrite:false}));halo.position.y=4.9;g.add(halo);const light=new T.PointLight(0xffd83d,4.2,13,1.5);light.position.y=4.5;g.add(light);towers.push(add(g,'tower',180));}
+ // 三座削弱设施等镇压倒计时开始才投放到出生点这一岸，倒计时前地图上没有它们。
+ let weakenSpawned=false;
+ function spawnWeakenSites(){
+  if(weakenSpawned)return towers;
+  weakenSpawned=true;
+  const weakenSites=[['shield',[-35,14],0xffcf21],['fire',[-35,-12],0xff7a3c],['reinforce',[-12,28],0xc56cff]];
+  for(const [weaken,p,color] of weakenSites){const {x,z}=nearest(...p,2),g=new T.Group();g.position.set(x,heightAt(x,z),z);scene.add(g);glowingBlock(g,2.4,.5,2.4,color,0,.25,0);glowingBlock(g,1.4,3,1.4,color,0,1.8,0);glowingBlock(g,1.7,.25,1.7,0xffed6a,0,3.5,0);glowingBlock(g,.15,2,.15,color,0,4.5,0);glowingBlock(g,1.5,.5,.3,0xffff9a,0,5.5,0);const halo=new T.Mesh(new T.SphereGeometry(1.05,14,9),new T.MeshBasicMaterial({color,transparent:true,opacity:.22,blending:T.AdditiveBlending,depthWrite:false}));halo.position.y=4.9;g.add(halo);const light=new T.PointLight(color,4.2,13,1.5);light.position.y=4.5;g.add(light);const tower=add(g,'tower',180);tower.weaken=weaken;towers.push(tower);}
+  return towers;
+ }
  const entries=[[34,40],[-35,40],[-35,-57],[34,-57]].map(p=>{const q=nearest(...p,2);return[q.x,q.z];});
  function clear(a,b,r=.1){const d=Math.hypot(a.x-b.x,a.z-b.z),n=Math.ceil(d/.7);for(let i=1;i<n;i++)if(solid(a.x+(b.x-a.x)*i/n,a.z+(b.z-a.z)*i/n,r))return false;return true;}
  function breakAt(x,z,r,damage,emit,impactY){let count=0;for(const o of destructibles){if(o.dead)continue;const nx=T.MathUtils.clamp(x,o.x-o.w/2,o.x+o.w/2),nz=T.MathUtils.clamp(z,o.z-o.d/2,o.z+o.d/2);if(Math.hypot(x-nx,z-nz)>r)continue;o.hp-=damage;const tint=o.type==='tower'?0xe5a374:0xbab3a2,hitY=impactY??heightAt(nx,nz)+Math.min(1,o.h*.35);if(!carve(o,nx,hitY,nz,Math.min(r,.9),emit,tint))emit?.(nx,hitY,nz,tint,12);if(o.hp<=0){o.dead=true;o.g.visible=false;count++;emit?.(o.x,2,o.z,0xb5ae9f,35);}}return count;}
- return {root,obstacles,destructibles,buildings,towers,free,clear,breakAt,heightAt,solid,waypoint,nearest,spawn,bossSpawn,entries};
+ return {root,obstacles,destructibles,buildings,towers,free,clear,breakAt,heightAt,solid,waypoint,nearest,spawn,bossSpawn,entries,spawnWeakenSites};
 }

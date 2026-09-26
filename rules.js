@@ -36,7 +36,7 @@ export const ABILITIES=[
   '解锁 RPG。4 级及以上 +1 发。枪械造成攻击力一半的感染。'
  ]},
  {id:'launcher',name:'可感染发射器',icon:'◎',group:'武器系',descriptions:[
-  '解锁感染针。命中造成感染，适合叫醒路人。按 2 切换。',
+  '解锁感染针。命中造成感染，适合叫醒路人。键位按点出顺序排。',
   '针剂感染与伤害提高，并可穿透多名敌人。',
   '连续释放 6 次后，下一次打出强化炮弹。'
  ]},
@@ -88,9 +88,11 @@ export function makeState(){
   abilities:{air:0,guns:0,launcher:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
   history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
-  clip:0,clipMax:0,weapon:-1,gunId:null,launcherCharge:0,
+  clip:0,clipMax:0,weapon:-1,gunId:null,launcherCharge:0,weaponOrder:[],
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
-  frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow'
+  frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
+  // 警戒只吃等级和时间。Boss 倒计时、召唤和余韵都记在这里，避免和拆中枢进度绑在一起。
+  alertTime:0,bossCountdown:null,bossSpawned:false,aftermath:false,settle:false
  };
 }
 export function availableAbilities(s){return ABILITIES.filter(a=>s.abilities[a.id]<3);}
@@ -146,6 +148,16 @@ export function refreshStats(s){
  return delta;
 }
 export function unlockedGuns(s){return GUNS.filter(g=>s.abilities.guns>=g.unlock);}
+// 枪和注射器没有固定键位。谁先点到对应加成，谁就排在更靠前的数字键。
+function rememberWeapon(s,id){s.weaponOrder??=[];if(!s.weaponOrder.includes(id))s.weaponOrder.push(id);}
+export function weaponSlots(s){
+ return (s.weaponOrder||[]).map((id,index)=>{
+  if(id==='launcher')return {key:index+2,id,weapon:LAUNCHER_SLOT,name:'注射器'};
+  const weapon=GUNS.findIndex(g=>g.id===id);
+  const gun=GUNS[weapon];
+  return gun?{key:index+2,id,weapon,name:gun.name,gun}:null;
+ }).filter(Boolean);
+}
 export function gunById(id){return GUNS.find(g=>g.id===id)||null;}
 function addAmmo(s,id,n){s.ammo[id]=Math.min(999,(s.ammo[id]||0)+n);}
 export function grantKillAmmo(s,enemyLevel){
@@ -180,12 +192,12 @@ export function upgrade(s,id){
  if(!ABILITIES.some(a=>a.id===id)||s.abilities[id]>=3||s.pending<=0)return false;
  s.abilities[id]++;s.pending--;s.history.push({id,level:s.abilities[id],time:s.time});s.lastPick=s.time;
  if(id==='guns'){
-  if(s.abilities.guns===1){addAmmo(s,'pistol',24);addAmmo(s,'shotgun',8);s.mags.pistol=GUNS[0].clip;s.mags.shotgun=GUNS[1].clip;}
-  if(s.abilities.guns===2){addAmmo(s,'rifle',30);addAmmo(s,'sniper',9);s.mags.rifle=GUNS[2].clip;s.mags.sniper=GUNS[3].clip;}
-  if(s.abilities.guns===3){addAmmo(s,'rpg',2);s.mags.rpg=1;}
+  if(s.abilities.guns===1){addAmmo(s,'pistol',24);addAmmo(s,'shotgun',8);s.mags.pistol=GUNS[0].clip;s.mags.shotgun=GUNS[1].clip;rememberWeapon(s,'pistol');rememberWeapon(s,'shotgun');if(s.weapon===-1)s.weapon=0;}
+  if(s.abilities.guns===2){addAmmo(s,'rifle',30);addAmmo(s,'sniper',9);s.mags.rifle=GUNS[2].clip;s.mags.sniper=GUNS[3].clip;rememberWeapon(s,'rifle');rememberWeapon(s,'sniper');}
+  if(s.abilities.guns===3){addAmmo(s,'rpg',2);s.mags.rpg=1;rememberWeapon(s,'rpg');}
  }
- // 第一次点出发射器时自动装备，和点出枪械后上手手枪一样。
- if(id==='launcher'&&s.abilities.launcher===1&&s.weapon===-1)s.weapon=LAUNCHER_SLOT;
+ // 注射器和枪一样，按这次点击插进键位。手上还是空的，就直接换成刚点出的那件。
+ if(id==='launcher'&&s.abilities.launcher===1){rememberWeapon(s,'launcher');if(s.weapon===-1)s.weapon=LAUNCHER_SLOT;}
  if(id==='frenzy'||id==='evolve')refreshStats(s);
  if(id==='command')s.needGuards=true;
  return true;
@@ -202,6 +214,8 @@ export function grantFrenzy(s,fromArmy=false){
  return amt;
 }
 export function reward(s,u,converted){
+ // 余韵里胜利已经锁定，击杀和转化不再涨经验、等级或结算统计。
+ if(s.aftermath)return;
  if(converted){s.infected++;if(u.city)s.cityInfected++;s.first??={name:ENEMIES[u.type].name,time:s.time};if(u.type===4)s.purifiers++;}
  else s.kills++;
  s.highestEnemy=Math.max(s.highestEnemy,ENEMIES[u.type].level);
@@ -253,6 +267,13 @@ export function allyMelee(u){
 }
 export function allySeeksHostile(hostile){
  return !!(hostile&&!hostile.dead&&!hostile.converted&&hostile.kind!=='corpse');
+}
+// 护卫和普通被感染者分开：只在主角身边这个半径里找人、移动，不会自己跑去拆建筑或追巨像。
+export const GUARD_LEASH=20;
+export function guardMoveTarget(player,x,z,leash=GUARD_LEASH){
+ const dx=x-player.x,dz=z-player.z,dist=Math.hypot(dx,dz);
+ if(dist<=leash||dist===0)return {x,z};
+ return {x:player.x+dx/dist*leash,z:player.z+dz/dist*leash};
 }
 // 手雷从中心 max 线性降到边缘 min。
 export function grenadeBlast(spec,dist){
@@ -333,7 +354,8 @@ export function incomingDamage(s,damage){
  return {taken:damage*(1-dr),reflected:damage*dr,radius:t>=3?30:t>=2?10:0,sprintDr:false};
 }
 export const TUNE_DEFAULTS={
- alert:{stage2At:90,stage3At:180,maxLevel1:2,maxLevel2:3,maxLevel3:4,pressureTime:0},
+ // 阶段阈值来自《（一）游戏整体控制系统》：30 / 100 / 300，500 开启 180 秒 Boss 倒计时。
+ alert:{perLevel:20,perSecond:.1,stage2At:30,stage3At:100,stage4At:300,bossAt:500,countdown:180,maxLevel1:1,maxLevel2:2,maxLevel3:3,maxLevel4:4,pressureTime:0},
  difficulty:{armyWeight:.4,fodderTarget:10,fodderDump:12,threatPerLevel:.55,threatPerAlly:.4,intervalBase:14,intervalPerWeight:.45,intervalMin:5,spawnPerBurst:2,spawnGap:.08,spawnQueueMax:18},
  activity:{shambleSpeed:.55,shambleRadius:4,shambleIdle:6,fleeSpeed:.7,awakeSpeed:3.8,awakeRadius:34,awakeIdle:1.05,chaseSpeed:3.6,followSpeed:4.4,structureSpeed:3.2}
 };
@@ -341,21 +363,56 @@ export const TUNE=structuredClone(TUNE_DEFAULTS);
 export function resetTune(){applyTune(TUNE_DEFAULTS);}
 export function applyTune(data){if(!data)return TUNE;for(const group of ['alert','difficulty','activity']){if(!data[group])continue;for(const [k,v] of Object.entries(data[group])){if(k in TUNE[group]&&Number.isFinite(+v))TUNE[group][k]=+v;}}return TUNE;}
 export function setTuneValue(path,value){const [group,key]=path.split('.');if(TUNE[group]&&key in TUNE[group]&&Number.isFinite(+value))TUNE[group][key]=+value;return TUNE[group][key];}
+export const ALERT_NAMES=['','尚未警觉','局部警情','城市封锁','军事介入','开启计时','全面镇压','失去警戒能力'];
+export const BOSS_WARNINGS=[60,30,10];
+// 警戒值 = 每级 20 点 + 每秒 0.1 点。感染和击杀本身不加警戒，只有升级才会间接抬高。
+export function alertValue(s){
+ const a=TUNE.alert;
+ const level=Math.max(1,s.level|0);
+ const time=Number.isFinite(s.alertTime)?s.alertTime:s.time;
+ return (a.perLevel??20)*(level-1)+(a.perSecond??.1)*Math.max(0,time);
+}
 export function cityAlert(s){
  const a=TUNE.alert;
- const t=s.time+(s.kills+s.infected)*(a.pressureTime||0);
- let stage=1,maxLevel=a.maxLevel1,final=false;
- if(t>=a.stage3At){stage=3;maxLevel=a.maxLevel3;final=true;}
- else if(t>=a.stage2At){stage=2;maxLevel=a.maxLevel2;}
- return {stage,maxLevel,final,time:s.time,pressure:s.kills+s.infected,clock:t};
+ const value=alertValue(s);
+ if(s.aftermath||s.bossDefeated)return {stage:7,name:ALERT_NAMES[7],maxLevel:0,final:false,value,lost:true,countdown:0};
+ let stage=1,maxLevel=a.maxLevel1;
+ if(value>=(a.stage4At??300)){stage=4;maxLevel=a.maxLevel4??4;}
+ else if(value>=a.stage3At){stage=3;maxLevel=a.maxLevel3;}
+ else if(value>=a.stage2At){stage=2;maxLevel=a.maxLevel2;}
+ if(s.bossSpawned){stage=6;maxLevel=a.maxLevel4??4;}
+ else if(s.bossCountdown!=null){stage=5;maxLevel=a.maxLevel4??4;}
+ return {stage,name:ALERT_NAMES[stage],maxLevel,final:stage>=5,value,lost:false,countdown:s.bossCountdown,time:s.time,pressure:0,clock:value};
+}
+// 只在游戏运行时推进警戒时间。余韵、暂停都不调用它。倒计时归零时通知召唤 Boss。
+export function tickRunClock(s,dt){
+ const events={started:false,warnings:[],summon:false,value:alertValue(s)};
+ if(s.aftermath||s.bossDefeated)return events;
+ s.alertTime=(s.alertTime||0)+dt;
+ events.value=alertValue(s);
+ if(s.bossCountdown==null&&events.value>=(TUNE.alert.bossAt??500)){
+  s.bossCountdown=TUNE.alert.countdown??180;
+  events.started=true;
+ }
+ if(s.bossCountdown!=null&&!s.bossSpawned){
+  const before=s.bossCountdown;
+  s.bossCountdown=Math.max(0,s.bossCountdown-dt);
+  events.warnings=BOSS_WARNINGS.filter(mark=>before>mark&&s.bossCountdown<=mark);
+  if(before>0&&s.bossCountdown===0)events.summon=true;
+ }
+ return events;
 }
 export function threat(s){return cityAlert(s).stage;}
 export function difficultyWeight(s,units){return s.level+teamCount(units)*TUNE.difficulty.armyWeight;}
-export function isCombatFodder(u){
- if(!u||u.dead||u.converted||u.kind==='corpse')return false;
+// 耗材层：市民一直算库存；2 级巡警从城市封锁（阶段 3）起才算。
+export function isCityFodder(u,stage=1){
+ if(!u||u.dead||u.converted||u.kind==='corpse'||u.kind==='ally')return false;
  const e=ENEMIES[u.type];
- return !!(e?.fodder&&u.type!==0);
+ if(!e)return false;
+ if(u.type===0)return true;
+ return stage>=3&&e.level===2;
 }
+export function isCombatFodder(u){return isCityFodder(u,99);}
 export function isRangedEnemy(spec){return (spec?.range??0)>3&&!spec.spray;}
 export function hostileWindup(spec){
  if(Number.isFinite(spec.aim))return spec.aim;
@@ -381,7 +438,7 @@ export function stepHostileMelee(u,spec,distance,clear,dt){
  }
  return 'idle';
 }
-export function fodderCount(units){return units.filter(isCombatFodder).length;}
+export function fodderCount(units,stage=99){return units.filter(u=>isCityFodder(u,stage)).length;}
 export function makeSpawnQueue(){return {jobs:[],wait:0};}
 // 一整波只进队列，真正进场由 takeSpawnJobs 按帧拆开，避免同一帧克隆几十个模型。
 export function enqueueSpawnTypes(queue,types){
@@ -403,20 +460,26 @@ export function spawnPlan(s,units,random=Math.random){
  const d=TUNE.difficulty;
  const army=teamCount(units);
  const weight=s.level+army*(d.armyWeight??.4);
- const fodder=fodderCount(units);
- const pool=ENEMIES.map((e,i)=>({e,i})).filter(({e})=>e.level<=alert.maxLevel);
- const fodderPool=pool.filter(({e,i})=>e.fodder&&i!==0);
- const threatPool=pool.filter(({e})=>!e.fodder);
+ // 阶段 1、2 只补市民；阶段 3 起才把 2 级巡警当耗材。难度层从局部警情才开。
+ const fodder=fodderCount(units,alert.stage);
+ const indexed=ENEMIES.map((e,i)=>({e,i}));
+ const fodderPool=alert.stage>=3?indexed.filter(({e})=>e.level<=2):indexed.filter(({i})=>i===0);
+ const threatPool=alert.stage>=2?indexed.filter(({e})=>e.level>=2&&e.level<=alert.maxLevel):[];
  const pick=list=>{if(!list.length)return 0;return list[Math.min(list.length-1,Math.floor(random()*list.length))].i;};
- const fodderN=fodder<=0?d.fodderDump:Math.max(0,d.fodderTarget-fodder);
- const threatN=alert.maxLevel<=TUNE.alert.maxLevel1?0:Math.max(1,Math.round(s.level*(d.threatPerLevel??.55)+army*(d.threatPerAlly??.4)));
+ const fodderN=alert.lost?0:fodder<=0?d.fodderDump:Math.max(0,d.fodderTarget-fodder);
+ const threatN=alert.lost||!threatPool.length?0:Math.max(1,Math.round(s.level*(d.threatPerLevel??.55)+army*(d.threatPerAlly??.4)));
  const types=[];
- for(let i=0;i<fodderN;i++)types.push(pick(fodderPool.length?fodderPool:pool));
- for(let i=0;i<threatN;i++)types.push(pick(threatPool.length?threatPool:fodderPool.length?fodderPool:pool));
- const interval=Math.max(d.intervalMin,d.intervalBase-weight*(d.intervalPerWeight??.45));
+ for(let i=0;i<fodderN;i++)types.push(pick(fodderPool));
+ for(let i=0;i<threatN;i++)types.push(pick(threatPool));
+ const interval=Math.max(10,Math.min(20,d.intervalBase-weight*(d.intervalPerWeight??.45)));
  return {types,interval,weight,fodder,fodderN,threatN,army,...alert};
 }
-export function outcome(s){return s.hp<=0?'ended':s.bossDefeated?'won':null;}
+export function outcome(s){
+ // 胜利锁定前死亡才算失败。余韵里要玩家自己点结束，才进入结算。
+ if(s.hp<=0&&!s.bossDefeated)return 'ended';
+ if(s.settle&&s.bossDefeated)return 'won';
+ return null;
+}
 export function hasteBonus(s){return s.abilities.haste>=3?1:s.abilities.haste>=1?.5:0;}
 export function speed(s,sprinting=false){
  let v=WALK_SPEED*(1+hasteBonus(s));
@@ -456,6 +519,31 @@ export function hurtMother(s,damage,source='秩序火力',sprinting=false){
  s.hp=Math.max(0,s.hp-info.taken);
  return s.hp===0;
 }
-export function bossReady(s){return s.towers>=2;}
-export function missionReady(s){return [()=>s.infected>=3,()=>s.infected>=10&&s.towers>=1,()=>s.highestEnemy>=3&&s.towers>=2,()=>bossReady(s),()=>s.bossDefeated][s.mission]?.()??false;}
-export const MISSIONS=[['叫醒第一个人','累计感染 3 人'],['让街区失控','感染 10 人，摧毁首座中枢'],['突破镇压','击败 / 转化净化工兵或持枪特警，摧毁两座中枢'],['唤出巨像','摧毁全部两个秩序中枢'],['带领市民们逃离规训','击败奶蛙龙']];
+// Boss 由警戒倒计时归零召唤，不再看两座中枢是否拆掉。
+export function bossReady(s){return s.bossCountdown===0&&!s.bossSpawned&&!s.aftermath;}
+// 倒计时一开始同时发布 3 个削弱任务。完成与否不影响 Boss 是否出现，只影响它带什么效果进场。
+export const WEAKEN_TASKS=[
+ {id:'shield',name:'防护削弱',detail:'摧毁防护供能设施',doneText:'已移除开场护盾',missText:'巨像保留开场护盾'},
+ {id:'fire',name:'火力削弱',detail:'摧毁武器控制设施',doneText:'已移除高威力炮击',missText:'巨像保留高威力炮击'},
+ {id:'reinforce',name:'增援削弱',detail:'摧毁通讯调度设施',doneText:'增援维持普通节奏',missText:'巨像战增援更快'},
+];
+export function publishWeakenTasks(s){
+ if(s.weakenTasks)return s.weakenTasks;
+ s.weakenTasks={shield:false,fire:false,reinforce:false,closed:false};
+ return s.weakenTasks;
+}
+export function completeWeaken(s,id){
+ const tasks=s.weakenTasks;
+ if(!tasks||tasks.closed||!(id in tasks)||tasks[id])return false;
+ tasks[id]=true;
+ return true;
+}
+export function closeWeakenTasks(s){
+ const tasks=publishWeakenTasks(s);
+ tasks.closed=true;
+ return tasks;
+}
+export function bossWeakenMods(s){
+ const tasks=s.weakenTasks||{};
+ return {shield:!tasks.shield,empowered:!tasks.fire,rushReinforce:!tasks.reinforce};
+}
