@@ -1,0 +1,125 @@
+/* 墨迹街机界面：参考录屏的高对比徽章、墨迹与弹性反馈，保留本作紫色感染识别。 */
+:root{--purple:#bd62ff;--lime:#d1ff3f;--paper:#fffdf5;--ui-black:#171322;--ink:#1b1629ee;--muted:#c5bbd4;--stroke:3px solid var(--ui-black);--snap:cubic-bezier(.22,1.35,.4,1)}
+[hidden]{display:none!important}
+button{touch-action:manipulation}
+button:focus-visible{outline:4px solid var(--lime);outline-offset:5px}
+button:disabled{cursor:default}
+.panel{border:2px solid #fff8;border-radius:18px;background:var(--ink);box-shadow:0 4px 0 var(--ui-black),0 8px 24px #08041030}
+.eyebrow{color:#e0d8eb;font-size:10px;font-weight:800;letter-spacing:1px}
+kbd{border-radius:4px;background:var(--paper);color:var(--ui-black);font-weight:900;box-shadow:0 2px 0 #0006}
+/* 实时城市仍是主角，菜单只占左侧，右侧留出城市与角色。 */
+#menu .menuShade{background:linear-gradient(90deg,#181021ec 0,#24102eae 34%,#1d0d291c 68%,#15101b55 100%)}
+#menu .menuGrid{opacity:.06;background-size:24px 24px;transform:rotate(-8deg) scale(1.2)}
+#menu .menuNoise{opacity:.04}
+#menu:after{background:radial-gradient(ellipse at 14% 108%,#b244ef80,transparent 52%);pointer-events:none}
+.gameLogo{left:5%;top:8%;width:min(560px,65vw);transform:rotate(-3deg);filter:drop-shadow(0 7px 0 #14101d);animation:ui-title-in .6s var(--snap) both}
+.gameLogo:before{content:'';position:absolute;z-index:-1;width:360px;height:200px;left:-48px;top:-28px;background:#ad39ed;clip-path:polygon(10% 12%,28% 18%,32% 0,45% 18%,69% 5%,72% 24%,98% 27%,86% 46%,100% 65%,74% 72%,78% 100%,50% 82%,29% 97%,22% 78%,0 80%,10% 53%,0 33%)}
+.gameLogo>span{font-family:Impact,'Arial Black',sans-serif;font-size:clamp(46px,6vw,84px);line-height:.98;letter-spacing:1px;color:var(--paper);-webkit-text-stroke:0;text-shadow:3px 3px 0 var(--ui-black),-2px -2px 0 var(--ui-black),2px -2px 0 var(--ui-black),-2px 2px 0 var(--ui-black)}
+.gameLogo>strong{margin-top:12px;font-size:clamp(30px,3.8vw,53px);font-weight:1000;line-height:1.2;letter-spacing:-1px;color:var(--paper);-webkit-text-stroke:0;text-shadow:3px 3px 0 var(--ui-black)}
+.gameLogo>strong span{color:var(--lime)}
+.gameLogo>small{margin:16px 0 0 3px;padding:6px 14px;border:var(--stroke);border-radius:8px;background:var(--lime);color:var(--ui-black);font-size:11px;letter-spacing:2px;transform:rotate(2deg)}
+.gameLogo>p{margin:14px 0 0 6px;font-size:12px;color:var(--paper);letter-spacing:.5px}
+#menu .mainMenuNav{left:5%;top:auto;bottom:14%;width:min(350px,38vw);gap:10px;animation:ui-slide-in .5s .12s var(--snap) both}
+#menu .mainMenuNav>button,#menu .mainMenuNav>#continue{display:flex;align-items:center;width:100%;height:auto;min-height:47px;padding:11px 18px;margin:0;border:var(--stroke);border-radius:13px;background:#2a2039;color:var(--paper);font-size:16px;font-weight:900;letter-spacing:.5px;box-shadow:0 5px 0 #0c0912;transition:transform .16s var(--snap),background .16s,box-shadow .16s,color .16s}
+#menu .mainMenuNav>button:before{content:'↗';width:29px;color:var(--purple);font-size:22px;font-weight:900}
+#menu .mainMenuNav>#start{height:auto;min-height:61px;padding:13px 18px;background:var(--lime);color:var(--ui-black);font-size:20px;box-shadow:0 6px 0 #0c0912,0 0 0 2px #eaff9270;transform:rotate(-1deg)}
+#menu .mainMenuNav>#start:before{color:var(--ui-black)}
+#menu .mainMenuNav>#start i{margin-right:0}
+#menu .mainMenuNav>button:hover:not(:disabled),#menu .mainMenuNav>button:focus-visible{background:var(--paper);color:var(--ui-black);transform:translate(5px,-3px) rotate(-1deg);box-shadow:-4px 8px 0 #0c0912}
+#menu .mainMenuNav>#start:hover:not(:disabled){background:#dfff6e}
+#menu .mainMenuNav>button:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 #0c0912}
+#menu .mainMenuNav>#continue{font-size:12px}
+#menu .mainMenuNav .menuStatus{height:auto;min-height:18px;margin:5px 0 0 4px}
+#menu .mainMenuNav .menuStatus p{font-size:10px;color:#e0d3ec;margin:0}
+.menuIntel{right:5%;top:auto;bottom:17%;width:260px;padding:6px;border:3px solid var(--paper);border-radius:22px;background:#1c152aec;box-shadow:5px 7px 0 #100d18;transform:rotate(2deg);animation:ui-badge-in .6s .25s var(--snap) both}
+.intelHeader{padding:12px;border-bottom:2px solid #fff2;color:var(--paper);font-size:13px;font-weight:900}
+.intelHeader strong{font-size:22px;font-weight:1000;color:var(--lime)}
+.menuIntel dl{padding:10px 12px;font-size:12px}
+.menuIntel dl>div{padding:5px 0}
+.menuIntel dt{color:#cbbdd9}.menuIntel dd{font-weight:800;color:var(--paper)}
+.genePreview{padding:9px 12px;border-top:2px solid #fff2}.genePreview h2{font-size:11px;color:#d7c5e8}
+.genePreview i{width:32px;height:32px;border-radius:10px;border:2px solid #fff3;background:#100c1a;font-size:19px}
+.genePreview i.active{background:var(--purple);color:var(--ui-black);border-color:var(--paper);transform:rotate(-8deg)}
+.bioMark{display:none}.menuMap{height:78px;margin:6px;border-radius:12px;border:2px solid #fff6;transform:none}
+.infectionNotice{left:auto;right:5%;bottom:7%;width:260px;border:2px solid var(--ui-black);border-radius:12px;background:var(--purple);color:var(--ui-black);box-shadow:3px 4px 0 #100d18;transform:rotate(-2deg)}
+.infectionNotice>b{font-size:30px}.infectionNotice strong{font-size:12px;font-weight:1000}.infectionNotice span{font-size:10px;color:#241034}
+#menu .menuFooter{right:3%;bottom:2%;border-radius:8px;background:#130d1dcc;font-size:10px;padding:7px 12px;gap:12px}
+#menu .menuFooter b{font-size:9px;color:#dfd2eb}
+/* 战斗信息贴边，中央只保留目标与短时反馈。 */
+.playerPanel{top:18px;left:18px;width:256px;padding:13px 15px;border-radius:18px 24px 18px 20px}
+.playerPanel .eyebrow{color:var(--paper);font-size:11px}.purpleDot{width:9px;height:9px;border-radius:50%;background:var(--purple);box-shadow:0 0 0 3px #b353ff30}
+#hpText{font-weight:900;font-size:13px}
+.bar{height:8px;border-radius:9px;background:#0c0817;box-shadow:inset 0 1px 3px #0006}
+.bar i{border-radius:9px;background:linear-gradient(90deg,#ac3ff4,#d29aff);transition:width .2s ease-out}
+.bar.hp{height:13px;margin:10px 0 7px;border:2px solid #fff8}
+.stamina{height:5px;margin-bottom:11px}.stamina i{background:var(--lime)}
+#abilitySlots{gap:4px;justify-content:space-between}.slot{flex:1;min-width:0;width:auto;height:25px;border:1px solid #fff3;border-radius:8px;font-size:15px;line-height:23px;color:#81708f;background:#fff1}.slot.owned{border-color:var(--paper);color:var(--lime);background:#8b30c74d}.slot small{right:-2px;bottom:-4px;padding:1px 3px;border-radius:5px;background:var(--paper);color:var(--ui-black);font-size:8px;font-weight:900}
+.counters{margin-top:12px;font-size:10px;color:#d0c3df}.counters b{font-size:17px;color:var(--lime);font-weight:900}
+.xpPanel{top:178px;left:18px;bottom:auto;transform:none;width:256px;padding:8px 12px;gap:10px;background:#1c152ad9;border:1px solid #fff4;border-radius:12px;box-shadow:0 3px 0 var(--ui-black)}
+.levelBadge{width:37px;border:2px solid var(--ui-black);border-radius:11px;background:var(--lime);color:var(--ui-black);font-weight:900;transform:rotate(-4deg)}
+.levelBadge b{font-size:21px}.xpPanel .eyebrow{font-size:9px}.xpPanel .bar{height:6px;margin:6px 0 4px}.xpPanel small{font-size:9px;color:#d0bfdc}
+.alertPanel{top:17px;left:50%;width:244px;padding:8px 15px 10px;border:2px solid var(--paper);border-radius:24px 28px 19px 25px;box-shadow:0 5px 0 var(--ui-black);transform:translateX(-50%) rotate(-1deg)}
+.alertPanel .eyebrow{font-size:10px;color:#cec2d7}#clock{font-family:'Arial Black','PingFang SC',sans-serif;font-size:30px;line-height:1.1;color:var(--paper);font-weight:1000;font-variant-numeric:tabular-nums}
+#alertLevels{gap:5px;margin-top:7px}#alertLevels b{padding:2px;border-radius:4px;background:#fff2;color:#bda7ce;font-size:9px}#alertLevels b.on{background:var(--purple);color:var(--ui-black)}
+#reinforcement{margin-top:7px;font-size:10px;color:#f0d1ff}
+.mapPanel{top:auto;left:18px;right:auto;bottom:18px;width:164px;padding:9px;background:#22172bed;border:3px solid var(--paper);border-radius:20px;transform:rotate(-2deg)}
+.mapPanel .eyebrow{font-size:9px}.mapPanel canvas{display:block;width:140px;height:112px;margin-top:7px;border-radius:11px;background:#191222}.mapLegend{font-size:8px;line-height:1.5;color:#d9cde3}
+.controlsPanel{left:50%;bottom:17px;width:320px;max-width:none;transform:translateX(-50%);text-align:center}
+.skillkeys{justify-content:center;gap:7px}.skillkeys>span{padding:7px 12px;border:2px solid var(--ui-black);border-radius:12px;background:#22182dee;color:var(--paper);font-size:10px;box-shadow:0 3px 0 #0008;gap:4px}.skillkeys b{color:var(--lime);font-size:10px;font-weight:700}.skillkeys kbd{font-size:10px}
+.controls{margin-top:8px;font-size:9px;line-height:1.85;color:var(--paper)}.controls button{border-radius:6px;background:#24192fe6;font-size:9px}
+.objectivePanel{right:18px;bottom:18px;width:235px;padding:14px;border:2px solid #fff9;border-radius:20px 17px 22px 17px;background:#21172fec}.objectivePanel strong{font-size:17px;font-weight:900;margin:8px 0}.objectivePanel>small{font-size:11px;line-height:1.55;color:#e0d2e8}#percent{font-size:22px;color:var(--lime);font-weight:1000}
+#ammo{margin-top:10px;padding-top:10px;gap:5px;border-color:#fff3}#ammo span{font-size:9px;line-height:1.7;color:#bcaaca;padding:2px 4px;border-radius:5px}#ammo span.selected{background:var(--lime);color:var(--ui-black);font-weight:900}
+#pauseButton{top:18px;right:18px;bottom:auto;width:42px;height:42px;background:var(--paper);color:var(--ui-black);border:var(--stroke);border-radius:13px;box-shadow:0 4px 0 #151020;font-size:19px;font-weight:900;transition:transform .15s var(--snap)}
+#pauseButton:hover{transform:rotate(8deg) scale(1.08)}#pauseButton:active{transform:translateY(3px)}
+#toast{top:135px;border:2px solid var(--paper);border-radius:12px;background:#24152ef5;box-shadow:0 4px 0 #100b18;color:var(--paper);padding:10px 18px;font-weight:800;font-size:12px;max-width:min(460px,60vw)}
+#crosshair{width:17px;height:17px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #1b112777}#crosshair:after{left:5px;top:5px;width:3px;height:3px;border-radius:50%}#crosshair.locked{border-color:var(--lime);box-shadow:0 0 0 2px #160d24}
+/* 选卡仍然单击领取：动效表达状态，不增加确认步骤。 */
+#modal{z-index:30;background:#0d071ad4;backdrop-filter:blur(3px)}
+.dialog{position:relative;isolation:isolate;width:min(990px,94vw);max-height:92vh;padding:30px;background:#231930;border:3px solid var(--paper);border-radius:25px;box-shadow:9px 10px 0 #0d0815;overflow:auto;color:var(--paper)}
+.dialog:before{content:'';position:absolute;right:20px;top:20px;width:75px;height:60px;z-index:-1;pointer-events:none;background:var(--purple);opacity:.35;clip-path:polygon(6% 20%,27% 24%,33% 0,49% 24%,82% 4%,73% 40%,100% 56%,70% 65%,76% 100%,48% 81%,20% 93%,25% 63%,0 56%);transform:rotate(15deg)}
+.dialog>.eyebrow{display:inline-flex;padding:5px 10px;border-radius:6px;background:var(--lime);color:var(--ui-black);font-size:10px;font-weight:900;letter-spacing:1.4px;transform:rotate(-1deg)}
+.dialog h2{margin:16px 0 12px;font-size:clamp(26px,3vw,38px);line-height:1.2;font-weight:1000;letter-spacing:-.5px;color:var(--paper);text-shadow:3px 3px 0 #10091b}
+.dialog p{font-size:13px;line-height:1.8;color:#d5c7e2}.dialog .choiceHint{margin:0;max-width:750px}
+.cards{gap:18px;margin-top:25px;align-items:stretch}.choiceSlot{min-width:0;gap:12px}.choiceSlot .card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:0;width:100%;height:auto;min-height:305px;padding:20px;border:3px solid var(--ui-black);border-radius:19px;background:var(--paper);color:var(--ui-black);box-shadow:0 5px 0 #0d0815;transition:transform .17s var(--snap),box-shadow .17s,background .17s;animation:ui-card-in .38s var(--snap) both;--card-color:var(--purple)}
+.choiceSlot:nth-child(2) .card{animation-delay:.06s;--card-color:var(--lime)}.choiceSlot:nth-child(3) .card{animation-delay:.12s;--card-color:#ff9cdf}
+.card .type{display:inline-block;border-radius:6px;padding:4px 7px;background:var(--ui-black);color:var(--paper);font-size:10px;font-weight:800;letter-spacing:.6px;transform:rotate(-1deg)}
+.card .icon{display:grid;place-items:center;width:60px;height:57px;margin:17px 0 14px;background:var(--card-color);border:3px solid var(--ui-black);border-radius:18px 22px 15px 22px;box-shadow:3px 3px 0 var(--ui-black);font-size:33px;color:var(--ui-black);transform:rotate(-7deg);transition:transform .18s var(--snap)}
+.card strong{font-size:25px;line-height:1.25;font-weight:1000;letter-spacing:-.5px;color:var(--ui-black)}.card em{margin:6px 0 13px;font-size:12px;color:#665272;font-weight:800}.card small{font-size:12px;line-height:1.75;color:#3f314c}
+.cardCta{display:flex;align-items:center;justify-content:space-between;align-self:stretch;margin-top:auto;padding-top:20px;font-size:11px;font-weight:900;letter-spacing:.8px}.cardCta b{display:grid;place-items:center;width:27px;height:27px;border:2px solid var(--ui-black);border-radius:50%;background:var(--card-color);font-size:17px;transition:transform .17s var(--snap)}
+.choiceSlot .card:hover:not(:disabled),.choiceSlot .card:focus-visible{background:#fff;transform:translateY(-7px) rotate(-1deg);box-shadow:4px 11px 0 #0d0815,0 0 0 3px var(--card-color)}.card:hover:not(:disabled) .icon{transform:rotate(5deg) scale(1.05)}.card:hover:not(:disabled) .cardCta b{transform:rotate(35deg)}
+.choiceSlot .card:active:not(:disabled){transform:translateY(2px) scale(.98);box-shadow:0 2px 0 #0d0815}
+#modal[data-closing='1'] .card{opacity:.4;animation:none;transform:scale(.98)}#modal[data-closing='1'] .card.claimed{opacity:1;background:var(--lime);transform:rotate(-2deg) scale(1.03);box-shadow:0 0 0 4px var(--paper),0 10px 0 #0d0815}
+.card.claimed .cardCta{visibility:hidden}.card.claimed:after{content:'获得！';position:absolute;right:13px;bottom:17px;padding:8px 13px;background:var(--ui-black);color:var(--paper);border-radius:9px;font-size:22px;font-weight:1000;transform:rotate(-9deg);animation:ui-stamp-in .2s var(--snap) both}
+.reroll{min-height:36px;border:2px solid #fff6;border-radius:10px;background:#ffffff0d;color:var(--paper);font-size:11px;font-weight:800;letter-spacing:1px;transition:background .15s,transform .15s}.reroll:hover:not(:disabled){background:#c47aff30;border-color:var(--paper);color:var(--paper);transform:translateY(-2px)}.reroll:active:not(:disabled){transform:translateY(1px)}.reroll:disabled{opacity:.4;cursor:default}
+.action{min-height:43px;padding:10px 19px;border:var(--stroke);border-radius:11px;background:var(--lime);color:var(--ui-black);box-shadow:0 4px 0 #0d0815;font-size:13px;font-weight:900;transition:transform .16s var(--snap),box-shadow .16s,background .16s}.action:hover{background:var(--paper);transform:translateY(-3px) rotate(-1deg);box-shadow:0 7px 0 #0d0815}.action:active{transform:translateY(2px);box-shadow:0 2px 0 #0d0815}.action.secondary{background:#3c2b4a;color:var(--paper);border-color:#fff7}.action.secondary:hover{background:#5d3775}
+.setting{font-weight:700}.setting select{background:#382447;border:2px solid #af8cc5;border-radius:9px;padding:8px}.setting input{accent-color:var(--lime)}.controlTable{padding:15px;border:1px solid #fff2;border-radius:12px;background:#100a19;font-size:12px;line-height:2;color:#e1d6ea}
+.stats{gap:12px}.stats>div{background:#342143;border:2px solid #fff4;border-radius:14px;padding:15px}.stats small{font-size:11px;color:#d1bdde}.stats strong{font-size:32px;color:var(--lime);font-weight:1000}.recap{gap:20px}.recap>div{padding:13px;background:#180f23;border-radius:12px}.recap p{font-size:11px}
+body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8px 10px 0 #100b18,0 0 80px #bc63ff35}body.awakened .dialog h2.winTitle{color:#ffe45b;-webkit-text-fill-color:currentColor;-webkit-text-stroke:0;font-size:42px}.winSub{color:var(--paper)}body.defeated .dialog{border-color:#ff90b5;border-radius:24px}
+/* 短时提示借用墨迹的轮廓；不让装饰持续遮住准星。 */
+#levelUpFx{z-index:32}#levelUpFx .levelUpWord{position:relative;font-size:clamp(64px,8vw,108px);font-weight:1000;letter-spacing:-3px;color:var(--paper);-webkit-text-stroke:0;text-shadow:5px 5px 0 #1b1028,-3px -3px 0 #1b1028,3px -3px 0 #1b1028,-3px 3px 0 #1b1028;transform:rotate(-6deg)}
+#levelUpFx .levelUpWord:before{content:'';position:absolute;inset:-48px -65px;background:var(--purple);z-index:-1;clip-path:polygon(6% 12%,27% 22%,32% 0,46% 23%,73% 1%,73% 30%,100% 29%,84% 50%,100% 79%,72% 75%,80% 100%,50% 81%,23% 100%,23% 72%,0 75%,13% 47%,0 28%);filter:drop-shadow(4px 7px 0 #100b18)}
+#levelUpFx.play .levelUpWord{animation:ui-level-in 1s ease both}
+#infectionFeedback{top:auto;bottom:148px;left:50%;transform:translateX(-50%) rotate(-2deg);background:#1b122beb;border:2px solid var(--paper);border-radius:14px;padding:10px 18px;box-shadow:3px 4px 0 #0d0718}#infectionFeedback>span{color:var(--lime)}#infectionFeedback>b{font-size:19px;font-weight:1000;color:var(--paper);animation:ui-stamp-in .2s var(--snap)}#infectionFeedback>small{color:#d6bfeb}
+#infectionFeed{top:80px;right:18px;max-width:225px;font-size:10px}#infectionFeed>div{border-radius:9px;background:#1b122bdb;border:1px solid #fff5}
+#runCountdown{border:3px solid var(--ui-black);border-radius:17px;background:var(--lime);color:var(--ui-black);box-shadow:0 5px 0 #110a1e;transform:translateX(-50%) rotate(-2deg)}#runCountdown b{color:var(--ui-black);font-weight:1000;font-variant-numeric:tabular-nums}#runCountdown small{color:#332140;font-weight:900}
+#bossHud{border:2px solid #ffe45b;border-radius:18px;background:#201728f2}#bossHud .bar i{background:linear-gradient(90deg,#ffb52d,#ffe45b)}
+#hurtVignette{background:radial-gradient(ellipse at center,transparent 56%,#f3158660 92%);border:14px solid #df217480;border-radius:6% 8% 5% 9%;box-shadow:inset 0 0 24px #ff74b490;transition:opacity .06s;z-index:6}
+#hurtVignette:before,#hurtVignette:after{content:'';position:absolute;top:-15px;width:42%;height:42px;background:radial-gradient(ellipse at 12% 0,#e33588 0 30%,transparent 33%),radial-gradient(ellipse at 62% 0,#e33588 0 26%,transparent 29%)}#hurtVignette:before{left:0}#hurtVignette:after{right:0;transform:scaleX(-1)}
+@keyframes ui-title-in{from{opacity:0;transform:translateY(18px) rotate(-8deg) scale(.9)}to{opacity:1;transform:rotate(-3deg)}}
+@keyframes ui-slide-in{from{opacity:0;transform:translateX(-25px)}to{opacity:1;transform:translateX(0)}}
+@keyframes ui-badge-in{from{opacity:0;transform:translateY(20px) rotate(8deg) scale(.9)}to{opacity:1;transform:rotate(2deg)}}
+@keyframes ui-card-in{from{opacity:0;translate:0 20px;scale:.94}to{opacity:1;translate:0 0;scale:1}}
+@keyframes ui-stamp-in{from{opacity:0;scale:1.5}to{opacity:1;scale:1}}
+@keyframes ui-level-in{0%{opacity:0;transform:rotate(-10deg) scale(.4)}18%{opacity:1;transform:rotate(-4deg) scale(1.1)}30%,70%{opacity:1;transform:rotate(-6deg) scale(1)}100%{opacity:0;transform:rotate(-6deg) scale(1.04)}}
+@media(max-width:1000px){.playerPanel{width:218px;padding:11px}.xpPanel{width:218px;top:174px}.alertPanel{width:210px}.objectivePanel{width:210px}.controlsPanel{width:250px}.controls{display:none}.cards{gap:12px}.choiceSlot .card{padding:15px}.card strong{font-size:22px}.dialog{padding:24px}.menuIntel,.infectionNotice{right:4%;width:235px}.gameLogo{left:4%}#menu .mainMenuNav{left:4%}}
+@media(max-height:740px){.gameLogo{top:6%;transform:rotate(-3deg)}.gameLogo>span{font-size:58px}.gameLogo>strong{font-size:37px}.gameLogo>small{margin-top:10px}.gameLogo>p{margin-top:8px}#menu .mainMenuNav{bottom:12%;gap:7px}#menu .mainMenuNav>button{min-height:40px;padding:8px 15px}#menu .mainMenuNav>#start{min-height:52px;font-size:19px}.menuIntel{bottom:20%;width:225px}.menuMap{height:58px}.dialog{padding:22px}.cards{margin-top:17px}.choiceSlot .card{min-height:267px;padding:16px}.card .icon{width:48px;height:46px;font-size:27px;margin:12px 0}.card strong{font-size:22px}.card em{margin-bottom:9px}.cardCta{padding-top:12px}.dialog h2{margin:12px 0 8px;font-size:29px}.mapPanel{width:142px}.mapPanel canvas{width:118px;height:94px}.mapLegend{display:none}.objectivePanel{padding:11px}.xpPanel{top:178px}}
+@media(max-width:760px){.gameLogo{width:86vw}.gameLogo>span{font-size:50px}.gameLogo>strong{font-size:32px}.menuIntel,.infectionNotice{display:none}#menu .mainMenuNav{width:310px;max-width:84vw}.playerPanel{width:190px;top:10px;left:10px}.xpPanel{width:190px;left:10px;top:166px}.alertPanel{left:auto;right:65px;width:170px;transform:none;top:10px}#clock{font-size:24px}#pauseButton{top:10px;right:10px}.alertPanel .eyebrow{font-size:8px}.objectivePanel{right:10px;bottom:10px;width:190px}.mapPanel{left:10px;bottom:10px;width:116px;padding:7px}.mapPanel canvas{width:96px;height:77px}.mapPanel .eyebrow{font-size:7px}.controlsPanel{bottom:12px;width:215px;left:calc(50% - 20px)}.skillkeys>span{padding:6px;font-size:9px}.skillkeys>span:nth-child(2){display:none}.dialog{padding:18px;border-radius:18px}.cards{flex-direction:column;gap:16px}.choiceSlot .card{min-height:220px;display:grid;grid-template-columns:56px 1fr;column-gap:14px}.card .type{grid-column:1 / -1;justify-self:start}.card .icon{grid-row:2 / 5;margin:15px 0;width:52px;height:52px}.card strong{margin-top:12px}.card em{margin:5px 0}.card small{grid-column:2}.cardCta{grid-column:1 / -1;margin:8px 0 0}.stats{grid-template-columns:repeat(2,1fr)}.recap{grid-template-columns:1fr}#toast{top:110px;max-width:70vw}.dialog h2{font-size:25px}#menu .menuFooter{left:4%;right:auto;max-width:92vw}#menu .menuFooter b{display:none}}
+@media(prefers-reduced-motion:reduce){.gameLogo,.mainMenuNav,.menuIntel,.card,.card.claimed:after,#levelUpFx.play .levelUpWord,#infectionFeedback>b{animation:none!important}button,.card .icon,.cardCta b,.bar i,#game{transition:none!important}.choiceSlot .card:hover:not(:disabled){transform:none}}
+
+/* 圆润的墨迹轮廓用于标题和升级提示。 */
+:root{--ui-splash:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 230'%3E%3Cpath d='M96 65C78 47 59 12 75 7C92 2 113 45 135 44C156 40 168 12 183 18C198 26 183 45 200 55C221 65 274 19 289 42C303 64 253 70 250 89C246 108 307 113 305 132C303 151 263 132 252 147C247 160 287 191 271 205C253 220 234 177 213 180C195 184 187 228 170 225C150 219 175 184 154 173C133 163 113 209 94 199C78 188 118 162 99 145C82 128 47 164 34 145C22 123 71 115 70 98C69 86 33 62 46 50C56 41 79 67 96 65Z'/%3E%3Ccircle cx='20' cy='85' r='9'/%3E%3Ccircle cx='318' cy='172' r='10'/%3E%3Ccircle cx='112' cy='17' r='7'/%3E%3C/svg%3E")}
+.gameLogo:before,#levelUpFx .levelUpWord:before{clip-path:none;mask:var(--ui-splash) center/100% 100% no-repeat;-webkit-mask:var(--ui-splash) center/100% 100% no-repeat}
+/* 长警戒名称用文字字号，复盘独立滚动，保留结算主按钮。 */
+.stats>div:nth-child(3) strong{font-size:20px;line-height:1.5;letter-spacing:-.6px;white-space:nowrap}
+.recap{max-height:230px;overflow:auto;text-align:left;overscroll-behavior:contain;scrollbar-color:#a865d2 #21142e}
+@media(max-height:740px){.stats{margin:17px 0}.recap{max-height:170px}}
