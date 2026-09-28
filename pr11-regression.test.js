@@ -24,11 +24,12 @@ function reinforcementContext(rush){
  const code=section('function updateReinforcements(','function flushSpawnQueue(');
  vm.runInContext(code,ctx);return ctx;
 }
-test('Boss reinforcements drain their queue in both normal and accelerated modes',()=>{
- for(const rush of [false,true]){const ctx=reinforcementContext(rush);vm.runInContext('updateReinforcements(.1)',ctx);assert.equal(ctx.flushed,1);assert.equal(ctx.spawnQueue.jobs.length,2);}
+// 本局增援间隔和 Boss 战里先按住队列，以当前玩法为准，不采用主线上的加速拆队。
+test('Boss fight holds the queued reinforcements until the fight ends',()=>{
+ for(const rush of [false,true]){const ctx=reinforcementContext(rush);vm.runInContext('updateReinforcements(.1)',ctx);assert.equal(ctx.flushed,0);assert.equal(ctx.spawnQueue.jobs.length,3);}
 });
-test('uncompleted reinforcement task shortens Boss wave interval and aftermath stops spawning',()=>{
- const ctx=reinforcementContext(true);ctx.spawnQueue.jobs=[];ctx.reinforceTimer=0;vm.runInContext('updateReinforcements(.1)',ctx);assert.ok(ctx.reinforceTimer<12);
+test('rush task keeps this game interval and aftermath stops spawning',()=>{
+ const ctx=reinforcementContext(true);ctx.spawnQueue.jobs=[];ctx.reinforceTimer=0;vm.runInContext('updateReinforcements(.1)',ctx);assert.equal(ctx.reinforceTimer,12);
  ctx.state.aftermath=true;ctx.spawnQueue.jobs=[{type:1}];const before=ctx.flushed;vm.runInContext('updateReinforcements(.1)',ctx);assert.equal(ctx.flushed,before);assert.equal(ctx.spawnQueue.jobs.length,0);
 });
 test('ending through the pause menu after victory still gives a victory recap',()=>{
