@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods} from './rules.js';
+import {makeState,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
 import {createBoss,hitBoss,canBossBombTarget} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -102,29 +102,45 @@ test('berserkers can infect and attack civilians as well as order units',()=>{
  assert.equal(allySeeksHostile(worker),true);
  assert.equal(allySeeksHostile(cop),true);
 });
-test('air 3 army aura does not stack per berserker',()=>{
+test('air 3 stays on the player and does not spread from allies',()=>{
  const s=makeState();s.abilities.air=3;
- const a=makeUnit(1,0,0,0),b=makeUnit(2,0,0,0),t=makeUnit(3,0,2,0);
- convert(s,a);convert(s,b);
- tickInfection(s,[a,b,t],{x:50,z:50},1);
- assert.equal(t.infection,4);
+ const a=makeUnit(1,0,0,0),t=makeUnit(2,0,2,0);
+ convert(s,a);
+ tickInfection(s,[a,t],{x:50,z:50},1);
+ assert.equal(t.infection,0);
 });
 test('shield halves frontal damage only',()=>{
  const s=makeState(),u=makeUnit(1,3,0,0);
  assert.ok(ENEMIES[3].shield);hit(s,u,0,20,true);assert.equal(u.hp,190);hit(s,u,0,20,false);assert.equal(u.hp,170);
 });
-test('city alert follows level and time, not infection',()=>{
+test('city alert follows earned xp and time, not level or infection',()=>{
  const s=makeState();assert.equal(alertValue(s),0);assert.equal(cityAlert(s).stage,1);assert.equal(cityAlert(s).maxLevel,1);
- s.infected=40;s.kills=20;s.alertTime=10;assert.equal(threat(s),1);assert.equal(alertValue(s),1);
- s.level=3;assert.equal(alertValue(s),41);assert.equal(cityAlert(s).stage,2);assert.equal(cityAlert(s).name,'局部警情');
- s.level=6;s.alertTime=0;assert.equal(alertValue(s),100);assert.equal(cityAlert(s).stage,3);
- s.level=16;assert.equal(cityAlert(s).stage,4);assert.equal(cityAlert(s).maxLevel,4);
- s.level=26;assert.equal(alertValue(s),500);assert.equal(tickRunClock(s,0).started,true);assert.equal(s.bossCountdown,180);
+ s.infected=40;s.kills=20;s.level=20;s.alertTime=10;assert.equal(threat(s),1);assert.equal(alertValue(s),1);
+ s.xpEarned=27;assert.equal(alertValue(s),10);assert.equal(cityAlert(s).stage,2);assert.equal(cityAlert(s).name,'局部警情');
+ s.xpEarned=300;s.alertTime=0;assert.equal(alertValue(s),100);assert.equal(cityAlert(s).stage,3);
+ s.xpEarned=900;assert.equal(cityAlert(s).stage,4);assert.equal(cityAlert(s).maxLevel,4);
+ s.xpEarned=1500;assert.equal(alertValue(s),500);assert.equal(tickRunClock(s,0).started,true);assert.equal(s.bossCountdown,120);
 });
-test('early spawn plan only sends civilians',()=>{
+test('early spawn sends street patrols and does not rush',()=>{
  const s=makeState();const units=[makeUnit(1,0,0,0),makeUnit(2,1,1,1)];
- const plan=spawnPlan(s,units,()=>0);assert.equal(plan.threatN,0);
- assert.ok(plan.types.every(t=>t===0));assert.ok(plan.interval>=10&&plan.interval<=20);
+ const plan=spawnPlan(s,units,()=>0,{x:0,z:0});
+ assert.equal(plan.stage,1);assert.equal(plan.threatN,1);assert.deepEqual(plan.rush,[]);
+ assert.deepEqual(plan.patrol,[1]);assert.ok(plan.civilians.every(t=>t===0));
+ assert.ok(plan.interval>=10&&plan.interval<=20);
+ const crowded=Array.from({length:4},(_,i)=>makeUnit(10+i,1,i,0));
+ const full=spawnPlan(s,crowded,()=>0,{x:0,z:0});
+ assert.deepEqual(full.patrol,[]);assert.deepEqual(full.rush,[]);
+});
+test('far enemy troops are removed while nearby and infected ones stay',()=>{
+ const far=makeUnit(1,5,0,0);far.rush=true;
+ assert.equal(shouldCullTroop(far,TROOP_CULL),true);
+ assert.equal(shouldCullTroop(far,TROOP_CULL-1),false);
+ far.infection=3;assert.equal(shouldCullTroop(far,80),false);
+ const ally=makeUnit(2,1,0,0);ally.converted=true;ally.kind='ally';
+ assert.equal(shouldCullTroop(ally,80),false);
+ assert.equal(shouldCullTroop(makeUnit(3,0,0,0),80),false);
+ const corpse=makeUnit(4,2,0,0);corpse.kind='corpse';corpse.dead=true;
+ assert.equal(shouldCullTroop(corpse,80),true);
 });
 test('city civilians fill the fodder quota until lockdown',()=>{
  const s=makeState();
@@ -132,7 +148,7 @@ test('city civilians fill the fodder quota until lockdown',()=>{
  assert.equal(fodderCount(street,1),48);
  const dump=spawnPlan(s,street,()=>0);
  assert.equal(dump.fodderN,0);
- s.level=6;
+ s.level=6;s.xpEarned=500;
  const few=[makeUnit(200,0,0,0,true)];
  const locked=spawnPlan(s,few,()=>0);
  assert.equal(locked.stage,3);
@@ -142,8 +158,8 @@ test('empty field dumps civilians; army size raises threats after alert rises',(
  const s=makeState();
  const empty=spawnPlan(s,[],()=>0);
  assert.ok(empty.fodderN>=10);
- assert.ok(empty.types.every(t=>t===0));
- s.level=8;
+ assert.ok(empty.civilians.every(t=>t===0));assert.deepEqual(empty.patrol,[1]);assert.deepEqual(empty.rush,[]);
+ s.level=8;s.xpEarned=500;
  const army=Array.from({length:20},(_,i)=>{const u=makeUnit(i,0,0,0);u.converted=true;u.kind='ally';return u;});
  const plan=spawnPlan(s,army,()=>0);
  assert.ok(plan.threatN>3);
@@ -170,6 +186,10 @@ test('converted full stats are half of the living enemy, except civilian attack'
  }
  assert.equal(grenadeBlast(ENEMIES[5],0),50);
  assert.equal(grenadeBlast(ENEMIES[5],5),10);
+ assert.equal(allyTemplate(1).name,'狂暴持棍巡警');
+ assert.equal(allyTemplate(5).name,'狂暴大兵');
+ assert.equal(allyTemplate(6).name,'狂暴持枪特警');
+ assert.notEqual(allyTemplate(1).name,ENEMIES[1].name);
  assert.equal(ENEMIES[2].level,2);
  assert.equal(ENEMIES[6].level,3);
  assert.equal(isRangedEnemy(ENEMIES[4]),false);
@@ -202,8 +222,8 @@ test('elite soldiers outlast and outdamage converted workers',()=>{
  assert.ok(elite.hp>worker.hp*3);
 });
 test('tune console can move alert gates without infection',()=>{
- const s=makeState();s.level=3;assert.equal(threat(s),2);
- try{setTuneValue('alert.stage2At',80);assert.equal(threat(s),1);setTuneValue('alert.stage2At',30);assert.equal(threat(s),2);}
+ const s=makeState();s.xpEarned=200;assert.equal(threat(s),2);
+ try{setTuneValue('alert.stage2At',80);assert.equal(threat(s),1);setTuneValue('alert.stage2At',10);assert.equal(threat(s),2);}
  finally{resetTune();}
 });
 test('sprint multiplies walk speed; haste adds fifty then one hundred',()=>{
@@ -228,12 +248,22 @@ test('early XP follows Feishu player growth: 4 then +2 per level, XP equals enem
  assert.equal(s.need,4);assert.equal(xpNeedFor(1),4);assert.equal(xpNeedFor(2),6);assert.equal(xpNeedFor(9),20);
  assert.equal(xpFromUnit(makeUnit(1,0,0,0)),1);assert.equal(xpFromUnit(makeUnit(2,1,0,0)),2);
  for(let i=0;i<3;i++){reward(s,makeUnit(i,0,0,0),true);assert.equal(s.level,1);}
+ assert.equal(s.xpEarned,3);assert.equal(alertValue(s),1);
  reward(s,makeUnit(3,0,0,0),true);assert.equal(s.level,2);assert.equal(s.need,6);assert.equal(s.pending,1);
+ assert.equal(s.xpEarned,4);assert.equal(alertValue(s),4/3);
  const cop=makeUnit(20,1,0,0);reward(s,cop,true);assert.equal(s.xp,2);
  assert.equal(upgradeAutoGap(s),3);
  s.level=8;assert.equal(upgradeAutoGap(s),8);
  s.pending=40;for(const a of ABILITIES)while(s.abilities[a.id]<3)upgrade(s,a.id);
  assert.deepEqual(choices(s),[]);assert.equal(levelCap(s),50);
+});
+test('earned xp keeps raising alert after a level-up and after the level cap',()=>{
+ const s=makeState();
+ reward(s,makeUnit(1,0,0,0),true);
+ assert.equal(s.level,1);assert.equal(s.xpEarned,1);assert.equal(alertValue(s),1/3);
+ s.level=levelCap(s);s.xp=0;
+ reward(s,makeUnit(2,5,0,0),false);
+ assert.equal(s.level,levelCap(s));assert.equal(s.xp,0);assert.equal(s.xpEarned,5);assert.equal(alertValue(s),5/3);
 });
 test('reroll replaces one offered card with an unshown ability',()=>{
  const s=makeState();
@@ -314,8 +344,8 @@ test('countdown publishes three weaken tasks that do not gate the boss',()=>{
 });
 test('boss countdown, not hubs, summons the boss',()=>{
  const s=makeState();s.towers=2;assert.equal(bossReady(s),false);
- s.level=26;const started=tickRunClock(s,0);assert.equal(started.started,true);
- const done=tickRunClock(s,180);assert.equal(done.summon,true);assert.equal(bossReady(s),true);
+ s.xpEarned=1500;const started=tickRunClock(s,0);assert.equal(started.started,true);
+ const done=tickRunClock(s,120);assert.equal(done.summon,true);assert.equal(bossReady(s),true);
  s.aftermath=true;assert.equal(cityAlert(s).stage,7);reward(s,makeUnit(1,0,0,0),true);assert.equal(s.infected,0);
 });
 test('boss has 6000 HP, changes stages and takes extra weak-point damage',()=>{
@@ -325,6 +355,46 @@ test('boss has 6000 HP, changes stages and takes extra weak-point damage',()=>{
 test('boss bombs only target its nearby river bank',()=>{const b={x:33,z:-24};assert.equal(canBossBombTarget(b,{x:28,z:-12}),true);assert.equal(canBossBombTarget(b,{x:-20,z:-12}),false);assert.equal(canBossBombTarget(b,{x:30,z:20}),false);});
 test('syringe has visible reservoir and forward muzzle',()=>{
  const s=createSyringe();assert.ok(s.g.children.length>10);assert.ok(s.muzzle.position.z>1.5);assert.ok(s.liquid.material.emissiveIntensity>0);
+});
+test('army rushes from outside the facing while civilians stay a street refill',()=>{
+ const s=makeState();s.level=8;s.xpEarned=500;
+ const allies=Array.from({length:20},(_,i)=>{const u=makeUnit(i,0,0,0);u.converted=true;u.kind='ally';return u;});
+ const plan=spawnPlan(s,allies,()=>0,{x:0,z:0});
+ assert.ok(plan.interval>=10&&plan.interval<=20);
+ assert.ok(plan.rush.length>=1);
+ assert.ok(plan.patrol.length>=1);
+ assert.ok(plan.rush.every(t=>t>0));
+ assert.ok(plan.patrol.every(t=>t>0));
+ assert.equal(plan.patrol.length+plan.rush.length,plan.threatN);
+ assert.ok(plan.civilians.every(t=>t===0));
+ assert.ok(plan.civilians.length<=4);
+ const parked=splitArmyWave([1,1,2,2,3,3],0);
+ assert.ok(parked.patrol.length>=1&&parked.rush.length>=1);
+ assert.equal(parked.patrol.length+parked.rush.length,6);
+ const fullStreet=splitArmyWave([1,2,3,4],PATROL_KEEP);
+ assert.equal(fullStreet.patrol.length,0);
+ assert.equal(fullStreet.rush.length,4);
+ const facing={x:0,z:1};
+ const wave=planArmyWave(facing,4,()=>0);
+ assert.equal(wave.behind,true);
+ const slot=armySlot(wave,1,()=>.5);
+ assert.ok(slot.x*facing.x+slot.z*facing.z<0);
+ const side=planArmyWave(facing,2,()=>.9);
+ assert.equal(side.behind,false);
+ const flank=armySlot(side,0,()=>.5);
+ assert.ok(flank.x*facing.x+flank.z*facing.z<flank.dist*.5);
+ const block=[{x:0,z:0,w:10,d:4}];
+ assert.equal(isRoadside(block,8,0),true);
+ assert.equal(isRoadside(block,0,0),false);
+ const spot=planCivilianSpot({x:0,z:0},{x:0,z:1},block,()=>.2);
+ assert.ok(spot.z>0);
+ const step=streetStroll(8,0,block,()=>0);
+ assert.ok(Math.hypot(step.x-8,step.z)>6);
+ const nearby=countStreetCivilians([makeUnit(1,0,3,0),makeUnit(2,1,0,0)],{x:0,z:0},32);
+ assert.equal(nearby.near,1);
+ const queue=makeSpawnQueue();
+ enqueueSpawnJobs(queue,[{type:1,role:'army'},{type:1,role:'patrol'},{type:0,role:'civilian'}]);
+ assert.deepEqual(takeSpawnJobs(queue,0,3,.08).map(j=>j.role),['army','patrol','civilian']);
 });
 test('spawn queue releases soldiers in small bursts instead of all at once',()=>{
  const queue=makeSpawnQueue();

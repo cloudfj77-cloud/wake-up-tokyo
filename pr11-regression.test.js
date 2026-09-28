@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import * as rules from './rules.js';
+import * as T from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {prepareCharacterAsset,acquireCharacterVisual,releaseCharacterVisual,setCharacterKind,clearCharacterPool} from './characters.js';
 const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
 function section(start,end){return source.slice(source.indexOf(start),source.indexOf(end,source.indexOf(start))).replaceAll('import.meta.env.DEV','false');}
 function context(extra={}){
@@ -28,11 +31,59 @@ test('Boss reinforcements drain their queue in both normal and accelerated modes
  for(const rush of [false,true]){const ctx=reinforcementContext(rush);vm.runInContext('updateReinforcements(.1)',ctx);assert.equal(ctx.flushed,1);assert.equal(ctx.spawnQueue.jobs.length,2);}
 });
 test('uncompleted reinforcement task shortens Boss wave interval and aftermath stops spawning',()=>{
- const ctx=reinforcementContext(true);ctx.spawnQueue.jobs=[];ctx.reinforceTimer=0;vm.runInContext('updateReinforcements(.1)',ctx);assert.ok(ctx.reinforceTimer<12);
- ctx.state.aftermath=true;ctx.spawnQueue.jobs=[{type:1}];const before=ctx.flushed;vm.runInContext('updateReinforcements(.1)',ctx);assert.equal(ctx.flushed,before);assert.equal(ctx.spawnQueue.jobs.length,0);
+ for(const rush of [false,true]){
+  const ctx=reinforcementContext(rush);ctx.spawnQueue.jobs=[];ctx.reinforceTimer=0;
+  vm.runInContext('updateReinforcements(.1)',ctx);
+  assert.equal(ctx.reinforceTimer,rush?12*.6:12);
+  ctx.state.aftermath=true;ctx.spawnQueue.jobs=[{type:1}];const before=ctx.flushed;
+  vm.runInContext('updateReinforcements(.1)',ctx);assert.equal(ctx.flushed,before);assert.equal(ctx.spawnQueue.jobs.length,0);
+ }
+});
+test('a Boss wave above the queue limit drains and later waves still arrive',()=>{
+ for(const rush of [true,false]){
+  const ctx=context({boss:{active:true},armyWave:null,armyCursor:0,cullFarCivilians(){},cullFarTroops(){},forward:()=>({x:0,z:1}),Math:Object.assign(Object.create(Math),{random:()=>.8})});
+  Object.assign(ctx.state,{level:25,xpEarned:1600,bossSpawned:true,rushReinforce:rush});
+  let spawned=0;
+  ctx.placeArmyRusher=ctx.placeOnStreet=type=>ctx.units.push(rules.makeUnit(++spawned,type,15,0));
+  vm.runInContext(section('function spawnReinforcement(','function hostileConeHits('),ctx);
+  vm.runInContext('updateReinforcements(.04)',ctx);
+  assert.equal(spawned,2);
+  assert.ok(ctx.spawnQueue.jobs.length>=rules.TUNE.difficulty.spawnQueueMax);
+  const waveSize=spawned+ctx.spawnQueue.jobs.length;
+  for(let i=0;i<100;i++)vm.runInContext('updateReinforcements(.04)',ctx);
+  assert.equal(ctx.spawnQueue.jobs.length,0,'a large wave must continue draining during the Boss fight');
+  assert.equal(spawned,waveSize);
+  for(let i=0;i<400;i++)vm.runInContext('updateReinforcements(.04)',ctx);
+  assert.ok(spawned>waveSize,'reinforcement weakening must not disable subsequent waves');
+ }
 });
 test('ending through the pause menu after victory still gives a victory recap',()=>{
  const ctx=context();ctx.state.bossDefeated=true;ctx.state.aftermath=true;ctx.state.peakAlert=6;
  vm.runInContext(section('function finish(result)','function spawnReinforcement('),ctx);
  vm.runInContext("finish('ended')",ctx);assert.equal(ctx.mode,'won');assert.match(ctx.dialog,/觉醒成功/);assert.doesNotMatch(ctx.dialog,/undefined/);
+});
+
+for(const type of [0,1])test(type===0?'civilian conversion clears the old aura before reusing its model':'soldier conversion keeps its model and a single aura',async()=>{
+ clearCharacterPool();
+ const buffer=readFileSync(new URL('./assets/character.glb',import.meta.url));
+ const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
+ const assets=prepareCharacterAsset(gltf),original=acquireCharacterVisual(assets,type===0?'human':'guard');
+ const unit=rules.makeUnit(1,type,0,0);unit.converted=true;unit.kind='ally';
+ const activeAuras=[],visuals=new Map([[1,{v:original,oldKind:type===0?'human':'guard'}]]);
+ const ctx=context({assets,units:[unit],visuals,activeAuras,scene:new T.Scene(),auraVisuals:new Map(),world:{heightAt:()=>0},syncActorPresence(){},actorViewLimit:()=>22,actorInFront:()=>true,AURA_COLORS:{worker:{},guard:{}},makeAura(holder){const aura={g:new T.Group(),life:0};holder.add(aura.g);activeAuras.push(aura);return aura;},acquireCharacterVisual,releaseCharacterVisual,setCharacterKind,burst(){},music:{effect(){}},aura(){}});
+ vm.runInContext(section('function removeAura(','function updateAuras(')+section('function updateVisuals(','function updateEffects('),ctx);
+ vm.runInContext('updateVisuals(.016);updateVisuals(.016)',ctx);
+ const current=visuals.get(1).v;
+ assert.equal(activeAuras.length,1,'conversion must leave exactly one live aura');
+ assert.equal(current.kind,'ally');
+ if(type===0){
+  assert.notEqual(current,original);
+  assert.equal(original.aura,null);
+  const reused=acquireCharacterVisual(assets,'human');
+  assert.equal(reused,original);
+  assert.equal(reused.aura,null,'recycled civilians must not inherit an infection effect');
+  releaseCharacterVisual(reused);
+ }else assert.equal(current,original);
+ vm.runInContext('removeAura(visuals.get(1).v.aura);visuals.get(1).v.aura=null',ctx);
+ releaseCharacterVisual(current);clearCharacterPool();
 });

@@ -28,7 +28,7 @@ export const ABILITIES=[
  {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:[
   '自身 5m 内敌人每 0.5 秒 +2 感染。',
   '范围 10m，每 0.5 秒 +4 感染，且可作用于尸体。',
-  '范围 15m，每 0.5 秒 +6 感染；军队获得 1 级同效果。'
+  '范围 15m，每 0.5 秒 +6 感染，且可作用于尸体。'
  ]},
  {id:'guns',name:'枪？枪！',icon:'⌐',group:'武器系',descriptions:[
   '解锁手枪与霰弹枪。击杀/同化 2 级及以上敌人：手枪 +3、霰弹 +1 备弹。',
@@ -84,14 +84,14 @@ export const LAUNCHER_SLOT=-2;
 export function makeState(){
  return {
   hp:BASE_HP,maxHp:BASE_HP,stamina:STAMINA_MAX,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,
-  xp:0,need:xpNeedFor(1),level:1,pending:1,time:0,alert:1,peakAlert:1,
+  xp:0,xpEarned:0,need:xpNeedFor(1),level:1,pending:1,time:0,alert:1,peakAlert:1,
   abilities:{air:0,guns:0,launcher:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
   history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   clip:0,clipMax:0,weapon:-1,gunId:null,launcherCharge:0,weaponOrder:[],
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
   frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
-  // 警戒只吃等级和时间。Boss 倒计时、召唤和余韵都记在这里，避免和拆中枢进度绑在一起。
+  // 警戒吃累计经验 xpEarned，不吃等级。Boss 倒计时、召唤和余韵都记在这里，避免和拆中枢进度绑在一起。
   alertTime:0,bossCountdown:null,bossSpawned:false,aftermath:false,settle:false
  };
 }
@@ -224,8 +224,12 @@ export function reward(s,u,converted){
  if(s.abilities.haste>=2&&!u.fromArmy)s.burstTime=3;
  if(u.rewarded)return;u.rewarded=true;
  const cap=levelCap(s);
+ const gain=xpFromUnit(u);
+ // 满级后不再升级，但这份经验仍计入警戒，否则后期警戒会停住。
+ if(!Number.isFinite(s.xpEarned))s.xpEarned=earnedXp(s);
+ s.xpEarned+=gain;
  if(s.level<cap){
-  s.xp+=xpFromUnit(u);
+  s.xp+=gain;
   while(s.xp>=s.need&&s.level<cap){
    s.xp-=s.need;s.level++;s.need=xpNeedFor(s.level);
    if(s.level<=LEVEL_CAP)s.pending++;
@@ -241,7 +245,7 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.hp=t.hp;u.maxHp=t.hp;u.infection=0;u.threshold=t.threshold;
  u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
- u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;
+ u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;u.rush=false;
  u.rankBoost=false;u.rewarded=false;u.atk=undefined;
  return u;
 }
@@ -309,17 +313,16 @@ export function damageAlly(u,damage,s){
 }
 export function distance(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
 const AIR=[
- {radius:0,perHalf:0,corpse:false,army:false},
- {radius:5,perHalf:2,corpse:false,army:false},
- {radius:10,perHalf:4,corpse:true,army:false},
- {radius:15,perHalf:6,corpse:true,army:true}
+ {radius:0,perHalf:0,corpse:false},
+ {radius:5,perHalf:2,corpse:false},
+ {radius:10,perHalf:4,corpse:true},
+ {radius:15,perHalf:6,corpse:true}
 ];
 const DOT_RATE=[0,1,2,3];
 export function tickInfection(s,units,player,dt){
  let chain=0;
  const air=AIR[s.abilities.air]||AIR[0];
  const purifiers=units.filter(u=>!u.dead&&u.kind!=='corpse'&&u.type===4);
- const army=units.filter(u=>u.kind==='ally'&&!u.dead);
  for(const u of units){
   u.purified=0;
   if(u.dead||u.converted)continue;
@@ -332,8 +335,6 @@ export function tickInfection(s,units,player,dt){
   }
   if(air.radius&&(!corpse||air.corpse)){
    if(distance(player,u)<=air.radius)positive+=air.perHalf*2;
-   // 军队光环每人一份，但不叠乘，否则十个狂暴者会把整条街秒叫醒。
-   if(air.army&&army.some(a=>distance(a,u)<=AIR[1].radius))positive+=AIR[1].perHalf*2;
   }
   const tagged=u.tagged;
   const playerDot=tagged==='player'||tagged===true;
@@ -354,8 +355,8 @@ export function incomingDamage(s,damage){
  return {taken:damage*(1-dr),reflected:damage*dr,radius:t>=3?30:t>=2?10:0,sprintDr:false};
 }
 export const TUNE_DEFAULTS={
- // 阶段阈值来自《（一）游戏整体控制系统》：30 / 100 / 300，500 开启 180 秒 Boss 倒计时。
- alert:{perLevel:20,perSecond:.1,stage2At:30,stage3At:100,stage4At:300,bossAt:500,countdown:180,maxLevel1:1,maxLevel2:2,maxLevel3:3,maxLevel4:4,pressureTime:0},
+ // 警戒档：10 局部警情，100 城市封锁，300 军事介入，500 开启 120 秒 Boss 倒计时。
+ alert:{xpPerAlert:3,perSecond:.1,stage2At:10,stage3At:100,stage4At:300,bossAt:500,countdown:120,maxLevel1:1,maxLevel2:2,maxLevel3:3,maxLevel4:4,pressureTime:0},
  difficulty:{armyWeight:.4,fodderTarget:10,fodderDump:12,threatPerLevel:.55,threatPerAlly:.4,intervalBase:14,intervalPerWeight:.45,intervalMin:5,spawnPerBurst:2,spawnGap:.08,spawnQueueMax:18},
  activity:{shambleSpeed:.55,shambleRadius:4,shambleIdle:6,fleeSpeed:.7,awakeSpeed:3.8,awakeRadius:34,awakeIdle:1.05,chaseSpeed:3.6,followSpeed:4.4,structureSpeed:3.2}
 };
@@ -365,12 +366,20 @@ export function applyTune(data){if(!data)return TUNE;for(const group of ['alert'
 export function setTuneValue(path,value){const [group,key]=path.split('.');if(TUNE[group]&&key in TUNE[group]&&Number.isFinite(+value))TUNE[group][key]=+value;return TUNE[group][key];}
 export const ALERT_NAMES=['','尚未警觉','局部警情','城市封锁','军事介入','开启计时','全面镇压','失去警戒能力'];
 export const BOSS_WARNINGS=[60,30,10];
-// 警戒值 = 每级 20 点 + 每秒 0.1 点。感染和击杀本身不加警戒，只有升级才会间接抬高。
+// 警戒值 = 累计经验 / 3 + 每秒 0.1 点。凑满 3 点经验才涨 1 点警戒，等级本身不加。
+// 感染人数本身不加；转化和击杀是因为发了经验才加。
+export function earnedXp(s){
+ if(Number.isFinite(s.xpEarned))return Math.max(0,s.xpEarned);
+ // 旧存档没有累计经验时，用升到当前等级花掉的经验补上，避免警戒突然归零。
+ let spent=0;
+ const level=Math.max(1,s.level|0);
+ for(let i=1;i<level;i++)spent+=xpNeedFor(i);
+ return spent+Math.max(0,Number.isFinite(s.xp)?s.xp:0);
+}
 export function alertValue(s){
  const a=TUNE.alert;
- const level=Math.max(1,s.level|0);
  const time=Number.isFinite(s.alertTime)?s.alertTime:s.time;
- return (a.perLevel??20)*(level-1)+(a.perSecond??.1)*Math.max(0,time);
+ return earnedXp(s)/Math.max(1,a.xpPerAlert||3)+(a.perSecond??.1)*Math.max(0,time);
 }
 export function cityAlert(s){
  const a=TUNE.alert;
@@ -391,7 +400,7 @@ export function tickRunClock(s,dt){
  s.alertTime=(s.alertTime||0)+dt;
  events.value=alertValue(s);
  if(s.bossCountdown==null&&events.value>=(TUNE.alert.bossAt??500)){
-  s.bossCountdown=TUNE.alert.countdown??180;
+  s.bossCountdown=TUNE.alert.countdown??120;
   events.started=true;
  }
  if(s.bossCountdown!=null&&!s.bossSpawned){
@@ -446,6 +455,114 @@ export function enqueueSpawnTypes(queue,types){
  for(const type of types)queue.jobs.push({type:type|0});
  return types.length;
 }
+// 军队和平民分开记。冲锋、巡逻、路边行人落地方式不同。
+export function enqueueSpawnJobs(queue,jobs){
+ if(!queue||!jobs?.length)return 0;
+ for(const job of jobs){
+  const role=job.role==='civilian'?'civilian':job.role==='patrol'?'patrol':'army';
+  queue.jobs.push({type:job.type|0,role});
+ }
+ return jobs.length;
+}
+export function isStreetCivilian(u){
+ return !!(u&&u.type===0&&!u.dead&&!u.converted&&u.kind==='human');
+}
+// 没被拉进冲锋的秩序单位，算在路上巡逻的军队。玩家护卫不算。
+export function isStreetPatrol(u){
+ return !!(u&&u.type>0&&!u.rush&&!u.guard&&!u.dead&&!u.converted&&u.kind!=='human'&&u.kind!=='ally'&&u.kind!=='corpse');
+}
+// 离开玩家这么远的敌方士兵直接删掉。还在被感染的留下，避免转化到一半被清掉。
+export const TROOP_CULL=50;
+export function shouldCullTroop(u,dist,range=TROOP_CULL){
+ if(!u||u.guard||u.converted||u.kind==='ally'||u.type===0)return false;
+ if(!(dist>=range))return false;
+ if(u.kind==='corpse'||u.kind==='expired'||u.dead)return true;
+ return !(u.infection>0);
+}
+// 身边想维持的巡逻人数。人够了就不再把冲锋部队拆去站岗。
+export const PATROL_NEAR=32,PATROL_KEEP=4;
+// 至少留一个人冲锋。巡逻从名单前面拿，耗材巡警会排在威胁单位前面。
+export function splitArmyWave(army,nearbyPatrols=0){
+ const list=(army||[]).filter(t=>t>0);
+ const room=Math.max(0,PATROL_KEEP-(nearbyPatrols|0));
+ let n=0;
+ if(list.length>=2&&room>0)n=Math.min(room,list.length-1,Math.max(1,Math.round(list.length/3)));
+ return {patrol:list.slice(0,n),rush:list.slice(n)};
+}
+// 身边这条街想维持的行人，以及整张图允许同时存在的行人。
+export const STREET_NEAR=32,STREET_KEEP=8,STREET_CAP=36;
+export function countStreetCivilians(units,origin=null,radius=STREET_NEAR){
+ const all=(units||[]).filter(isStreetCivilian);
+ if(!origin)return {all:all.length,near:all.length};
+ const near=all.filter(u=>Math.hypot(u.x-origin.x,u.z-origin.z)<=radius).length;
+ return {all:all.length,near};
+}
+// 离建筑外墙 1.2–8 米算路边。没有建筑数据时不拦，方便逻辑测试。
+export function buildingClearance(buildings,x,z){
+ let best=Infinity;
+ for(const b of buildings||[]){
+  const dx=Math.max(Math.abs(x-b.x)-(b.w||0)/2,0);
+  const dz=Math.max(Math.abs(z-b.z)-(b.d||0)/2,0);
+  const d=Math.hypot(dx,dz);
+  if(d<best)best=d;
+ }
+ return best;
+}
+export function isRoadside(buildings,x,z){
+ if(!buildings?.length)return true;
+ const d=buildingClearance(buildings,x,z);
+ return d>=1.2&&d<=8;
+}
+// 行人补在玩家前方附近的路边，而不是跟军队同一条冲锋线。
+export function planCivilianSpot(origin,facing,buildings,random=Math.random){
+ const yaw=Math.atan2(facing?.x||0,facing?.z||1);
+ const ox=origin?.x||0,oz=origin?.z||0;
+ for(let i=0;i<18;i++){
+  const a=yaw+(random()-.5)*2.4,dist=12+random()*12;
+  const x=ox+Math.sin(a)*dist,z=oz+Math.cos(a)*dist;
+  if(!isRoadside(buildings,x,z))continue;
+  return {x,z};
+ }
+ const a=yaw+(random()-.5)*1.2;
+ return {x:ox+Math.sin(a)*16,z:oz+Math.cos(a)*16};
+}
+// 沿着最近那栋楼的长边走一段，看起来是在街上走，而不是原地挪步。
+export function streetStroll(x,z,buildings,random=Math.random){
+ let best=null,bestD=Infinity;
+ for(const b of buildings||[]){
+  const d=buildingClearance([b],x,z);
+  if(d<bestD){best=b;bestD=d;}
+ }
+ let dx,dz;
+ if(best&&bestD<14){
+  const alongX=(best.w||1)>=(best.d||1);
+  const dir=random()<.5?1:-1;
+  dx=alongX?dir:(random()-.5)*.35;
+  dz=alongX?(random()-.5)*.35:dir;
+ }else{
+  const a=random()*Math.PI*2;
+  dx=Math.sin(a);dz=Math.cos(a);
+ }
+ const dist=8+random()*6,len=Math.hypot(dx,dz)||1;
+ return {x:x+dx/len*dist,z:z+dz/len*dist};
+}
+// 一整波军队共用一个方向：多半从身后，其余从侧面，都不从正面刷出来。
+export function planArmyWave(facing,count,random=Math.random){
+ const yaw=Math.atan2(facing?.x||0,facing?.z||1);
+ const behind=random()<.75;
+ const side=random()<.5?1:-1;
+ const jitter=(random()-.5)*.4;
+ const angle=(behind?yaw+Math.PI:yaw+side*Math.PI/2)+jitter;
+ return {behind,angle,count:Math.max(1,count|0)};
+}
+export function armySlot(wave,index,random=Math.random){
+ const n=wave?.count||1,i=Math.max(0,index|0);
+ const span=Math.min(1,Math.max(0,n-1)*.22);
+ const along=n<=1?0:(i/(n-1)-.5)*span;
+ const a=(wave?.angle||Math.PI)+along+(random()-.5)*.08;
+ const dist=20+random()*8;
+ return {x:Math.sin(a)*dist,z:Math.cos(a)*dist,dist};
+}
 export function takeSpawnJobs(queue,dt=0,perBurst=2,gap=.08){
  if(!queue?.jobs.length){if(queue)queue.wait=0;return [];}
  queue.wait=Math.max(0,(queue.wait||0)-dt);
@@ -455,24 +572,49 @@ export function takeSpawnJobs(queue,dt=0,perBurst=2,gap=.08){
  queue.wait=queue.jobs.length?gap:0;
  return batch;
 }
-export function spawnPlan(s,units,random=Math.random){
+export function spawnPlan(s,units,random=Math.random,origin=null){
  const alert=cityAlert(s);
  const d=TUNE.difficulty;
  const army=teamCount(units);
  const weight=s.level+army*(d.armyWeight??.4);
- // 阶段 1、2 只补市民；阶段 3 起才把 2 级巡警当耗材。难度层从局部警情才开。
+ // 开局还没到局部警情时，军队只补持棍巡警在街上巡逻，不冲锋。
+ // 阶段 3 起才把 2 级巡警当耗材。冲锋从局部警情才开。
  const fodder=fodderCount(units,alert.stage);
  const indexed=ENEMIES.map((e,i)=>({e,i}));
+ const opening=alert.stage<2&&!alert.lost;
  const fodderPool=alert.stage>=3?indexed.filter(({e})=>e.level<=2):indexed.filter(({i})=>i===0);
- const threatPool=alert.stage>=2?indexed.filter(({e})=>e.level>=2&&e.level<=alert.maxLevel):[];
+ const threatPool=opening?indexed.filter(({i})=>i===1):alert.stage>=2?indexed.filter(({e})=>e.level>=2&&e.level<=alert.maxLevel):[];
  const pick=list=>{if(!list.length)return 0;return list[Math.min(list.length-1,Math.floor(random()*list.length))].i;};
  const fodderN=alert.lost?0:fodder<=0?d.fodderDump:Math.max(0,d.fodderTarget-fodder);
- const threatN=alert.lost||!threatPool.length?0:Math.max(1,Math.round(s.level*(d.threatPerLevel??.55)+army*(d.threatPerAlly??.4)));
- const types=[];
- for(let i=0;i<fodderN;i++)types.push(pick(fodderPool));
- for(let i=0;i<threatN;i++)types.push(pick(threatPool));
+ const threatN=alert.lost||!threatPool.length?0:opening?1:Math.max(1,Math.round(s.level*(d.threatPerLevel??.55)+army*(d.threatPerAlly??.4)));
+ const drafted=[];
+ for(let i=0;i<fodderN;i++)drafted.push(pick(fodderPool));
+ for(let i=0;i<threatN;i++)drafted.push(pick(threatPool));
+ // 间隔仍是本局公式：等级和友军越高，两波之间越短，并夹在 10–20 秒。
  const interval=Math.max(10,Math.min(20,d.intervalBase-weight*(d.intervalPerWeight??.45)));
- return {types,interval,weight,fodder,fodderN,threatN,army,...alert};
+ const soldiers=drafted.filter(t=>t>0);
+ let rush=opening?[]:soldiers,patrol=opening?[...soldiers]:[];
+ let civilians=drafted.filter(t=>t===0);
+ let streetN=civilians.length;
+ // 开局时行人和巡逻队按身边空街补；冲锋名单不再把这两种人算进去。
+ if(origin){
+  const stock=countStreetCivilians(units,origin,STREET_NEAR);
+  const room=Math.max(0,STREET_CAP-stock.all);
+  streetN=alert.lost?0:Math.min(4,room,Math.max(0,STREET_KEEP-stock.near));
+  civilians=Array.from({length:streetN},()=>0);
+  const nearPatrol=(units||[]).filter(u=>isStreetPatrol(u)&&Math.hypot(u.x-origin.x,u.z-origin.z)<=PATROL_NEAR).length;
+  if(opening){
+   const room=Math.max(0,PATROL_KEEP-nearPatrol);
+   patrol=soldiers.slice(0,room);
+   rush=[];
+  }else{
+   const split=splitArmyWave(soldiers,nearPatrol);
+   patrol=split.patrol;
+   rush=split.rush;
+  }
+ }
+ const types=origin?[...civilians,...patrol,...rush]:drafted;
+ return {types,civilians,patrol,rush,streetN,interval,weight,fodder,fodderN,threatN,army,...alert};
 }
 export function outcome(s){
  // 胜利锁定前死亡才算失败。余韵里要玩家自己点结束，才进入结算。
