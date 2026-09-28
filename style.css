@@ -52,7 +52,7 @@ body.defeated #modal{background:#170d14e8}
 body.defeated .dialog{width:min(560px,92vw);border-color:#e6646e88;box-shadow:0 0 80px #a51f2f55;text-align:center}
 body.awakened #modal{background:#1a1408e8}
 body.awakened .dialog{border-color:#ffe45b88;box-shadow:0 0 80px #e8b40e55;text-align:center}
-.winTitle{margin:6px 0 10px;font:900 44px/.95 'PingFang SC','Arial Black',sans-serif;letter-spacing:3px;color:#ffe45b;text-shadow:0 0 18px #ffd000,0 0 36px #ff9a00,0 4px 0 #6a3d00}
+.winTitle{margin:6px 0 10px;font:900 44px/.95 'PingFang SC','Arial Black',sans-serif;letter-spacing:3px;color:#ffe45b;-webkit-text-fill-color:currentColor;-webkit-text-stroke:0;text-shadow:0 3px 0 #6a3d00,0 0 12px #5a2f0080}
 .winSub{margin:0 0 18px;font-size:20px;font-weight:800;color:#fff3c4;letter-spacing:1px}
 .defeatEyebrow{justify-content:center;color:#e9959d}
 .defeatTitle{color:#ffb5bb;letter-spacing:2px}
@@ -118,9 +118,10 @@ body.awakened .dialog{border-color:#ffe45b88;box-shadow:0 0 80px #e8b40e55;text-
 @keyframes policeAlert{0%{opacity:0;transform:scaleY(.15)}10%,72%{opacity:1;transform:scaleY(1)}82%{opacity:1;transform:scaleY(1) translateX(-4px)}86%{transform:scaleY(1) translateX(4px)}100%{opacity:0;transform:scaleY(.6)}}
 #policeAlert.boss{height:168px;background:linear-gradient(90deg,transparent,#8a6208f0 10%,#e8b40ef8 50%,#8a6208f0 90%,transparent);border-color:#ffe45bcc;color:#fff8d4;z-index:30}
 #policeAlert.boss:before,#policeAlert.boss:after{content:'/// 蛙来 /// 蛙来 /// 蛙来 /// 蛙来 /// 蛙来 /// 蛙来 ///';color:#ffe45b99;letter-spacing:10px;font-size:11px}
+#policeAlert.boss small,#policeAlert.boss b,#policeAlert.boss em{position:relative;z-index:1}
 #policeAlert.boss small{margin:0 0 2px;color:#fff3c4;font-size:13px;letter-spacing:10px}
-#policeAlert.boss b{font:900 86px/.8 Impact,'Arial Black','PingFang SC',sans-serif;letter-spacing:10px;color:#fff7b0;-webkit-text-stroke:3px #6a3d00;text-shadow:0 0 12px #fff,0 0 28px #ffd000,0 0 54px #ff9a00,0 6px 0 #5a2f00}
-#policeAlert.boss strong{left:50%;top:18px;transform:translateX(-50%);font-size:140px;color:#ffe45b22;letter-spacing:-8px}
+#policeAlert.boss b{font:900 86px/.8 Impact,'Arial Black','PingFang SC',sans-serif;letter-spacing:10px;color:#ffe45b;-webkit-text-fill-color:currentColor;-webkit-text-stroke:0;text-shadow:0 3px 0 #6a3d00,0 0 12px #5a2f0080}
+#policeAlert.boss strong{left:50%;top:18px;transform:translateX(-50%);font-size:140px;color:#ffe45b22;letter-spacing:-8px;text-shadow:none}
 #policeAlert.boss.active{animation:bossFrogAlert 2.8s ease both}
 #policeAlert.boss.win{height:228px}
 #policeAlert.boss.win:before,#policeAlert.boss.win:after{content:'/// 击败奶蛙龙 /// 觉醒成功 /// 击败奶蛙龙 /// 觉醒成功 ///'}
@@ -243,7 +244,6 @@ body.menuMode #game{filter:saturate(1.22) contrast(1.06) brightness(.92) sepia(.
 .choiceLock{pointer-events:none}
 .choiceSlot{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
 .choiceSlot .card{flex:1}
-.card.picked{border-color:#d7b2fa;box-shadow:inset 0 0 0 1px #c69be5,0 8px 22px #7a3cc433;background:#343e53}
 .reroll{background:#ffffff0c;border:1px solid #8aa0b366;color:#d5e2ee;padding:8px 10px;font-size:11px;letter-spacing:1px}
 .reroll:hover:not(:disabled){background:#b478f122;border-color:#c69be5;color:#f0e3ff}
 .reroll:disabled{opacity:.45;cursor:not-allowed}

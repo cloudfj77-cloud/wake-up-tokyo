@@ -27,7 +27,7 @@ export function terrainHeightAt(x,z){
 }
 
 export async function loadRiverside(scene){
- const draco=new DRACOLoader().setDecoderPath('/draco/');
+ const draco=new DRACOLoader().setDecoderPath(import.meta.env.BASE_URL+'draco/');
  const loader=new GLTFLoader().setDRACOLoader(draco);
  const gltf=await loader.loadAsync(new URL('./assets/scenes/riverside.glb',import.meta.url).href);
  draco.dispose();const root=gltf.scene;root.scale.setScalar(.55);root.position.set(0,-.715,19.25);root.updateMatrixWorld(true);scene.add(root);
