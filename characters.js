@@ -213,13 +213,17 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
     if (action) action.setEffectiveTimeScale(scale);
     switchAnimation(visual, name);
   }
-  // 远处人物降低骨骼刷新频率，玩家看不出区别，但能明显减轻渲染压力。
+  // 第八章：16 米内动画照常，再远降低骨骼刷新，大约 58 米外不再刷新。影子只在大约 18 米内打开。
   visual.holder.visible = distance < 58;
   const shadows = distance < 18;
   for (const mesh of visual.meshes) mesh.castShadow = shadows;
-  // 骨骼动画不再按距离降频：主角恒按 distance=0 处理从不降频，
-  // 只有 NPC 会被降到 15fps，两个 NPC 在远处凑到一起时就会一卡一卡。
-  // 全场几十个单位的骨骼矩阵开销很小，先保证动作连贯。
+  if (distance >= 58) return;
+  if (distance > 16) {
+    visual.accumulated += dt;
+    if (visual.accumulated < 0.12) return;
+    dt = visual.accumulated;
+    visual.accumulated = 0;
+  } else visual.accumulated = 0;
   visual.mixer.update(dt);
 }
 

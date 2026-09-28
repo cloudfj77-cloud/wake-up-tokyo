@@ -49,6 +49,8 @@ test('unconverted humans shamble; converted allies switch to a fast walk',()=>{
   assert.equal(b.marker.visible,false);
   updateCharacterVisual(a,true,.1,80);assert.equal(a.holder.visible,false);
   updateCharacterVisual(a,true,.1,10);assert.equal(a.holder.visible,true);
+  updateCharacterVisual(a,true,.05,30);assert.equal(a.holder.visible,true);
+  assert.equal(a.meshes[0].castShadow,false);
 });
 test('character visual pool reuses the same skeleton instead of cloning again',()=>{
   clearCharacterPool();

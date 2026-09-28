@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,missionReady,bossReady,cityAlert,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,takeSpawnJobs} from './rules.js';
+import {makeState,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods} from './rules.js';
 import {createBoss,hitBoss,canBossBombTarget} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -113,36 +113,37 @@ test('shield halves frontal damage only',()=>{
  const s=makeState(),u=makeUnit(1,3,0,0);
  assert.ok(ENEMIES[3].shield);hit(s,u,0,20,true);assert.equal(u.hp,190);hit(s,u,0,20,false);assert.equal(u.hp,170);
 });
-test('city alert is time-gated, not infection-gated',()=>{
- const s=makeState();assert.equal(cityAlert(s).maxLevel,2);assert.equal(threat(s),1);
- s.infected=40;s.kills=20;s.time=10;assert.equal(threat(s),1);
- s.time=90;assert.equal(cityAlert(s).stage,2);assert.equal(cityAlert(s).maxLevel,3);
- s.time=180;assert.equal(cityAlert(s).stage,3);assert.equal(cityAlert(s).final,true);assert.equal(cityAlert(s).maxLevel,4);
+test('city alert follows level and time, not infection',()=>{
+ const s=makeState();assert.equal(alertValue(s),0);assert.equal(cityAlert(s).stage,1);assert.equal(cityAlert(s).maxLevel,1);
+ s.infected=40;s.kills=20;s.alertTime=10;assert.equal(threat(s),1);assert.equal(alertValue(s),1);
+ s.level=3;assert.equal(alertValue(s),41);assert.equal(cityAlert(s).stage,2);assert.equal(cityAlert(s).name,'局部警情');
+ s.level=6;s.alertTime=0;assert.equal(alertValue(s),100);assert.equal(cityAlert(s).stage,3);
+ s.level=16;assert.equal(cityAlert(s).stage,4);assert.equal(cityAlert(s).maxLevel,4);
+ s.level=26;assert.equal(alertValue(s),500);assert.equal(tickRunClock(s,0).started,true);assert.equal(s.bossCountdown,180);
 });
-test('early spawn plan only sends fodder',()=>{
+test('early spawn plan only sends civilians',()=>{
  const s=makeState();const units=[makeUnit(1,0,0,0),makeUnit(2,1,1,1)];
  const plan=spawnPlan(s,units,()=>0);assert.equal(plan.threatN,0);
- assert.ok(plan.types.every(t=>ENEMIES[t].fodder));assert.ok(plan.interval>=5);
+ assert.ok(plan.types.every(t=>t===0));assert.ok(plan.interval>=10&&plan.interval<=20);
 });
-test('city civilians do not fill the combat fodder quota',()=>{
+test('city civilians fill the fodder quota until lockdown',()=>{
  const s=makeState();
  const street=Array.from({length:48},(_,i)=>makeUnit(i,0,0,0,true));
- assert.equal(fodderCount(street),0);
+ assert.equal(fodderCount(street,1),48);
  const dump=spawnPlan(s,street,()=>0);
- assert.equal(dump.fodder,0);
- assert.equal(dump.fodderN,12);
- assert.ok(dump.types.every(t=>t!==0));
- const mixed=street.concat(Array.from({length:4},(_,i)=>makeUnit(100+i,1,0,0,true)));
- const plan=spawnPlan(s,mixed,()=>0);
- assert.equal(plan.fodder,4);
- assert.equal(plan.fodderN,6);
+ assert.equal(dump.fodderN,0);
+ s.level=6;
+ const few=[makeUnit(200,0,0,0,true)];
+ const locked=spawnPlan(s,few,()=>0);
+ assert.equal(locked.stage,3);
+ assert.ok(locked.types.some(t=>ENEMIES[t].level===2));
 });
-test('empty field dumps many fodder; army size raises uncapped threats',()=>{
+test('empty field dumps civilians; army size raises threats after alert rises',()=>{
  const s=makeState();
  const empty=spawnPlan(s,[],()=>0);
  assert.ok(empty.fodderN>=10);
- assert.ok(empty.types.filter(t=>ENEMIES[t].fodder).length>=10);
- s.time=90;s.level=8;
+ assert.ok(empty.types.every(t=>t===0));
+ s.level=8;
  const army=Array.from({length:20},(_,i)=>{const u=makeUnit(i,0,0,0);u.converted=true;u.kind='ally';return u;});
  const plan=spawnPlan(s,army,()=>0);
  assert.ok(plan.threatN>3);
@@ -201,8 +202,8 @@ test('elite soldiers outlast and outdamage converted workers',()=>{
  assert.ok(elite.hp>worker.hp*3);
 });
 test('tune console can move alert gates without infection',()=>{
- const s=makeState();s.time=40;assert.equal(threat(s),1);
- try{setTuneValue('alert.stage2At',30);assert.equal(threat(s),2);setTuneValue('difficulty.intervalMin',20);assert.ok(spawnPlan(s,[],()=>0).interval>=20);}
+ const s=makeState();s.level=3;assert.equal(threat(s),2);
+ try{setTuneValue('alert.stage2At',80);assert.equal(threat(s),1);setTuneValue('alert.stage2At',30);assert.equal(threat(s),2);}
  finally{resetTune();}
 });
 test('sprint multiplies walk speed; haste adds fifty then one hundred',()=>{
@@ -277,12 +278,46 @@ test('evolve adds life from player level',()=>{
  const s=makeState();s.pending=1;s.level=4;upgrade(s,'evolve');refreshStats(s);
  assert.equal(s.maxHp,140);
 });
-test('complete mission chain requires boss defeat, high infection alone never wins',()=>{
+test('high infection alone never wins, settling after the boss does',()=>{
  const s=makeState();s.infected=40;s.towers=2;s.highestEnemy=3;
- for(let i=0;i<4;i++){assert.equal(missionReady(s),true);s.mission++;}
- assert.equal(missionReady(s),false);assert.equal(outcome(s),null);s.bossDefeated=true;assert.equal(outcome(s),'won');
+ assert.equal(outcome(s),null);s.bossDefeated=true;assert.equal(outcome(s),null);s.settle=true;assert.equal(outcome(s),'won');
 });
-test('destroying both order hubs unlocks the boss without infection requirements',()=>{const s=makeState();s.infected=0;s.towers=1;assert.equal(bossReady(s),false);s.towers=2;assert.equal(bossReady(s),true);});
+test('guards stay inside 20m of the player while ordinary allies are not leashed',()=>{
+ const player={x:0,z:0};
+ assert.equal(GUARD_LEASH,20);
+ assert.deepEqual(guardMoveTarget(player,8,0),{x:8,z:0});
+ const far=guardMoveTarget(player,30,0);
+ assert.equal(far.x,20);
+ assert.equal(far.z,0);
+ const diagonal=guardMoveTarget(player,30,40);
+ assert.ok(Math.hypot(diagonal.x,diagonal.z)<=20.001);
+});
+test('guns and syringe take hotkeys in the order they were picked',()=>{
+ const launcherFirst=makeState();launcherFirst.pending=2;
+ upgrade(launcherFirst,'launcher');upgrade(launcherFirst,'guns');
+ assert.deepEqual(weaponSlots(launcherFirst).map(slot=>slot.id),['launcher','pistol','shotgun']);
+ assert.equal(weaponSlots(launcherFirst)[0].key,2);
+ assert.equal(launcherFirst.weapon,LAUNCHER_SLOT);
+ const gunsFirst=makeState();gunsFirst.pending=2;
+ upgrade(gunsFirst,'guns');upgrade(gunsFirst,'launcher');
+ assert.deepEqual(weaponSlots(gunsFirst).map(slot=>slot.id),['pistol','shotgun','launcher']);
+ assert.equal(gunsFirst.weapon,0);
+});
+test('countdown publishes three weaken tasks that do not gate the boss',()=>{
+ const s=makeState();publishWeakenTasks(s);
+ assert.equal(completeWeaken(s,'shield'),true);
+ assert.equal(completeWeaken(s,'shield'),false);
+ assert.deepEqual(bossWeakenMods(s),{shield:false,empowered:true,rushReinforce:true});
+ closeWeakenTasks(s);
+ assert.equal(completeWeaken(s,'fire'),false);
+ assert.equal(bossReady(s),false);
+});
+test('boss countdown, not hubs, summons the boss',()=>{
+ const s=makeState();s.towers=2;assert.equal(bossReady(s),false);
+ s.level=26;const started=tickRunClock(s,0);assert.equal(started.started,true);
+ const done=tickRunClock(s,180);assert.equal(done.summon,true);assert.equal(bossReady(s),true);
+ s.aftermath=true;assert.equal(cityAlert(s).stage,7);reward(s,makeUnit(1,0,0,0),true);assert.equal(s.infected,0);
+});
 test('boss has 6000 HP, changes stages and takes extra weak-point damage',()=>{
  const b=createBoss(new T.Scene());assert.equal(b.hp,6000);assert.ok(b.mouthGlow);assert.equal(b.orbWindup,0);b.active=true;hitBoss(b,100);assert.equal(b.hp,5935);b.weak=2;assert.equal(hitBoss(b,100),250);
  for(let i=0;i<30;i++)hitBoss(b,100);assert.equal(b.dead,true);assert.equal(b.hp,0);
