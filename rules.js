@@ -20,9 +20,12 @@ export const ENEMIES=[
  {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:20,range:1.35,interval:1.7,aim:.7,fodder:true,allyName:'狂暴持棍巡警',allyHp:50,allyAtk:10},
  {name:'持枪巡警',level:2,hp:100,threshold:40,speed:2.45,damage:10,range:12,interval:2,aim:.45,allyName:'狂暴持枪巡警',allyHp:50,allyAtk:5},
  {name:'持盾特警',level:3,hp:200,threshold:150,speed:2.3,damage:30,range:2.3,interval:1.5,aim:1.5,shield:true,cone:true,allyName:'狂暴持盾特警',allyHp:100,allyAtk:15},
- {name:'净化工兵',level:4,hp:400,threshold:300,speed:2.05,damage:10,range:8,interval:.5,aim:.25,purifier:true,spray:true,aura:10,drain:4,allyName:'狂暴净化士兵',allyHp:200,allyAtk:5},
+ // drain = 敌方每秒清掉的感染（原 4，已削弱）；aid = 被同化后反过来帮玩家扩散的速率，保留原值当奖励。
+ {name:'净化工兵',level:4,hp:400,threshold:300,speed:2.05,damage:10,range:8,interval:.5,aim:.25,purifier:true,spray:true,aura:10,drain:2,aid:4,allyName:'狂暴净化士兵',allyHp:200,allyAtk:5},
  {name:'大兵',level:4,hp:300,threshold:200,speed:2.45,damage:5,range:24,interval:.1,aim:0,allyName:'狂暴大兵',allyHp:150,allyAtk:2.5,grenade:{radius:5,max:50,min:10,cd:20}},
- {name:'持枪特警',level:3,hp:150,threshold:100,speed:2.65,damage:10,range:14,interval:.5,aim:.12,allyName:'狂暴持枪特警',allyHp:75,allyAtk:5}
+ {name:'持枪特警',level:3,hp:150,threshold:100,speed:2.65,damage:10,range:14,interval:.5,aim:.12,allyName:'狂暴持枪特警',allyHp:75,allyAtk:5},
+ // 近战重装：前摇长、命中是以自身为心的范围伤害。range 保持在 3 以内，才会被判成近战而不是远程。
+ {name:'重装大锤兵',level:4,hp:700,threshold:500,speed:1.85,damage:55,range:3,interval:2.6,aim:1.9,slam:{radius:4.2},allyName:'狂暴重装大锤兵',allyHp:350,allyAtk:25}
 ];
 export const ABILITIES=[
  {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:[
@@ -36,14 +39,14 @@ export const ABILITIES=[
   '解锁 RPG。4 级及以上 +1 发。枪械造成攻击力一半的感染。'
  ]},
  {id:'launcher',name:'可感染发射器',icon:'◎',group:'武器系',descriptions:[
-  '解锁感染针。命中造成感染，适合叫醒路人。键位按点出顺序排。',
-  '针剂感染与伤害提高，并可穿透多名敌人。',
+  '解锁感染针。命中只累积感染、不造成伤害，适合叫醒路人。键位按点出顺序排。',
+  '针剂感染提高，并可穿透多名敌人，依然不造成伤害。',
   '解锁三环充能：枪械与注射器共用，命中三次后下一发强化炮弹。'
  ]},
  {id:'frenzy',name:'狂杀',icon:'⚔',group:'母体系',descriptions:[
   '每次击杀或同化 +1 生命与等量上限。',
   '生命上限达到 500 与 1000 时，各额外获得一次能力进化。',
-  '提升量翻倍，体型变大。军队的击杀/同化也为你提供 1 级效果。'
+  '提升量翻倍，体型变大。军队每 2 次击杀或同化，才为你提供 1 点生命。'
  ]},
  {id:'dot',name:'持续感染',icon:'⌁',group:'感染系',descriptions:[
   '你造成的感染会持续累积，直到同化完成。每秒 +1。',
@@ -51,24 +54,24 @@ export const ABILITIES=[
   '你的军队命中也会挂上同样的持续感染（每秒 +3）。'
  ]},
  {id:'haste',name:'急速',icon:'↟',group:'机动系',descriptions:[
-  '额外获得 50 点移速加成。',
-  '奔跑减伤 30%。击杀后爆发移速 3 秒（先翻倍再回落）。',
-  '移速加成 100。奔跑减伤 50%，可撞飞敌人造成重击伤害。军队获得 2 级效果。'
+  '移速 +15%。',
+  '奔跑减伤 10%。击杀后爆发移速 3 秒（开头快五成，再慢慢回到平时速度）。',
+  '移速 +30%，奔跑减伤 15%，可撞飞敌人造成重击伤害。军队获得 2 级效果，移速 +10%。'
  ]},
  {id:'tough',name:'皮糙肉厚',icon:'✚',group:'母体系',descriptions:[
-  '获得 20% 减伤。',
-  '减伤 30%。10m 内敌人打中你后，减免的伤害反弹，并附加一半感染。',
-  '自身减伤 50%，反伤 30m。每 0.5 秒回复 1% 生命。军队获得 1 级减伤。'
+  '获得 15% 减伤。',
+  '减伤 25%。10m 内敌人打中你后，减免的伤害反弹，并附加一半感染。',
+  '自身减伤 35%，反伤 30m。军队获得 1 级减伤。'
  ]},
  {id:'evolve',name:'生存与进化',icon:'✶',group:'成长系',descriptions:[
   '获得等级×10 生命，以及等级点的攻击力。',
   '每生存 1 分钟，上述系数额外 +5%。',
-  '等级上限 50（31 级后不再给新能力）。新转化单位等阶 +1。'
+  '等级上限 50（31 级后不再给新能力）。新转化的敌人升 1 级，随机变成高一等级的敌人。'
  ]},
  {id:'command',name:'听我号令',icon:'⚑',group:'指挥系',descriptions:[
-  '可以指挥军队。获得 2 名 2 级护卫，阵亡后会复活。',
-  '护卫升 1 阶，人数至 5 人。',
-  '护卫再升 1 阶，人数至 10 人。'
+  '可以指挥军队。获得 2 名 2 级护卫，阵亡后过一会儿归队。',
+  '护卫升 1 阶，编制至 5 人。',
+  '护卫再升 1 阶，编制至 10 人。'
  ]}
 ];
 export const GUNS=[
@@ -90,7 +93,7 @@ export function makeState(){
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   clip:0,clipMax:0,weapon:-1,gunId:null,powerCharge:0,weaponOrder:[],
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
-  frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
+  frenzyHp:0,armyFrenzy:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
   // 警戒吃累计经验 xpEarned，不吃等级。Boss 倒计时、召唤和余韵都记在这里，避免和拆中枢进度绑在一起。
   alertTime:0,bossCountdown:null,bossSpawned:false,aftermath:false,settle:false
  };
@@ -184,10 +187,11 @@ export function launcherSpec(s,empowered=false){
  const lv=s.abilities.launcher||0;
  if(lv<1)return null;
  const pierce=lv>=2?2:0;
+ // 普通针剂只负责「叫醒」，不带伤害；只有 3 级充能出的强化炮弹（爆炸）才结算伤害。
  const base=lv>=2
-  ?{infection:20,damage:8,range:28,cd:.36,speed:36,pierce,color:0xd48aff,life:.9}
-  :{infection:12,damage:4,range:24,cd:.42,speed:32,pierce,color:0xc078ff,life:.85};
- if(empowered)return {...base,infection:45,damage:12,speed:14,pierce:4,splash:6,life:4,strong:true,color:0xe4adff};
+  ?{infection:14,damage:0,range:28,cd:.36,speed:36,pierce,color:0xd48aff,life:.9}
+  :{infection:8,damage:0,range:24,cd:.42,speed:32,pierce,color:0xc078ff,life:.85};
+ if(empowered)return {...base,infection:32,damage:12,speed:14,pierce:4,splash:6,life:4,strong:true,color:0xe4adff};
  return {...base,splash:0,strong:false};
 }
 export const POWER_HITS=3;
@@ -219,10 +223,18 @@ export function upgrade(s,id){
  if(id==='command')s.needGuards=true;
  return true;
 }
+// 军队击杀/同化要凑满这么多次，才折算成 1 点生命。
+export const ARMY_FRENZY_STEP=2;
 export function grantFrenzy(s,fromArmy=false){
  const lv=s.abilities.frenzy;if(!lv)return 0;
  if(fromArmy&&lv<3)return 0;
  const amt=(!fromArmy&&lv>=3)?2:1;
+ // 军队的战果先攒着，攒够 ARMY_FRENZY_STEP 次才给 1 点，不再一次一跳。
+ if(fromArmy){
+  s.armyFrenzy=(s.armyFrenzy||0)+1;
+  if(s.armyFrenzy<ARMY_FRENZY_STEP)return 0;
+  s.armyFrenzy=0;
+ }
  s.frenzyHp+=amt;
  refreshStats(s);
  for(const mark of [500,1000]){
@@ -262,8 +274,8 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.hp=t.hp;u.maxHp=t.hp;u.infection=0;u.threshold=t.threshold;
  u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
- u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;u.rush=false;
- u.rankBoost=false;u.rewarded=false;u.atk=undefined;
+ u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;u.rush=false;u.stuck=0;
+ u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
  return u;
 }
 export function makeUnit(id,type,x,z,city=true,profession=0){
@@ -275,6 +287,14 @@ export function applyRankBoost(u){
  u.maxHp=Math.ceil(u.maxHp*1.28);
  u.hp=Math.max(u.hp,Math.ceil(u.maxHp*.45));
  return u;
+}
+// 生存与进化 3 级用：随机挑一个高一等级的敌人当新形态。已经是最高等级时返回原类型。
+export function promoteType(type,random=Math.random){
+ const e=ENEMIES[type];if(!e)return type;
+ const pool=[];
+ for(let i=0;i<ENEMIES.length;i++)if(ENEMIES[i].level===e.level+1)pool.push(i);
+ if(!pool.length)return type;
+ return pool[Math.min(pool.length-1,Math.floor(random()*pool.length))];
 }
 // 转化后满状态按敌方生命/攻击砍半。市民敌方无攻击，表里单独给了 10 点。
 export function allyTemplate(type){
@@ -304,13 +324,23 @@ export function grenadeBlast(spec,dist){
 export function convert(s,u){
  if(u.converted||u.dead)return false;
  const fromCorpse=u.kind==='corpse';
+ // 先按实际同化的敌人结算；后续友军晋升不能抬高经验、补弹与战绩。
+ reward(s,u,true);
+ // 点满生存与进化：新转化的单位实打实升 1 级，随机变成高一等级的敌人。
+ // 已经是最高等级时没有更高形态可换，退回原来的血量加成。
+ let promoted=false;
+ if(s.abilities.evolve>=3){
+  const next=promoteType(u.type);
+  if(next!==u.type){u.type=next;u.threshold=ENEMIES[next].threshold;promoted=true;}
+ }
  const tpl=allyTemplate(u.type);
  u.converted=true;u.kind='ally';
  u.maxHp=tpl.hp;u.hp=fromCorpse?Math.ceil(tpl.hp*.6):tpl.hp;u.atk=tpl.atk;
  u.aiming=false;u.aim=0;u.attackCd=.15;u.hurt=0;
  u.corpseTime=0;u.infection=u.threshold;u.wander=0;u.tagged=false;
- if(s.abilities.evolve>=3)applyRankBoost(u);
- reward(s,u,true);
+ u.promoted=promoted;
+ // 换成更高一阶本身就已经吃到属性提升；只有换不动（本来就是最高阶）才退回旧的血量乘数。
+ if(s.abilities.evolve>=3&&!promoted)applyRankBoost(u);
  return true;
 }
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
@@ -323,8 +353,10 @@ export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.hp<=0){u.kind='corpse';u.corpseTime=12;u.fromArmy=fromArmy;reward(s,u,false);return 'killed';}
  return 'hit';
 }
+// 皮糙肉厚的减伤档位。3 级不再自带回血。
+const TOUGH_DR=[0,.15,.25,.35];
 export function damageAlly(u,damage,s){
- const dr=s?.abilities.tough>=3?.2:0;
+ const dr=s?.abilities.tough>=3?TOUGH_DR[1]:0;
  u.hp=Math.max(0,u.hp-damage*(1-dr));u.hurt=2;
  if(u.hp===0){u.kind='fallen';u.dead=true;if(u.guard)u.guardCd=12;}
 }
@@ -336,6 +368,10 @@ const AIR=[
  {radius:15,perHalf:6,corpse:true}
 ];
 const DOT_RATE=[0,1,2,3];
+// 净化不叠加：站着三四个净化工兵也只按最强的那一个算，不存在围成一圈把感染冻住的情况。
+// 原本是每个各清 4 点线性累加，中后期一轮刷出三四个就能把空气传播（3 级才 12/秒）整个抵消掉，
+// 4 级军队永远感染不动。现在无论多少个，都只有单个净化工兵的 2 点/秒。
+export const PURIFY_MAX=2;
 export function tickInfection(s,units,player,dt){
  let chain=0;
  const air=AIR[s.abilities.air]||AIR[0];
@@ -347,9 +383,11 @@ export function tickInfection(s,units,player,dt){
   let positive=0,negative=0;
   for(const p of purifiers){
    if(p===u||distance(p,u)>(ENEMIES[p.type].aura||8))continue;
-   if(p.kind==='ally')positive+=ENEMIES[p.type].drain||8;
-   else negative+=ENEMIES[p.type].drain||8;
+   // 取最强的一个，不累加：多来几个净化工兵不会让净化变快。
+   if(p.kind==='ally')positive=Math.max(positive,ENEMIES[p.type].aid??ENEMIES[p.type].drain??8);
+   else negative=Math.max(negative,ENEMIES[p.type].drain??8);
   }
+  negative=Math.min(negative,PURIFY_MAX);
   if(air.radius&&(!corpse||air.corpse)){
    if(distance(player,u)<=air.radius)positive+=air.perHalf*2;
   }
@@ -368,7 +406,7 @@ export function tickInfection(s,units,player,dt){
 }
 export function incomingDamage(s,damage){
  const t=s.abilities.tough;
- const dr=[0,.2,.3,.5][t]||0;
+ const dr=TOUGH_DR[t]||0;
  return {taken:damage*(1-dr),reflected:damage*dr,radius:t>=3?30:t>=2?10:0,sprintDr:false};
 }
 export const TUNE_DEFAULTS={
@@ -639,16 +677,21 @@ export function outcome(s){
  if(s.settle&&s.bossDefeated)return 'won';
  return null;
 }
-export function hasteBonus(s){return s.abilities.haste>=3?1:s.abilities.haste>=1?.5:0;}
+export function hasteBonus(s){return s.abilities.haste>=3?.3:s.abilities.haste>=1?.15:0;}
+// 击杀后的 3 秒加速不再翻倍：开头只快五成（burstTime=3），随时间线性回落到平时速度。
+export const BURST_TIME=3,BURST_PEAK=.5;
+export function burstBoost(s){
+ if(!(s.burstTime>0))return 1;
+ return 1+BURST_PEAK*Math.min(1,s.burstTime/BURST_TIME);
+}
 export function speed(s,sprinting=false){
- let v=WALK_SPEED*(1+hasteBonus(s));
- if(s.burstTime>0)v*=1+s.burstTime/3;
+ let v=WALK_SPEED*(1+hasteBonus(s))*burstBoost(s);
  if(sprinting)v*=SPRINT_MULT;
  return v;
 }
 export function sprintResist(s){
- if(s.abilities.haste>=3)return .5;
- if(s.abilities.haste>=2)return .3;
+ if(s.abilities.haste>=3)return .15;
+ if(s.abilities.haste>=2)return .1;
  return 0;
 }
 export function cooldownScale(s){return [1,.85,.75,.65][s.abilities.haste];}
@@ -658,12 +701,18 @@ export function guardWanted(s){
  if(!lv)return {count:0,type:0};
  return {count:[0,2,5,10][lv],type:lv};
 }
+// 编制把活着的和正在等复活的算在一起：阵亡只是过一会儿归队，不会空出名额再招新人。
+export function guardRoster(units){return (units||[]).reduce((n,u)=>n+(u.guard?1:0),0);}
+export function guardMissing(s,units){
+ const want=guardWanted(s);
+ if(!want.count)return 0;
+ return Math.max(0,want.count-guardRoster(units));
+}
 export function stepSimulation(s,units,player,dt,mode){
  if(mode!=='playing')return;
  s.time+=dt;
  if(s.burstTime>0)s.burstTime=Math.max(0,s.burstTime-dt);
  tickInfection(s,units,player,dt);
- if(s.abilities.tough>=3)s.hp=Math.min(s.maxHp,s.hp+s.maxHp*.02*dt);
  if(s.abilities.evolve>=2)refreshStats(s);
 }
 export function hurtMother(s,damage,source='秩序火力',sprinting=false){

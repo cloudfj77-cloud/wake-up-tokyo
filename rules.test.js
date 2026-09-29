@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
+import {makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,guardRoster,guardMissing,guardWanted,PURIFY_MAX,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,promoteType,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
 import {createBoss,hitBoss,canBossBombTarget} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -10,7 +10,7 @@ test('mother survives one bullet and dies on second; tough does not raise max HP
  reward(s,makeUnit(1,2,0,0),true);
  assert.equal(s.maxHp,100);
  assert.equal(hurtMother(s,50),false);
- assert.equal(s.hp,60);
+ assert.equal(s.hp,57.5);              // 1 级减伤 15%
  assert.equal(hurtMother(s,80),true);
  assert.equal(outcome(s),'ended');
 });
@@ -53,13 +53,16 @@ test('launcher upgrades unlock piercing and three-hit shared power charge',()=>{
  assert.equal(s.weapon,LAUNCHER_SLOT);
  const lv1=launcherSpec(s);
  assert.equal(lv1.pierce,0);
- assert.equal(lv1.infection,12);
+ assert.equal(lv1.infection,8);
+ // 普通针剂只叫醒、不伤人；只有强化炮弹才带伤害。
+ assert.equal(lv1.damage,0);
  assert.equal(consumePowerCharge(s),false);
  upgrade(s,'launcher');
  const lv2=launcherSpec(s);
  assert.equal(s.abilities.launcher,2);
  assert.ok(lv2.infection>lv1.infection);
  assert.equal(lv2.pierce,2);
+ assert.equal(lv2.damage,0);
  upgrade(s,'launcher');
  assert.equal(s.abilities.launcher,3);
  assert.equal(canChargePower(s),true);
@@ -72,7 +75,8 @@ test('launcher upgrades unlock piercing and three-hit shared power charge',()=>{
  assert.equal(consumePowerCharge(s),false);
  const boom=launcherSpec(s,true);
  assert.equal(boom.strong,true);
- assert.ok(boom.infection>=40);
+ assert.ok(boom.infection>=30);
+ assert.ok(boom.damage>0);
 });
 test('allied death does not subtract cumulative infection',()=>{
  const s=makeState(),u=makeUnit(1,0,0,0);
@@ -95,9 +99,26 @@ test('card selection pauses time, corpse expiration and infection growth',()=>{
 });
 test('purifier drains infection and reverses after conversion',()=>{
  const s=makeState(),p=makeUnit(1,4,1,0),u=makeUnit(2,3,0,0);u.infection=80;
- tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,76);
+ tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,78);
  hit(s,p,340,0);assert.equal(p.converted,true);
- tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,80);
+ // 同化后的净化工兵反过来帮玩家扩散，速率仍是原来的 4/秒，不跟着一起削弱。
+ tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,82);
+});
+test('purifiers never stack: a squad only purifies as fast as one of them',()=>{
+ const s=makeState();s.abilities.air=3;
+ const target=makeUnit(1,5,0,0);target.infection=100;
+ const squad=Array.from({length:6},(_,i)=>makeUnit(10+i,4,.5,0));
+ // 空气 3 级 +12/秒。六个净化工兵原本清 24/秒会把进度倒扣，现在只按一个算。
+ tickInfection(s,[target,...squad],{x:0,z:0},1);
+ assert.equal(target.purified,PURIFY_MAX);
+ assert.equal(target.purified,2,'围六个也只清 2/秒');
+ assert.equal(target.infection,100+12-PURIFY_MAX);
+ assert.ok(target.infection>100,'感染仍在推进，不再被净化锁死');
+ // 一个和六个的净化完全一样，多出来的净化兵不再有影响。
+ const one=makeUnit(20,5,0,0);one.infection=100;
+ tickInfection(s,[one,makeUnit(21,4,.5,0)],{x:0,z:0},1);
+ assert.equal(one.purified,target.purified);
+ assert.equal(one.infection,target.infection);
 });
 test('berserkers can infect and attack civilians as well as order units',()=>{
  const worker=makeUnit(1,0,0,0);worker.atk=10;
@@ -230,17 +251,35 @@ test('tune console can move alert gates without infection',()=>{
  try{setTuneValue('alert.stage2At',80);assert.equal(threat(s),1);setTuneValue('alert.stage2At',10);assert.equal(threat(s),2);}
  finally{resetTune();}
 });
-test('sprint multiplies walk speed; haste adds fifty then one hundred',()=>{
+test('sprint multiplies walk speed; haste adds fifteen then thirty',()=>{
  const s=makeState();assert.equal(speed(s),WALK_SPEED);assert.equal(speed(s,true),WALK_SPEED*SPRINT_MULT);
- s.pending=3;upgrade(s,'haste');assert.equal(speed(s),WALK_SPEED*1.5);
- upgrade(s,'haste');upgrade(s,'haste');assert.equal(speed(s),WALK_SPEED*2);
+ s.pending=3;upgrade(s,'haste');assert.equal(speed(s),WALK_SPEED*1.15);
+ upgrade(s,'haste');upgrade(s,'haste');assert.equal(speed(s),WALK_SPEED*1.3);
 });
-test('frenzy raises max HP and army only helps at level 3',()=>{
+test('kill burst starts at half speed again and eases back instead of doubling',()=>{
+ const s=makeState();s.pending=3;upgrade(s,'haste');upgrade(s,'haste');
+ const base=speed(s);
+ s.burstTime=3;assert.equal(speed(s),base*1.5);
+ s.burstTime=1.5;assert.ok(Math.abs(speed(s)-base*1.25)<1e-9);
+ s.burstTime=0;assert.equal(speed(s),base);
+});
+test('tough no longer regenerates and damage reduction was lowered',()=>{
+ const s=makeState();s.pending=3;for(let i=0;i<3;i++)upgrade(s,'tough');
+ s.hp=80;
+ stepSimulation(s,[],{x:0,z:0},1,'playing');
+ assert.equal(s.hp,80);                // 3 级不再每 0.5 秒回血
+ hurtMother(s,100);
+ assert.equal(s.hp,15);                // 减伤 35%：100 伤害只吃 65
+});
+test('frenzy raises max HP; army kills need two before granting one',()=>{
  const s=makeState();s.pending=3;upgrade(s,'frenzy');
  const u=makeUnit(1,1,0,0);hit(s,u,0,999);
  assert.equal(s.frenzyHp,1);assert.equal(s.maxHp,101);
- s.abilities.frenzy=3;const a=makeUnit(2,1,0,0);a.fromArmy=true;reward(s,a,false);
- assert.ok(s.frenzyHp>=2);
+ s.abilities.frenzy=3;
+ const a=makeUnit(2,1,0,0);a.fromArmy=true;reward(s,a,false);
+ assert.equal(s.frenzyHp,1);assert.equal(s.armyFrenzy,1);
+ const b=makeUnit(3,1,0,0);b.fromArmy=true;reward(s,b,false);
+ assert.equal(s.frenzyHp,2);assert.equal(s.armyFrenzy,0);
 });
 test('killing level 2+ units restocks pistol and shotgun ammo',()=>{
  const s=makeState();s.pending=1;upgrade(s,'guns');
@@ -325,6 +364,32 @@ test('guards stay inside 20m of the player while ordinary allies are not leashed
  assert.equal(far.z,0);
  const diagonal=guardMoveTarget(player,30,40);
  assert.ok(Math.hypot(diagonal.x,diagonal.z)<=20.001);
+});
+test('command roster counts guards that are waiting to return, so nobody extra is recruited',()=>{
+ const s=makeState();
+ assert.deepEqual(guardWanted(s),{count:0,type:0});
+ assert.equal(guardMissing(s,[]),0);
+ s.abilities.command=1;assert.equal(guardWanted(s).count,2);
+ s.abilities.command=2;assert.equal(guardWanted(s).count,5);
+ s.abilities.command=3;assert.equal(guardWanted(s).count,10);
+ s.abilities.command=2;
+ const roster=[];
+ for(let i=0;i<5;i++){const g=makeUnit(100+i,1,i,0,false,0);g.guard=true;g.kind='ally';roster.push(g);}
+ assert.equal(guardRoster(roster),5);
+ assert.equal(guardMissing(s,roster),0);
+ // 阵亡的护卫仍然占编制：它只是过一会儿归队，不会空出名额再招一个新人。
+ roster[0].dead=true;roster[0].kind='fallen';roster[0].guardCd=12;
+ assert.equal(guardRoster(roster),5);
+ assert.equal(guardMissing(s,roster),0);
+ // 编制里混进的普通同化者不算数，不该顶掉护卫名额。
+ const ally=makeUnit(200,1,0,0,false,0);ally.kind='ally';
+ assert.equal(guardMissing(s,[...roster,ally]),0);
+ // 从 2 级升到 3 级时才补人，且只补到 10 名为止。
+ s.abilities.command=3;
+ assert.equal(guardMissing(s,roster),5);
+ const big=[];
+ for(let i=0;i<12;i++){const g=makeUnit(300+i,1,i,0,false,0);g.guard=true;g.kind='ally';big.push(g);}
+ assert.equal(guardMissing(s,big),0);
 });
 test('guns and syringe take hotkeys in the order they were picked',()=>{
  const launcherFirst=makeState();launcherFirst.pending=2;
@@ -466,4 +531,61 @@ test('ability order ignores unowned history and fills missing legacy history wit
  delete s.history;
  assert.deepEqual(ownedAbilities(s).map(a=>a.id),['air','guns','haste']);
  assert.deepEqual(ownedAbilities(makeState()),[]);
+});
+test('evolve 3 promotes newly converted units one tier up instead of only padding HP',()=>{
+ const s=makeState();s.pending=3;for(let i=0;i<3;i++)upgrade(s,'evolve');
+ assert.equal(ENEMIES[promoteType(0)].level,2);
+ assert.equal(ENEMIES[promoteType(1)].level,3);
+ assert.equal(ENEMIES[promoteType(3)].level,4);
+ assert.equal(promoteType(4),4,'top-tier units have nothing above them, so they keep their type');
+ const u=makeUnit(9,0,0,0);u.infection=u.threshold;
+ convert(s,u);
+ assert.equal(u.promoted,true);
+ assert.equal(ENEMIES[u.type].level,2);
+ assert.equal(u.threshold,ENEMIES[u.type].threshold);
+ assert.equal(u.maxHp,allyTemplate(u.type).hp);
+ // 本来就是 4 级的单位没有更高形态，退回旧的血量乘数，别把它变成负收益。
+ const top=makeUnit(10,4,0,0);top.infection=top.threshold;
+ convert(s,top);
+ assert.equal(top.promoted,false);
+ assert.equal(top.type,4);
+ assert.equal(top.rankBoost,true);
+ assert.ok(top.maxHp>allyTemplate(4).hp,'the fallback boost still lands on the ally template HP');
+});
+test('hammer brute is a slow high-HP melee bruiser with long windup and area damage',()=>{
+ const spec=ENEMIES[7];
+ assert.equal(spec.level,4);
+ assert.ok(spec.slam?.radius>0,'damage lands in a radius around itself');
+ assert.ok(spec.hp>ENEMIES[4].hp&&spec.hp>ENEMIES[5].hp);
+ assert.ok(spec.threshold>ENEMIES[4].threshold,'needs far more infection than other tier-4 troops');
+ assert.ok(spec.aim>ENEMIES[3].aim,'windup is longer than the shielded riot police');
+ assert.ok(spec.speed<ENEMIES[4].speed);
+ assert.equal(isRangedEnemy(spec),false,'it stays a melee unit despite the wide swing');
+ assert.ok(spec.allyHp>0&&spec.allyAtk>0);
+});
+
+
+test('evolve promotion preserves the original enemy XP, ammunition and recap',()=>{
+ for(const type of [0,6,4]){
+  const states=[0,3].map(evolve=>{
+   const s=makeState();s.abilities.evolve=evolve;s.abilities.guns=3;
+   const u=makeUnit(99,type,0,0,type===0);
+   assert.equal(hit(s,u,u.threshold,0),'converted');
+   if(type!==4)assert.equal(ENEMIES[u.type].level,ENEMIES[type].level+(evolve===3?1:0));
+   return s;
+  });
+  const [normal,evolved]=states;
+  for(const key of ['xpEarned','highestEnemy','purifiers','cityInfected','infected'])assert.equal(evolved[key],normal[key],key);
+  assert.deepEqual(evolved.ammo,normal.ammo);
+  assert.deepEqual(evolved.first,normal.first);
+ }
+});
+test('promoting a previously rewarded corpse adds no second XP or higher-tier ammunition',()=>{
+ const s=makeState();s.abilities.evolve=3;s.abilities.guns=3;
+ const u=makeUnit(99,0,0,0);
+ hit(s,u,0,u.hp);assert.equal(s.xpEarned,1);
+ assert.equal(convert(s,u),true);assert.equal(s.xpEarned,1);
+ assert.deepEqual(s.ammo,{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0});
+ assert.equal(s.first.name,ENEMIES[0].name);assert.equal(s.highestEnemy,1);
+ assert.equal(convert(s,u),false);assert.equal(s.infected,1);
 });

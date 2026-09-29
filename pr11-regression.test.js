@@ -10,7 +10,7 @@ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
 function section(start,end){return source.slice(source.indexOf(start),source.indexOf(end,source.indexOf(start))).replaceAll('import.meta.env.DEV','false');}
 function context(extra={}){
  const elements=new Map();
- const ctx=vm.createContext({...rules,state:rules.makeState(),mode:'playing',assets:{},units:[],player:{x:0,z:0},yaw:0,pitch:0,cameraDistance:3,attackCd:0,breakCd:0,rushCd:0,reinforceTimer:0,reinforceDirection:0,totalReinforcements:0,alerted:true,reinforceAnnounced:false,spawnQueue:rules.makeSpawnQueue(),boss:{active:false,root:{}},world:{towers:[],destructibles:[],bossSpawn:{x:30,z:0},spawnWeakenSites(){}},toast(){},bossVictoryHold:0,policeAlertTimer:0,music:{pause(){}},document:{body:{classList:{toggle(){}}}},$:id=>{if(!elements.has(id))elements.set(id,{classList:{remove(){}}});return elements.get(id);},formatTime:t=>String(t),localStorage:{setItem(_key,value){ctx.saved=JSON.parse(value);},removeItem(){}},SAVE_KEY:'test',SAVE_VERSION:10,showDialog:html=>{ctx.dialog=html;},...extra});
+ const ctx=vm.createContext({...rules,state:rules.makeState(),mode:'playing',assets:{},units:[],player:{x:0,z:0},yaw:0,pitch:0,cameraDistance:3,attackCd:0,breakCd:0,rushCd:0,reinforceTimer:0,reinforceDirection:0,totalReinforcements:0,alerted:true,reinforceAnnounced:false,spawnQueue:rules.makeSpawnQueue(),boss:{active:false,root:{}},world:{towers:[],destructibles:[],bossSpawn:{x:30,z:0},spawnWeakenSites(){}},toast(){},bossVictoryHold:0,policeAlertTimer:0,music:{pause(){},setBed(){},stopBed(){}},document:{body:{classList:{toggle(){}}}},$:id=>{if(!elements.has(id))elements.set(id,{classList:{remove(){}}});return elements.get(id);},formatTime:t=>String(t),localStorage:{setItem(_key,value){ctx.saved=JSON.parse(value);},removeItem(){}},SAVE_KEY:'test',SAVE_VERSION:10,showDialog:html=>{ctx.dialog=html;},...extra});
  return ctx;
 }
 test('resuming the checkpoint written at Boss entry summons the Boss again',()=>{
@@ -70,7 +70,7 @@ for(const type of [0,1])test(type===0?'civilian conversion clears the old aura b
  const assets=prepareCharacterAsset(gltf),original=acquireCharacterVisual(assets,type===0?'human':'guard');
  const unit=rules.makeUnit(1,type,0,0);unit.converted=true;unit.kind='ally';
  const activeAuras=[],visuals=new Map([[1,{v:original,oldKind:type===0?'human':'guard'}]]);
- const ctx=context({assets,units:[unit],visuals,activeAuras,scene:new T.Scene(),auraVisuals:new Map(),world:{heightAt:()=>0},syncActorPresence(){},actorViewLimit:()=>22,actorInFront:()=>true,AURA_COLORS:{worker:{},guard:{}},makeAura(holder){const aura={g:new T.Group(),life:0};holder.add(aura.g);activeAuras.push(aura);return aura;},acquireCharacterVisual,releaseCharacterVisual,setCharacterKind,burst(){},music:{effect(){}},aura(){}});
+ const ctx=context({assets,units:[unit],visuals,activeAuras,scene:new T.Scene(),auraVisuals:new Map(),world:{heightAt:()=>0},syncActorPresence(){},actorViewLimit:()=>22,actorInFront:()=>true,AURA_COLORS:{worker:{},guard:{}},makeAura(holder){const aura={g:new T.Group(),life:0};holder.add(aura.g);activeAuras.push(aura);return aura;},acquireCharacterVisual,releaseCharacterVisual,setCharacterKind,burst(){},music:{effect(){},setBed(){}},aura(){}});
  vm.runInContext(section('function removeAura(','function updateAuras(')+section('function updateVisuals(','function updateEffects('),ctx);
  vm.runInContext('updateVisuals(.016);updateVisuals(.016)',ctx);
  const current=visuals.get(1).v;
@@ -86,4 +86,30 @@ for(const type of [0,1])test(type===0?'civilian conversion clears the old aura b
  }else assert.equal(current,original);
  vm.runInContext('removeAura(visuals.get(1).v.aura);visuals.get(1).v.aura=null',ctx);
  releaseCharacterVisual(current);clearCharacterPool();
+});
+
+
+for(const [type,corpse] of [[0,false],[0,true],[1,true]])test(`evolve 3 synchronizes type ${type} ${corpse?'corpse':'living'} visuals and rebuilds upright`,async()=>{
+ clearCharacterPool();
+ const buffer=readFileSync(new URL('./assets/character.glb',import.meta.url));
+ const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
+ const assets=prepareCharacterAsset(gltf),original=acquireCharacterVisual(assets,type===0?'human':'guard');
+ const unit=rules.makeUnit(1,type,0,0),state=rules.makeState();state.abilities.evolve=3;
+ if(corpse){unit.kind='corpse';unit.hp=0;unit.rewarded=true;original.holder.rotation.x=Math.PI/2;}
+ const oldKind=unit.kind;
+ rules.convert(state,unit);
+ const activeAuras=[],visuals=new Map([[1,{v:original,oldKind}]]);
+ const ctx=context({state,assets,units:[unit],visuals,activeAuras,scene:new T.Scene(),auraVisuals:new Map(),world:{heightAt:()=>0},syncActorPresence(){},actorViewLimit:()=>22,actorInFront:()=>true,AURA_COLORS:{worker:{},guard:{}},makeAura(holder){const a={g:new T.Group(),life:0};holder.add(a.g);activeAuras.push(a);return a;},acquireCharacterVisual,releaseCharacterVisual,setCharacterKind,burst(){},aura(){}});
+ vm.runInContext(section('function removeAura(','function updateAuras(')+section('function actorVisual(','function acquireUnitRecord(')+section('function updateVisuals(','function updateEffects('),ctx);
+ vm.runInContext('updateVisuals(.016);updateVisuals(.016)',ctx);
+ const current=visuals.get(1).v;
+ assert.equal(current.poolKey,'guard');assert.equal(current.kind,'ally');
+ assert.equal(current.holder.rotation.x,0);assert.equal(activeAuras.length,1);
+ if(type===0)assert.notEqual(current,original);
+ vm.runInContext('removeAura(visuals.get(1).v.aura);visuals.get(1).v.aura=null',ctx);
+ releaseCharacterVisual(current);visuals.clear();
+ vm.runInContext('actorVisual(units[0])',ctx);
+ const rebuilt=visuals.get(1).v;
+ assert.equal(rebuilt.poolKey,'guard');assert.equal(rebuilt.kind,'ally');assert.equal(rebuilt.holder.rotation.x,0);
+ releaseCharacterVisual(rebuilt);clearCharacterPool();
 });
