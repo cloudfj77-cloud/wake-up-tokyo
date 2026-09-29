@@ -123,3 +123,56 @@ body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8p
 .stats>div:nth-child(3) strong{font-size:20px;line-height:1.5;letter-spacing:-.6px;white-space:nowrap}
 .recap{max-height:230px;overflow:auto;text-align:left;overscroll-behavior:contain;scrollbar-color:#a865d2 #21142e}
 @media(max-height:740px){.stats{margin:17px 0}.recap{max-height:170px}}
+
+/* 战斗 HUD：地图、任务和操作都贴边；准星使用同一个几何中心。 */
+.mapPanel{width:clamp(216px,19vw,256px);padding:12px;transform:none;border-radius:18px}
+.mapPanel .eyebrow{font-size:10px}.mapPanel canvas{width:100%;height:auto;aspect-ratio:5/4;border-radius:10px;image-rendering:auto}
+.mapLegend{display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:9px;font-size:10px;line-height:1.5;color:#e0d7e9}
+.mapLegend span{display:flex;align-items:center;gap:5px}.mapLegend i{width:6px;height:6px;border-radius:2px;background:#ffe34f}.mapLegend .ally{background:#cb89ff}.mapLegend .enemy{background:#f58376}
+.hudTools{position:absolute;top:22px;right:72px;display:flex;gap:7px;pointer-events:auto}
+.hudTools button{border:1px solid #fff5;border-radius:9px;background:#21172fee;color:#eee6f5;padding:7px 10px;font-size:11px;font-weight:700}
+.hudTools button:hover{background:#543567}.weaponHeading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:15px;padding-top:12px;border-top:1px solid #fff3}
+.weaponHeading>b{font-size:13px;color:var(--paper)}.weaponHeading>small{font-size:9px;color:#c7b4d7}
+.objectivePanel{width:258px}.objectivePanel>small{display:block;font-size:11px;line-height:1.7}
+#objectiveSteps{gap:8px;margin-top:12px}#objectiveSteps:empty,#objectiveDistance:empty{display:none}
+#objectiveSteps span{align-items:flex-start;gap:8px;line-height:1.5;text-decoration:none}#objectiveSteps span i{flex-shrink:0;margin-top:5px}
+#objectiveSteps span strong{font-size:11px;line-height:1.4;margin:0 0 2px;color:#f4edf8}#objectiveSteps span small{display:block;font-size:10px;color:#c1b0d0;line-height:1.5}
+#objectiveSteps span.done{opacity:.58}#objectiveSteps span.done strong{color:#d2ff83}
+#ammo{margin-top:6px;padding-top:0;border:0;gap:3px 6px}#ammo span{font-size:10px}.reloading{grid-column:1/-1}
+#clock{font-family:inherit;font-size:11px;font-weight:600;color:#c1b0d0;letter-spacing:.5px}
+.alertPanel{width:250px;padding:10px 14px;transform:translateX(-50%);border-radius:18px}
+.alertReading{display:flex;align-items:baseline;gap:10px;margin-top:5px}.alertReading>b{font-size:30px;font-weight:1000;line-height:1;color:var(--paper);font-variant-numeric:tabular-nums}.alertReading>span{font-size:12px;font-weight:800;color:#dbc3ec}
+#alertLevels{margin-top:8px}#alertLevels b.on{background:#ff6976;color:#260e1c}#reinforcement{font-size:9px;color:#c9b6d9;margin-top:5px}
+#runCountdown{top:146px;padding:7px 12px;display:flex;align-items:center;gap:10px;border-width:2px;border-radius:10px;transform:translateX(-50%)}
+#runCountdown small{font-size:10px;letter-spacing:1px}#runCountdown b{font-size:24px;text-shadow:none;letter-spacing:0}
+#toast{top:148px;padding:8px 14px;font-size:11px}#hud.countingDown #toast{top:200px}
+#alertVignette{position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at center,transparent 38%,#e10e2640 67%,#fc143acf 100%);box-shadow:inset 0 0 80px #db123c88;border:3px solid #ff476e88;will-change:opacity}
+.playerPanel,.xpPanel,.alertPanel,.mapPanel,.objectivePanel,.hudTools{z-index:2}
+#crosshair{width:96px;height:96px;left:50%;top:50%;transform:translate(-50%,-50%);border:0;border-radius:0;background:none;box-shadow:none;color:var(--paper);pointer-events:none;z-index:3}
+#crosshair:after{content:none}#crosshair.locked{border:0;box-shadow:none;color:var(--lime)}
+#crosshair .aimRing,#crosshair .aimDot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%}
+#crosshair .aimRing{width:17px;height:17px;border:2px solid currentColor;box-shadow:0 0 0 1px #160d2488}
+#crosshair .aimDot{width:3px;height:3px;background:currentColor;box-shadow:0 0 2px #100b18}
+#chargeRings{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:rotate(-90deg);filter:drop-shadow(0 1px 2px #100818)}
+#chargeRings circle{fill:none;stroke-width:3;stroke-linecap:round}.chargeTrack circle{stroke:#f0dfff30}.chargeFill circle{stroke:var(--purple);stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .25s ease,stroke .2s}
+.chargeFill circle.filled{stroke-dashoffset:0}#crosshair.ready .chargeFill circle{stroke:var(--lime)}#crosshair.ready .aimRing{border-color:var(--lime);box-shadow:0 0 12px #d1ff3f66}
+#crosshair.ready #chargeRings{animation:ui-charge-ready 1.8s ease-in-out infinite alternate}
+#chargeStatus{position:absolute;left:50%;top:calc(100% + 2px);transform:translateX(-50%);white-space:nowrap;font-size:9px;font-weight:700;letter-spacing:1px;color:#f3deff;text-shadow:0 1px 3px #000}
+#crosshair.ready #chargeStatus{padding:4px 8px;border-radius:5px;background:var(--lime);color:var(--ui-black);text-shadow:none;font-size:10px}
+.hitMark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:20px/1 sans-serif;color:var(--paper);opacity:0}
+#crosshair.hit{animation:none;background:none;box-shadow:none}#crosshair.hit .hitMark{animation:ui-aim-hit .18s ease-out}
+#crosshair.discharged #chargeRings{animation:ui-charge-release .4s ease-out}
+#targetHint{top:calc(50% + 16px);font-size:10px}#hud.charging #targetHint{top:calc(50% + 78px)}
+#reloadIndicator{top:calc(50% + 42px);width:118px;font-size:10px;border-radius:8px}#hud.charging #reloadIndicator{top:calc(50% + 100px)}
+#infectionFeedback{top:auto;left:auto;right:18px;bottom:460px;transform:none;padding:8px 11px;text-align:right;background:#22172bdc;border-width:1px;border-radius:10px;box-shadow:none}
+#infectionFeedback>span,#infectionFeedback>small{display:none}#infectionFeedback>b{font-size:12px;letter-spacing:.5px;font-weight:700}
+.choiceSlot.rerolled .card{animation:ui-card-reroll .32s var(--snap) both;animation-delay:0s}
+@keyframes ui-card-reroll{0%{opacity:.35;scale:.94;translate:0 8px}100%{opacity:1;scale:1;translate:0 0}}
+@keyframes ui-charge-ready{from{opacity:.72}to{opacity:1;filter:drop-shadow(0 0 5px #d1ff3f90)}}
+@keyframes ui-charge-release{0%{opacity:1;scale:1}100%{opacity:0;scale:1.45}}
+@keyframes ui-aim-hit{0%{opacity:1;scale:1.25}100%{opacity:0;scale:1}}
+@media(max-height:740px){.mapPanel{width:212px}.mapPanel canvas{width:100%;height:auto}.mapLegend{display:flex;font-size:9px;gap:6px}.objectivePanel{padding:12px;width:242px}#infectionFeedback{bottom:410px}.xpPanel{top:178px}}
+@media(max-width:1000px){.mapPanel{width:208px}.objectivePanel{width:232px}.hudTools button{font-size:10px;padding:7px}.alertPanel{width:208px}}
+@media(max-width:760px){.mapPanel{width:180px;padding:10px}.mapPanel canvas{width:100%;height:auto}.mapPanel .eyebrow{font-size:9px}.mapLegend{font-size:9px}.objectivePanel{width:200px}.weaponHeading{display:block}.weaponHeading>small{display:block;margin-top:4px}.hudTools{top:66px;right:10px}.alertPanel{left:auto;right:65px;transform:none;width:178px}.alertReading>b{font-size:24px}.alertReading>span{font-size:10px}#runCountdown{top:142px;left:auto;right:65px;transform:none}#toast{top:200px}#infectionFeedback{bottom:auto;top:245px}}
+@media(max-height:560px){.mapPanel{width:178px;padding:9px}.mapLegend{gap:5px;font-size:8px}.objectivePanel{max-height:calc(100vh - 85px);overflow:auto}#infectionFeedback{display:none}}
+@media(prefers-reduced-motion:reduce){.choiceSlot.rerolled .card,#crosshair.ready #chargeRings,#crosshair.discharged #chargeRings,#crosshair.hit .hitMark{animation:none!important}#chargeRings circle{transition:none}}
