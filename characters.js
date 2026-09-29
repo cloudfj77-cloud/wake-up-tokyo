@@ -175,6 +175,8 @@ function switchAnimation(visual, name, fade = .18) {
 }
 
 export function playCharacterAttack(visual, type, duration = .65) {
+  // 空中攻击仍由战斗逻辑结算，避免后坐力反复重置跳跃动作。
+  if (visual.airborne) return;
   // 翻滚分徒手和持枪两套：徒手是 Stand To Roll，端着枪是 Running Dive Roll。
   const name = type === 'shoot' ? 'toyRecoil' : type === 'break' ? 'heavyPunch'
     : type === 'rush' ? (visual.holdingGun ? 'diveRoll' : 'roll') : 'flurry';
@@ -193,13 +195,22 @@ export function playCharacterAttack(visual, type, duration = .65) {
   else switchAnimation(visual, name, .07);
 }
 
+export function playCharacterJump(visual, duration = 7 / 9) {
+  const action = resolveAction(visual, 'jump');
+  if (!action) return;
+  visual.attackTime = 0;
+  action.setLoop(THREE.LoopOnce, 1);
+  action.clampWhenFinished = true;
+  action.setEffectiveTimeScale(action.getClip().duration / duration);
+  if (visual.current === action) action.reset().setEffectiveWeight(1).play();
+  else switchAnimation(visual, 'jump', .07);
+}
+
 export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false) {
   if (visual.attackTime > 0) visual.attackTime -= dt;
   if (visual.airborne) {
-    // 腾空时固定播 Jump，落地后自然切回走路或站立。
-    const jump = resolveAction(visual, 'jump');
-    if (jump) jump.setEffectiveTimeScale(1);
-    switchAnimation(visual, 'jump', .1);
+    visual.attackTime = 0;
+    if (visual.current !== resolveAction(visual, 'jump')) playCharacterJump(visual);
   } else if (visual.attackTime <= 0) {
     // 端着枪移动用 Strafing，徒手移动用跑步（Fast Run），未感染的打工人走蹒跚步。
     const name = moving
@@ -237,6 +248,7 @@ function parkPooledVisual(visual){
  visual.holder.position.set(0,-120,0);
  visual.holder.rotation.set(0,0,0);
  visual.holdingGun=false;
+ visual.airborne=false;
  visual.attackTime=0;
  visual.accumulated=0;
  visual.mixer.stopAllAction();

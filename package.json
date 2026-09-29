@@ -1,11 +1,11 @@
 {
   "name": "wake-up-tokyo",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5200 --strictPort",
     "build": "vite build",
-    "test": "node --test rules.test.js characters.test.js terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js"
+    "test": "node --test rules.test.js characters.test.js terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js"
   },
   "dependencies": {
     "three": "^0.180.0",

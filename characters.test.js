@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {Box3} from 'three';
-import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,updateCharacterVisual,characterHeight,acquireCharacterVisual,releaseCharacterVisual,clearCharacterPool,characterPoolSize} from './characters.js';
+import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,playCharacterJump,updateCharacterVisual,characterHeight,acquireCharacterVisual,releaseCharacterVisual,clearCharacterPool,characterPoolSize} from './characters.js';
 const buffer=await readFile(new URL('./assets/character.glb',import.meta.url));
 const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
 const asset=prepareCharacterAsset(gltf);
@@ -63,4 +63,25 @@ test('character visual pool reuses the same skeleton instead of cloning again',(
   assert.equal(b.meshes[0].skeleton.bones[0],skeleton);
   assert.equal(characterPoolSize('guard'),0);
   clearCharacterPool();
+});
+
+
+test('roll can blend directly to jump, then to a landing roll without a frozen pose',()=>{
+ const a=createCharacterVisual(asset,'player');
+ playCharacterAttack(a,'rush',.72);updateCharacterVisual(a,true,.2);
+ a.airborne=true;playCharacterJump(a,.78);updateCharacterVisual(a,true,.1);
+ assert.equal(a.current.getClip().name,'jump');assert.equal(a.attackTime,0);
+ assert.equal(a.current.paused,false);assert.ok(a.current.time>0);
+ a.airborne=false;playCharacterAttack(a,'rush',.72);
+ assert.equal(a.current.time,0);assert.equal(a.current.paused,false);
+ assert.equal(a.attackTime,.72);
+ updateCharacterVisual(a,true,.73);assert.equal(a.current.getClip().name,'walk');
+});
+test('airborne attacks do not reset jump playback and landing resumes movement',()=>{
+ const a=createCharacterVisual(asset,'player');a.airborne=true;playCharacterJump(a,.78);
+ updateCharacterVisual(a,true,.2);const before=a.current.time;
+ playCharacterAttack(a,'shoot');updateCharacterVisual(a,true,.1);
+ assert.equal(a.current.getClip().name,'jump');assert.ok(a.current.time>before);assert.equal(a.attackTime,0);
+ a.airborne=false;updateCharacterVisual(a,true,.016);
+ assert.equal(a.current.getClip().name,'walk');assert.equal(a.current.paused,false);
 });

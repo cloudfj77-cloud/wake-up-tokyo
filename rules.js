@@ -38,7 +38,7 @@ export const ABILITIES=[
  {id:'launcher',name:'可感染发射器',icon:'◎',group:'武器系',descriptions:[
   '解锁感染针。命中造成感染，适合叫醒路人。键位按点出顺序排。',
   '针剂感染与伤害提高，并可穿透多名敌人。',
-  '连续释放 6 次后，下一次打出强化炮弹。'
+  '解锁三环充能：枪械与注射器共用，命中三次后下一发强化炮弹。'
  ]},
  {id:'frenzy',name:'狂杀',icon:'⚔',group:'母体系',descriptions:[
   '每次击杀或同化 +1 生命与等量上限。',
@@ -88,12 +88,22 @@ export function makeState(){
   abilities:{air:0,guns:0,launcher:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
   history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
-  clip:0,clipMax:0,weapon:-1,gunId:null,launcherCharge:0,weaponOrder:[],
+  clip:0,clipMax:0,weapon:-1,gunId:null,powerCharge:0,weaponOrder:[],
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
   frenzyHp:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
   // 警戒吃累计经验 xpEarned，不吃等级。Boss 倒计时、召唤和余韵都记在这里，避免和拆中枢进度绑在一起。
   alertTime:0,bossCountdown:null,bossSpawned:false,aftermath:false,settle:false
  };
+}
+// 首次获得决定位置；升级只改等级。缺少历史的旧存档把剩余已拥有能力补在末尾。
+export function ownedAbilities(s){
+ const owned=new Map(ABILITIES.filter(a=>s.abilities[a.id]>0).map(a=>[a.id,a]));
+ const ordered=[];
+ for(const entry of s.history||[]){
+  const ability=owned.get(entry.id);
+  if(ability){ordered.push(ability);owned.delete(entry.id);}
+ }
+ return [...ordered,...owned.values()];
 }
 export function availableAbilities(s){return ABILITIES.filter(a=>s.abilities[a.id]<3);}
 export function choices(s,random=Math.random){return availableAbilities(s).map(a=>({a,r:random()})).sort((a,b)=>a.r-b.r).slice(0,3).map(v=>v.a);}
@@ -169,7 +179,7 @@ export function grantKillAmmo(s,enemyLevel){
 }
 export function gunInfection(s,damage){return s.abilities.guns>=3?damage*.5:0;}
 export function hasLauncher(s){return (s.abilities.launcher||0)>=1;}
-// 发射器数值：1 级感染针，2 级加伤并穿透，3 级保留穿透、额外走 6 次充能。
+// 发射器数值：1 级感染针，2 级加伤并穿透，3 级保留穿透，解锁枪械与注射器共用的三次命中充能。
 export function launcherSpec(s,empowered=false){
  const lv=s.abilities.launcher||0;
  if(lv<1)return null;
@@ -180,13 +190,20 @@ export function launcherSpec(s,empowered=false){
  if(empowered)return {...base,infection:45,damage:12,speed:14,pierce:4,splash:6,life:4,strong:true,color:0xe4adff};
  return {...base,splash:0,strong:false};
 }
-// 只有 3 级才计次。前 6 发普通针，第 7 发强化炮弹并清零。
-export function consumeLauncherCharge(s){
- if((s.abilities.launcher||0)<3)return false;
- s.launcherCharge=s.launcherCharge||0;
- if(s.launcherCharge>=6){s.launcherCharge=0;return true;}
- s.launcherCharge++;
- return false;
+export const POWER_HITS=3;
+export function canChargePower(s){return (s.abilities.launcher||0)>=3;}
+// 每次扣扳机共用一个 shot；霰弹、多目标穿透只积一环。空枪和强化炮不充能。
+export function recordPowerHit(s,shot){
+ if(!shot?.eligible||shot.counted||shot.empowered)return false;
+ shot.counted=true;
+ if(!canChargePower(s)||s.powerCharge>=POWER_HITS)return false;
+ s.powerCharge=Math.min(POWER_HITS,(s.powerCharge||0)+1);
+ return true;
+}
+export function consumePowerCharge(s){
+ if(!canChargePower(s)||(s.powerCharge||0)<POWER_HITS)return false;
+ s.powerCharge=0;
+ return true;
 }
 export function upgrade(s,id){
  if(!ABILITIES.some(a=>a.id===id)||s.abilities[id]>=3||s.pending<=0)return false;

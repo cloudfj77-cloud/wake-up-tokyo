@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumeLauncherCharge,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
+import {makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
 import {createBoss,hitBoss,canBossBombTarget} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -41,7 +41,7 @@ test('guns level 3 convert infection is half weapon damage',()=>{
  assert.equal(u.infection,16);
  assert.equal(hit(s,u,8,16),'converted');
 });
-test('launcher is chosen like other skills; level 2 pierces; level 3 empowers after six casts',()=>{
+test('launcher upgrades unlock piercing and three-hit shared power charge',()=>{
  const s=makeState();
  assert.equal(s.abilities.launcher,0);
  assert.equal(s.weapon,-1);
@@ -54,7 +54,7 @@ test('launcher is chosen like other skills; level 2 pierces; level 3 empowers af
  const lv1=launcherSpec(s);
  assert.equal(lv1.pierce,0);
  assert.equal(lv1.infection,12);
- assert.equal(consumeLauncherCharge(s),false);
+ assert.equal(consumePowerCharge(s),false);
  upgrade(s,'launcher');
  const lv2=launcherSpec(s);
  assert.equal(s.abilities.launcher,2);
@@ -62,10 +62,14 @@ test('launcher is chosen like other skills; level 2 pierces; level 3 empowers af
  assert.equal(lv2.pierce,2);
  upgrade(s,'launcher');
  assert.equal(s.abilities.launcher,3);
- let empowered=0;
- for(let i=0;i<7;i++)if(consumeLauncherCharge(s))empowered++;
- assert.equal(empowered,1);
- assert.equal(s.launcherCharge,0);
+ assert.equal(canChargePower(s),true);
+ for(let i=0;i<POWER_HITS;i++){
+  assert.equal(consumePowerCharge(s),false,'firing alone never fills a ring');
+  assert.equal(recordPowerHit(s,{eligible:true}),true);
+ }
+ assert.equal(consumePowerCharge(s),true);
+ assert.equal(s.powerCharge,0);
+ assert.equal(consumePowerCharge(s),false);
  const boom=launcherSpec(s,true);
  assert.equal(boom.strong,true);
  assert.ok(boom.infection>=40);
@@ -426,4 +430,40 @@ test('resetUnit clears combat leftovers so pooled records can be reused',()=>{
  assert.equal(u.aiming,false);
  assert.equal(u.guard,false);
  assert.equal(u.atk,undefined);
+});
+
+test('one trigger press gives at most one ring across pellets, piercing and late impacts',()=>{
+ const s=makeState();s.abilities.launcher=3;
+ const shot={eligible:true};
+ for(let i=0;i<6;i++)recordPowerHit(s,shot);
+ assert.equal(s.powerCharge,1);
+ recordPowerHit(s,{eligible:true});recordPowerHit(s,{eligible:true});
+ const lateShot={eligible:true};recordPowerHit(s,lateShot);
+ assert.equal(s.powerCharge,3);
+ assert.equal(consumePowerCharge(s),true);
+ assert.equal(recordPowerHit(s,lateShot),false,'a shot already hitting at full charge cannot refill after discharge');
+ assert.equal(recordPowerHit(s,{eligible:true,empowered:true}),false);
+ assert.equal(recordPowerHit(s,undefined),false,'army, melee and environmental effects do not charge');
+ assert.equal(s.powerCharge,0);
+});
+test('three-hit charge stays locked until the level-three launcher upgrade',()=>{
+ const s=makeState();s.abilities.guns=3;s.abilities.launcher=2;
+ assert.equal(recordPowerHit(s,{eligible:true}),false);
+ assert.equal(s.powerCharge,0);
+});
+
+
+test('ability HUD follows first acquisition and upgrades never reorder an icon',()=>{
+ const s=makeState();s.pending=5;
+ for(const id of ['command','haste','air','haste','guns'])upgrade(s,id);
+ assert.deepEqual(ownedAbilities(s).map(a=>a.id),['command','haste','air','guns']);
+ assert.equal(s.abilities.haste,2);
+});
+test('ability order ignores unowned history and fills missing legacy history without gaps',()=>{
+ const s=makeState();s.abilities.haste=2;s.abilities.air=1;s.abilities.guns=3;
+ s.history=[{id:'haste'},{id:'removed'},{id:'command'},{id:'haste'}];
+ assert.deepEqual(ownedAbilities(s).map(a=>a.id),['haste','air','guns']);
+ delete s.history;
+ assert.deepEqual(ownedAbilities(s).map(a=>a.id),['air','guns','haste']);
+ assert.deepEqual(ownedAbilities(makeState()),[]);
 });
