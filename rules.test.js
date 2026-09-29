@@ -563,3 +563,29 @@ test('hammer brute is a slow high-HP melee bruiser with long windup and area dam
  assert.equal(isRangedEnemy(spec),false,'it stays a melee unit despite the wide swing');
  assert.ok(spec.allyHp>0&&spec.allyAtk>0);
 });
+
+
+test('evolve promotion preserves the original enemy XP, ammunition and recap',()=>{
+ for(const type of [0,6,4]){
+  const states=[0,3].map(evolve=>{
+   const s=makeState();s.abilities.evolve=evolve;s.abilities.guns=3;
+   const u=makeUnit(99,type,0,0,type===0);
+   assert.equal(hit(s,u,u.threshold,0),'converted');
+   if(type!==4)assert.equal(ENEMIES[u.type].level,ENEMIES[type].level+(evolve===3?1:0));
+   return s;
+  });
+  const [normal,evolved]=states;
+  for(const key of ['xpEarned','highestEnemy','purifiers','cityInfected','infected'])assert.equal(evolved[key],normal[key],key);
+  assert.deepEqual(evolved.ammo,normal.ammo);
+  assert.deepEqual(evolved.first,normal.first);
+ }
+});
+test('promoting a previously rewarded corpse adds no second XP or higher-tier ammunition',()=>{
+ const s=makeState();s.abilities.evolve=3;s.abilities.guns=3;
+ const u=makeUnit(99,0,0,0);
+ hit(s,u,0,u.hp);assert.equal(s.xpEarned,1);
+ assert.equal(convert(s,u),true);assert.equal(s.xpEarned,1);
+ assert.deepEqual(s.ammo,{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0});
+ assert.equal(s.first.name,ENEMIES[0].name);assert.equal(s.highestEnemy,1);
+ assert.equal(convert(s,u),false);assert.equal(s.infected,1);
+});

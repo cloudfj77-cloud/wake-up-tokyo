@@ -324,6 +324,8 @@ export function grenadeBlast(spec,dist){
 export function convert(s,u){
  if(u.converted||u.dead)return false;
  const fromCorpse=u.kind==='corpse';
+ // 先按实际同化的敌人结算；后续友军晋升不能抬高经验、补弹与战绩。
+ reward(s,u,true);
  // 点满生存与进化：新转化的单位实打实升 1 级，随机变成高一等级的敌人。
  // 已经是最高等级时没有更高形态可换，退回原来的血量加成。
  let promoted=false;
@@ -339,7 +341,6 @@ export function convert(s,u){
  u.promoted=promoted;
  // 换成更高一阶本身就已经吃到属性提升；只有换不动（本来就是最高阶）才退回旧的血量乘数。
  if(s.abilities.evolve>=3&&!promoted)applyRankBoost(u);
- reward(s,u,true);
  return true;
 }
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
