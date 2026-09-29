@@ -8,3 +8,8 @@ tmp-inspect/
 tmp-fbx.mjs
 # 4096 原始贴图（30MB），运行时用的是 public 下压过的版本
 assets/mixamo-source/
+
+# 单文件打包产物（约 200MB），本地生成即可，不入库
+dist-single/
+release/
+.workbuddy/

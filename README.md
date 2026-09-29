@@ -11,7 +11,15 @@ npm run dev
 
 本地地址 http://127.0.0.1:5200/ 。npm test 执行规则与模型测试；npm run build 生成生产版本。
 
+npm run build:single 会额外产出一个可离线双击运行的单文件 HTML（release/wake-up-tokyo.html，约 200MB）。模型、贴图、Mixamo 角色资源与 Draco 解码器全部以 data URI 内联；运行时由注入的拦截器把 fetch / XHR / img.src 指向相对路径的请求改写成内联资源，因此 file:// 下无需任何服务。每帧都需要重新构建，改动代码后要重跑一次。
+
 不想开终端的话，双击仓库根目录的 `启动游戏-Mac.command`（Windows 用 `启动游戏-Windows.bat`），脚本会装依赖、起本机服务并自动打开浏览器。缺 Node.js 时会提示去 nodejs.org 安装。
+
+## 不想装环境的本地版
+
+`npm run local` = `vite build` + `node scripts/serve.mjs 5310 dist`，构建完直接在 http://127.0.0.1:5310/ 起服务。`scripts/serve.mjs` 只依赖 Node 内置模块，不需要 `npm install`，也不联网，只监听 127.0.0.1。
+
+分发给同学时用 `scripts/launch-mac.command`：把它和 `dist/` 的产物放进同一个文件夹，双击即可（脚本会依次找 PATH 里的 node、常见安装位置、WorkBuddy 托管版本，都没有时退回 `python3 -m http.server`）。这条路径**比 200MB 单文件可靠得多**——实测构建产物 148MB 的本地版 1.9 秒进入可点击，而单文件要塞进 206MB 的 HTML，Chrome 能扛、Safari 基本打不开。
 
 ## Demo v0.2.5 战斗体验更新
 

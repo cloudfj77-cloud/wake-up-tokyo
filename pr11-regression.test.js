@@ -10,7 +10,7 @@ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
 function section(start,end){return source.slice(source.indexOf(start),source.indexOf(end,source.indexOf(start))).replaceAll('import.meta.env.DEV','false');}
 function context(extra={}){
  const elements=new Map();
- const ctx=vm.createContext({...rules,state:rules.makeState(),mode:'playing',assets:{},units:[],player:{x:0,z:0},yaw:0,pitch:0,cameraDistance:3,attackCd:0,breakCd:0,rushCd:0,reinforceTimer:0,reinforceDirection:0,totalReinforcements:0,alerted:true,reinforceAnnounced:false,spawnQueue:rules.makeSpawnQueue(),boss:{active:false,root:{}},world:{towers:[],destructibles:[],bossSpawn:{x:30,z:0},spawnWeakenSites(){}},toast(){},bossVictoryHold:0,policeAlertTimer:0,music:{pause(){}},document:{body:{classList:{toggle(){}}}},$:id=>{if(!elements.has(id))elements.set(id,{classList:{remove(){}}});return elements.get(id);},formatTime:t=>String(t),localStorage:{setItem(_key,value){ctx.saved=JSON.parse(value);},removeItem(){}},SAVE_KEY:'test',SAVE_VERSION:10,showDialog:html=>{ctx.dialog=html;},...extra});
+ const ctx=vm.createContext({...rules,state:rules.makeState(),mode:'playing',assets:{},units:[],player:{x:0,z:0},yaw:0,pitch:0,cameraDistance:3,attackCd:0,breakCd:0,rushCd:0,reinforceTimer:0,reinforceDirection:0,totalReinforcements:0,alerted:true,reinforceAnnounced:false,spawnQueue:rules.makeSpawnQueue(),boss:{active:false,root:{}},world:{towers:[],destructibles:[],bossSpawn:{x:30,z:0},spawnWeakenSites(){}},toast(){},bossVictoryHold:0,policeAlertTimer:0,music:{pause(){},setBed(){},stopBed(){}},document:{body:{classList:{toggle(){}}}},$:id=>{if(!elements.has(id))elements.set(id,{classList:{remove(){}}});return elements.get(id);},formatTime:t=>String(t),localStorage:{setItem(_key,value){ctx.saved=JSON.parse(value);},removeItem(){}},SAVE_KEY:'test',SAVE_VERSION:10,showDialog:html=>{ctx.dialog=html;},...extra});
  return ctx;
 }
 test('resuming the checkpoint written at Boss entry summons the Boss again',()=>{
@@ -70,7 +70,7 @@ for(const type of [0,1])test(type===0?'civilian conversion clears the old aura b
  const assets=prepareCharacterAsset(gltf),original=acquireCharacterVisual(assets,type===0?'human':'guard');
  const unit=rules.makeUnit(1,type,0,0);unit.converted=true;unit.kind='ally';
  const activeAuras=[],visuals=new Map([[1,{v:original,oldKind:type===0?'human':'guard'}]]);
- const ctx=context({assets,units:[unit],visuals,activeAuras,scene:new T.Scene(),auraVisuals:new Map(),world:{heightAt:()=>0},syncActorPresence(){},actorViewLimit:()=>22,actorInFront:()=>true,AURA_COLORS:{worker:{},guard:{}},makeAura(holder){const aura={g:new T.Group(),life:0};holder.add(aura.g);activeAuras.push(aura);return aura;},acquireCharacterVisual,releaseCharacterVisual,setCharacterKind,burst(){},music:{effect(){}},aura(){}});
+ const ctx=context({assets,units:[unit],visuals,activeAuras,scene:new T.Scene(),auraVisuals:new Map(),world:{heightAt:()=>0},syncActorPresence(){},actorViewLimit:()=>22,actorInFront:()=>true,AURA_COLORS:{worker:{},guard:{}},makeAura(holder){const aura={g:new T.Group(),life:0};holder.add(aura.g);activeAuras.push(aura);return aura;},acquireCharacterVisual,releaseCharacterVisual,setCharacterKind,burst(){},music:{effect(){},setBed(){}},aura(){}});
  vm.runInContext(section('function removeAura(','function updateAuras(')+section('function updateVisuals(','function updateEffects('),ctx);
  vm.runInContext('updateVisuals(.016);updateVisuals(.016)',ctx);
  const current=visuals.get(1).v;
