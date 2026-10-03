@@ -4,7 +4,7 @@
  <div id="alertVignette" aria-hidden="true" hidden></div>
  <section class="playerPanel panel"><div class="eyebrow"><span class="purpleDot"></span> 零号母体 <span id="hpText">100 / 100</span></div><div class="bar hp"><i id="hpBar"></i></div><div class="bar stamina"><i id="staminaBar"></i></div><div id="abilitySlots"></div><div class="counters"><span>存活队伍 <b id="team">0</b></span><span>累计感染 <b id="total">0</b></span></div></section>
  <section class="alertPanel panel"><div class="eyebrow">城市警戒 <span id="clock">00:00</span></div><div class="alertReading"><b id="alertValue">0</b><span id="alertName">尚未警觉</span></div><div id="alertLevels" aria-hidden="true"><b>I</b><b>II</b><b>III</b><b>IV</b><b>V</b></div><p id="reinforcement">下一级 · 10</p></section>
- <section class="mapPanel panel"><div class="eyebrow">東京 / RIVERSIDE <span>N ↑</span></div><canvas id="map" width="400" height="320"></canvas><div class="mapLegend"><span><i class="ally"></i>同伴</span><span><i class="enemy"></i>敌军</span><span><i class="site"></i>削弱设施</span></div></section>
+ <section class="mapPanel panel"><div class="eyebrow"><span id="mapName">東京 / RIVERSIDE</span> <span>N ↑</span></div><canvas id="map" width="400" height="320"></canvas><div class="mapLegend"><span><i class="ally"></i>同伴</span><span><i class="enemy"></i>敌军</span><span><i class="site"></i>削弱设施</span></div></section>
  <div id="infectionFeedback"></div><aside id="infectionFeed" aria-live="polite"></aside><div id="runCountdown" hidden><small>镇压倒计时</small><b>02:00</b></div><div id="missionComplete"></div><div id="policeAlert" role="status" aria-live="assertive"></div><button id="endAftermath" hidden>结束本局</button><section id="bossHud" class="panel" hidden><div class="eyebrow">终局 · 秩序巨像 <span id="bossValue">6000 / 6000</span></div><div class="bar"><i id="bossHp"></i></div><small id="bossPhase"></small><p id="bossWarning"></p></section><div id="crosshair" aria-label="瞄准点"><svg id="chargeRings" viewBox="0 0 100 100" aria-hidden="true" hidden><g class="chargeTrack"><circle cx="50" cy="50" r="21"/><circle cx="50" cy="50" r="30"/><circle cx="50" cy="50" r="39"/></g><g class="chargeFill"><circle cx="50" cy="50" r="21" pathLength="1"/><circle cx="50" cy="50" r="30" pathLength="1"/><circle cx="50" cy="50" r="39" pathLength="1"/></g></svg><span class="aimRing"></span><i class="aimDot"></i><span class="hitMark" aria-hidden="true">×</span><small id="chargeStatus" hidden></small></div><div id="targetHint"></div><div id="reloadIndicator">换弹中 <b></b><i></i></div><div id="toast"></div><div id="hurtVignette"></div>
  <nav class="hudTools" aria-label="游戏操作"><button id="controlHelp" title="查看操作说明">? 操作</button><button id="sound" aria-label="切换游戏音乐">♫ 音乐 开</button></nav>
  <section class="xpPanel panel"><div class="levelBadge">LV<b id="level">1</b></div><div><div class="eyebrow">变异因子 <span id="xpText">0 / 4</span></div><div class="bar"><i id="xpBar"></i></div><small id="upgradeHint">升级后可选变异</small></div></section>
@@ -15,6 +15,7 @@
  <div class="menuShade"></div><div class="menuGrid"></div><div class="menuNoise"></div>
  <header class="gameLogo" aria-label="Wake up 都给我醒过来！"><span>Wake up</span><strong>都给我醒过来<span>！</span></strong><small>紫色感染 · 觉醒基因</small><p>唤醒全东京的人，重塑这座城市。</p></header>
  <main class="menuContent mainMenuNav">
+  <label class="mapChoice" for="mapSelect"><span>觉醒区域</span><select id="mapSelect"><option value="riverside">东京河畔</option><option value="tidewater">海滨钟楼广场 · 新地图</option></select></label>
   <button id="start" class="primary" disabled><span>东京街区载入中…</span><i>↵</i></button>
   <button id="continue" hidden></button>
   <button id="settings">选项设置</button>
@@ -23,7 +24,7 @@
  </main>
  <aside class="menuIntel">
   <div class="intelHeader"><span>觉醒进度</span><strong id="menuProgress">0.0%</strong></div>
-  <dl><div><dt>已感染人数</dt><dd id="menuInfected">0</dd></div><div><dt>已唤醒人数</dt><dd id="menuAwakened">0</dd></div><div><dt>觉醒区域</dt><dd>河畔区</dd></div></dl>
+  <dl><div><dt>已感染人数</dt><dd id="menuInfected">0</dd></div><div><dt>已唤醒人数</dt><dd id="menuAwakened">0</dd></div><div><dt>觉醒区域</dt><dd id="regionName">河畔区</dd></div></dl>
   <section class="genePreview"><h2>觉醒基因</h2><div><i class="active">☣</i><i>◇</i><i>◇</i><i>◇</i></div></section>
   <div class="bioMark">☣</div>
   <div class="menuMap" aria-label="东京河畔街区简图"><span class="mapRoad roadA"></span><span class="mapRoad roadB"></span><span class="mapRoad roadC"></span><i></i><b>N</b></div>

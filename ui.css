@@ -176,3 +176,8 @@ body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8p
 @media(max-width:760px){.mapPanel{width:180px;padding:10px}.mapPanel canvas{width:100%;height:auto}.mapPanel .eyebrow{font-size:9px}.mapLegend{font-size:9px}.objectivePanel{width:200px}.weaponHeading{display:block}.weaponHeading>small{display:block;margin-top:4px}.hudTools{top:66px;right:10px}.alertPanel{left:auto;right:65px;transform:none;width:178px}.alertReading>b{font-size:24px}.alertReading>span{font-size:10px}#runCountdown{top:142px;left:auto;right:65px;transform:none}#toast{top:200px}#infectionFeedback{bottom:auto;top:245px}}
 @media(max-height:560px){.mapPanel{width:178px;padding:9px}.mapLegend{gap:5px;font-size:8px}.objectivePanel{max-height:calc(100vh - 85px);overflow:auto}#infectionFeedback{display:none}}
 @media(prefers-reduced-motion:reduce){.choiceSlot.rerolled .card,#crosshair.ready #chargeRings,#crosshair.discharged #chargeRings,#crosshair.hit .hitMark{animation:none!important}#chargeRings circle{transition:none}}
+
+/* Map selection remains available while either map is loading. */
+.mapChoice{display:flex;flex-direction:column;gap:7px;padding:8px 0 14px;color:#eee8fa;font-size:12px;letter-spacing:.12em}
+.mapChoice select{width:100%;padding:12px 14px;background:#24202e;color:#fff;border:1px solid #b694d7;border-radius:8px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color-scheme:dark}
+.mapChoice select:focus-visible{outline:3px solid #d9b2ff;outline-offset:3px}
