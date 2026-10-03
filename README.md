@@ -1,6 +1,6 @@
 # 都给我醒过来！ / WAKE UP TOKYO
 
-当前版本以 `package.json` 和游戏主菜单为准。当前待试玩版本为 **Demo v0.2.6**；上一团队验收节点为 Demo v0.2.5，更新记录见 [CHANGELOG.md](CHANGELOG.md)，后续编号规则见 [VERSIONING.md](VERSIONING.md)。
+当前版本以 `package.json` 和游戏主菜单为准。当前待试玩版本为 **Demo v0.3.0**；上一团队验收节点为 Demo v0.2.6，更新记录见 [CHANGELOG.md](CHANGELOG.md)，后续编号规则见 [VERSIONING.md](VERSIONING.md)。
 
 桌面键鼠第三人称体素感染游戏。统一设计依据见 DESIGN.md。能力树按飞书《（2）玩家相关系统》落地：九种三级变异，人物整体移速已下调。
 
@@ -27,6 +27,12 @@ cp scripts/launch-mac.command scripts/serve.mjs dist/
 ```
 
 把整个 `dist/` 文件夹交给同学，保留 `index.html`、assets、音乐与角色资源等文件，双击其中的 `launch-mac.command` 即可。启动器有执行权限，会依次寻找 Node.js；没有 Node.js 时尝试 Python 3。源码仓库也可以在构建完成后直接双击 `scripts/launch-mac.command`。服务只监听本机 127.0.0.1。未安装 Node.js 和 Python 3 的电脑仍需先安装其中一种运行环境。
+
+## Demo v0.3.0 海滨钟楼广场
+
+主菜单「觉醒区域」可选择海滨钟楼广场（Tidewater Plaza），也可通过 `?map=tidewater` 直接进入。原东京河畔地图仍为默认选项，两张地图独立保存进度，原河畔存档保留。新地图已接入角色、敌人、三座削弱设施与 Boss。
+
+场景来自 INKWAVE，保留 MIT 与字体 OFL 声明。广场建筑暂为静态模型，任务设施可破坏；回廊重叠处采用单层行走高度。范围及验证见 [新地图说明](docs/tidewater-v0.3.0.md)。
 
 ## Demo v0.2.6 平衡与音乐更新
 

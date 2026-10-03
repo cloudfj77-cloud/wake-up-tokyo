@@ -1,6 +1,6 @@
 {
   "name": "wake-up-tokyo",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5200 --strictPort",
@@ -8,7 +8,7 @@
     "serve": "node scripts/serve.mjs 5310 dist",
     "local": "vite build && node scripts/serve.mjs 5310 dist",
     "build:single": "vite build --config vite.config.single.js && node scripts/inline-single.mjs",
-    "test": "node --test rules.test.js characters.test.js terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js music.test.js launcher.test.js"
+    "test": "node --test rules.test.js characters.test.js terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js music.test.js launcher.test.js tidewater.test.js"
   },
   "dependencies": {
     "three": "^0.180.0",
