@@ -12,6 +12,10 @@ export default {
     assetsInlineLimit: 512 * 1024 * 1024,
     chunkSizeWarningLimit: 4096,
     // 只打游戏本体，fbx-viewer 是给美术调参用的独立页面，不进单文件。
-    rollupOptions: { input: 'index.html' },
+    // 地图脚本如果再拆成单独文件，双击这个 HTML 时找不到它们，城市会一直停在“载入中”。
+    rollupOptions: {
+      input: 'index.html',
+      output: { inlineDynamicImports: true },
+    },
   },
 };

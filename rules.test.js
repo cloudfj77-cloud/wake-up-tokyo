@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,guardRoster,guardMissing,guardWanted,PURIFY_MAX,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,promoteType,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
+import {makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,guardRoster,guardMissing,guardWanted,PURIFY_MAX,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,promoteType,LAUNCHER_SLOT,LAUNCHER_CLIP,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
 import {createBoss,hitBoss,canBossBombTarget} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -33,7 +33,7 @@ test('one heavy attack converts a citizen',()=>{
  assert.equal(s.infected,1);
 });
 test('guns level 3 convert infection is half weapon damage',()=>{
- const s=makeState();s.pending=3;for(let i=0;i<3;i++)upgrade(s,'guns');
+ const s=makeState();s.abilities.guns=3;
  assert.equal(gunInfection(s,16),8);
  const u=makeUnit(1,0,0,0);
  assert.equal(hit(s,u,8,16),'hit');
@@ -51,6 +51,8 @@ test('launcher upgrades unlock piercing and three-hit shared power charge',()=>{
  assert.equal(upgrade(s,'launcher'),true);
  assert.equal(s.abilities.launcher,1);
  assert.equal(s.weapon,LAUNCHER_SLOT);
+ assert.equal(s.clip,LAUNCHER_CLIP);
+ assert.equal(s.ammo.launcher,24);
  const lv1=launcherSpec(s);
  assert.equal(lv1.pierce,0);
  assert.equal(lv1.infection,8);
@@ -126,6 +128,17 @@ test('berserkers can infect and attack civilians as well as order units',()=>{
  assert.deepEqual(allyMelee(worker),{damage:10,infection:5});
  assert.equal(allySeeksHostile(worker),true);
  assert.equal(allySeeksHostile(cop),true);
+});
+test('air cloud does not stack on someone already inside the aura',()=>{
+ const s=makeState();s.abilities.air=3;
+ const near=makeUnit(1,0,1,0);
+ s.airClouds=[{x:1,z:0,time:3}];
+ tickInfection(s,[near],{x:0,z:0},1);
+ assert.equal(near.infection,12);
+ const far=makeUnit(2,0,20,0);
+ s.airClouds=[{x:20,z:0,time:3}];
+ tickInfection(s,[far],{x:0,z:0},1);
+ assert.equal(far.infection,12);
 });
 test('air 3 stays on the player and does not spread from allies',()=>{
  const s=makeState();s.abilities.air=3;
@@ -271,20 +284,30 @@ test('tough no longer regenerates and damage reduction was lowered',()=>{
  hurtMother(s,100);
  assert.equal(s.hp,15);                // 减伤 35%：100 伤害只吃 65
 });
-test('frenzy raises max HP; army kills need two before granting one',()=>{
- const s=makeState();s.pending=3;upgrade(s,'frenzy');
+test('frenzy scales personal gains and holds army kills until rank 2',()=>{
+ const s=makeState();s.pending=1;upgrade(s,'frenzy');
  const u=makeUnit(1,1,0,0);hit(s,u,0,999);
  assert.equal(s.frenzyHp,1);assert.equal(s.maxHp,101);
- s.abilities.frenzy=3;
- const a=makeUnit(2,1,0,0);a.fromArmy=true;reward(s,a,false);
- assert.equal(s.frenzyHp,1);assert.equal(s.armyFrenzy,1);
- const b=makeUnit(3,1,0,0);b.fromArmy=true;reward(s,b,false);
+ s.abilities.frenzy=2;
+ const army=makeUnit(2,1,0,0);army.fromArmy=true;reward(s,army,false);
+ assert.equal(s.armyFrenzy,1);assert.equal(s.frenzyHp,1);
+ reward(s,Object.assign(makeUnit(3,1,0,0),{fromArmy:true}),false);
  assert.equal(s.frenzyHp,2);assert.equal(s.armyFrenzy,0);
+ s.abilities.frenzy=3;s.personalFrenzy=9;
+ reward(s,makeUnit(4,1,0,0),false);
+ assert.equal(s.tideReady,1);assert.equal(s.frenzyHp,5);
 });
 test('killing level 2+ units restocks pistol and shotgun ammo',()=>{
- const s=makeState();s.pending=1;upgrade(s,'guns');
+ const s=makeState();s.abilities.guns=1;s.ammo.pistol=24;s.ammo.shotgun=8;
  const before=s.ammo.pistol;grantKillAmmo(s,2);
  assert.equal(s.ammo.pistol,before+3);assert.equal(s.ammo.shotgun,9);
+});
+test('syringe magazine restocks from level 2+ kills and doubles at rank 2',()=>{
+ const s=makeState();s.pending=2;upgrade(s,'launcher');
+ assert.equal(s.mags.launcher,LAUNCHER_CLIP);assert.equal(s.ammo.launcher,24);
+ grantKillAmmo(s,1);assert.equal(s.ammo.launcher,24);
+ grantKillAmmo(s,2);assert.equal(s.ammo.launcher,27);
+ upgrade(s,'launcher');grantKillAmmo(s,2);assert.equal(s.ammo.launcher,33);
 });
 test('early XP follows Feishu player growth: 4 then +2 per level, XP equals enemy rank',()=>{
  const s=makeState();upgrade(s,'air');
@@ -341,11 +364,23 @@ test('reroll never brings back an ability already seen this round',()=>{
 test('reroll is empty when every remaining ability is already on the table',()=>{
  const s=makeState();s.pending=80;
  for(const a of ABILITIES)while(s.abilities[a.id]<3)upgrade(s,a.id);
- s.abilities.air=2;s.abilities.guns=2;s.abilities.dot=2;
+ s.abilities.air=2;s.abilities.launcher=2;s.abilities.dot=2;
  const offered=choices(s,()=>0);
  assert.equal(offered.length,3);
  assert.equal(hasRerollPool(s,offered),false);
  assert.equal(rerollChoice(s,offered,0,()=>0),null);
+});
+test('evolve heals on level up and marks extra rolls at 500 HP',()=>{
+ const s=makeState();s.pending=1;upgrade(s,'evolve');
+ s.hp=50;s.xp=s.need;
+ reward(s,makeUnit(1,0,0,0),true);
+ assert.equal(s.level,2);
+ assert.ok(s.hp>50);
+ s.abilities.evolve=2;s.maxHp=490;s.frenzyMarks={500:false,1000:false};
+ s.maxHp=100;refreshStats(s);
+ s.frenzyHp=400;refreshStats(s);
+ assert.equal(s.frenzyMarks[500],true);
+ assert.equal(s.pending>=1,true);
 });
 test('evolve adds life from player level',()=>{
  const s=makeState();s.pending=1;s.level=4;upgrade(s,'evolve');refreshStats(s);
@@ -391,16 +426,15 @@ test('command roster counts guards that are waiting to return, so nobody extra i
  for(let i=0;i<12;i++){const g=makeUnit(300+i,1,i,0,false,0);g.guard=true;g.kind='ally';big.push(g);}
  assert.equal(guardMissing(s,big),0);
 });
-test('guns and syringe take hotkeys in the order they were picked',()=>{
- const launcherFirst=makeState();launcherFirst.pending=2;
- upgrade(launcherFirst,'launcher');upgrade(launcherFirst,'guns');
- assert.deepEqual(weaponSlots(launcherFirst).map(slot=>slot.id),['launcher','pistol','shotgun']);
- assert.equal(weaponSlots(launcherFirst)[0].key,2);
- assert.equal(launcherFirst.weapon,LAUNCHER_SLOT);
- const gunsFirst=makeState();gunsFirst.pending=2;
- upgrade(gunsFirst,'guns');upgrade(gunsFirst,'launcher');
- assert.deepEqual(weaponSlots(gunsFirst).map(slot=>slot.id),['pistol','shotgun','launcher']);
- assert.equal(gunsFirst.weapon,0);
+test('syringe takes the next hotkey and guns can no longer be picked',()=>{
+ const s=makeState();s.pending=2;
+ assert.equal(upgrade(s,'guns'),false);
+ assert.equal(ABILITIES.some(a=>a.id==='guns'),false);
+ upgrade(s,'launcher');
+ assert.deepEqual(weaponSlots(s).map(slot=>slot.id),['launcher']);
+ assert.equal(weaponSlots(s)[0].key,2);
+ assert.equal(s.weapon,LAUNCHER_SLOT);
+ assert.ok(!choices(s).some(a=>a.id==='guns'));
 });
 test('countdown publishes three weaken tasks that do not gate the boss',()=>{
  const s=makeState();publishWeakenTasks(s);
@@ -520,16 +554,16 @@ test('three-hit charge stays locked until the level-three launcher upgrade',()=>
 
 test('ability HUD follows first acquisition and upgrades never reorder an icon',()=>{
  const s=makeState();s.pending=5;
- for(const id of ['command','haste','air','haste','guns'])upgrade(s,id);
- assert.deepEqual(ownedAbilities(s).map(a=>a.id),['command','haste','air','guns']);
+ for(const id of ['command','haste','air','haste','launcher'])upgrade(s,id);
+ assert.deepEqual(ownedAbilities(s).map(a=>a.id),['command','haste','air','launcher']);
  assert.equal(s.abilities.haste,2);
 });
 test('ability order ignores unowned history and fills missing legacy history without gaps',()=>{
- const s=makeState();s.abilities.haste=2;s.abilities.air=1;s.abilities.guns=3;
+ const s=makeState();s.abilities.haste=2;s.abilities.air=1;s.abilities.launcher=3;
  s.history=[{id:'haste'},{id:'removed'},{id:'command'},{id:'haste'}];
- assert.deepEqual(ownedAbilities(s).map(a=>a.id),['haste','air','guns']);
+ assert.deepEqual(ownedAbilities(s).map(a=>a.id),['haste','air','launcher']);
  delete s.history;
- assert.deepEqual(ownedAbilities(s).map(a=>a.id),['air','guns','haste']);
+ assert.deepEqual(ownedAbilities(s).map(a=>a.id),['air','launcher','haste']);
  assert.deepEqual(ownedAbilities(makeState()),[]);
 });
 test('evolve 3 promotes newly converted units one tier up instead of only padding HP',()=>{
@@ -585,7 +619,7 @@ test('promoting a previously rewarded corpse adds no second XP or higher-tier am
  const u=makeUnit(99,0,0,0);
  hit(s,u,0,u.hp);assert.equal(s.xpEarned,1);
  assert.equal(convert(s,u),true);assert.equal(s.xpEarned,1);
- assert.deepEqual(s.ammo,{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0});
+ assert.deepEqual(s.ammo,{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0,launcher:0});
  assert.equal(s.first.name,ENEMIES[0].name);assert.equal(s.highestEnemy,1);
  assert.equal(convert(s,u),false);assert.equal(s.infected,1);
 });
