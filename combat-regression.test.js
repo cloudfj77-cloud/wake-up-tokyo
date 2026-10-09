@@ -53,7 +53,7 @@ test('roll restarts with a fresh full animation and no recovery; mid-roll, air a
  run('rush()');assert.deepEqual(actions,['rush']);assert.equal(ctx.rushCd,0);
  assert.equal(ctx.playerVisual.attackTime,.72);
  run('rush()');assert.equal(actions.length,1);
- run('requestRoll()');ctx.player.roll=0;run('finishRoll()');
+ run('requestRoll();releaseShift()');ctx.player.roll=0;run('finishRoll()');
  assert.deepEqual(actions,['rush','rush']);assert.equal(ctx.playerVisual.attackTime,.72);
  ctx.player.roll=0;ctx.player.y=.01;run('rush()');assert.equal(actions.length,2);
  ctx.player.y=0;ctx.mode='paused';run('rush()');assert.equal(actions.length,2);
@@ -68,9 +68,9 @@ test('jump immediately cancels a roll without resetting attack or reload timing'
 });
 test('roll pressed just before landing triggers on landing; early airborne taps expire',()=>{
  const {ctx,actions,run}=motionContext();ctx.player.y=.12;ctx.player.vy=-3;
- run('requestRoll();stepPlayerMotion(.05)');assert.deepEqual(actions,['rush']);assert.equal(ctx.player.y,0);
+ run('requestRoll();releaseShift();stepPlayerMotion(.05)');assert.deepEqual(actions,['rush']);assert.equal(ctx.player.y,0);
  ctx.player.roll=0;ctx.player.y=1;ctx.player.vy=1;actions.length=0;
- run('requestRoll();stepPlayerMotion(.1);stepPlayerMotion(.1)');assert.equal(ctx.rollBuffered,0);
+ run('requestRoll();releaseShift();stepPlayerMotion(.1);stepPlayerMotion(.1)');assert.equal(ctx.rollBuffered,0);
  ctx.player.y=.01;ctx.player.vy=-3;run('stepPlayerMotion(.016)');assert.deepEqual(actions,[]);
 });
 test('jump buffered before landing fires once and takes priority over held roll',()=>{
@@ -78,11 +78,11 @@ test('jump buffered before landing fires once and takes priority over held roll'
  run('requestJump();stepPlayerMotion(.05)');assert.deepEqual(actions,['jump']);assert.equal(ctx.player.vy,7);
  assert.equal(ctx.player.roll,0);assert.equal(ctx.jumpBuffered,0);
  run('stepPlayerMotion(.1)');assert.deepEqual(actions,['jump']);
- ctx.player.y=.01;ctx.player.vy=-3;run('stepPlayerMotion(.016)');assert.deepEqual(actions,['jump','rush']);
+ ctx.player.y=.01;ctx.player.vy=-3;run('stepPlayerMotion(.016)');assert.deepEqual(actions,['jump']);
 });
 test('the latest landing input wins, and pausing clears all queued movement',()=>{
  const {ctx,actions,run}=motionContext();ctx.player.y=.1;ctx.player.vy=-3;
- run('requestJump();requestRoll();stepPlayerMotion(.05)');assert.deepEqual(actions,['rush']);
+ run('requestJump();requestRoll();releaseShift();stepPlayerMotion(.05)');assert.deepEqual(actions,['rush']);
  ctx.player.roll=0;ctx.player.y=.1;ctx.player.vy=-3;
  run('requestRoll();requestJump();clearInput();stepPlayerMotion(.05)');assert.deepEqual(actions,['rush']);
  assert.equal(ctx.jumpBuffered,0);assert.equal(ctx.rollBuffered,0);assert.equal(ctx.mouseHeld,false);

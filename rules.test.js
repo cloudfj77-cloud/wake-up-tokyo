@@ -51,8 +51,9 @@ test('launcher upgrades unlock piercing and three-hit shared power charge',()=>{
  assert.equal(upgrade(s,'launcher'),true);
  assert.equal(s.abilities.launcher,1);
  assert.equal(s.weapon,LAUNCHER_SLOT);
- assert.equal(s.clip,LAUNCHER_CLIP);
- assert.equal(s.ammo.launcher,24);
+ // 现行文案的感染针不发弹匣，点出来就能射。
+ assert.equal(s.clip,0);
+ assert.equal(s.ammo.launcher,0);
  const lv1=launcherSpec(s);
  assert.equal(lv1.pierce,0);
  assert.equal(lv1.infection,8);
@@ -138,7 +139,8 @@ test('air cloud does not stack on someone already inside the aura',()=>{
  const far=makeUnit(2,0,20,0);
  s.airClouds=[{x:20,z:0,time:3}];
  tickInfection(s,[far],{x:0,z:0},1);
- assert.equal(far.infection,12);
+ // 气雾在光环外按半秒 4 点跳，1 秒是两跳，不再按每秒 12 点铺。
+ assert.equal(far.infection,8);
 });
 test('air 3 stays on the player and does not spread from allies',()=>{
  const s=makeState();s.abilities.air=3;
@@ -302,12 +304,11 @@ test('killing level 2+ units restocks pistol and shotgun ammo',()=>{
  const before=s.ammo.pistol;grantKillAmmo(s,2);
  assert.equal(s.ammo.pistol,before+3);assert.equal(s.ammo.shotgun,9);
 });
-test('syringe magazine restocks from level 2+ kills and doubles at rank 2',()=>{
+test('syringe no longer uses a magazine or kill restocks',()=>{
  const s=makeState();s.pending=2;upgrade(s,'launcher');
- assert.equal(s.mags.launcher,LAUNCHER_CLIP);assert.equal(s.ammo.launcher,24);
- grantKillAmmo(s,1);assert.equal(s.ammo.launcher,24);
- grantKillAmmo(s,2);assert.equal(s.ammo.launcher,27);
- upgrade(s,'launcher');grantKillAmmo(s,2);assert.equal(s.ammo.launcher,33);
+ assert.equal(s.clip,0);assert.equal(s.ammo.launcher,0);
+ grantKillAmmo(s,2);assert.equal(s.ammo.launcher,0);
+ upgrade(s,'launcher');grantKillAmmo(s,2);assert.equal(s.ammo.launcher,0);
 });
 test('early XP follows Feishu player growth: 4 then +2 per level, XP equals enemy rank',()=>{
  const s=makeState();upgrade(s,'air');

@@ -30,44 +30,44 @@ export const ENEMIES=[
 ];
 export const ABILITIES=[
  {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:[
-  '自身 5m 内敌人每 0.5 秒 +2 感染。',
-  '范围 10m，每 0.5 秒 +4 感染，且可作用于尸体。',
-  '范围 15m，每 0.5 秒 +6 感染。每 2 秒在 50m 内引爆一片气雾，持续 3 秒，每 0.5 秒 +6 感染，不与自身光环叠加。'
+  '持续散播反抗因子，使自身半径 5m 内的敌人每 0.5 秒累积 2 点感染值。',
+  '传播半径扩大至 10m，每 0.5 秒累积 4 点感染值，并可感染尸体。',
+  '传播半径扩大至 15m，每 0.5 秒累积 6 点感染值。每隔 0.5 秒，在自身周围 30m 内随机引爆一片区域，形成半径 10m、持续 3 秒的感染气雾，每 0.5 秒施加 4 点感染值，不与自身传播效果叠加。'
  ]},
- {id:'launcher',name:'可感染发射器',icon:'◎',group:'武器系',descriptions:[
-  '解锁感染针。弹匣 12 发，按 E 装填。击杀或同化 2 级及以上敌人 +3 备弹。',
-  '针剂感染提高，并可穿透多名敌人，依然不造成伤害。补弹量翻倍。',
-  '解锁三环充能：枪械与注射器共用，命中三次后下一发强化炮弹。'
+ {id:'launcher',name:'可感染注射器',icon:'◎',group:'武器系',descriptions:[
+  '解锁感染针，按准星方向瞄准射击，命中时累积感染值，但不造成伤害。',
+  '感染针的感染累积量提高，并可穿透多名敌人。',
+  '解锁「三环充能」：累计命中 3 次后，下一发射击升级为强化炮弹。'
  ]},
  {id:'frenzy',name:'狂杀',icon:'⚔',group:'母体系',descriptions:[
-  '亲自击杀或同化 +1 生命，并永久 +1 上限。',
-  '亲自提升变为 2。军队每 2 次击杀或同化，为你 +1 生命和上限。体型变大，近战范围略增。',
-  '亲自提升变为 3。军队每次击杀或同化为你 +1。每亲自解决 10 个，释放血潮：范围伤害并击退。'
+  '由你完成击杀或同化时，恢复 1 点生命，并永久提升 1 点生命上限。攻击、感染武器、空气传播及持续感染造成的同化均可触发。',
+  '亲自击杀或同化的提升量变为 2 点。军队每累计 2 次击杀或同化，额外为你恢复 1 点生命并永久提升 1 点生命上限。体型增大，近战攻击范围适度扩大。',
+  '亲自击杀或同化的提升量变为 3 点。军队提供成长的效率提升为 每次击杀或同化贡献 1 点。体型进一步增大，并解锁 「血潮」：每累计由你完成击杀或同化 10 个单位，向周围释放血肉冲击，造成范围伤害并击退敌人。感染武器、空气传播及持续感染造成的同化均计入进度；军队独立完成的不计入。'
  ]},
  {id:'dot',name:'持续感染',icon:'⌁',group:'感染系',descriptions:[
-  '你造成的感染每秒额外 +1，直到同化完成。',
-  '每秒 +2，尸体也生效。感染目标移速降低 15%。',
-  '每秒 +3，军队也能挂上。感染达到阈值一半时禁锢 2 秒，此后持续感染翻倍，每个目标只触发一次。'
+  '感染在目标体内扎根。敌人受到你施加的感染后，每秒额外累积 1 点感染值，直至同化完成。',
+  '持续感染提升至每秒 2 点，并可对尸体生效。感染目标发生病变，移动速度降低 15%。',
+  '持续感染提升至每秒 3 点，军队也能施加相同效果。目标感染值达到同化阈值的 50% 时，触发「深度寄生」：血肉触须将其禁锢 2 秒，此后受到的持续感染效果翻倍，直至同化完成。每个目标仅触发一次。'
  ]},
  {id:'haste',name:'急速',icon:'↟',group:'机动系',descriptions:[
-  '移速 +15%。',
-  '奔跑减伤 10%。击杀后爆发移速 3 秒（开头快五成，再慢慢回到平时速度）。',
-  '移速 +30%，奔跑减伤 15%。奔跑时可撞飞敌人，造成重击伤害。'
+  '移动速度提高 15%。',
+  '奔跑时受到的伤害降低 10%。击杀敌人后，获得初始为 50% 的额外移速加成，在 3 秒内逐渐衰减至零。',
+  '移动速度加成提升至 30%，奔跑减伤提升至 15%。奔跑时可撞飞沿途敌人，造成重击伤害。'
  ]},
  {id:'tough',name:'皮糙肉厚',icon:'✚',group:'母体系',descriptions:[
-  '获得 15% 减伤。',
-  '减伤 25%。10m 内敌人打中你后，减免的伤害反弹，并附加一半感染。',
-  '自身减伤 35%，反伤 30m。军队获得 1 级减伤。'
+  '受到的伤害降低 15%。',
+  '减伤提升至 25%。受到来自 10m 内敌人的攻击时，将减免的伤害反弹给攻击者，并附加相当于反弹伤害一半的感染值。',
+  '自身减伤提升至 35%，反伤范围扩大至 30m。你的军队获得 15% 减伤。'
  ]},
  {id:'evolve',name:'生存与进化',icon:'✶',group:'成长系',descriptions:[
-  '获得等级×10 生命，以及等同等级的攻击力。每次升级恢复 10% 最大生命。',
-  '每生存 1 分钟，系数额外 +5%。生命上限达到 500 和 1000 时，各多一次能力进化。',
-  '等级上限 50，之后升级不再给新能力。新同化的敌人升 1 级；已是 4 级则保留兵种并 +28% 生命。新单位 5 秒内体型变大，攻速和移速 +30%。'
+  '获得相当于自身等级 ×10 的生命加成，以及与等级等量的攻击力加成。每次升级触发「适应修复」，恢复 10% 最大生命。',
+  '每生存 1 分钟，所有系数额外提高 5%。生命上限达到 500、1000 时，各额外获得一次能力进化。',
+  '等级上限提升至 50，后续升级不再获得新能力。新同化的敌人提升 1 级，随机进化为对应等级的兵种；原本已为 4 级的单位保留兵种，生命提高 28%。新同化单位触发「进化狂潮」，体型暂时增大，攻击速度与移动速度提高 30%，持续 5 秒。'
  ]},
  {id:'command',name:'听我号令',icon:'⚑',group:'指挥系',descriptions:[
-  '获得 2 名 2 级护卫，阵亡后过一会儿归队。',
-  '护卫升到 3 级，编制扩大到 5 人。',
-  '护卫升到 4 级，编制 10 人，生命和攻击翻倍，并自动搭配阵容。'
+  '获得 2 名 2 级护卫，护卫死亡一段时间后自动再生。',
+  '护卫提升至 3 级，编制扩大至 5 名。',
+  '护卫提升至 4 级，编制扩大至 10 名，额外获得 100% 生命与攻击力加成，且会自动组成合适的阵容。'
  ]}
 ];
 export const GUNS=[
@@ -188,8 +188,6 @@ export function grantKillAmmo(s,enemyLevel){
   if(g>=2&&enemyLevel>=3){addAmmo(s,'rifle',10);addAmmo(s,'sniper',3);}
   if(g>=3&&enemyLevel>=4)addAmmo(s,'rpg',1);
  }
- const launcher=s.abilities.launcher||0;
- if(launcher>=1&&enemyLevel>=2)addAmmo(s,'launcher',3*(launcher>=2?2:1));
 }
 export function gunInfection(s,damage){return s.abilities.guns>=3?damage*.5:0;}
 export function hasLauncher(s){return (s.abilities.launcher||0)>=1;}
@@ -225,7 +223,8 @@ export function upgrade(s,id){
  s.abilities[id]++;s.pending--;s.history.push({id,level:s.abilities[id],time:s.time});s.lastPick=s.time;
  // 「枪？枪！」已从能力表删除，新局点不到枪。旧存档里已经写上的枪械键位仍可用。
  // 注射器按这次点击插进键位。手上还是空的，就直接换成刚点出的那件。
- if(id==='launcher'&&s.abilities.launcher===1){addAmmo(s,'launcher',LAUNCHER_RESERVE);s.mags.launcher=LAUNCHER_CLIP;rememberWeapon(s,'launcher');if(s.weapon===-1){s.weapon=LAUNCHER_SLOT;s.clip=LAUNCHER_CLIP;s.clipMax=LAUNCHER_CLIP;s.gunId=null;}}
+ // 感染针按现行文案直接射击，不发弹匣。
+ if(id==='launcher'&&s.abilities.launcher===1){rememberWeapon(s,'launcher');if(s.weapon===-1){s.weapon=LAUNCHER_SLOT;s.clip=0;s.clipMax=0;s.gunId=null;}}
  if(id==='frenzy'||id==='evolve')refreshStats(s);
  if(id==='command')s.needGuards=true;
  return true;
@@ -282,7 +281,7 @@ export function reward(s,u,converted){
  s.highestEnemy=Math.max(s.highestEnemy,ENEMIES[u.type].level);
  grantKillAmmo(s,ENEMIES[u.type].level);
  grantFrenzy(s,!!u.fromArmy);
- if(s.abilities.haste>=2&&!u.fromArmy)s.burstTime=3;
+ if(s.abilities.haste>=2&&!converted&&!u.fromArmy)s.burstTime=3;
  if(u.rewarded)return;u.rewarded=true;
  const cap=levelCap(s);
  const gain=xpFromUnit(u);
@@ -378,8 +377,11 @@ export function convert(s,u){
  if(s.abilities.evolve>=3&&!promoted)applyRankBoost(u);
  // 进化狂潮：新同化的人短暂变大、打得更快、跑得更快。已经是 4 级没换兵种的也算新同化。
  if(s.abilities.evolve>=3)u.surge=5;
+ onConverted?.(s,u);
  return true;
 }
+// 漫画特效在同化落地时补一层标记，不参与数值。
+export let onConverted=null;
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.dead||u.converted||u.kind==='corpse')return 'none';
  if(ENEMIES[u.type].shield&&fromFront)damage*=.5;
@@ -404,9 +406,9 @@ const AIR=[
  {radius:10,perHalf:4,corpse:true},
  {radius:15,perHalf:6,corpse:true}
 ];
-// 3 级气雾是一小片，不是把 50 米整圈都铺满。半径写在这里，方便和自身光环分开。
-export const AIR_CLOUD_RADIUS=8;
-export const AIR_CLOUD_RANGE=50;
+// 3 级气雾半径 10 米，落点在身边 30 米内，和自身光环分开结算。
+export const AIR_CLOUD_RADIUS=10;
+export const AIR_CLOUD_RANGE=30;
 const DOT_RATE=[0,1,2,3];
 // 净化不叠加：站着三四个净化工兵也只按最强的那一个算，不存在围成一圈把感染冻住的情况。
 // 原本是每个各清 4 点线性累加，中后期一轮刷出三四个就能把空气传播（3 级才 12/秒）整个抵消掉，
@@ -429,16 +431,28 @@ export function tickInfection(s,units,player,dt){
   }
   negative=Math.min(negative,PURIFY_MAX);
   const tagged=u.tagged;
-  const playerDot=tagged==='player'||tagged===true;
+  const playerDot=tagged==='player'||tagged===true||u.playerInfection===true;
   const armyDot=tagged==='army'&&s.abilities.dot>=3;
+  if(playerDot)u.playerInfection=true;
   const inAura=!!(air.radius&&(!corpse||air.corpse)&&distance(player,u)<=air.radius);
-  if(inAura)positive+=air.perHalf*2;
-  // 气雾不和身上的光环叠在同一个人身上。人已经吃到光环，就不再吃这一片雾。
-  else if(!corpse&&(s.airClouds||[]).some(c=>Math.hypot(u.x-c.x,u.z-c.z)<=AIR_CLOUD_RADIUS))positive+=12;
+  // 光环按每秒结算；气雾按半秒一跳，重叠的雾也不叠加，并且不和光环叠在同一个人身上。
+  let mistGain=0;
+  if(inAura){positive+=air.perHalf*2;u.mistTick=0;}
+  else if(!corpse&&s.abilities.air>=3){
+   let exposure=0;
+   for(const cloud of s.airClouds||[]){
+    if(cloud.time>0&&Math.hypot(u.x-cloud.x,u.z-cloud.z)<=AIR_CLOUD_RADIUS)exposure=Math.max(exposure,Math.min(dt,cloud.time));
+   }
+   if(exposure>0){
+    const elapsed=(u.mistTick||0)+exposure,ticks=Math.floor((elapsed+1e-9)/.5);
+    mistGain=ticks*4;u.mistTick=Math.max(0,elapsed-ticks*.5);
+   }else u.mistTick=0;
+  }else u.mistTick=0;
+  if((inAura&&air.perHalf>0)||mistGain>0)u.playerInfection=true;
   let dot=0;
   if((playerDot||armyDot)&&(!corpse||s.abilities.dot>=2))dot=DOT_RATE[s.abilities.dot]||0;
   // 深度寄生：感染过半就禁锢一次，之后持续感染翻倍，直到同化。
-  if(s.abilities.dot>=3&&!corpse&&!u.parasite&&(playerDot||armyDot)&&u.threshold&&u.infection+positive*dt>=u.threshold*.5&&u.infection<u.threshold){
+  if(s.abilities.dot>=3&&!corpse&&!u.parasite&&(playerDot||armyDot)&&u.threshold&&u.infection+positive*dt+mistGain>=u.threshold*.5&&u.infection<u.threshold){
    u.parasite=true;u.root=2;
   }
   if(u.parasite)dot*=2;
@@ -446,9 +460,9 @@ export function tickInfection(s,units,player,dt){
   u.slow=!!(s.abilities.dot>=2&&!corpse&&(playerDot||armyDot)&&u.infection>0);
   if(u.root>0)u.root=Math.max(0,u.root-dt);
   if(corpse&&!air.corpse&&s.abilities.dot<2)positive=0;
-  u.infection=Math.max(0,Math.min(u.threshold,u.infection+(positive-negative)*dt));
+  u.infection=Math.max(0,Math.min(u.threshold,u.infection+(positive-negative)*dt+mistGain));
   u.purified=negative;
-  if(u.infection>=u.threshold){if(convert(s,u))chain++;continue;}
+  if(u.infection>=u.threshold){if(u.playerInfection)u.fromArmy=false;else if(armyDot)u.fromArmy=true;if(convert(s,u))chain++;continue;}
   if(corpse){u.corpseTime-=dt;if(u.corpseTime<=0){u.dead=true;u.kind='expired';}}
  }
  s.maxChain=Math.max(s.maxChain,chain);
@@ -761,26 +775,30 @@ export function guardMissing(s,units){
  if(!want.count)return 0;
  return Math.max(0,want.count-guardRoster(units));
 }
-// 3 级空气传播每隔 2 秒，在 50 米内挑一个不在自身光环里的敌人，扔下一片 3 秒气雾。
-function placeAirCloud(s,units,player){
- const air=AIR[s.abilities.air]||AIR[0];
- const hosts=(units||[]).filter(u=>!u.dead&&!u.converted&&u.kind!=='corpse'&&distance(player,u)<=AIR_CLOUD_RANGE&&distance(player,u)>air.radius);
- if(!hosts.length)return;
- const host=hosts[Math.floor(Math.random()*hosts.length)];
+// 3 级每半秒在身边 30 米内随机落下一片，持续 3 秒。
+function placeAirCloud(s,player){
+ const angle=Math.random()*Math.PI*2,radius=Math.sqrt(Math.random())*AIR_CLOUD_RANGE;
+ const cloud={x:player.x+Math.cos(angle)*radius,z:player.z+Math.sin(angle)*radius,time:3};
  s.airClouds=s.airClouds||[];
- s.airClouds.push({x:host.x,z:host.z,time:3});
+ s.airClouds.push(cloud);
+ // 特效可以先把雾拿出来做下落，落地再放回去。
+ onAirCloudPlaced?.(s,cloud);
 }
+export let onAirCloudPlaced=null;
 export function stepSimulation(s,units,player,dt,mode){
  if(mode!=='playing')return;
  s.time+=dt;
  if(s.burstTime>0)s.burstTime=Math.max(0,s.burstTime-dt);
  for(const u of units||[])if(u.surge>0)u.surge=Math.max(0,u.surge-dt);
  if((s.abilities.air||0)>=3){
+  // 旧存档如果还记着 2 秒一跳，进这版后改回半秒，避免第一片雾等太久。
+  if(s.airCycleVersion!==3){s.airPulse=(s.airPulse||0)%.5;s.airCycleVersion=3;}
   s.airPulse=(s.airPulse||0)+dt;
-  if(s.airPulse>=2){s.airPulse-=2;placeAirCloud(s,units,player);}
-  if(s.airClouds){for(const c of s.airClouds)c.time-=dt;s.airClouds=s.airClouds.filter(c=>c.time>0);}
+  while(s.airPulse+1e-9>=.5){s.airPulse=Math.max(0,s.airPulse-.5);placeAirCloud(s,player);}
  }
  tickInfection(s,units,player,dt);
+ // 先结算再减时间，一整片 3 秒的雾能打满 6 次半秒感染。
+ if(s.airClouds){for(const cloud of s.airClouds)cloud.time=Math.max(0,cloud.time-dt);s.airClouds=s.airClouds.filter(cloud=>cloud.time>1e-9);}
  if(s.abilities.evolve>=2)refreshStats(s);
  applyPendingTide(s,units,player);
 }
