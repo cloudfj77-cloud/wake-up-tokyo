@@ -63,12 +63,12 @@ test('full-health pickup stays; a blood pack restores 30% of maximum health',()=
  s.hp=490;assert.equal(r.collectPickup(s,'health').amount,10);assert.equal(s.hp,500);
 });
 test('factor gives 10% of current level requirement and can trigger a level-up',()=>{
- const s=r.makeState();s.pending=0;s.xp=3.8;
- const item=r.collectPickup(s,'factor');assert.equal(item.amount,.4);
- assert.equal(s.level,2);assert.equal(s.pending,1);assert.equal(s.xpEarned,.4);
+ const s=r.makeState();s.pending=0;s.xp=7.4;
+ const item=r.collectPickup(s,'factor');assert.equal(item.amount,.8);
+ assert.equal(s.level,2);assert.equal(s.pending,1);assert.equal(s.xpEarned,.8);
  assert.ok(Math.abs(s.xp-.2)<1e-10);
  const fresh=r.makeState();fresh.pending=0;for(let i=0;i<10;i++)r.collectPickup(fresh,'factor');
- assert.equal(fresh.level,2);assert.equal(fresh.xp,0); // Ten 0.4 rewards must not leave 3.999999999 XP.
+ assert.equal(fresh.level,2);assert.equal(fresh.xp,0); // Ten 0.8 rewards equal one level and must not leave a float remainder.
 });
 test('potion refreshes instead of stacking and only gameplay advances its timer',()=>{
  const s=r.makeState(),u=r.makeUnit(1,0,20,20),before=r.meleeSpec(s,'light');

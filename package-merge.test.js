@@ -54,7 +54,7 @@ test('ten personal completions release tide; army completions do not',()=>{
 });
 test('evolution heals, grants milestone cards once, and buffs conversions temporarily',()=>{
  const s=r.makeState();s.abilities.evolve=3;s.pending=0;s.hp=10;
- r.grantExperience(s,4);assert.ok(s.hp>30);
+ r.grantExperience(s,r.xpNeedFor(1));assert.ok(s.hp>30);
  s.level=40;r.refreshStats(s);assert.equal(s.pending,2);r.refreshStats(s);assert.equal(s.pending,2);
  const u=r.makeUnit(1,0,0,0);r.convert(s,u);assert.equal(u.surge,5);
  r.stepSimulation(s,[u],{x:0,z:0},1,'playing');assert.equal(u.surge,4);

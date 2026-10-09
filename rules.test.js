@@ -291,14 +291,16 @@ test('killing level 2+ units restocks pistol and shotgun ammo',()=>{
  const before=s.ammo.pistol;grantKillAmmo(s,2);
  assert.equal(s.ammo.pistol,before+3);assert.equal(s.ammo.shotgun,1);
 });
-test('early XP follows Feishu player growth: 4 then +2 per level, XP equals enemy rank',()=>{
+test('XP need is a mild exponential plus a flat correction, and XP equals enemy rank',()=>{
  const s=makeState();upgrade(s,'air');
- assert.equal(s.need,4);assert.equal(xpNeedFor(1),4);assert.equal(xpNeedFor(2),6);assert.equal(xpNeedFor(9),20);
+ assert.equal(s.need,8);assert.equal(xpNeedFor(1),8);assert.equal(xpNeedFor(2),18);assert.equal(xpNeedFor(5),57);assert.equal(xpNeedFor(8),78);assert.equal(xpNeedFor(15),120);assert.equal(xpNeedFor(31)-xpNeedFor(30),6);assert.equal(xpNeedFor(50)-xpNeedFor(49),6);
  assert.equal(xpFromUnit(makeUnit(1,0,0,0)),1);assert.equal(xpFromUnit(makeUnit(2,1,0,0)),2);
  for(let i=0;i<3;i++){reward(s,makeUnit(i,0,0,0),true);assert.equal(s.level,1);}
  assert.equal(s.xpEarned,3);assert.equal(alertValue(s),1);
- reward(s,makeUnit(3,0,0,0),true);assert.equal(s.level,2);assert.equal(s.need,6);assert.equal(s.pending,1);
- assert.equal(s.xpEarned,4);assert.equal(alertValue(s),4/3);
+ for(let i=3;i<7;i++)reward(s,makeUnit(i,0,0,0),true);
+ assert.equal(s.level,1);
+ reward(s,makeUnit(7,0,0,0),true);assert.equal(s.level,2);assert.equal(s.need,18);assert.equal(s.pending,1);
+ assert.equal(s.xpEarned,8);assert.equal(alertValue(s),8/3);
  const cop=makeUnit(20,1,0,0);reward(s,cop,true);assert.equal(s.xp,2);
  assert.equal(upgradeAutoGap(s),3);
  s.level=8;assert.equal(upgradeAutoGap(s),8);

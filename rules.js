@@ -1,7 +1,13 @@
 export const LEVEL_CAP=15;
 export const EVOLVE_CAP=50;
-export const BASE_NEED=4;
-export const LATE_XP_FROM=10;
+// 前中期比上一版松：5 级 57 点，8 级 78 点。倍率从 1.45 起每级降 0.1，降到 1 倍就不再乘。
+// 之后每级仍固定加 6 点，30 级以后也照加。
+// 百分数是为了避开 1.45 和 0.1 的小数误差。
+export const XP_BASE=8;
+export const XP_RATIO_START=145;
+export const XP_RATIO_DROP=10;
+export const XP_RATIO_FLOOR=100;
+export const XP_FLAT=6;
 export const UPGRADE_AUTO_GAP=8;
 export const POPULATION=58;
 export const BASE_HP=100;
@@ -176,9 +182,12 @@ export function hasRerollPool(s,current,seen){
 }
 export function levelCap(s){return s.abilities.evolve>=3?EVOLVE_CAP:LEVEL_CAP;}
 export function xpNeedFor(level){
- if(level<LATE_XP_FROM)return BASE_NEED+2*Math.max(0,level-1);
- let n=BASE_NEED+2*(LATE_XP_FROM-2);
- for(let l=LATE_XP_FROM;l<=level;l++)n=Math.ceil(n*1.35+3);
+ const lv=Math.max(1,level|0);
+ let n=XP_BASE;
+ for(let l=2;l<=lv;l++){
+  const ratio=Math.max(XP_RATIO_FLOOR,XP_RATIO_START-XP_RATIO_DROP*(l-2))/100;
+  n=Math.round(n*ratio+XP_FLAT);
+ }
  return n;
 }
 export function xpFromUnit(u){return ENEMIES[u.type]?.level||1;}
