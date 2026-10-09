@@ -8,8 +8,15 @@ import { join, extname, normalize, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const port = Number(process.argv[2]) || 5310;
-// 默认服务脚本自己所在的目录（拷到哪都能跑），也可以手动指定 dist 目录
-const rootDir = resolve(process.argv[3] || dirname(fileURLToPath(import.meta.url)));
+// 直接运行和启动器共用同一布局：分发版首页在脚本旁，源码版在 dist 或 ForgeaX 的 web。
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const defaultRoot = [scriptDir, resolve(scriptDir, '../dist'), resolve(scriptDir, '../../web')]
+  .find(dir => existsSync(join(dir, 'index.html')));
+if (!process.argv[3] && !defaultRoot) {
+  console.error('找不到游戏首页，请先构建，或传入游戏目录。');
+  process.exit(1);
+}
+const rootDir = resolve(process.argv[3] || defaultRoot);
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
