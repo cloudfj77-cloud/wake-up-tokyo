@@ -1,4 +1,4 @@
-export const LEVEL_CAP=30;
+export const LEVEL_CAP=15;
 export const EVOLVE_CAP=50;
 export const BASE_NEED=4;
 export const LATE_XP_FROM=10;
@@ -27,52 +27,96 @@ export const ENEMIES=[
  // 近战重装：前摇长、命中是以自身为心的范围伤害。range 保持在 3 以内，才会被判成近战而不是远程。
  {name:'重装大锤兵',level:4,hp:700,threshold:500,speed:1.85,damage:55,range:3,interval:2.6,aim:1.9,slam:{radius:4.2},allyName:'狂暴重装大锤兵',allyHp:350,allyAtk:25}
 ];
+// Canonical eight abilities and all 24 descriptions from the user-supplied comic package.
 export const ABILITIES=[
- {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:[
-  '自身 5m 内敌人每 0.5 秒 +2 感染。',
-  '范围 10m，每 0.5 秒 +4 感染，且可作用于尸体。',
-  '范围 15m，每 0.5 秒 +6 感染，且可作用于尸体。'
- ]},
- {id:'guns',name:'枪？枪！',icon:'⌐',group:'武器系',descriptions:[
-  '解锁手枪与霰弹枪。击杀/同化 2 级及以上敌人：手枪 +3、霰弹 +1 备弹。',
-  '解锁步枪与狙击枪。3 级及以上：步枪 +10、狙击 +3；一级补弹量翻倍。',
-  '解锁 RPG。4 级及以上 +1 发。枪械造成攻击力一半的感染。'
- ]},
- {id:'launcher',name:'可感染发射器',icon:'◎',group:'武器系',descriptions:[
-  '解锁感染针。命中只累积感染、不造成伤害，适合叫醒路人。键位按点出顺序排。',
-  '针剂感染提高，并可穿透多名敌人，依然不造成伤害。',
-  '解锁三环充能：枪械与注射器共用，命中三次后下一发强化炮弹。'
- ]},
- {id:'frenzy',name:'狂杀',icon:'⚔',group:'母体系',descriptions:[
-  '每次击杀或同化 +1 生命与等量上限。',
-  '生命上限达到 500 与 1000 时，各额外获得一次能力进化。',
-  '提升量翻倍，体型变大。军队每 2 次击杀或同化，才为你提供 1 点生命。'
- ]},
- {id:'dot',name:'持续感染',icon:'⌁',group:'感染系',descriptions:[
-  '你造成的感染会持续累积，直到同化完成。每秒 +1。',
-  '持续感染增强（每秒 +2），尸体也会继续上涨。',
-  '你的军队命中也会挂上同样的持续感染（每秒 +3）。'
- ]},
- {id:'haste',name:'急速',icon:'↟',group:'机动系',descriptions:[
-  '移速 +15%。',
-  '奔跑减伤 10%。击杀后爆发移速 3 秒（开头快五成，再慢慢回到平时速度）。',
-  '移速 +30%，奔跑减伤 15%，可撞飞敌人造成重击伤害。军队获得 2 级效果，移速 +10%。'
- ]},
- {id:'tough',name:'皮糙肉厚',icon:'✚',group:'母体系',descriptions:[
-  '获得 15% 减伤。',
-  '减伤 25%。10m 内敌人打中你后，减免的伤害反弹，并附加一半感染。',
-  '自身减伤 35%，反伤 30m。军队获得 1 级减伤。'
- ]},
- {id:'evolve',name:'生存与进化',icon:'✶',group:'成长系',descriptions:[
-  '获得等级×10 生命，以及等级点的攻击力。',
-  '每生存 1 分钟，上述系数额外 +5%。',
-  '等级上限 50（31 级后不再给新能力）。新转化的敌人升 1 级，随机变成高一等级的敌人。'
- ]},
- {id:'command',name:'听我号令',icon:'⚑',group:'指挥系',descriptions:[
-  '可以指挥军队。获得 2 名 2 级护卫，阵亡后过一会儿归队。',
-  '护卫升 1 阶，编制至 5 人。',
-  '护卫再升 1 阶，编制至 10 人。'
- ]}
+  {
+    "id": "air",
+    "name": "空气传播",
+    "icon": "◌",
+    "group": "感染系",
+    "descriptions": [
+      "持续散播反抗因子，使自身半径 5m 内的敌人每 0.5 秒累积 2 点感染值。",
+      "传播半径扩大至 10m，每 0.5 秒累积 4 点感染值，并可感染尸体。",
+      "传播半径扩大至 15m，每 0.5 秒累积 6 点感染值。每隔 0.5 秒，在自身周围 30m 内随机引爆一片区域，形成半径 10m、持续 3 秒的感染气雾，每 0.5 秒施加 4 点感染值，不与自身传播效果叠加。"
+    ]
+  },
+  {
+    "id": "launcher",
+    "name": "可感染注射器",
+    "icon": "◎",
+    "group": "武器系",
+    "descriptions": [
+      "解锁感染针，按准星方向瞄准射击，命中时累积感染值，但不造成伤害。",
+      "感染针的感染累积量提高，并可穿透多名敌人。",
+      "解锁「三环充能」：累计命中 3 次后，下一发射击升级为强化炮弹。"
+    ]
+  },
+  {
+    "id": "frenzy",
+    "name": "狂杀",
+    "icon": "⚔",
+    "group": "母体系",
+    "descriptions": [
+      "由你完成击杀或同化时，恢复 1 点生命，并永久提升 1 点生命上限。攻击、感染武器、空气传播及持续感染造成的同化均可触发。",
+      "亲自击杀或同化的提升量变为 2 点。军队每累计 2 次击杀或同化，额外为你恢复 1 点生命并永久提升 1 点生命上限。体型增大，近战攻击范围适度扩大。",
+      "亲自击杀或同化的提升量变为 3 点。军队提供成长的效率提升为 每次击杀或同化贡献 1 点。体型进一步增大，并解锁 「血潮」：每累计由你完成击杀或同化 10 个单位，向周围释放血肉冲击，造成范围伤害并击退敌人。感染武器、空气传播及持续感染造成的同化均计入进度；军队独立完成的不计入。"
+    ]
+  },
+  {
+    "id": "dot",
+    "name": "持续感染",
+    "icon": "⌁",
+    "group": "感染系",
+    "descriptions": [
+      "感染在目标体内扎根。敌人受到你施加的感染后，每秒额外累积 1 点感染值，直至同化完成。",
+      "持续感染提升至每秒 2 点，并可对尸体生效。感染目标发生病变，移动速度降低 15%。",
+      "持续感染提升至每秒 3 点，军队也能施加相同效果。目标感染值达到同化阈值的 50% 时，触发「深度寄生」：血肉触须将其禁锢 2 秒，此后受到的持续感染效果翻倍，直至同化完成。每个目标仅触发一次。"
+    ]
+  },
+  {
+    "id": "haste",
+    "name": "急速",
+    "icon": "↟",
+    "group": "机动系",
+    "descriptions": [
+      "移动速度提高 15%。",
+      "奔跑时受到的伤害降低 10%。击杀敌人后，获得初始为 50% 的额外移速加成，在 3 秒内逐渐衰减至零。",
+      "移动速度加成提升至 30%，奔跑减伤提升至 15%。奔跑时可撞飞沿途敌人，造成重击伤害。"
+    ]
+  },
+  {
+    "id": "tough",
+    "name": "皮糙肉厚",
+    "icon": "✚",
+    "group": "母体系",
+    "descriptions": [
+      "受到的伤害降低 15%。",
+      "减伤提升至 25%。受到来自 10m 内敌人的攻击时，将减免的伤害反弹给攻击者，并附加相当于反弹伤害一半的感染值。",
+      "自身减伤提升至 35%，反伤范围扩大至 30m。你的军队获得 15% 减伤。"
+    ]
+  },
+  {
+    "id": "evolve",
+    "name": "生存与进化",
+    "icon": "✶",
+    "group": "成长系",
+    "descriptions": [
+      "获得相当于自身等级 ×10 的生命加成，以及与等级等量的攻击力加成。每次升级触发「适应修复」，恢复 10% 最大生命。",
+      "每生存 1 分钟，所有系数额外提高 5%。生命上限达到 500、1000 时，各额外获得一次能力进化。",
+      "等级上限提升至 50，后续升级不再获得新能力。新同化的敌人提升 1 级，随机进化为对应等级的兵种；原本已为 4 级的单位保留兵种，生命提高 28%。新同化单位触发「进化狂潮」，体型暂时增大，攻击速度与移动速度提高 30%，持续 5 秒。"
+    ]
+  },
+  {
+    "id": "command",
+    "name": "听我号令",
+    "icon": "⚑",
+    "group": "指挥系",
+    "descriptions": [
+      "获得 2 名 2 级护卫，护卫死亡一段时间后自动再生。",
+      "护卫提升至 3 级，编制扩大至 5 名。",
+      "护卫提升至 4 级，编制扩大至 10 名，额外获得 100% 生命与攻击力加成，且会自动组成合适的阵容。"
+    ]
+  }
 ];
 export const GUNS=[
  {id:'pistol',name:'手枪',unlock:1,damage:16,range:16,cd:.32,pellets:1,spread:0,clip:12,speed:38,color:0xc078ff},
@@ -93,7 +137,7 @@ export function makeState(){
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   clip:0,clipMax:0,weapon:-1,gunId:null,powerCharge:0,weaponOrder:[],
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
-  frenzyHp:0,armyFrenzy:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
+  frenzyHp:0,armyFrenzy:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',potionTime:0,sprinting:false,sprintExhausted:false,
   // 警戒吃累计经验 xpEarned，不吃等级。Boss 倒计时、召唤和余韵都记在这里，避免和拆中枢进度绑在一起。
   alertTime:0,bossCountdown:null,bossSpawned:false,aftermath:false,settle:false
  };
@@ -145,11 +189,11 @@ export function evolveCoeff(s){
  if(s.abilities.evolve>=2)c+=Math.floor(s.time/60)*.05;
  return c;
 }
-export function attackPower(s){return BASE_ATK+(s.abilities.evolve?s.level*evolveCoeff(s):0);}
+export function attackPower(s){return (BASE_ATK+(s.abilities.evolve?s.level*evolveCoeff(s):0))*potionMultiplier(s,'attack');}
 export function meleeSpec(s,kind){
  const m=MELEE[kind];
  const atk=attackPower(s);
- return {infection:BASE_INF*m.mult,damage:atk*m.mult,cd:m.cd,range:m.range,aoe:m.aoe};
+ return {infection:BASE_INF*m.mult*potionMultiplier(s,'infection'),damage:atk*m.mult,cd:m.cd,range:m.range*(s.abilities.frenzy>=3?1.35:s.abilities.frenzy>=2?1.15:1),aoe:m.aoe*(s.abilities.frenzy>=3?1.35:s.abilities.frenzy>=2?1.15:1)};
 }
 export function refreshStats(s){
  const evolveHp=s.abilities.evolve?s.level*10*evolveCoeff(s):0;
@@ -158,6 +202,7 @@ export function refreshStats(s){
  s.maxHp=next;
  if(delta>0)s.hp+=delta;
  s.hp=Math.min(s.hp,s.maxHp);
+ if(s.abilities.evolve>=2)for(const mark of [500,1000])if(!s.frenzyMarks[mark]&&s.maxHp>=mark){s.frenzyMarks[mark]=true;s.pending++;}
  return delta;
 }
 export function unlockedGuns(s){return GUNS.filter(g=>s.abilities.guns>=g.unlock);}
@@ -182,16 +227,17 @@ export function grantKillAmmo(s,enemyLevel){
 }
 export function gunInfection(s,damage){return s.abilities.guns>=3?damage*.5:0;}
 export function hasLauncher(s){return (s.abilities.launcher||0)>=1;}
-// 发射器数值：1 级感染针，2 级加伤并穿透，3 级保留穿透，解锁枪械与注射器共用的三次命中充能。
+// 注射器：一级 8 感染，二级 14 感染并穿透，三级三环强化炮弹 32 感染 / 12 伤害。
 export function launcherSpec(s,empowered=false){
  const lv=s.abilities.launcher||0;
  if(lv<1)return null;
  const pierce=lv>=2?2:0;
- // 普通针剂只负责「叫醒」，不带伤害；只有 3 级充能出的强化炮弹（爆炸）才结算伤害。
+ // 漫画包：普通感染针只累积感染；只有强化炮弹造成伤害。
  const base=lv>=2
   ?{infection:14,damage:0,range:28,cd:.36,speed:36,pierce,color:0xd48aff,life:.9}
   :{infection:8,damage:0,range:24,cd:.42,speed:32,pierce,color:0xc078ff,life:.85};
- if(empowered)return {...base,infection:32,damage:12,speed:14,pierce:4,splash:6,life:4,strong:true,color:0xe4adff};
+ base.infection*=potionMultiplier(s,'infection');base.damage*=potionMultiplier(s,'attack');
+ if(empowered)return {...base,infection:32*potionMultiplier(s,'infection'),damage:12*potionMultiplier(s,'attack'),speed:14,pierce:4,splash:6,life:4,strong:true,color:0xe4adff};
  return {...base,splash:0,strong:false};
 }
 export const POWER_HITS=3;
@@ -212,11 +258,6 @@ export function consumePowerCharge(s){
 export function upgrade(s,id){
  if(!ABILITIES.some(a=>a.id===id)||s.abilities[id]>=3||s.pending<=0)return false;
  s.abilities[id]++;s.pending--;s.history.push({id,level:s.abilities[id],time:s.time});s.lastPick=s.time;
- if(id==='guns'){
-  if(s.abilities.guns===1){addAmmo(s,'pistol',24);addAmmo(s,'shotgun',8);s.mags.pistol=GUNS[0].clip;s.mags.shotgun=GUNS[1].clip;rememberWeapon(s,'pistol');rememberWeapon(s,'shotgun');if(s.weapon===-1)s.weapon=0;}
-  if(s.abilities.guns===2){addAmmo(s,'rifle',30);addAmmo(s,'sniper',9);s.mags.rifle=GUNS[2].clip;s.mags.sniper=GUNS[3].clip;rememberWeapon(s,'rifle');rememberWeapon(s,'sniper');}
-  if(s.abilities.guns===3){addAmmo(s,'rpg',2);s.mags.rpg=1;rememberWeapon(s,'rpg');}
- }
  // 注射器和枪一样，按这次点击插进键位。手上还是空的，就直接换成刚点出的那件。
  if(id==='launcher'&&s.abilities.launcher===1){rememberWeapon(s,'launcher');if(s.weapon===-1)s.weapon=LAUNCHER_SLOT;}
  if(id==='frenzy'||id==='evolve')refreshStats(s);
@@ -225,22 +266,36 @@ export function upgrade(s,id){
 }
 // 军队击杀/同化要凑满这么多次，才折算成 1 点生命。
 export const ARMY_FRENZY_STEP=2;
-export function grantFrenzy(s,fromArmy=false){
- const lv=s.abilities.frenzy;if(!lv)return 0;
- if(fromArmy&&lv<3)return 0;
- const amt=(!fromArmy&&lv>=3)?2:1;
- // 军队的战果先攒着，攒够 ARMY_FRENZY_STEP 次才给 1 点，不再一次一跳。
- if(fromArmy){
-  s.armyFrenzy=(s.armyFrenzy||0)+1;
-  if(s.armyFrenzy<ARMY_FRENZY_STEP)return 0;
-  s.armyFrenzy=0;
- }
- s.frenzyHp+=amt;
- refreshStats(s);
- for(const mark of [500,1000]){
-  if(lv>=2&&!s.frenzyMarks[mark]&&s.maxHp>=mark){s.frenzyMarks[mark]=true;s.pending++;}
- }
- return amt;
+export const FLESH_GOAL=10,FLESH_RADIUS=6,AIR_CLOUD_RADIUS=10,AIR_SPAWN_RANGE=30;
+export function releaseFleshTide(j, A, M) {
+  if (!j.tideReady || j.tideLock || !M) return [];
+  j.tideReady = 0, j.tideLock = true;
+  const N = meleeSpec(j, "heavy"), I = [];
+  for (const D of A || []) {
+    if (D.dead || D.converted || D.kind === "corpse" || distance(M, D) > FLESH_RADIUS) continue;
+    const T = D.x - M.x, w = D.z - M.z, O = Math.hypot(T, w) || 1;
+    D.x += T / O * 3, D.z += w / O * 3, hit(j, D, 0, N.damage, false, false), I.push(D.id);
+  }
+  return j.tideBurst = { x: M.x, z: M.z }, j.tideLock = false, I;
+}
+export function spawnAirDrop(s,units,player){
+ const angle=Math.random()*Math.PI*2,radius=Math.sqrt(Math.random())*AIR_SPAWN_RANGE;
+ (s.airDrops??=[]).push({x:player.x+Math.cos(angle)*radius,z:player.z+Math.sin(angle)*radius,remaining:.65});
+}
+
+export function grantFrenzy(j, A = false) {
+  const M = j.abilities.frenzy;
+  if (!M) return 0;
+  let N = 0;
+  if (A) {
+    if (M < 2) return 0;
+    if (M === 2) {
+      if (j.armyFrenzy = (j.armyFrenzy || 0) + 1, j.armyFrenzy < ARMY_FRENZY_STEP) return 0;
+      j.armyFrenzy = 0;
+    }
+    N = 1;
+  } else N = M, j.personalFrenzy = (j.personalFrenzy || 0) + 1, M >= 3 && j.personalFrenzy % FLESH_GOAL === 0 && (j.tideReady = (j.tideReady || 0) + 1);
+  return j.frenzyHp += N, refreshStats(j), N;
 }
 export function reward(s,u,converted){
  // 余韵里胜利已经锁定，击杀和转化不再涨经验、等级或结算统计。
@@ -250,23 +305,29 @@ export function reward(s,u,converted){
  s.highestEnemy=Math.max(s.highestEnemy,ENEMIES[u.type].level);
  grantKillAmmo(s,ENEMIES[u.type].level);
  grantFrenzy(s,!!u.fromArmy);
- if(s.abilities.haste>=2&&!u.fromArmy)s.burstTime=3;
+ if(s.abilities.haste>=2&&!converted&&!u.fromArmy)s.burstTime=3;
  if(u.rewarded)return;u.rewarded=true;
+ grantExperience(s,xpFromUnit(u));
+}
+export function grantExperience(s,gain){
+ if(s.aftermath||!(gain>0))return;
  const cap=levelCap(s);
- const gain=xpFromUnit(u);
+ gain=Math.max(0,gain);
  // 满级后不再升级，但这份经验仍计入警戒，否则后期警戒会停住。
  if(!Number.isFinite(s.xpEarned))s.xpEarned=earnedXp(s);
- s.xpEarned+=gain;
+ s.xpEarned=Math.round((s.xpEarned+gain)*1e6)/1e6;
  if(s.level<cap){
-  s.xp+=gain;
+  s.xp=Math.round((s.xp+gain)*1e6)/1e6;
   while(s.xp>=s.need&&s.level<cap){
    s.xp-=s.need;s.level++;s.need=xpNeedFor(s.level);
    if(s.level<=LEVEL_CAP)s.pending++;
    refreshStats(s);
+   if(s.abilities.evolve>=1)s.hp=Math.min(s.maxHp,s.hp+s.maxHp*.1);
   }
   if(s.level===cap)s.xp=0;
  }
 }
+
 export function resetUnit(u,id,type,x,z,city=true,profession=0){
  const t=ENEMIES[type];
  u.id=id;u.type=type;u.x=x;u.z=z;u.city=city;u.profession=profession;
@@ -275,7 +336,7 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
  u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;u.rush=false;u.stuck=0;
- u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
+ u.playerInfection=false;u.parasite=false;u.root=0;u.slow=false;u.surge=0;u.mistTick=0;u.route=null;u.routeEnd=1;u.stationary=undefined;u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
  return u;
 }
 export function makeUnit(id,type,x,z,city=true,profession=0){
@@ -321,32 +382,24 @@ export function grenadeBlast(spec,dist){
  const g=spec?.grenade;if(!g||dist>g.radius)return 0;
  return g.max+(g.min-g.max)*(dist/g.radius);
 }
-export function convert(s,u){
- if(u.converted||u.dead)return false;
- const fromCorpse=u.kind==='corpse';
- // 点满生存与进化：新转化的单位实打实升 1 级，随机变成高一等级的敌人。
- // 已经是最高等级时没有更高形态可换，退回原来的血量加成。
- let promoted=false;
- if(s.abilities.evolve>=3){
-  const next=promoteType(u.type);
-  if(next!==u.type){u.type=next;u.threshold=ENEMIES[next].threshold;promoted=true;}
- }
- const tpl=allyTemplate(u.type);
- u.converted=true;u.kind='ally';
- u.maxHp=tpl.hp;u.hp=fromCorpse?Math.ceil(tpl.hp*.6):tpl.hp;u.atk=tpl.atk;
- u.aiming=false;u.aim=0;u.attackCd=.15;u.hurt=0;
- u.corpseTime=0;u.infection=u.threshold;u.wander=0;u.tagged=false;
- u.promoted=promoted;
- // 换成更高一阶本身就已经吃到属性提升；只有换不动（本来就是最高阶）才退回旧的血量乘数。
- if(s.abilities.evolve>=3&&!promoted)applyRankBoost(u);
- reward(s,u,true);
- return true;
+export function convert(j, A) {
+  if (A.converted || A.dead) return false;
+  const M = A.kind === "corpse";
+  (A.playerInfection || A.tagged === "player" || A.tagged === true) && (A.fromArmy = false);
+  reward(j, A, true);
+  let N = false;
+  if (j.abilities.evolve >= 3) {
+    const D = promoteType(A.type);
+    D !== A.type && (A.type = D, A.threshold = ENEMIES[D].threshold, N = true);
+  }
+  const I = allyTemplate(A.type);
+  return A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
 }
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.dead||u.converted||u.kind==='corpse')return 'none';
  if(ENEMIES[u.type].shield&&fromFront)damage*=.5;
  u.infection=Math.min(u.threshold,u.infection+infection);
- if(infection>0)u.tagged=fromArmy?'army':'player';
+ if(infection>0){u.tagged=fromArmy?'army':'player';if(!fromArmy)u.playerInfection=true;}
  if(u.infection>=u.threshold){u.fromArmy=fromArmy;convert(s,u);return 'converted';}
  u.hp=Math.max(0,u.hp-damage);u.hurt=2;
  if(u.hp<=0){u.kind='corpse';u.corpseTime=12;u.fromArmy=fromArmy;reward(s,u,false);return 'killed';}
@@ -357,7 +410,7 @@ const TOUGH_DR=[0,.15,.25,.35];
 export function damageAlly(u,damage,s){
  const dr=s?.abilities.tough>=3?TOUGH_DR[1]:0;
  u.hp=Math.max(0,u.hp-damage*(1-dr));u.hurt=2;
- if(u.hp===0){u.kind='fallen';u.dead=true;if(u.guard)u.guardCd=12;}
+ if(u.hp===0){u.kind='fallen';u.dead=true;if(u.guard)u.guardCd=guardWanted(s).revive||30;}
 }
 export function distance(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
 const AIR=[
@@ -371,37 +424,68 @@ const DOT_RATE=[0,1,2,3];
 // 原本是每个各清 4 点线性累加，中后期一轮刷出三四个就能把空气传播（3 级才 12/秒）整个抵消掉，
 // 4 级军队永远感染不动。现在无论多少个，都只有单个净化工兵的 2 点/秒。
 export const PURIFY_MAX=2;
-export function tickInfection(s,units,player,dt){
- let chain=0;
- const air=AIR[s.abilities.air]||AIR[0];
- const purifiers=units.filter(u=>!u.dead&&u.kind!=='corpse'&&u.type===4);
- for(const u of units){
-  u.purified=0;
-  if(u.dead||u.converted)continue;
-  const corpse=u.kind==='corpse';
-  let positive=0,negative=0;
-  for(const p of purifiers){
-   if(p===u||distance(p,u)>(ENEMIES[p.type].aura||8))continue;
-   // 取最强的一个，不累加：多来几个净化工兵不会让净化变快。
-   if(p.kind==='ally')positive=Math.max(positive,ENEMIES[p.type].aid??ENEMIES[p.type].drain??8);
-   else negative=Math.max(negative,ENEMIES[p.type].drain??8);
+export function tickInfection(j, A, M, N) {
+  let converted = 0;
+  const aura = AIR[j.abilities.air] || AIR[0], purifiers = A.filter((u) => !u.dead && u.kind !== "corpse" && u.type === 4);
+  for (const u of A) {
+    u.purified = 0;
+    if (u.dead || u.converted) continue;
+    const corpse = u.kind === "corpse";
+    let rate = 0, drain = 0;
+    for (const ally of purifiers) {
+      if (ally === u || distance(ally, u) > (ENEMIES[ally.type].aura || 8)) continue;
+      if (ally.kind === "ally") rate = Math.max(rate, ENEMIES[ally.type].aid ?? ENEMIES[ally.type].drain ?? 8);
+      else drain = Math.max(drain, ENEMIES[ally.type].drain ?? 8);
+    }
+    drain = Math.min(drain, PURIFY_MAX);
+    const tag = u.tagged, playerTag = tag === "player" || tag === true || u.playerInfection === true, armyTag = tag === "army" && j.abilities.dot >= 3;
+    if (playerTag) u.playerInfection = true;
+    const inMother = !!(aura.radius && (!corpse || aura.corpse) && distance(M, u) <= aura.radius);
+    let mistGain = 0;
+    if (inMother) {
+      rate += aura.perHalf * 2;
+      u.mistTick = 0;
+    } else if (!corpse && j.abilities.air >= 3) {
+      let exposure = 0;
+      for (const cloud of j.airClouds || []) {
+        if (cloud.time > 0 && Math.hypot(u.x - cloud.x, u.z - cloud.z) <= AIR_CLOUD_RADIUS) exposure = Math.max(exposure, Math.min(N, cloud.time));
+      }
+      if (exposure > 0) {
+        const elapsed = (u.mistTick || 0) + exposure, ticks = Math.floor((elapsed + 1e-9) / 0.5);
+        mistGain = ticks * 4;
+        u.mistTick = Math.max(0, elapsed - ticks * 0.5);
+      } else u.mistTick = 0;
+    } else u.mistTick = 0;
+    if (inMother && aura.perHalf > 0 || mistGain > 0) u.playerInfection = true;
+    let dot = 0;
+    if ((playerTag || armyTag) && (!corpse || j.abilities.dot >= 2)) dot = DOT_RATE[j.abilities.dot] || 0;
+    if (j.abilities.dot >= 3 && !corpse && !u.parasite && (playerTag || armyTag) && u.threshold && u.infection + rate * N + mistGain >= u.threshold * 0.5 && u.infection < u.threshold) {
+      u.parasite = true;
+      u.root = 2;
+    }
+    if (u.parasite) dot *= 2;
+    rate += dot;
+    u.slow = !!(j.abilities.dot >= 2 && !corpse && (playerTag || armyTag) && u.infection > 0);
+    if (u.root > 0) u.root = Math.max(0, u.root - N);
+    if (corpse && !aura.corpse && j.abilities.dot < 2) rate = 0;
+    u.infection = Math.max(0, Math.min(u.threshold, u.infection + (rate - drain) * N + mistGain));
+    u.purified = drain;
+    if (u.infection >= u.threshold) {
+      if (u.playerInfection) u.fromArmy = false;
+      else if (armyTag) u.fromArmy = true;
+      if (convert(j, u)) converted++;
+      continue;
+    }
+    if (corpse) {
+      u.corpseTime -= N;
+      if (u.corpseTime <= 0) {
+        u.dead = true;
+        u.kind = "expired";
+      }
+    }
   }
-  negative=Math.min(negative,PURIFY_MAX);
-  if(air.radius&&(!corpse||air.corpse)){
-   if(distance(player,u)<=air.radius)positive+=air.perHalf*2;
-  }
-  const tagged=u.tagged;
-  const playerDot=tagged==='player'||tagged===true;
-  const armyDot=tagged==='army'&&s.abilities.dot>=3;
-  if((playerDot||armyDot)&&(!corpse||s.abilities.dot>=2))positive+=DOT_RATE[s.abilities.dot]||0;
-  if(corpse&&!air.corpse&&s.abilities.dot<2)positive=0;
-  u.infection=Math.max(0,Math.min(u.threshold,u.infection+(positive-negative)*dt));
-  u.purified=negative;
-  if(u.infection>=u.threshold){if(convert(s,u))chain++;continue;}
-  if(corpse){u.corpseTime-=dt;if(u.corpseTime<=0){u.dead=true;u.kind='expired';}}
- }
- s.maxChain=Math.max(s.maxChain,chain);
- return chain;
+  j.maxChain = Math.max(j.maxChain, converted);
+  return converted;
 }
 export function incomingDamage(s,damage){
  const t=s.abilities.tough;
@@ -411,7 +495,7 @@ export function incomingDamage(s,damage){
 export const TUNE_DEFAULTS={
  // 警戒档：10 局部警情，100 城市封锁，300 军事介入，500 开启 120 秒 Boss 倒计时。
  alert:{xpPerAlert:3,perSecond:.1,stage2At:10,stage3At:100,stage4At:300,bossAt:500,countdown:120,maxLevel1:1,maxLevel2:2,maxLevel3:3,maxLevel4:4,pressureTime:0},
- difficulty:{armyWeight:.4,fodderTarget:10,fodderDump:12,threatPerLevel:.55,threatPerAlly:.4,intervalBase:14,intervalPerWeight:.45,intervalMin:5,spawnPerBurst:2,spawnGap:.08,spawnQueueMax:18},
+ difficulty:{playerBase:100,playerPerLevel:20,allyRank1:4,allyRank2:8,allyRank3:12,allyRank4:16,maxWaveRatio:.25,bossWeightRatio:1.25,intervalMin:10,intervalMax:20,bossIntervalMin:8,bossIntervalMax:15,regionCount:4,civiliansPerRegion:12,patrolsPerRegion:2,fodderWaveRatio:.15,fodderCheck:10,spawnPerBurst:2,spawnGap:.08,spawnQueueMax:18},
  activity:{shambleSpeed:.55,shambleRadius:4,shambleIdle:6,fleeSpeed:.7,awakeSpeed:3.8,awakeRadius:34,awakeIdle:1.05,chaseSpeed:3.6,followSpeed:4.4,structureSpeed:3.2}
 };
 export const TUNE=structuredClone(TUNE_DEFAULTS);
@@ -466,14 +550,19 @@ export function tickRunClock(s,dt){
  return events;
 }
 export function threat(s){return cityAlert(s).stage;}
-export function difficultyWeight(s,units){return s.level+teamCount(units)*TUNE.difficulty.armyWeight;}
+// 同阶权重用于预算的消耗与供给；召唤护卫不贡献队伍权重。
+export function unitWeight(type){const rank=ENEMIES[type]?.level||1;return TUNE.difficulty['allyRank'+rank]||0;}
+export function difficultyWeight(s,units){
+ const d=TUNE.difficulty;
+ return d.playerBase+s.level*d.playerPerLevel+(units||[]).reduce((sum,u)=>sum+(u.kind==='ally'&&!u.dead&&!u.guard?unitWeight(u.type):0),0);
+}
 // 耗材层：市民一直算库存；2 级巡警从城市封锁（阶段 3）起才算。
 export function isCityFodder(u,stage=1){
  if(!u||u.dead||u.converted||u.kind==='corpse'||u.kind==='ally')return false;
  const e=ENEMIES[u.type];
  if(!e)return false;
  if(u.type===0)return true;
- return stage>=3&&e.level===2;
+ return stage>=3&&u.type===1;
 }
 export function isCombatFodder(u){return isCityFodder(u,99);}
 export function isRangedEnemy(spec){return (spec?.range??0)>3&&!spec.spray;}
@@ -514,7 +603,7 @@ export function enqueueSpawnJobs(queue,jobs){
  if(!queue||!jobs?.length)return 0;
  for(const job of jobs){
   const role=job.role==='civilian'?'civilian':job.role==='patrol'?'patrol':'army';
-  queue.jobs.push({type:job.type|0,role});
+  queue.jobs.push({type:job.type|0,role,...(Number.isInteger(job.region)?{region:job.region}:{})});
  }
  return jobs.length;
 }
@@ -626,50 +715,55 @@ export function takeSpawnJobs(queue,dt=0,perBurst=2,gap=.08){
  queue.wait=queue.jobs.length?gap:0;
  return batch;
 }
-export function spawnPlan(s,units,random=Math.random,origin=null){
- const alert=cityAlert(s);
- const d=TUNE.difficulty;
- const army=teamCount(units);
- const weight=s.level+army*(d.armyWeight??.4);
- // 开局还没到局部警情时，军队只补持棍巡警在街上巡逻，不冲锋。
- // 阶段 3 起才把 2 级巡警当耗材。冲锋从局部警情才开。
- const fodder=fodderCount(units,alert.stage);
- const indexed=ENEMIES.map((e,i)=>({e,i}));
- const opening=alert.stage<2&&!alert.lost;
- const fodderPool=alert.stage>=3?indexed.filter(({e})=>e.level<=2):indexed.filter(({i})=>i===0);
- const threatPool=opening?indexed.filter(({i})=>i===1):alert.stage>=2?indexed.filter(({e})=>e.level>=2&&e.level<=alert.maxLevel):[];
- const pick=list=>{if(!list.length)return 0;return list[Math.min(list.length-1,Math.floor(random()*list.length))].i;};
- const fodderN=alert.lost?0:fodder<=0?d.fodderDump:Math.max(0,d.fodderTarget-fodder);
- const threatN=alert.lost||!threatPool.length?0:opening?1:Math.max(1,Math.round(s.level*(d.threatPerLevel??.55)+army*(d.threatPerAlly??.4)));
- const drafted=[];
- for(let i=0;i<fodderN;i++)drafted.push(pick(fodderPool));
- for(let i=0;i<threatN;i++)drafted.push(pick(threatPool));
- // 间隔仍是本局公式：等级和友军越高，两波之间越短，并夹在 10–20 秒。
- const interval=Math.max(10,Math.min(20,d.intervalBase-weight*(d.intervalPerWeight??.45)));
- const soldiers=drafted.filter(t=>t>0);
- let rush=opening?[]:soldiers,patrol=opening?[...soldiers]:[];
- let civilians=drafted.filter(t=>t===0);
- let streetN=civilians.length;
- // 开局时行人和巡逻队按身边空街补；冲锋名单不再把这两种人算进去。
- if(origin){
-  const stock=countStreetCivilians(units,origin,STREET_NEAR);
-  const room=Math.max(0,STREET_CAP-stock.all);
-  streetN=alert.lost?0:Math.min(4,room,Math.max(0,STREET_KEEP-stock.near));
-  civilians=Array.from({length:streetN},()=>0);
-  const nearPatrol=(units||[]).filter(u=>isStreetPatrol(u)&&Math.hypot(u.x-origin.x,u.z-origin.z)<=PATROL_NEAR).length;
-  if(opening){
-   const room=Math.max(0,PATROL_KEEP-nearPatrol);
-   patrol=soldiers.slice(0,room);
-   rush=[];
-  }else{
-   const split=splitArmyWave(soldiers,nearPatrol);
-   patrol=split.patrol;
-   rush=split.rush;
+export function spawnPlan(s,units,random=Math.random,origin=null,options={}){
+ const alert=cityAlert(s),d=TUNE.difficulty;
+ const regions=Math.max(1,Math.floor(options.regionCount??d.regionCount));
+ const weight=difficultyWeight(s,units),army=teamCount(units);
+ const queued=options.queuedJobs||[];
+ const live=u=>!u.dead&&!u.converted&&u.kind!=='corpse'&&u.kind!=='ally';
+ const civilianTarget=regions*d.civiliansPerRegion,patrolTarget=regions*d.patrolsPerRegion;
+ const fodder=units.filter(u=>isCityFodder(u,alert.stage)).length;
+ const civilians=[],patrol=[],rush=[],jobs=[];
+ let refillBudget=Math.max(1,Math.floor((civilianTarget+patrolTarget)*d.fodderWaveRatio));
+ if(!alert.lost&&options.includeFodder!==false){
+  const stock=(type,region)=>units.filter(u=>live(u)&&u.type===type&&cityRegion(u)===region).length
+   +queued.filter(j=>j.type===type&&(j.region??cityRegion(origin||{x:0,z:0}))===region).length;
+  const needs=[];
+  for(let region=0;region<regions;region++){
+   if(alert.stage<3){
+    needs.push({type:0,role:'civilian',region,count:Math.max(0,d.civiliansPerRegion-stock(0,region))});
+    needs.push({type:1,role:'patrol',region,count:Math.max(0,d.patrolsPerRegion-stock(1,region))});
+   }else needs.push({type:1,role:'patrol',region,count:Math.max(0,d.civiliansPerRegion+d.patrolsPerRegion-stock(1,region)-stock(0,region))});
+  }
+  // 逐区轮流补，单波不超过全城耗材配额的 15%。
+  while(refillBudget>0&&needs.some(n=>n.count>0))for(const n of needs){
+   if(refillBudget<=0)break;if(!n.count)continue;
+   n.count--;refillBudget--;jobs.push({type:n.type,role:n.role,region:n.region});
+   (n.type===0?civilians:patrol).push(n.type);
   }
  }
- const types=origin?[...civilians,...patrol,...rush]:drafted;
- return {types,civilians,patrol,rush,streetN,interval,weight,fodder,fodderN,threatN,army,...alert};
+ const boss=!!s.bossSpawned&&s.rushReinforce!==false;
+ const targetWeight=weight*(boss?d.bossWeightRatio:1);
+ // 耗材库存与战斗压力分开，已经在队列里的敌人也扣预算，避免重复下单。
+ const threatType=type=>type>0&&!(alert.stage>=3&&type===1);
+ const enemyWeight=units.reduce((sum,u)=>sum+(live(u)&&threatType(u.type)?unitWeight(u.type):0),0)
+  +[...queued,...jobs].reduce((sum,j)=>sum+(threatType(j.type)?unitWeight(j.type):0),0);
+ const deficit=Math.max(0,targetWeight-enemyWeight),waveBudget=Math.min(deficit,targetWeight*d.maxWaveRatio);
+ let remaining=waveBudget;
+ if(!alert.lost&&alert.stage>=2&&options.includeThreat!==false){
+  const pool=ENEMIES.map((e,type)=>({e,type})).filter(({e,type})=>threatType(type)&&e.level<=alert.maxLevel);
+  while(true){
+   const affordable=pool.filter(({type})=>unitWeight(type)>0&&unitWeight(type)<=remaining);
+   if(!affordable.length)break;
+   const {type}=affordable[Math.min(affordable.length-1,Math.floor(random()*affordable.length))];
+   rush.push(type);jobs.push({type,role:'army'});remaining-=unitWeight(type);
+  }
+ }
+ const min=boss?d.bossIntervalMin:d.intervalMin,max=boss?d.bossIntervalMax:d.intervalMax;
+ const interval=min+Math.max(0,Math.min(1,random()))*(max-min);
+ return {jobs,types:[...civilians,...patrol,...rush],civilians,patrol,rush,streetN:civilians.length,interval,weight,targetWeight,enemyWeight,deficit,waveBudget,waveWeight:waveBudget-remaining,fodder,fodderN:civilians.length+patrol.length,threatN:rush.length,army,regions,...alert};
 }
+
 export function outcome(s){
  // 胜利锁定前死亡才算失败。余韵里要玩家自己点结束，才进入结算。
  if(s.hp<=0&&!s.bossDefeated)return 'ended';
@@ -684,7 +778,7 @@ export function burstBoost(s){
  return 1+BURST_PEAK*Math.min(1,s.burstTime/BURST_TIME);
 }
 export function speed(s,sprinting=false){
- let v=WALK_SPEED*(1+hasteBonus(s))*burstBoost(s);
+ let v=WALK_SPEED*(1+hasteBonus(s))*burstBoost(s)*potionMultiplier(s,'speed');
  if(sprinting)v*=SPRINT_MULT;
  return v;
 }
@@ -695,10 +789,9 @@ export function sprintResist(s){
 }
 export function cooldownScale(s){return [1,.85,.75,.65][s.abilities.haste];}
 export function teamCount(units){return units.filter(u=>u.kind==='ally'&&!u.dead).length;}
-export function guardWanted(s){
- const lv=s.abilities.command;
- if(!lv)return {count:0,type:0};
- return {count:[0,2,5,10][lv],type:lv};
+export function guardWanted(j) {
+  const A = j.abilities.command || 0;
+  return A === 1 ? { count: 2, type: 1, types: [1, 1], hp: 1, atk: 1, revive: 30 } : A === 2 ? { count: 5, type: 3, types: [3, 3, 6, 3, 6], hp: 1, atk: 1, revive: 25 } : A === 3 ? { count: 10, type: 5, types: [5, 7, 4, 5, 7, 4, 5, 7, 4, 5], hp: 2, atk: 2, revive: 20 } : { count: 0, type: 0 };
 }
 // 编制把活着的和正在等复活的算在一起：阵亡只是过一会儿归队，不会空出名额再招新人。
 export function guardRoster(units){return (units||[]).reduce((n,u)=>n+(u.guard?1:0),0);}
@@ -709,10 +802,18 @@ export function guardMissing(s,units){
 }
 export function stepSimulation(s,units,player,dt,mode){
  if(mode!=='playing')return;
- s.time+=dt;
+ s.time+=dt;s.potionTime=Math.max(0,(s.potionTime||0)-dt);
  if(s.burstTime>0)s.burstTime=Math.max(0,s.burstTime-dt);
+ for(const u of units)if(u.surge>0)u.surge=Math.max(0,u.surge-dt);
+ s.airClouds??=[];s.airDrops??=[];
+ for(const cloud of s.airClouds)cloud.time=Math.max(0,cloud.time-dt);
+ s.airClouds=s.airClouds.filter(c=>c.time>1e-9);
+ for(const drop of s.airDrops){drop.remaining-=dt;if(drop.remaining<=0)s.airClouds.push({x:drop.x,z:drop.z,time:3});}
+ s.airDrops=s.airDrops.filter(d=>d.remaining>0);
+ if(s.abilities.air>=3){s.airPulse=(s.airPulse||0)+dt;while(s.airPulse+1e-9>=.5){s.airPulse=Math.max(0,s.airPulse-.5);spawnAirDrop(s,units,player);}}
  tickInfection(s,units,player,dt);
  if(s.abilities.evolve>=2)refreshStats(s);
+ releaseFleshTide(s,units,player);
 }
 export function hurtMother(s,damage,source='秩序火力',sprinting=false){
  let info=incomingDamage(s,damage);
@@ -753,4 +854,45 @@ export function closeWeakenTasks(s){
 export function bossWeakenMods(s){
  const tasks=s.weakenTasks||{};
  return {shield:!tasks.shield,empowered:!tasks.fire,rushReinforce:!tasks.reinforce};
+}
+
+// 文档未完整读取的适配项集中于此：药水时长/感染与移速加成、奔跑耗耐力。
+export const PICKUP_CONFIG={radius:1.5,healRatio:.3,factorRatio:.1,potionDuration:10,attackBonus:.5,infectionBonus:.5,speedBonus:.3};
+export const SPRINT_CONFIG={drain:20,recover:14};
+export function potionMultiplier(s,kind){return s.potionTime>0?1+(PICKUP_CONFIG[kind+'Bonus']||0):1;}
+export function collectPickup(s,type){
+ if(type==='health'){
+  if(s.hp>=s.maxHp)return null;
+  const amount=Math.min(s.maxHp-s.hp,s.maxHp*PICKUP_CONFIG.healRatio);s.hp+=amount;
+  return {type,amount};
+ }
+ if(type==='factor'){
+  if(s.aftermath)return null;
+  const amount=xpNeedFor(s.level)*PICKUP_CONFIG.factorRatio;grantExperience(s,amount);
+  return {type,amount};
+ }
+ if(type==='potion'){s.potionTime=PICKUP_CONFIG.potionDuration;return {type,amount:s.potionTime};}
+ return null;
+}
+export function stepSprint(s,moving,held,dt){
+ if(!held)s.sprintExhausted=false;
+ s.sprinting=!!(moving&&held&&!s.sprintExhausted&&s.stamina>0);
+ if(s.sprinting){s.stamina=Math.max(0,s.stamina-SPRINT_CONFIG.drain*dt);if(s.stamina===0)s.sprintExhausted=true;}
+ else s.stamina=Math.min(STAMINA_MAX,s.stamina+SPRINT_CONFIG.recover*dt);
+ return s.sprinting;
+}
+// 一次确定路线；之后沿两端往返或保持定点。玩家感染进度不触发逃跑。
+export function civilianTarget(u,buildings,random=Math.random){
+ if(u.stationary===undefined)u.stationary=random()<.28;
+ if(!u.route){const dest=streetStroll(u.x,u.z,buildings,random);u.route=[{x:u.x,z:u.z},dest];u.routeEnd=1;}
+ if(u.stationary)return {x:u.x,z:u.z};
+ let target=u.route[u.routeEnd];
+ if(Math.hypot(u.x-target.x,u.z-target.z)<.7){u.routeEnd=1-u.routeEnd;target=u.route[u.routeEnd];}
+ return target;
+}
+
+// 河畔地图适配为两岸 × 南北四区。区域划分不是企微配置中的固定地图布局。
+export function cityRegion({x,z}){return (x>=0?1:0)+(z>=0?2:0);}
+export function regionSpawnSpot(region,random=Math.random){
+ return {x:(region%2?1:-1)*(16+random()*40),z:region>=2?4+random()*48:-8-random()*52};
 }

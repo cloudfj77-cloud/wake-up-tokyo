@@ -176,3 +176,13 @@ body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8p
 @media(max-width:760px){.mapPanel{width:180px;padding:10px}.mapPanel canvas{width:100%;height:auto}.mapPanel .eyebrow{font-size:9px}.mapLegend{font-size:9px}.objectivePanel{width:200px}.weaponHeading{display:block}.weaponHeading>small{display:block;margin-top:4px}.hudTools{top:66px;right:10px}.alertPanel{left:auto;right:65px;transform:none;width:178px}.alertReading>b{font-size:24px}.alertReading>span{font-size:10px}#runCountdown{top:142px;left:auto;right:65px;transform:none}#toast{top:200px}#infectionFeedback{bottom:auto;top:245px}}
 @media(max-height:560px){.mapPanel{width:178px;padding:9px}.mapLegend{gap:5px;font-size:8px}.objectivePanel{max-height:calc(100vh - 85px);overflow:auto}#infectionFeedback{display:none}}
 @media(prefers-reduced-motion:reduce){.choiceSlot.rerolled .card,#crosshair.ready #chargeRings,#crosshair.discharged #chargeRings,#crosshair.hit .hitMark{animation:none!important}#chargeRings circle{transition:none}}
+
+/* Tab 城市地图：保持原小地图，展开时暂停战场。 */
+#cityMap.expanded{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(80vw,780px);max-height:92vh;padding:22px;z-index:30;pointer-events:auto;background:#17222ef5;}
+#cityMap.expanded canvas{max-height:72vh;object-fit:contain;width:100%;}
+#cityMap.expanded .mapLegend{display:flex;}
+#mapClose{display:block;margin:0 0 12px auto;padding:8px 14px;background:#283744;border:1px solid #aab9c9;border-radius:8px;}
+#mapClose[hidden],#potionStatus[hidden]{display:none;}
+#potionStatus{display:block;margin-top:8px;color:#ffcf55;}
+
+.mapChoice{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;color:#d7c5e4;font-size:12px}.mapChoice select{width:100%;border:1px solid #b88cd855;border-radius:7px;background:#251d32;color:#fff4dc;padding:10px;font:inherit}

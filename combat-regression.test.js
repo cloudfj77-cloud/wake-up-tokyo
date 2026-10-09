@@ -44,7 +44,7 @@ test('an empty magazine preserves full charge; a loaded gun spends it on one pow
 });
 function motionContext(){
  const actions=[];
- const ctx=vm.createContext({mode:'playing',player:{roll:0,y:0,vy:0,crouch:false},keys:{},forward:()=>({x:0,z:1}),yaw:0,ROLL_DURATION:.72,ACTION_BUFFER:.18,JUMP_SPEED:7,GRAVITY:18,rushCd:10,rollBuffered:0,jumpBuffered:0,attackCd:.7,reloadTime:.5,playerVisual:{attackTime:0},playCharacterAttack:(v,type,duration)=>{v.attackTime=duration;actions.push(type);},playCharacterJump:v=>{v.attackTime=0;actions.push('jump');},music:{effect:noop},mouseHeld:true,dragging:true,pointerLock:{release:noop}});
+ const ctx=vm.createContext({state:rules.makeState(),mode:'playing',player:{roll:0,y:0,vy:0,crouch:false},keys:{},forward:()=>({x:0,z:1}),yaw:0,ROLL_DURATION:.72,ACTION_BUFFER:.18,JUMP_SPEED:7,GRAVITY:18,rushCd:10,rollBuffered:0,jumpBuffered:0,attackCd:.7,reloadTime:.5,playerVisual:{attackTime:0},playCharacterAttack:(v,type,duration)=>{v.attackTime=duration;actions.push(type);},playCharacterJump:v=>{v.attackTime=0;actions.push('jump');},music:{effect:noop},mouseHeld:true,dragging:true,pointerLock:{release:noop}});
  vm.runInContext(section('function rush()','function reloadGun(')+source.match(/function clearInput\(\)\{[^\n]+/)[0],ctx);
  return {ctx,actions,run:code=>vm.runInContext(code,ctx)};
 }
@@ -73,12 +73,12 @@ test('roll pressed just before landing triggers on landing; early airborne taps 
  run('requestRoll();stepPlayerMotion(.1);stepPlayerMotion(.1)');assert.equal(ctx.rollBuffered,0);
  ctx.player.y=.01;ctx.player.vy=-3;run('stepPlayerMotion(.016)');assert.deepEqual(actions,[]);
 });
-test('jump buffered before landing fires once and takes priority over held roll',()=>{
+test('jump buffered before landing fires once; holding Shift never rolls',()=>{
  const {ctx,actions,run}=motionContext();ctx.player.y=.1;ctx.player.vy=-3;ctx.keys.ShiftLeft=true;
  run('requestJump();stepPlayerMotion(.05)');assert.deepEqual(actions,['jump']);assert.equal(ctx.player.vy,7);
  assert.equal(ctx.player.roll,0);assert.equal(ctx.jumpBuffered,0);
  run('stepPlayerMotion(.1)');assert.deepEqual(actions,['jump']);
- ctx.player.y=.01;ctx.player.vy=-3;run('stepPlayerMotion(.016)');assert.deepEqual(actions,['jump','rush']);
+ ctx.player.y=.01;ctx.player.vy=-3;run('stepPlayerMotion(.016)');assert.deepEqual(actions,['jump']);
 });
 test('the latest landing input wins, and pausing clears all queued movement',()=>{
  const {ctx,actions,run}=motionContext();ctx.player.y=.1;ctx.player.vy=-3;
@@ -104,4 +104,16 @@ test('restoring old cast-based charge starts empty, while new hit-based progress
   vm.runInContext('restore(saved)',ctx);
   assert.equal(ctx.state.powerCharge,current??0);assert.equal('launcherCharge' in ctx.state,false);
  }
+});
+
+test('format 10 checkpoint clamps base level, preserves owned abilities and earned alert XP',()=>{
+ const state=rules.makeState();state.level=19;state.xp=4;state.pending=3;state.xpEarned=900;
+ state.abilities.launcher=3;state.history=Array.from({length:18},()=>({id:'launcher',level:3,time:0}));
+ const saved={version:10,state,units:[],player:{x:0,z:0,roll:.4,vy:2},objects:[]};
+ const ctx=vm.createContext({...rules,T,saved,state:rules.makeState(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:noop,world:{destructibles:[],spawnWeakenSites:noop}});
+ vm.runInContext(section('function restore(saved)','async function start('),ctx);
+ vm.runInContext('restore(saved)',ctx);
+ assert.equal(ctx.state.level,15);assert.equal(ctx.state.need,rules.xpNeedFor(15));assert.equal(ctx.state.xp,0);
+ assert.equal(ctx.state.pending,0);assert.equal(ctx.state.abilities.launcher,3);assert.equal(ctx.state.xpEarned,900);
+ assert.equal(ctx.player.roll,0);assert.equal(ctx.player.vy,0);
 });
