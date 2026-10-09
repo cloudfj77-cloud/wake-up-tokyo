@@ -1,4 +1,5 @@
-export const LEVEL_CAP=30;
+// 初版人物上限 15。生存与进化 3 级才把上限抬到 50，而且 16 级起不再给新的三选一。
+export const LEVEL_CAP=15;
 export const EVOLVE_CAP=50;
 export const BASE_NEED=4;
 export const LATE_XP_FROM=10;
@@ -29,49 +30,44 @@ export const ENEMIES=[
 ];
 export const ABILITIES=[
  {id:'air',name:'空气传播',icon:'◌',group:'感染系',descriptions:[
-  '自身 5m 内敌人每 0.5 秒 +2 感染。',
-  '范围 10m，每 0.5 秒 +4 感染，且可作用于尸体。',
-  '范围 15m，每 0.5 秒 +6 感染，且可作用于尸体。'
+  '持续散播反抗因子，使自身半径 5m 内的敌人每 0.5 秒累积 2 点感染值。',
+  '传播半径扩大至 10m，每 0.5 秒累积 4 点感染值，并可感染尸体。',
+  '传播半径扩大至 15m，每 0.5 秒累积 6 点感染值。每隔 0.5 秒，在自身周围 30m 内随机引爆一片区域，形成半径 10m、持续 3 秒的感染气雾，每 0.5 秒施加 4 点感染值，不与自身传播效果叠加。'
  ]},
- {id:'guns',name:'枪？枪！',icon:'⌐',group:'武器系',descriptions:[
-  '解锁手枪与霰弹枪。击杀/同化 2 级及以上敌人：手枪 +3、霰弹 +1 备弹。',
-  '解锁步枪与狙击枪。3 级及以上：步枪 +10、狙击 +3；一级补弹量翻倍。',
-  '解锁 RPG。4 级及以上 +1 发。枪械造成攻击力一半的感染。'
- ]},
- {id:'launcher',name:'可感染发射器',icon:'◎',group:'武器系',descriptions:[
-  '解锁感染针。命中只累积感染、不造成伤害，适合叫醒路人。键位按点出顺序排。',
-  '针剂感染提高，并可穿透多名敌人，依然不造成伤害。',
-  '解锁三环充能：枪械与注射器共用，命中三次后下一发强化炮弹。'
+ {id:'launcher',name:'可感染注射器',icon:'◎',group:'武器系',descriptions:[
+  '解锁感染针，按准星方向瞄准射击，命中时累积感染值，但不造成伤害。',
+  '感染针的感染累积量提高，并可穿透多名敌人。',
+  '解锁「三环充能」：累计命中 3 次后，下一发射击升级为强化炮弹。'
  ]},
  {id:'frenzy',name:'狂杀',icon:'⚔',group:'母体系',descriptions:[
-  '每次击杀或同化 +1 生命与等量上限。',
-  '生命上限达到 500 与 1000 时，各额外获得一次能力进化。',
-  '提升量翻倍，体型变大。军队每 2 次击杀或同化，才为你提供 1 点生命。'
+  '由你完成击杀或同化时，恢复 1 点生命，并永久提升 1 点生命上限。攻击、感染武器、空气传播及持续感染造成的同化均可触发。',
+  '亲自击杀或同化的提升量变为 2 点。军队每累计 2 次击杀或同化，额外为你恢复 1 点生命并永久提升 1 点生命上限。体型增大，近战攻击范围适度扩大。',
+  '亲自击杀或同化的提升量变为 3 点。军队提供成长的效率提升为 每次击杀或同化贡献 1 点。体型进一步增大，并解锁 「血潮」：每累计由你完成击杀或同化 10 个单位，向周围释放血肉冲击，造成范围伤害并击退敌人。感染武器、空气传播及持续感染造成的同化均计入进度；军队独立完成的不计入。'
  ]},
  {id:'dot',name:'持续感染',icon:'⌁',group:'感染系',descriptions:[
-  '你造成的感染会持续累积，直到同化完成。每秒 +1。',
-  '持续感染增强（每秒 +2），尸体也会继续上涨。',
-  '你的军队命中也会挂上同样的持续感染（每秒 +3）。'
+  '感染在目标体内扎根。敌人受到你施加的感染后，每秒额外累积 1 点感染值，直至同化完成。',
+  '持续感染提升至每秒 2 点，并可对尸体生效。感染目标发生病变，移动速度降低 15%。',
+  '持续感染提升至每秒 3 点，军队也能施加相同效果。目标感染值达到同化阈值的 50% 时，触发「深度寄生」：血肉触须将其禁锢 2 秒，此后受到的持续感染效果翻倍，直至同化完成。每个目标仅触发一次。'
  ]},
  {id:'haste',name:'急速',icon:'↟',group:'机动系',descriptions:[
-  '移速 +15%。',
-  '奔跑减伤 10%。击杀后爆发移速 3 秒（开头快五成，再慢慢回到平时速度）。',
-  '移速 +30%，奔跑减伤 15%，可撞飞敌人造成重击伤害。军队获得 2 级效果，移速 +10%。'
+  '移动速度提高 15%。',
+  '奔跑时受到的伤害降低 10%。击杀敌人后，获得初始为 50% 的额外移速加成，在 3 秒内逐渐衰减至零。',
+  '移动速度加成提升至 30%，奔跑减伤提升至 15%。奔跑时可撞飞沿途敌人，造成重击伤害。'
  ]},
  {id:'tough',name:'皮糙肉厚',icon:'✚',group:'母体系',descriptions:[
-  '获得 15% 减伤。',
-  '减伤 25%。10m 内敌人打中你后，减免的伤害反弹，并附加一半感染。',
-  '自身减伤 35%，反伤 30m。军队获得 1 级减伤。'
+  '受到的伤害降低 15%。',
+  '减伤提升至 25%。受到来自 10m 内敌人的攻击时，将减免的伤害反弹给攻击者，并附加相当于反弹伤害一半的感染值。',
+  '自身减伤提升至 35%，反伤范围扩大至 30m。你的军队获得 15% 减伤。'
  ]},
  {id:'evolve',name:'生存与进化',icon:'✶',group:'成长系',descriptions:[
-  '获得等级×10 生命，以及等级点的攻击力。',
-  '每生存 1 分钟，上述系数额外 +5%。',
-  '等级上限 50（31 级后不再给新能力）。新转化的敌人升 1 级，随机变成高一等级的敌人。'
+  '获得相当于自身等级 ×10 的生命加成，以及与等级等量的攻击力加成。每次升级触发「适应修复」，恢复 10% 最大生命。',
+  '每生存 1 分钟，所有系数额外提高 5%。生命上限达到 500、1000 时，各额外获得一次能力进化。',
+  '等级上限提升至 50，后续升级不再获得新能力。新同化的敌人提升 1 级，随机进化为对应等级的兵种；原本已为 4 级的单位保留兵种，生命提高 28%。新同化单位触发「进化狂潮」，体型暂时增大，攻击速度与移动速度提高 30%，持续 5 秒。'
  ]},
  {id:'command',name:'听我号令',icon:'⚑',group:'指挥系',descriptions:[
-  '可以指挥军队。获得 2 名 2 级护卫，阵亡后过一会儿归队。',
-  '护卫升 1 阶，编制至 5 人。',
-  '护卫再升 1 阶，编制至 10 人。'
+  '获得 2 名 2 级护卫，护卫死亡一段时间后自动再生。',
+  '护卫提升至 3 级，编制扩大至 5 名。',
+  '护卫提升至 4 级，编制扩大至 10 名，额外获得 100% 生命与攻击力加成，且会自动组成合适的阵容。'
  ]}
 ];
 export const GUNS=[
@@ -89,8 +85,8 @@ export function makeState(){
   hp:BASE_HP,maxHp:BASE_HP,stamina:STAMINA_MAX,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,
   xp:0,xpEarned:0,need:xpNeedFor(1),level:1,pending:1,time:0,alert:1,peakAlert:1,
   abilities:{air:0,guns:0,launcher:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
-  history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
-  mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
+  history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0,launcher:0},
+  mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0,launcher:0},
   clip:0,clipMax:0,weapon:-1,gunId:null,powerCharge:0,weaponOrder:[],
   first:null,maxChain:0,purifiers:0,highestEnemy:0,mission:0,bossDefeated:false,lastPick:-60,killRewards:[],
   frenzyHp:0,armyFrenzy:0,frenzyMarks:{500:false,1000:false},burstTime:0,commandStance:'follow',
@@ -149,7 +145,9 @@ export function attackPower(s){return BASE_ATK+(s.abilities.evolve?s.level*evolv
 export function meleeSpec(s,kind){
  const m=MELEE[kind];
  const atk=attackPower(s);
- return {infection:BASE_INF*m.mult,damage:atk*m.mult,cd:m.cd,range:m.range,aoe:m.aoe};
+ // 狂杀 2 级起人变大，近战范围跟着略增；3 级再大一圈。
+ const reach=s.abilities.frenzy>=3?1.35:s.abilities.frenzy>=2?1.15:1;
+ return {infection:BASE_INF*m.mult,damage:atk*m.mult,cd:m.cd,range:m.range*reach,aoe:m.aoe*reach};
 }
 export function refreshStats(s){
  const evolveHp=s.abilities.evolve?s.level*10*evolveCoeff(s):0;
@@ -158,6 +156,12 @@ export function refreshStats(s){
  s.maxHp=next;
  if(delta>0)s.hp+=delta;
  s.hp=Math.min(s.hp,s.maxHp);
+ // 500 / 1000 的额外三选一从狂杀挪到了生存与进化 2 级。旧存档已经领过的标记不再发第二次。
+ if(s.abilities.evolve>=2){
+  for(const mark of [500,1000]){
+   if(!s.frenzyMarks[mark]&&s.maxHp>=mark){s.frenzyMarks[mark]=true;s.pending++;}
+  }
+ }
  return delta;
 }
 export function unlockedGuns(s){return GUNS.filter(g=>s.abilities.guns>=g.unlock);}
@@ -173,12 +177,17 @@ export function weaponSlots(s){
 }
 export function gunById(id){return GUNS.find(g=>g.id===id)||null;}
 function addAmmo(s,id,n){s.ammo[id]=Math.min(999,(s.ammo[id]||0)+n);}
+// 注射器跟手枪同一档：弹匣 12，点出时给一匣加 24 发备弹，2 级及以上敌人补 3 发。
+export const LAUNCHER_CLIP=12;
+export const LAUNCHER_RESERVE=24;
 export function grantKillAmmo(s,enemyLevel){
- const g=s.abilities.guns;if(!g)return;
- const mult=g>=2?2:1;
- if(g>=1&&enemyLevel>=2){addAmmo(s,'pistol',3*mult);addAmmo(s,'shotgun',1*mult);}
- if(g>=2&&enemyLevel>=3){addAmmo(s,'rifle',10);addAmmo(s,'sniper',3);}
- if(g>=3&&enemyLevel>=4)addAmmo(s,'rpg',1);
+ const g=s.abilities.guns;
+ if(g){
+  const mult=g>=2?2:1;
+  if(g>=1&&enemyLevel>=2){addAmmo(s,'pistol',3*mult);addAmmo(s,'shotgun',1*mult);}
+  if(g>=2&&enemyLevel>=3){addAmmo(s,'rifle',10);addAmmo(s,'sniper',3);}
+  if(g>=3&&enemyLevel>=4)addAmmo(s,'rpg',1);
+ }
 }
 export function gunInfection(s,damage){return s.abilities.guns>=3?damage*.5:0;}
 export function hasLauncher(s){return (s.abilities.launcher||0)>=1;}
@@ -212,35 +221,57 @@ export function consumePowerCharge(s){
 export function upgrade(s,id){
  if(!ABILITIES.some(a=>a.id===id)||s.abilities[id]>=3||s.pending<=0)return false;
  s.abilities[id]++;s.pending--;s.history.push({id,level:s.abilities[id],time:s.time});s.lastPick=s.time;
- if(id==='guns'){
-  if(s.abilities.guns===1){addAmmo(s,'pistol',24);addAmmo(s,'shotgun',8);s.mags.pistol=GUNS[0].clip;s.mags.shotgun=GUNS[1].clip;rememberWeapon(s,'pistol');rememberWeapon(s,'shotgun');if(s.weapon===-1)s.weapon=0;}
-  if(s.abilities.guns===2){addAmmo(s,'rifle',30);addAmmo(s,'sniper',9);s.mags.rifle=GUNS[2].clip;s.mags.sniper=GUNS[3].clip;rememberWeapon(s,'rifle');rememberWeapon(s,'sniper');}
-  if(s.abilities.guns===3){addAmmo(s,'rpg',2);s.mags.rpg=1;rememberWeapon(s,'rpg');}
- }
- // 注射器和枪一样，按这次点击插进键位。手上还是空的，就直接换成刚点出的那件。
- if(id==='launcher'&&s.abilities.launcher===1){rememberWeapon(s,'launcher');if(s.weapon===-1)s.weapon=LAUNCHER_SLOT;}
+ // 「枪？枪！」已从能力表删除，新局点不到枪。旧存档里已经写上的枪械键位仍可用。
+ // 注射器按这次点击插进键位。手上还是空的，就直接换成刚点出的那件。
+ // 感染针按现行文案直接射击，不发弹匣。
+ if(id==='launcher'&&s.abilities.launcher===1){rememberWeapon(s,'launcher');if(s.weapon===-1){s.weapon=LAUNCHER_SLOT;s.clip=0;s.clipMax=0;s.gunId=null;}}
  if(id==='frenzy'||id==='evolve')refreshStats(s);
  if(id==='command')s.needGuards=true;
  return true;
 }
 // 军队击杀/同化要凑满这么多次，才折算成 1 点生命。
 export const ARMY_FRENZY_STEP=2;
+// 亲自击杀：1/2/3 级各加 1/2/3。军队从 2 级起才算，2 级要攒 2 次才 +1，3 级每次 +1。
+export const FRENZY_TIDE_EVERY=10;
+export const FRENZY_TIDE_RADIUS=6;
 export function grantFrenzy(s,fromArmy=false){
  const lv=s.abilities.frenzy;if(!lv)return 0;
- if(fromArmy&&lv<3)return 0;
- const amt=(!fromArmy&&lv>=3)?2:1;
- // 军队的战果先攒着，攒够 ARMY_FRENZY_STEP 次才给 1 点，不再一次一跳。
+ let amt=0;
  if(fromArmy){
-  s.armyFrenzy=(s.armyFrenzy||0)+1;
-  if(s.armyFrenzy<ARMY_FRENZY_STEP)return 0;
-  s.armyFrenzy=0;
+  if(lv<2)return 0;
+  if(lv===2){
+   s.armyFrenzy=(s.armyFrenzy||0)+1;
+   if(s.armyFrenzy<ARMY_FRENZY_STEP)return 0;
+   s.armyFrenzy=0;
+  }
+  amt=1;
+ }else{
+  amt=lv;
+  s.personalFrenzy=(s.personalFrenzy||0)+1;
+  // 血潮只数亲自解决的人，军队的不算。凑满 10 个，等这一帧模拟去放冲击波。
+  if(lv>=3&&s.personalFrenzy%FRENZY_TIDE_EVERY===0)s.tideReady=(s.tideReady||0)+1;
  }
  s.frenzyHp+=amt;
  refreshStats(s);
- for(const mark of [500,1000]){
-  if(lv>=2&&!s.frenzyMarks[mark]&&s.maxHp>=mark){s.frenzyMarks[mark]=true;s.pending++;}
- }
  return amt;
+}
+// 血潮打出伤害并往外推。同一帧只放一次，避免冲击波自己的击杀再套一层冲击波。
+export function applyPendingTide(s,units,player){
+ if(!s.tideReady||s.tideLock||!player)return [];
+ s.tideReady=0;s.tideLock=true;
+ const spec=meleeSpec(s,'heavy');
+ const hitIds=[];
+ for(const u of units||[]){
+  if(u.dead||u.converted||u.kind==='corpse')continue;
+  if(distance(player,u)>FRENZY_TIDE_RADIUS)continue;
+  const dx=u.x-player.x,dz=u.z-player.z,dist=Math.hypot(dx,dz)||1;
+  u.x+=dx/dist*3;u.z+=dz/dist*3;
+  hit(s,u,0,spec.damage,false,false);
+  hitIds.push(u.id);
+ }
+ s.tideBurst={x:player.x,z:player.z};
+ s.tideLock=false;
+ return hitIds;
 }
 export function reward(s,u,converted){
  // 余韵里胜利已经锁定，击杀和转化不再涨经验、等级或结算统计。
@@ -250,7 +281,7 @@ export function reward(s,u,converted){
  s.highestEnemy=Math.max(s.highestEnemy,ENEMIES[u.type].level);
  grantKillAmmo(s,ENEMIES[u.type].level);
  grantFrenzy(s,!!u.fromArmy);
- if(s.abilities.haste>=2&&!u.fromArmy)s.burstTime=3;
+ if(s.abilities.haste>=2&&!converted&&!u.fromArmy)s.burstTime=3;
  if(u.rewarded)return;u.rewarded=true;
  const cap=levelCap(s);
  const gain=xpFromUnit(u);
@@ -261,8 +292,10 @@ export function reward(s,u,converted){
   s.xp+=gain;
   while(s.xp>=s.need&&s.level<cap){
    s.xp-=s.need;s.level++;s.need=xpNeedFor(s.level);
+   // 15 级之后只涨等级和生存与进化的数值，不再发三选一。
    if(s.level<=LEVEL_CAP)s.pending++;
    refreshStats(s);
+   if(s.abilities.evolve>=1)s.hp=Math.min(s.maxHp,s.hp+s.maxHp*.1);
   }
   if(s.level===cap)s.xp=0;
  }
@@ -276,6 +309,7 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
  u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;u.rush=false;u.stuck=0;
  u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
+ u.parasite=false;u.root=0;u.slow=false;u.surge=0;
  return u;
 }
 export function makeUnit(id,type,x,z,city=true,profession=0){
@@ -341,8 +375,13 @@ export function convert(s,u){
  u.promoted=promoted;
  // 换成更高一阶本身就已经吃到属性提升；只有换不动（本来就是最高阶）才退回旧的血量乘数。
  if(s.abilities.evolve>=3&&!promoted)applyRankBoost(u);
+ // 进化狂潮：新同化的人短暂变大、打得更快、跑得更快。已经是 4 级没换兵种的也算新同化。
+ if(s.abilities.evolve>=3)u.surge=5;
+ onConverted?.(s,u);
  return true;
 }
+// 漫画特效在同化落地时补一层标记，不参与数值。
+export let onConverted=null;
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.dead||u.converted||u.kind==='corpse')return 'none';
  if(ENEMIES[u.type].shield&&fromFront)damage*=.5;
@@ -358,7 +397,7 @@ const TOUGH_DR=[0,.15,.25,.35];
 export function damageAlly(u,damage,s){
  const dr=s?.abilities.tough>=3?TOUGH_DR[1]:0;
  u.hp=Math.max(0,u.hp-damage*(1-dr));u.hurt=2;
- if(u.hp===0){u.kind='fallen';u.dead=true;if(u.guard)u.guardCd=12;}
+ if(u.hp===0){u.kind='fallen';u.dead=true;if(u.guard)u.guardCd=guardWanted(s).revive||30;}
 }
 export function distance(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
 const AIR=[
@@ -367,6 +406,9 @@ const AIR=[
  {radius:10,perHalf:4,corpse:true},
  {radius:15,perHalf:6,corpse:true}
 ];
+// 3 级气雾半径 10 米，落点在身边 30 米内，和自身光环分开结算。
+export const AIR_CLOUD_RADIUS=10;
+export const AIR_CLOUD_RANGE=30;
 const DOT_RATE=[0,1,2,3];
 // 净化不叠加：站着三四个净化工兵也只按最强的那一个算，不存在围成一圈把感染冻住的情况。
 // 原本是每个各清 4 点线性累加，中后期一轮刷出三四个就能把空气传播（3 级才 12/秒）整个抵消掉，
@@ -388,17 +430,39 @@ export function tickInfection(s,units,player,dt){
    else negative=Math.max(negative,ENEMIES[p.type].drain??8);
   }
   negative=Math.min(negative,PURIFY_MAX);
-  if(air.radius&&(!corpse||air.corpse)){
-   if(distance(player,u)<=air.radius)positive+=air.perHalf*2;
-  }
   const tagged=u.tagged;
-  const playerDot=tagged==='player'||tagged===true;
+  const playerDot=tagged==='player'||tagged===true||u.playerInfection===true;
   const armyDot=tagged==='army'&&s.abilities.dot>=3;
-  if((playerDot||armyDot)&&(!corpse||s.abilities.dot>=2))positive+=DOT_RATE[s.abilities.dot]||0;
+  if(playerDot)u.playerInfection=true;
+  const inAura=!!(air.radius&&(!corpse||air.corpse)&&distance(player,u)<=air.radius);
+  // 光环按每秒结算；气雾按半秒一跳，重叠的雾也不叠加，并且不和光环叠在同一个人身上。
+  let mistGain=0;
+  if(inAura){positive+=air.perHalf*2;u.mistTick=0;}
+  else if(!corpse&&s.abilities.air>=3){
+   let exposure=0;
+   for(const cloud of s.airClouds||[]){
+    if(cloud.time>0&&Math.hypot(u.x-cloud.x,u.z-cloud.z)<=AIR_CLOUD_RADIUS)exposure=Math.max(exposure,Math.min(dt,cloud.time));
+   }
+   if(exposure>0){
+    const elapsed=(u.mistTick||0)+exposure,ticks=Math.floor((elapsed+1e-9)/.5);
+    mistGain=ticks*4;u.mistTick=Math.max(0,elapsed-ticks*.5);
+   }else u.mistTick=0;
+  }else u.mistTick=0;
+  if((inAura&&air.perHalf>0)||mistGain>0)u.playerInfection=true;
+  let dot=0;
+  if((playerDot||armyDot)&&(!corpse||s.abilities.dot>=2))dot=DOT_RATE[s.abilities.dot]||0;
+  // 深度寄生：感染过半就禁锢一次，之后持续感染翻倍，直到同化。
+  if(s.abilities.dot>=3&&!corpse&&!u.parasite&&(playerDot||armyDot)&&u.threshold&&u.infection+positive*dt+mistGain>=u.threshold*.5&&u.infection<u.threshold){
+   u.parasite=true;u.root=2;
+  }
+  if(u.parasite)dot*=2;
+  positive+=dot;
+  u.slow=!!(s.abilities.dot>=2&&!corpse&&(playerDot||armyDot)&&u.infection>0);
+  if(u.root>0)u.root=Math.max(0,u.root-dt);
   if(corpse&&!air.corpse&&s.abilities.dot<2)positive=0;
-  u.infection=Math.max(0,Math.min(u.threshold,u.infection+(positive-negative)*dt));
+  u.infection=Math.max(0,Math.min(u.threshold,u.infection+(positive-negative)*dt+mistGain));
   u.purified=negative;
-  if(u.infection>=u.threshold){if(convert(s,u))chain++;continue;}
+  if(u.infection>=u.threshold){if(u.playerInfection)u.fromArmy=false;else if(armyDot)u.fromArmy=true;if(convert(s,u))chain++;continue;}
   if(corpse){u.corpseTime-=dt;if(u.corpseTime<=0){u.dead=true;u.kind='expired';}}
  }
  s.maxChain=Math.max(s.maxChain,chain);
@@ -696,10 +760,13 @@ export function sprintResist(s){
 }
 export function cooldownScale(s){return [1,.85,.75,.65][s.abilities.haste];}
 export function teamCount(units){return units.filter(u=>u.kind==='ally'&&!u.dead).length;}
+// 1 级两名 2 级棍警；2 级五名 3 级特警混编；3 级十名 4 级混编，生命和攻击翻倍。
 export function guardWanted(s){
- const lv=s.abilities.command;
- if(!lv)return {count:0,type:0};
- return {count:[0,2,5,10][lv],type:lv};
+ const lv=s.abilities.command||0;
+ if(lv===1)return {count:2,type:1,types:[1,1],hp:1,atk:1,revive:30};
+ if(lv===2)return {count:5,type:3,types:[3,3,6,3,6],hp:1,atk:1,revive:25};
+ if(lv===3)return {count:10,type:5,types:[5,7,4,5,7,4,5,7,4,5],hp:2,atk:2,revive:20};
+ return {count:0,type:0};
 }
 // 编制把活着的和正在等复活的算在一起：阵亡只是过一会儿归队，不会空出名额再招新人。
 export function guardRoster(units){return (units||[]).reduce((n,u)=>n+(u.guard?1:0),0);}
@@ -708,12 +775,32 @@ export function guardMissing(s,units){
  if(!want.count)return 0;
  return Math.max(0,want.count-guardRoster(units));
 }
+// 3 级每半秒在身边 30 米内随机落下一片，持续 3 秒。
+function placeAirCloud(s,player){
+ const angle=Math.random()*Math.PI*2,radius=Math.sqrt(Math.random())*AIR_CLOUD_RANGE;
+ const cloud={x:player.x+Math.cos(angle)*radius,z:player.z+Math.sin(angle)*radius,time:3};
+ s.airClouds=s.airClouds||[];
+ s.airClouds.push(cloud);
+ // 特效可以先把雾拿出来做下落，落地再放回去。
+ onAirCloudPlaced?.(s,cloud);
+}
+export let onAirCloudPlaced=null;
 export function stepSimulation(s,units,player,dt,mode){
  if(mode!=='playing')return;
  s.time+=dt;
  if(s.burstTime>0)s.burstTime=Math.max(0,s.burstTime-dt);
+ for(const u of units||[])if(u.surge>0)u.surge=Math.max(0,u.surge-dt);
+ if((s.abilities.air||0)>=3){
+  // 旧存档如果还记着 2 秒一跳，进这版后改回半秒，避免第一片雾等太久。
+  if(s.airCycleVersion!==3){s.airPulse=(s.airPulse||0)%.5;s.airCycleVersion=3;}
+  s.airPulse=(s.airPulse||0)+dt;
+  while(s.airPulse+1e-9>=.5){s.airPulse=Math.max(0,s.airPulse-.5);placeAirCloud(s,player);}
+ }
  tickInfection(s,units,player,dt);
+ // 先结算再减时间，一整片 3 秒的雾能打满 6 次半秒感染。
+ if(s.airClouds){for(const cloud of s.airClouds)cloud.time=Math.max(0,cloud.time-dt);s.airClouds=s.airClouds.filter(cloud=>cloud.time>1e-9);}
  if(s.abilities.evolve>=2)refreshStats(s);
+ applyPendingTide(s,units,player);
 }
 export function hurtMother(s,damage,source='秩序火力',sprinting=false){
  let info=incomingDamage(s,damage);
