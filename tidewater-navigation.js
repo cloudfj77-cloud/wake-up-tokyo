@@ -58,13 +58,31 @@ export function createTidewaterNavigation(level) {
  function field(goal){if(fields.has(goal))return fields.get(goal);const next=new Int32Array(count).fill(-1);let head=0,tail=1;queue[0]=goal;next[goal]=goal;while(head<tail){const i=queue[head++];for(const n of edges[i])if(connected[n]&&next[n]<0){next[n]=i;queue[tail++]=n;}}if(fields.size>=12)fields.delete(fields.keys().next().value);fields.set(goal,next);return next;}
  function waypoint(u,x,z){
   const now=performance.now(),old=routes.get(u);
-  if(old&&now<old.until&&Math.hypot(old.goal.x-x,old.goal.z-z)<2&&Math.hypot(old.p.x-u.x,old.p.z-u.z)>.65)return old.p;
+  // 还在朝上一个路点靠近，就先沿用，避免每帧重算整张地图。
+  // 人卡住没动时不要死抱着那个路点，否则会一直对着墙角。
+  const closing=old&&Math.hypot(u.x-old.seen.x,u.z-old.seen.z)>.15;
+  if(old&&now<old.until&&Math.hypot(old.goal.x-x,old.goal.z-z)<2&&Math.hypot(old.p.x-u.x,old.p.z-u.z)>.65&&closing)return old.p;
   let p={x,z};
   if(!clear(u,p)){
-   const goal=closestNode(x,z),start=closestNode(u.x,u.z),next=field(goal);let at=start;p=point(start);
-   for(let k=0;k<12;k++){const n=next[at];if(n<0||n===at)break;const q=point(n);if(!clear(u,q))break;at=n;p=q;}
+   const goal=closestNode(x,z),start=closestNode(u.x,u.z),next=field(goal);
+   let at=start;p=point(start);
+   for(let k=0;k<16;k++){
+    const n=next[at];if(n<0||n===at)break;
+    const q=point(n);
+    if(!clear(u,q)){
+     // 墙角会挡住更远的直线，但旁边那一格往往就是绕路的第一步。
+     if(Math.hypot(p.x-u.x,p.z-u.z)<.4){
+      const dx=q.x-u.x,dz=q.z-u.z,len=Math.hypot(dx,dz)||1,step=Math.min(.4,len);
+      const sx=u.x+dx/len*step,sz=u.z+dz/len*step;
+      if(canMove(u,sx,sz))p={x:sx,z:sz};
+     }
+     break;
+    }
+    at=n;p=q;
+   }
   }
-  routes.set(u,{goal:{x,z},p,until:now+800});return p;
+  routes.set(u,{goal:{x,z},p,seen:{x:u.x,z:u.z},until:now+600});
+  return p;
  }
  return {bounds,step,width,depth,heights,connected,point,heightAt,bodyBlocked,free,nearest,canMove,clear,waypoint,nodeCount:largest.length};
 }

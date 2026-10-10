@@ -9,7 +9,7 @@ import {loadCharacterAssets,createCharacterVisual,setCharacterKind,playCharacter
 import {block} from './world.js';
 import {bridgeDeckHeight,loadRiverside} from './riverside-world.js';
 import {Soundtrack} from './music.js';
-import {ABILITIES,ENEMIES,GUNS,POPULATION,STAMINA_MAX,makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,stepSimulation,damageAlly,distance,threat,outcome,speed,teamCount,hurtMother,bossReady,spawnPlan,TUNE,resetTune,applyTune,setTuneValue,meleeSpec,gunInfection,guardWanted,guardMissing,levelCap,isRangedEnemy,hostileWindup,stepHostileMelee,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,allyTemplate,grenadeBlast,makeSpawnQueue,enqueueSpawnJobs,takeSpawnJobs,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,tickRunClock,alertValue,ALERT_NAMES,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,WEAKEN_TASKS,isStreetCivilian,isStreetPatrol,shouldCullTroop,planArmyWave,armySlot,planCivilianSpot,streetStroll,collectPickup,PICKUP_CONFIG,potionMultiplier,stepSprint,civilianTarget,xpNeedFor,cityRegion,regionSpawnSpot,refreshStats,AIR_SPAWN_RANGE,AIR_CLOUD_RADIUS,FLESH_RADIUS} from './rules.js';
+import {ABILITIES,ENEMIES,GUNS,POPULATION,STAMINA_MAX,makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,stepSimulation,damageAlly,distance,threat,outcome,speed,teamCount,hurtMother,bossReady,spawnPlan,TUNE,resetTune,applyTune,setTuneValue,meleeSpec,gunInfection,guardWanted,guardMissing,levelCap,isRangedEnemy,hostileWindup,stepHostileMelee,beginShieldCharge,stepShieldCharge,shieldChargeHits,beginPurifierSpray,stepPurifierSpray,purifierConeHit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,allyTemplate,grenadeBlast,makeSpawnQueue,enqueueSpawnJobs,takeSpawnJobs,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,tickRunClock,alertValue,ALERT_NAMES,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,WEAKEN_TASKS,isStreetCivilian,isStreetPatrol,shouldCullTroop,planArmyWave,armySlot,planCivilianSpot,streetStroll,collectPickup,PICKUP_CONFIG,potionMultiplier,stepSprint,civilianTarget,xpNeedFor,cityRegion,regionSpawnSpot,refreshStats,AIR_SPAWN_RANGE,AIR_CLOUD_RADIUS,FLESH_RADIUS} from './rules.js';
 const mapConfig=selectedMap(location.search);
 const $=id=>document.getElementById(id),canvas=$('game');
 const pointerLock=createPointerLock(canvas,(message,seconds)=>toast(message,seconds));
@@ -35,17 +35,21 @@ syringe.g.scale.setScalar(PLAYER_HEIGHT/2.25);
 const weaponPivot=new T.Group();scene.add(weaponPivot);weaponPivot.add(firearms.root);weaponPivot.add(syringe.g);
 const visuals=new Map(),particles=[],waves=[],tracers=[],auraVisuals=new Map();let playerVisual;
 // 敌方子弹共用一批模型，打完藏起来下次再拿，不再每次新建和扔掉。
-const bulletPool=[],bulletGeo=new T.BoxGeometry(1,1,1),bulletMat=new T.MeshBasicMaterial({color:0xf4bc82});
-function acquireEnemyBullet(x,y,z){
+// 敌方和我方攻击特效分开。敌方用红色，让人一眼看出要躲；我方用紫色，跟觉醒光环同一套。
+const STRIKE={enemy:{bullet:0xff2b2b,telegraph:0xff2a2a,slam:0xff1e1e,spark:0xff4d4d,spray:0xff3333,bomb:0xff2424,glow:0xff5a5a},ally:{bullet:0xd7b4ff,telegraph:0xb85cff,slam:0xb85cff,spark:0xe6d4ff,spray:0xc084fc,bomb:0xb85cff,glow:0xe4d0ff}};
+const bulletPool=[],bulletGeo=new T.BoxGeometry(1,1,1),enemyBulletMat=new T.MeshBasicMaterial({color:STRIKE.enemy.bullet}),allyBulletMat=new T.MeshBasicMaterial({color:STRIKE.ally.bullet});
+function acquireEnemyBullet(x,y,z,ally=false){
  let m=bulletPool.pop();
- if(!m){m=new T.Mesh(bulletGeo,bulletMat);m.castShadow=false;m.receiveShadow=false;scene.add(m);}
- m.scale.set(.12,.12,.35);m.position.set(x,y,z);m.visible=true;return m;
+ if(!m){m=new T.Mesh(bulletGeo,enemyBulletMat);m.castShadow=false;m.receiveShadow=false;scene.add(m);}
+ m.material=ally?allyBulletMat:enemyBulletMat;
+ m.scale.set(ally?.16:.07,ally?.16:.07,ally?.22:.62);
+ m.position.set(x,y,z);m.visible=true;return m;
 }
 function releaseEnemyBullet(m){
  if(!m)return;m.visible=false;m.position.set(0,-40,0);
  if(bulletPool.length<96)bulletPool.push(m);else scene.remove(m);
 }
-for(let i=0;i<24;i++){const m=new T.Mesh(bulletGeo,bulletMat);m.castShadow=false;m.receiveShadow=false;m.visible=false;scene.add(m);bulletPool.push(m);}
+for(let i=0;i<24;i++){const m=new T.Mesh(bulletGeo,enemyBulletMat);m.castShadow=false;m.receiveShadow=false;m.visible=false;scene.add(m);bulletPool.push(m);}
 // 光环特效：贴图取自 Realistic Mesh FX 的光点图，叠加混合。
 const awakenGlow=new T.TextureLoader().load(new URL('./assets/vfx/glow.webp',import.meta.url).href);
 // 感染统一走 Galaxy；主角升级=黄，场景道具=绿。
@@ -425,7 +429,7 @@ function raiseAlarm(){if(alerted)return;alerted=true;const plan=spawnReinforceme
 function activeGun(){return state.weapon>=0?GUNS[state.weapon]:null;}
 function holdingLauncher(){return state.weapon===LAUNCHER_SLOT&&hasLauncher(state);}
 function stashMag(){const gun=activeGun();if(gun)state.mags[gun.id]=state.clip;}
-function meleeStrike(kind){if(mode!=='playing'||attackCd>0||switchTime>0||reloadTime>0||player.roll>0)return;raiseAlarm();playerVisual.holder.rotation.y=yaw;const spec=meleeSpec(state,kind),f=forward();
+function meleeStrike(kind){if(mode!=='playing'||attackCd>0||switchTime>0||reloadTime>0||player.roll>0||player.knock>0)return;raiseAlarm();playerVisual.holder.rotation.y=yaw;const spec=meleeSpec(state,kind),f=forward();
  if(holdingLauncher()){if(kind==='heavy'){toast('注射器没有重击 · 切回徒手或用枪',1.2);return;}fireLauncher();return;}
  const gun=activeGun();
  if(!gun){attackCd=spec.cd;playCharacterAttack(playerVisual,kind==='heavy'?'break':'infect');const hits=[];if(spec.aoe){for(const u of units){if(u.dead||u.converted||u.kind==='corpse')continue;if(distance(player,u)<=spec.aoe)hits.push(u);}}else{const u=acquire(spec.range);if(u)hits.push(u);}for(const u of hits)applyHit(u,spec.infection,spec.damage);if(!hits.length)world.breakAt(player.x+f.x*1.7,player.z+f.z*1.7,kind==='heavy'?2.2:1.8,kind==='heavy'?80:50,burst);if(boss.active&&!boss.dead&&distance(player,boss)<(kind==='heavy'?5.6:5))hitBoss(boss,kind==='heavy'?120:75);music.effect('infect');return;}
@@ -462,7 +466,7 @@ function fireGun(gun){gun={...gun,damage:gun.damage*potionMultiplier(state,'atta
 function primary(){meleeStrike('light');}
 function heavy(){meleeStrike('heavy');}
 function rush(){
- if(mode!=='playing'||player.roll>0||player.y>0||player.vy>0)return;
+ if(mode!=='playing'||player.knock>0||player.roll>0||player.y>0||player.vy>0)return;
  const dx=(keys.KeyD?1:0)-(keys.KeyA?1:0),fw=(keys.KeyW?1:0)-(keys.KeyS?1:0),f=forward(),len=Math.hypot(dx,fw);
  player.rollX=len?(-Math.cos(yaw)*dx+f.x*fw)/len:f.x;
  player.rollZ=len?(Math.sin(yaw)*dx+f.z*fw)/len:f.z;
@@ -472,7 +476,7 @@ function rush(){
  playCharacterAttack(playerVisual,'rush',ROLL_DURATION);music.effect('roll');
 }
 function jump(){
- if(mode!=='playing'||player.y>0||player.vy>0)return;
+ if(mode!=='playing'||player.knock>0||player.y>0||player.vy>0)return;
  // 跳跃可以直接取消地面翻滚，攻击与换弹本身的计时仍继续。
  player.roll=0;player.crouch=false;player.vy=JUMP_SPEED;
  jumpBuffered=0;rollBuffered=0;playerVisual.airborne=true;
@@ -514,7 +518,7 @@ function weaponSelect(index){
 }
 const keys={};const SHIFT_HOLD_MS=180;keys.shiftStartedAt=null;
 function shiftHeld(){return keys.shiftStartedAt!==null&&(keys.ShiftLeft||keys.ShiftRight)&&performance.now()-keys.shiftStartedAt>=SHIFT_HOLD_MS;}
-addEventListener('keydown',e=>{const typing=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(!typing&&(e.code==='F3'||(mode==='playing'&&['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Tab'].includes(e.code))))e.preventDefault();if(e.code==='F3'){e.preventDefault();toggleDebug();return;}if(typing)return;keys[e.code]=true;if(e.repeat)return;if(e.code==='Escape'||e.code==='KeyP'){togglePause();return;}if(mode==='map'&&e.code==='Tab'){e.preventDefault();toggleMap();return;}if(mode!=='playing')return;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&keys.shiftStartedAt===null)keys.shiftStartedAt=performance.now();if(e.code==='KeyJ')primary();if(e.code==='KeyK')heavy();if(e.code==='Digit1')weaponSelect(-1);else if(/^Digit[2-9]$/.test(e.code)){const slot=weaponSlots(state)[Number(e.code.slice(5))-2];if(slot)weaponSelect(slot.weapon);}if(e.code==='Space')requestJump();if(e.code==='KeyC'&&player.roll<=0)player.crouch=!player.crouch;if(e.code==='KeyF'&&state.abilities.command){if(squadIds.size){squadIds.clear();toast('群落已解散 · 自主行动');}else{const cap=state.abilities.command?Math.max(6,guardWanted(state).count):6;units.filter(u=>u.converted&&!u.dead&&distance(player,u)<22).sort((a,b)=>distance(player,a)-distance(player,b)).slice(0,cap).forEach(u=>squadIds.add(u.id));toast((state.abilities.command?'号令召集 ':'已召集 ')+squadIds.size+' 名同伴');}}if(e.code==='KeyR')reloadGun();if(e.code==='Tab')toggleMap();});addEventListener('keyup',e=>{keys[e.code]=false;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&!keys.ShiftLeft&&!keys.ShiftRight){const started=keys.shiftStartedAt;keys.shiftStartedAt=null;state.sprinting=false;if(mode==='playing'&&started!==null&&performance.now()-started<SHIFT_HOLD_MS)requestRoll();}});
+addEventListener('keydown',e=>{const typing=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(!typing&&(e.code==='F3'||(mode==='playing'&&['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Tab'].includes(e.code))))e.preventDefault();if(e.code==='F3'){e.preventDefault();toggleDebug();return;}if(typing)return;keys[e.code]=true;if(e.repeat)return;if(e.code==='Escape'||e.code==='KeyP'){togglePause();return;}if(mode==='map'&&e.code==='Tab'){e.preventDefault();toggleMap();return;}if(mode!=='playing')return;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&keys.shiftStartedAt===null)keys.shiftStartedAt=performance.now();if(e.code==='KeyJ')primary();if(e.code==='KeyK')heavy();if(e.code==='Digit1')weaponSelect(-1);else if(/^Digit[2-9]$/.test(e.code)){const slot=weaponSlots(state)[Number(e.code.slice(5))-2];if(slot)weaponSelect(slot.weapon);}if(e.code==='Space')requestJump();if(e.code==='KeyC'&&player.roll<=0&&!(player.knock>0))player.crouch=!player.crouch;if(e.code==='KeyF'&&state.abilities.command){if(squadIds.size){squadIds.clear();toast('群落已解散 · 自主行动');}else{const cap=state.abilities.command?Math.max(6,guardWanted(state).count):6;units.filter(u=>u.converted&&!u.dead&&distance(player,u)<22).sort((a,b)=>distance(player,a)-distance(player,b)).slice(0,cap).forEach(u=>squadIds.add(u.id));toast((state.abilities.command?'号令召集 ':'已召集 ')+squadIds.size+' 名同伴');}}if(e.code==='KeyR')reloadGun();if(e.code==='Tab')toggleMap();});addEventListener('keyup',e=>{keys[e.code]=false;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&!keys.ShiftLeft&&!keys.ShiftRight){const started=keys.shiftStartedAt;keys.shiftStartedAt=null;state.sprinting=false;if(mode==='playing'&&started!==null&&performance.now()-started<SHIFT_HOLD_MS)requestRoll();}});
 canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('pointerdown',e=>{if(mode!=='playing')return;if(e.button===0){mouseHeld=true;primary();if(!showDebug&&!pointerLock.locked())void pointerLock.request();}else if(e.button===2){if(pointerLock.locked())heavy();else{dragging=true;lastMouse={x:e.clientX,y:e.clientY};}}});addEventListener('pointerup',()=>{mouseHeld=false;dragging=false;});addEventListener('pointermove',e=>{if(mode!=='playing')return;let dx=0,dy=0;if(pointerLock.locked()){dx=e.movementX;dy=e.movementY;}else if(dragging&&lastMouse){dx=e.clientX-lastMouse.x;dy=e.clientY-lastMouse.y;lastMouse={x:e.clientX,y:e.clientY};}yaw-=dx*.0025*settings.sensitivity;pitch=T.MathUtils.clamp(pitch+dy*.0018*settings.sensitivity,-.25,.55);});canvas.addEventListener('wheel',e=>{e.preventDefault();if(mode!=='playing'||switchTime||!e.deltaY)return;const slots=[-1,...weaponSlots(state).map(s=>s.weapon)];const index=slots.indexOf(state.weapon);weaponSelect(slots[(index+(e.deltaY>0?1:-1)+slots.length)%slots.length]);},{passive:false});
 function toggleMap(){
  if(mode!=='playing'&&mode!=='map')return;
@@ -659,11 +663,11 @@ function chooseUpgrade(){
 }
 function saveRun(){if(import.meta.env.DEV&&new URLSearchParams(location.search).has('test'))return;if(!assets||['loading','menu','ended','won'].includes(mode)||boss.active)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:SAVE_VERSION,state,units,player,yaw,pitch,cameraDistance,attackCd,breakCd,rushCd,reinforceTimer,reinforceDirection,totalReinforcements,alerted,objects:world.destructibles.map(o=>({hp:o.hp,dead:o.dead,removed:o.removed?[...o.removed]:[]}))}));}catch{}}
 function loadSaved(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));return [10,SAVE_VERSION].includes(s?.version)&&s.state?.hp>0&&s.units?.length?s:null;}catch{return null;}}
-function restore(saved){state=saved.state;state.sprinting=false;state.sprintExhausted=false;state.potionTime??=0;state.abilities={...makeState().abilities,...(saved.state.abilities||{})};state.level=Math.min(state.level,levelCap(state));state.need=xpNeedFor(state.level);if(state.level===levelCap(state))state.xp=0;refreshStats(state);if(saved.version<11)state.pending=Math.min(state.pending,Math.max(0,15-state.history.length));state.powerCharge=Math.min(POWER_HITS,Math.max(0,Math.floor(saved.state.powerCharge||0)));delete state.launcherCharge;if(state.weapon===LAUNCHER_SLOT&&!hasLauncher(state))state.weapon=-1;units=saved.units;player=saved.player;player.roll=0;player.vy=0;yaw=saved.yaw;pitch=saved.pitch;cameraDistance=T.MathUtils.clamp(saved.cameraDistance??2.7,1.9,4.5);attackCd=saved.attackCd;breakCd=saved.breakCd;rushCd=saved.rushCd;reinforceTimer=saved.reinforceTimer;reinforceDirection=saved.reinforceDirection;totalReinforcements=saved.totalReinforcements;alerted=saved.alerted;state.weaponOrder??=[];if(state.bossCountdown!=null||state.weakenTasks)world.spawnWeakenSites();spawnQueue.jobs.length=0;spawnQueue.wait=0;recentSpawnPoints.length=0;for(const a of visuals.values()){if(a.v.aura){removeAura(a.v.aura);a.v.aura=null;}releaseCharacterVisual(a.v);}visuals.clear();units.forEach(actorVisual);saved.objects.forEach((o,i)=>{const w=world.destructibles[i];w.hp=o.hp;w.dead=o.dead;w.g.visible=!o.dead;if(w.instances){const d=new T.Object3D();d.scale.setScalar(0);d.updateMatrix();for(const ix of o.removed){w.removed.add(ix);w.instances.setMatrixAt(ix,d.matrix);}w.instances.instanceMatrix.needsUpdate=true;}});}
+function restore(saved){state=saved.state;state.sprinting=false;state.sprintExhausted=false;state.potionTime??=0;state.abilities={...makeState().abilities,...(saved.state.abilities||{})};state.level=Math.min(state.level,levelCap(state));state.need=xpNeedFor(state.level);if(state.level===levelCap(state))state.xp=0;refreshStats(state);if(saved.version<11)state.pending=Math.min(state.pending,Math.max(0,15-state.history.length));state.powerCharge=Math.min(POWER_HITS,Math.max(0,Math.floor(saved.state.powerCharge||0)));delete state.launcherCharge;if(state.weapon===LAUNCHER_SLOT&&!hasLauncher(state))state.weapon=-1;units=saved.units;player=saved.player;player.roll=0;player.vy=0;player.knock=0;yaw=saved.yaw;pitch=saved.pitch;cameraDistance=T.MathUtils.clamp(saved.cameraDistance??2.7,1.9,4.5);attackCd=saved.attackCd;breakCd=saved.breakCd;rushCd=saved.rushCd;reinforceTimer=saved.reinforceTimer;reinforceDirection=saved.reinforceDirection;totalReinforcements=saved.totalReinforcements;alerted=saved.alerted;state.weaponOrder??=[];if(state.bossCountdown!=null||state.weakenTasks)world.spawnWeakenSites();spawnQueue.jobs.length=0;spawnQueue.wait=0;recentSpawnPoints.length=0;for(const a of visuals.values()){if(a.v.aura){removeAura(a.v.aura);a.v.aura=null;}releaseCharacterVisual(a.v);}visuals.clear();units.forEach(actorVisual);saved.objects.forEach((o,i)=>{const w=world.destructibles[i];w.hp=o.hp;w.dead=o.dead;w.g.visible=!o.dead;if(w.instances){const d=new T.Object3D();d.scale.setScalar(0);d.updateMatrix();for(const ix of o.removed){w.removed.add(ix);w.instances.setMatrixAt(ix,d.matrix);}w.instances.instanceMatrix.needsUpdate=true;}});}
 async function start(continuing=false){if(!assets)return;if(continuing){const s=loadSaved();if(s)restore(s);}else if(state.time>0){location.reload();return;}conversionCount=state.infected;await music.start();music.setBed('play');playerVisual.holder.rotation.y=yaw;$('menu').hidden=true;$('hud').hidden=false;mode='playing';if(state.pending)chooseUpgrade();else toast('WASD 移动 · 短按 Shift 闪避 / 长按奔跑 · 左键轻击 · 右键重击 · 空格跳跃',4);}
 $('start').onclick=()=>start();$('continue').onclick=()=>start(true);
 // 音乐不跟着界面停：暂停菜单、设置、选卡、结算界面弹出来时曲子继续走。
-function togglePause(){if(mode==='map'){toggleMap();return;}if(mode==='playing'){mode='paused';saveRun();showDialog(`<div class="eyebrow">SIMULATION PAUSED</div><h2>东京，暂时静止。</h2><p>街区进度自动保存；Boss 战从进场前存档重试。所有战斗计时已暂停。</p><div class="controlTable">WASD 移动 · 鼠标锁定后转向，未锁定时右键拖动转向<br>左键 / J 轻击 · 右键 / K 重击 · 空格跳跃 · 短按 Shift 闪避 / 长按奔跑 · C 蹲伏<br>1 徒手 · 2 起按点出顺序切换枪械和注射器 · R 装填 · F 号令召集 / 解散 · Tab 地图<br>两下轻击即可叫醒打工人；持盾特警正面伤害减半。<br>空气传播 Lv2 可转化尸体；敌方净化工兵在 10 米内每秒清除 2 点感染，多人不叠加。</div><button class="action" id="resume">继续觉醒 ↗</button><button class="action secondary" id="pauseSettings">设置</button><button class="action secondary" id="endRun">结束并复盘</button>`);$('resume').onclick=togglePause;$('pauseSettings').onclick=()=>settingsDialog('paused');$('endRun').onclick=()=>finish('ended');}else if(mode==='paused'){hideDialog();mode='playing';}}
+function togglePause(){if(mode==='map'){toggleMap();return;}if(mode==='playing'){mode='paused';saveRun();showDialog(`<div class="eyebrow">SIMULATION PAUSED</div><h2>东京，暂时静止。</h2><p>街区进度自动保存；Boss 战从进场前存档重试。所有战斗计时已暂停。</p><div class="controlTable">WASD 移动 · 鼠标锁定后转向，未锁定时右键拖动转向<br>左键 / J 轻击 · 右键 / K 重击 · 空格跳跃 · 短按 Shift 闪避 / 长按奔跑 · C 蹲伏<br>1 徒手 · 2 起按点出顺序切换枪械和注射器 · R 装填 · F 号令召集 / 解散 · Tab 地图<br>两下轻击即可叫醒打工人；持盾特警正面伤害减半。<br>空气传播 Lv2 可转化尸体；敌方净化士兵在 10 米内每 0.5 秒清除 2 点感染，多人不叠加。喷雾会先亮出扇形预警约 1 秒，再至少喷 2 秒。敌方攻击是红色警示，我方攻击是紫色。掷弹兵每秒投一枚空中炸弹，落地前地面会亮圈，2 米内 50 点伤害。持盾特警会短蓄力后向前冲，撞上会打伤并把玩家和我方单位击飞 1 秒。</div><button class="action" id="resume">继续觉醒 ↗</button><button class="action secondary" id="pauseSettings">设置</button><button class="action secondary" id="endRun">结束并复盘</button>`);$('resume').onclick=togglePause;$('pauseSettings').onclick=()=>settingsDialog('paused');$('endRun').onclick=()=>finish('ended');}else if(mode==='paused'){hideDialog();mode='playing';}}
 $('pauseButton').onclick=togglePause;$('sound').onclick=()=>{$('sound').textContent='♫ 音乐 '+(music.toggle()?'开':'关');};
 function settingsDialog(back='menu'){showDialog(`<div class="eyebrow">SETTINGS / 体验设置</div><h2>找到你的节奏。</h2><label class="setting">音乐与音效 <input id="volume" type="range" min="0" max="1" step=".05" value="${settings.volume}"></label><label class="setting">视角灵敏度 <input id="sensitivity" type="range" min=".4" max="2" step=".1" value="${settings.sensitivity}"></label><label class="setting">画质 <select id="quality"><option value="standard">标准 · 动态阴影</option><option value="low">流畅 · 关闭阴影</option></select></label><p>鼠标锁定不可用时，可拖动右键或使用方向键转动镜头。<br>本作采用越肩第三人称视角，滚轮切换武器。</p><button class="action" id="closeSettings">返回</button>`);$('quality').value=settings.quality;const persist=()=>{try{localStorage.setItem('groundzero-settings',JSON.stringify(settings));}catch{}};$('volume').oninput=e=>{settings.volume=+e.target.value;music.setVolume(settings.volume);persist();};$('sensitivity').oninput=e=>{settings.sensitivity=+e.target.value;persist();};$('quality').onchange=e=>{settings.quality=e.target.value;applyQuality();persist();};$('closeSettings').onclick=()=>{hideDialog();if(back==='paused'){mode='playing';togglePause();}};}
 $('controlHelp').onclick=()=>{if(mode==='playing')togglePause();};
@@ -774,19 +778,22 @@ function flushSpawnQueue(dt){
   else placeArmyRusher(job.type);
  }
 }
-function hostileConeHits(u,spec,primary){
- const range=spec.range,cosLimit=spec.spray?.5:.5;
+function coneForward(u,primary){
+ if(Number.isFinite(u?.sprayYaw))return {nx:Math.sin(u.sprayYaw),nz:Math.cos(u.sprayYaw),locked:true};
  const fx=primary.x-u.x,fz=primary.z-u.z,fl=Math.hypot(fx,fz)||1;
- const nx=fx/fl,nz=fz/fl;
+ return {nx:fx/fl,nz:fz/fl,locked:false};
+}
+function hostileConeHits(u,spec,primary){
+ const range=spec.range,cosLimit=.5,aim=coneForward(u,primary);
  const hits=[];
  const consider=[player,...units.filter(a=>a.kind==='ally'&&!a.dead)];
  for(const t of consider){
   const dx=t.x-u.x,dz=t.z-u.z,d=Math.hypot(dx,dz);
   if(d>range||d<.02)continue;
-  if((dx*nx+dz*nz)/d<cosLimit)continue;
+  if((dx*aim.nx+dz*aim.nz)/d<cosLimit)continue;
   hits.push(t);
  }
- if(primary&&!hits.includes(primary)&&distance(u,primary)<=range+0.05)hits.push(primary);
+ if(!aim.locked&&primary&&!hits.includes(primary)&&distance(u,primary)<=range+0.05)hits.push(primary);
  return hits;
 }
 function hurtHostileTarget(target,damage,source){
@@ -796,12 +803,53 @@ function hurtHostileTarget(target,damage,source){
 function throwGrenade(u,spec,victim){
  const g=spec.grenade;if(!g)return;
  u.grenadeCd=g.cd;
- const m=block(scene,.28,.28,.28,0xd27a4a,u.x,STANDING_CHEST+0.4,u.z);
+ if(g.lob)return lobGrenade(u,spec,victim,false);
+ const m=block(scene,.28,.28,.28,STRIKE.enemy.bomb,u.x,STANDING_CHEST+0.4,u.z);
  const dx=victim.x-u.x,dz=victim.z-u.z,len=Math.hypot(dx,dz)||1;
  tracers.push({m,x:u.x,z:u.z,vx:dx/len*9,vz:dz/len*9,life:.9,y:STANDING_CHEST+0.4,grenade:g,from:ENEMIES[u.type].name+'手雷'});
 }
+function bombMarker(x,z,radius,ally){
+ const fx=ally?STRIKE.ally:STRIKE.enemy,y=world.heightAt(x,z);
+ const group=new T.Group(),disk=new T.Mesh(new T.CircleGeometry(radius,40),new T.MeshBasicMaterial({color:fx.bomb,transparent:true,opacity:.16,side:T.DoubleSide,depthWrite:false})),ring=new T.Mesh(new T.RingGeometry(Math.max(.2,radius-.28),radius,48),new T.MeshBasicMaterial({color:fx.glow,transparent:true,opacity:.9,side:T.DoubleSide,depthWrite:false}));
+ disk.rotation.x=ring.rotation.x=-Math.PI/2;group.add(disk,ring);group.position.set(x,y+.06,z);group.userData.effects=[disk,ring];scene.add(group);return group;
+}
+function pulseBombMarker(marker,progress=0){
+ if(!marker)return;
+ const flash=.45+.4*Math.sin(performance.now()*(.01+progress*.02));
+ marker.userData.effects[0].material.opacity=.12+progress*.2;
+ marker.userData.effects[1].material.opacity=flash;
+ marker.scale.setScalar(1+progress*.06);
+}
+function disposeBombMarker(marker){
+ if(!marker)return;scene.remove(marker);for(const effect of marker.userData.effects||[]){effect.geometry.dispose();effect.material.dispose();}
+}
+function lobGrenade(u,spec,victim,ally){
+ const g=spec.grenade,fx=ally?STRIKE.ally:STRIKE.enemy,flight=g.fall||.95;
+ const sy=world.heightAt(u.x,u.z)+STANDING_CHEST+1.2,ty=world.heightAt(victim.x,victim.z);
+ const m=new T.Mesh(new T.SphereGeometry(.2,10,8),new T.MeshStandardMaterial({color:fx.bomb,emissive:fx.glow,emissiveIntensity:2.4,roughness:.3}));
+ m.position.set(u.x,sy+4,u.z);scene.add(m);
+ tracers.push({m,marker:bombMarker(victim.x,victim.z,g.radius,ally),lob:true,grenade:g,allyShot:ally,life:flight,total:flight,sx:u.x,sy:sy+5.5,sz:u.z,tx:victim.x,ty,tz:victim.z,x:u.x,y:sy+5.5,z:u.z,arc:6.2,damage:ally?allyMelee(u).damage:g.max,infection:0,from:(ally?ENEMIES[u.type].allyName:ENEMIES[u.type].name)+'炸弹'});
+}
+function updateLobBomb(b){
+ const progress=T.MathUtils.clamp(1-b.life/b.total,0,1);
+ b.x=T.MathUtils.lerp(b.sx,b.tx,progress);b.z=T.MathUtils.lerp(b.sz,b.tz,progress);
+ b.y=T.MathUtils.lerp(b.sy,b.ty+.2,progress)+Math.sin(progress*Math.PI)*(b.arc||6);
+ b.m.position.set(b.x,b.y,b.z);b.m.rotation.x+=frameDelta*6;b.m.rotation.z+=frameDelta*4;
+ pulseBombMarker(b.marker,progress);
+}
+function lobBomb(u,spec,victim,nearest,allySide){
+ const reach=spec.range||16;
+ if(!victim||nearest>reach)return 'idle';
+ if((u.grenadeCd||0)>0)return 'windup';
+ if(!world.clear(u,victim))return 'idle';
+ if(allySide)throwAllyGrenade(u,spec,victim);else throwGrenade(u,spec,victim);
+ return 'start';
+}
 function detonateGrenade(b){
- const g=b.grenade;burst(b.x,STANDING_CHEST,b.z,0xf08a4a,18);wave(b.x,b.z,g.radius,0xf18953);
+ const g=b.grenade,fx=b.allyShot?STRIKE.ally:STRIKE.enemy;
+ if(b.marker){disposeBombMarker(b.marker);b.marker=null;}
+ if(b.lob){b.x=b.tx;b.z=b.tz;b.y=b.ty;}
+ burst(b.x,b.y||STANDING_CHEST,b.z,fx.spark,18);wave(b.x,b.z,g.radius,fx.slam);
  // 觉醒后的手雷打回秩序方，形状和原来一样，伤害用觉醒后的攻击。
  if(b.allyShot){
   const max=g.max||1;
@@ -902,7 +950,7 @@ function enemyFire(u,spec,victim){
    if(gap>radius)continue;
    hurtHostileTarget(t,Math.round(spec.damage*(gap<=radius*.55?1:.6)),source);
   }
-  wave(u.x,u.z,radius,0xf0a24a);burst(u.x,.6,u.z,0xe8c07a,22,7);
+  wave(u.x,u.z,radius,STRIKE.enemy.slam);burst(u.x,.6,u.z,STRIKE.enemy.spark,22,7);
   return;
  }
  if(ranged){
@@ -910,35 +958,35 @@ function enemyFire(u,spec,victim){
   const y=victim===player?world.heightAt(player.x,player.z)+player.y+(player.crouch?CROUCH_CHEST:STANDING_CHEST):world.heightAt(victim.x,victim.z)+STANDING_CHEST;
   const m=acquireEnemyBullet(u.x,STANDING_CHEST,u.z);
   tracers.push({m,x:u.x,z:u.z,vx:dx/len*18,vz:dz/len*18,life:2,y,damage:spec.damage,from:source,pooled:true});
- }else hurtHostileTarget(victim,spec.damage,source);
+ }else{hurtHostileTarget(victim,spec.damage,source);burst(victim.x,STANDING_CHEST,victim.z,STRIKE.enemy.spark,6);}
 }
-// 觉醒后的人打回原来的目标，但出手方式不改：枪还是枪，盾还是扇形，锤子还是砸地。
+// 觉醒后的人打回原来的目标，但出手方式不改：枪还是枪，盾改成冲锋，锤子还是砸地。
 function hurtAllyTarget(target,damage,infection){
  if(target===boss){hitBoss(boss,damage);return;}
  applyHit(target,infection,damage,true);
 }
 function allyConeHits(u,spec,primary){
- const range=spec.range,cosLimit=spec.spray?.5:.5;
- const fx=primary.x-u.x,fz=primary.z-u.z,fl=Math.hypot(fx,fz)||1,nx=fx/fl,nz=fz/fl,hits=[];
+ const range=spec.range,cosLimit=.5,aim=coneForward(u,primary),hits=[];
  for(const t of units){
   if(t.dead||t.converted||t.kind==='corpse')continue;
   const dx=t.x-u.x,dz=t.z-u.z,d=Math.hypot(dx,dz);
   if(d>range||d<.02)continue;
-  if((dx*nx+dz*nz)/d<cosLimit)continue;
+  if((dx*aim.nx+dz*aim.nz)/d<cosLimit)continue;
   hits.push(t);
  }
  if(boss.active&&!boss.dead){
   const dx=boss.x-u.x,dz=boss.z-u.z,d=Math.hypot(dx,dz);
-  if(d<=range&&d>.02&&(dx*nx+dz*nz)/d>=cosLimit)hits.push(boss);
+  if(d<=range&&d>.02&&(dx*aim.nx+dz*aim.nz)/d>=cosLimit)hits.push(boss);
  }
- if(primary&&primary!==boss&&!hits.includes(primary)&&distance(u,primary)<=range+.05)hits.push(primary);
+ if(!aim.locked&&primary&&primary!==boss&&!hits.includes(primary)&&distance(u,primary)<=range+.05)hits.push(primary);
  return hits;
 }
 function throwAllyGrenade(u,spec,victim){
  const g=spec.grenade;if(!g)return;
  u.grenadeCd=g.cd;
+ if(g.lob)return lobGrenade(u,spec,victim,true);
  const strike=allyMelee(u);
- const m=block(scene,.28,.28,.28,0xd27a4a,u.x,STANDING_CHEST+.4,u.z);
+ const m=block(scene,.28,.28,.28,STRIKE.ally.bomb,u.x,STANDING_CHEST+.4,u.z);
  const dx=victim.x-u.x,dz=victim.z-u.z,len=Math.hypot(dx,dz)||1;
  // 觉醒后的手雷只造成伤害，不附带感染。
  tracers.push({m,x:u.x,z:u.z,vx:dx/len*9,vz:dz/len*9,life:.9,y:STANDING_CHEST+.4,grenade:g,allyShot:true,damage:strike.damage,infection:0,from:(ENEMIES[u.type].allyName||ENEMIES[u.type].name)+'手雷'});
@@ -963,31 +1011,149 @@ function allyFire(u,spec,victim){
    hurtAllyTarget(t,Math.round(strike.damage*scale),0);
   }
   if(boss.active&&!boss.dead){const gap=Math.hypot(boss.x-u.x,boss.z-u.z);if(gap<=radius)hitBoss(boss,Math.round(strike.damage*(gap<=radius*.55?1:.6)));}
-  wave(u.x,u.z,radius,0xf0a24a);burst(u.x,.6,u.z,0xe8c07a,22,7);return;
+  wave(u.x,u.z,radius,STRIKE.ally.slam);burst(u.x,.6,u.z,STRIKE.ally.spark,22,7);return;
  }
  if(ranged){
   const dx=victim.x-u.x,dz=victim.z-u.z,len=Math.hypot(dx,dz)||1;
-  const m=acquireEnemyBullet(u.x,STANDING_CHEST,u.z);
+  const m=acquireEnemyBullet(u.x,STANDING_CHEST,u.z,true);
   // 枪械沿用原来的射击，但子弹只造成伤害，不再把目标感染过去。
   tracers.push({m,x:u.x,z:u.z,vx:dx/len*18,vz:dz/len*18,life:2,y:world.heightAt(victim.x,victim.z)+STANDING_CHEST,damage:strike.damage,infection:0,from:'ally',allyShot:true,pooled:true});
   return;
  }
- hurtAllyTarget(victim,strike.damage,strike.infection);
+ hurtAllyTarget(victim,strike.damage,strike.infection);burst(victim.x,STANDING_CHEST,victim.z,STRIKE.ally.spark,6);
 }
 function showHostilePose(u,spec,victim,start){
  const ranged=isRangedEnemy(spec);
  const visual=visuals.get(u.id)?.v;
- if(!visual)return;
+ if(!visual||!victim)return;
  visual.holdingGun=ranged;
- visual.holder.rotation.y=Math.atan2(victim.x-u.x,victim.z-u.z);
- if(start&&!ranged)playCharacterAttack(visual,(u.type===1||u.type===3||spec.slam)?'break':'infect',Math.max(2,(hostileWindup(spec))+.2));
+ visual.holder.rotation.y=Number.isFinite(u.chargeYaw)&&spec.charge?u.chargeYaw:Number.isFinite(u.sprayYaw)&&spec.spray?u.sprayYaw:Math.atan2(victim.x-u.x,victim.z-u.z);
+ if(start&&!ranged)playCharacterAttack(visual,(u.type===1||u.type===3||spec.slam)?'break':'infect',Math.max(2,(spec.spray?spec.sprayWindup:hostileWindup(spec))+.2));
+}
+function purifierOccupied(u,spec,allySide){
+ if(allySide){
+  for(const t of units){if(!t.dead&&!t.converted&&t.kind!=='corpse'&&purifierConeHit(u,spec,t))return true;}
+  return !!(boss.active&&!boss.dead&&purifierConeHit(u,spec,boss));
+ }
+ if(purifierConeHit(u,spec,player))return true;
+ for(const t of units){if(t.kind==='ally'&&!t.dead&&purifierConeHit(u,spec,t))return true;}
+ return false;
+}
+function sprayMist(u,spec){
+ const yaw=u.sprayYaw||0,color=u.kind==='ally'?STRIKE.ally.spray:STRIKE.enemy.spray;
+ for(let i=0;i<4;i++){
+  const a=yaw+(Math.random()-.5)*1.05,dist=(spec.range||8)*(.28+Math.random()*.62);
+  burst(u.x+Math.sin(a)*dist,1.05,u.z+Math.cos(a)*dist,color,5,1.6);
+ }
+}
+function pulsePurifier(u,spec,allySide){
+ const visual=visuals.get(u.id)?.v;
+ if(visual){visual.holder.rotation.y=u.sprayYaw||0;playCharacterAttack(visual,'infect',.35);}
+ const aim={x:u.x+Math.sin(u.sprayYaw||0)*(spec.range||8),z:u.z+Math.cos(u.sprayYaw||0)*(spec.range||8)};
+ if(allySide){const strike=allyMelee(u);for(const t of allyConeHits(u,spec,aim))hurtAllyTarget(t,strike.damage,strike.infection);}
+ else for(const t of hostileConeHits(u,spec,aim))hurtHostileTarget(t,spec.damage,ENEMIES[u.type].name);
+ sprayMist(u,spec);
+}
+// 喷雾单位自己管前摇和持续喷射。返回 null 时，这一下仍走原来的近战或射击。
+function tickPurifier(u,spec,victim,nearest,dt,allySide){
+ if(!spec?.spray)return null;
+ const going=u.sprayPhase==='windup'||u.sprayPhase==='spray';
+ const canStart=!going&&victim&&nearest<spec.range&&(u.attackCd||0)<=0&&world.clear(u,victim);
+ if(!going&&!canStart)return null;
+ if(canStart)return beginPurifierSpray(u,spec,Math.atan2(victim.x-u.x,victim.z-u.z));
+ const step=stepPurifierSpray(u,spec,purifierOccupied(u,spec,allySide),dt);
+ const visual=visuals.get(u.id)?.v;
+ if(visual&&Number.isFinite(u.sprayYaw))visual.holder.rotation.y=u.sprayYaw;
+ if(step==='hit')pulsePurifier(u,spec,allySide);
+ return step;
+}
+const sprayMarkers=new Map();
+function showSprayWarning(u,spec){
+ let mesh=sprayMarkers.get(u.id);
+ if(!mesh){
+  const half=Math.acos(.5),segs=16,pos=[0,.02,0];
+  for(let i=0;i<=segs;i++){const a=-half+half*2*i/segs;pos.push(Math.sin(a),.02,Math.cos(a));}
+  const geo=new T.BufferGeometry();
+  geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));
+  const index=[];for(let i=1;i<=segs;i++)index.push(0,i,i+1);
+  geo.setIndex(index);
+  mesh=new T.Mesh(geo,new T.MeshBasicMaterial({color:0xffb03a,transparent:true,opacity:.28,depthWrite:false,side:T.DoubleSide}));
+  scene.add(mesh);sprayMarkers.set(u.id,mesh);
+ }
+ const warning=u.sprayPhase==='windup';
+ mesh.material.color.setHex(u.kind==='ally'?(warning?STRIKE.ally.glow:STRIKE.ally.spray):(warning?STRIKE.enemy.glow:STRIKE.enemy.bomb));
+ mesh.material.opacity=warning?.2+.12*Math.sin(performance.now()*.012):.36;
+ mesh.position.set(u.x,world.heightAt(u.x,u.z)+.05,u.z);
+ mesh.rotation.y=u.sprayYaw||0;
+ mesh.scale.set(spec.range||8,1,spec.range||8);
+ mesh.visible=distance(player,u)<36;
+}
+function hideSprayWarning(id){const mesh=sprayMarkers.get(id);if(mesh)mesh.visible=false;}
+// 盾击只打撞到的人，并把他们沿冲锋方向掀起来。觉醒后的盾警改打敌人，特效用紫色。
+function launchKnock(target,fx,fz,seconds){target.knock=Math.max(target.knock||0,seconds);target.knockX=fx;target.knockZ=fz;target.aiming=false;target.chargePhase='';}
+function launchPlayer(fx,fz,damage,source){
+ if(invincible<=0)playerHurt(damage,source);
+ player.knock=Math.max(player.knock||0,1);player.knockX=fx;player.knockZ=fz;
+ player.vy=Math.max(player.vy||0,9);if(player.y<=0)player.y=.02;player.roll=0;player.crouch=false;
+ if(playerVisual)playerVisual.airborne=true;
+}
+function strikeShieldCharge(u,spec,allySide){
+ const yaw=u.chargeYaw||0,fx=Math.sin(yaw),fz=Math.cos(yaw),knock=spec.charge?.knock??1;
+ const color=allySide?STRIKE.ally.spark:STRIKE.enemy.spark;
+ u.chargeHit=u.chargeHit||{};
+ const mark=(id,x,z)=>{if(u.chargeHit[id])return false;u.chargeHit[id]=1;burst(x,STANDING_CHEST,z,color,8);return true;};
+ if(!allySide){
+  if(shieldChargeHits(u,spec,player)&&mark('player',player.x,player.z)&&invincible<=0)launchPlayer(fx,fz,spec.damage,ENEMIES[u.type].name);
+  for(const t of units){if(t.kind!=='ally'||t.dead||!shieldChargeHits(u,spec,t)||!mark(t.id,t.x,t.z))continue;launchKnock(t,fx,fz,knock);hurtHostileTarget(t,spec.damage,ENEMIES[u.type].name);}
+  return;
+ }
+ const strike=allyMelee(u);
+ for(const t of units){if(t.dead||t.converted||t.kind==='corpse'||t.id===u.id||!shieldChargeHits(u,spec,t)||!mark(t.id,t.x,t.z))continue;launchKnock(t,fx,fz,knock);hurtAllyTarget(t,strike.damage,strike.infection);}
+ if(boss.active&&!boss.dead&&shieldChargeHits(u,spec,boss)&&mark('boss',boss.x,boss.z))hurtAllyTarget(boss,strike.damage,0);
+}
+function tickShieldCharge(u,spec,victim,nearest,dt,allySide){
+ if(!spec?.charge)return null;
+ const going=u.chargePhase==='windup'||u.chargePhase==='dash';
+ if(!going){
+  if(!victim||nearest>(spec.range||7)||(u.attackCd||0)>0||!world.clear(u,victim))return 'idle';
+  return beginShieldCharge(u,spec,Math.atan2(victim.x-u.x,victim.z-u.z));
+ }
+ const step=stepShieldCharge(u,spec,dt);
+ if(step==='dash'){
+  const yaw=u.chargeYaw||0,dist=u.chargeStep||0;
+  if(dist>0)move(u,Math.sin(yaw)*dist,Math.cos(yaw)*dist);
+  strikeShieldCharge(u,spec,allySide);
+  if((u.chargeDist||0)<=dist+.001)burst(u.x,.9,u.z,allySide?STRIKE.ally.spark:STRIKE.enemy.spark,8,2.2);
+ }
+ const visual=visuals.get(u.id)?.v;
+ if(visual&&Number.isFinite(u.chargeYaw))visual.holder.rotation.y=u.chargeYaw;
+ return u.chargePhase?step:'stop';
+}
+const chargeMarkers=new Map();
+function showChargeWarning(u,spec){
+ let mesh=chargeMarkers.get(u.id);
+ if(!mesh){
+  const geo=new T.BufferGeometry();
+  geo.setAttribute('position',new T.Float32BufferAttribute([-.5,.04,0,.5,.04,0,.5,.04,1,-.5,.04,1],3));
+  geo.setIndex([0,1,2,0,2,3]);
+  mesh=new T.Mesh(geo,new T.MeshBasicMaterial({color:0xff2a2a,transparent:true,opacity:.34,depthWrite:false,side:T.DoubleSide}));
+  scene.add(mesh);chargeMarkers.set(u.id,mesh);
+ }
+ const c=spec.charge||{},warning=u.chargePhase==='windup';
+ const len=warning?(c.distance||6.5):Math.max(.35,(c.distance||6.5)-(u.chargeDist||0));
+ mesh.material.color.setHex(u.kind==='ally'?(warning?STRIKE.ally.glow:STRIKE.ally.telegraph):(warning?STRIKE.enemy.glow:STRIKE.enemy.telegraph));
+ mesh.material.opacity=warning?.24+.14*Math.sin(performance.now()*.016):.5;
+ mesh.position.set(u.x,world.heightAt(u.x,u.z)+.05,u.z);
+ mesh.rotation.set(0,u.chargeYaw||0,0);
+ mesh.scale.set(c.wide||1.6,1,len);
+ mesh.visible=distance(player,u)<36;
 }
 const CROWD_CELL=6;
 function crowdBuckets(list){const grid=new Map();for(const u of list){const key=((u.x/CROWD_CELL)|0)+','+((u.z/CROWD_CELL)|0);const bucket=grid.get(key);if(bucket)bucket.push(u);else grid.set(key,[u]);}return grid;}
 function crowdNear(grid,x,z,radius){const r=Math.ceil(radius/CROWD_CELL),cx=(x/CROWD_CELL)|0,cz=(z/CROWD_CELL)|0,out=[];for(let ix=cx-r;ix<=cx+r;ix++)for(let iz=cz-r;iz<=cz+r;iz++){const bucket=grid.get(ix+','+iz);if(bucket)for(const u of bucket)out.push(u);}return out;}
-function runAI(dt){const living=units.filter(u=>!u.dead&&u.kind!=='corpse'),allies=living.filter(u=>u.converted),hostiles=living.filter(u=>!u.converted);const crowd=crowdBuckets(living),allyGrid=crowdBuckets(allies),hostileGrid=crowdBuckets(hostiles);for(const u of living){u.attackCd-=dt*(u.surge>0?1.3:1);u.hurt=Math.max(0,u.hurt-dt);let tx=u.x,tz=u.z,pace=0;const d=distance(player,u);if(d<36){for(const other of crowdNear(crowd,u.x,u.z,1.2)){if(other.id<=u.id)continue;const dx=u.x-other.x,dz=u.z-other.z,gap=Math.hypot(dx,dz);if(gap>.01&&gap<.85){const push=(.85-gap)*dt*2;move(u,dx/gap*push,dz/gap*push);}}}if(d>58||((u.kind==='ally'||u.converted)&&d>ALLY_VIEW)){u.logicWait=(u.logicWait||0)-dt;if(u.logicWait>0)continue;u.logicWait=d>58?.35:.2;}if(u.kind==='human'){const act=TUNE.activity,route=civilianTarget(u,world.buildings);const spot=world.free(route.x,route.z,1)?route:world.nearest(route.x,route.z,1);tx=spot.x;tz=spot.z;pace=Math.hypot(tx-u.x,tz-u.z)>.7?act.shambleSpeed:0;}
-else if(u.kind==='ally'){const act=TUNE.activity,spec=ENEMIES[u.type],look=Math.max(20,(spec.range||2)+2);let victim=null,nearest=look;for(const h of crowdNear(hostileGrid,u.x,u.z,look)){if(!allySeeksHostile(h))continue;if(u.guard&&distance(player,h)>GUARD_LEASH)continue;const dd=distance(u,h);if(dd<nearest){nearest=dd;victim=h;}}let closingOnBoss=false;if(!victim&&boss.active&&!boss.dead&&!(u.guard&&distance(player,boss)>GUARD_LEASH)){const bd=distance(u,boss);if(bd<=look){victim=boss;nearest=bd;}else{tx=boss.x;tz=boss.z;pace=act.chaseSpeed;closingOnBoss=true;}}if(victim){tx=victim.x;tz=victim.z;u.grenadeCd=(u.grenadeCd||0)-dt;if(spec.grenade&&u.grenadeCd<=0&&nearest<14&&nearest>3.2&&world.clear(u,victim))throwAllyGrenade(u,spec,victim);const swing=stepHostileMelee(u,spec,nearest,world.clear(u,victim),dt);if(swing==='start'||swing==='windup'){pace=0;showHostilePose(u,spec,victim,swing==='start');}else if(swing==='hit'){pace=0;allyFire(u,spec,victim);}else if(swing==='miss'){pace=0;const visual=visuals.get(u.id)?.v;if(visual)visual.holdingGun=false;}else pace=nearest<=spec.range*.82?0:act.chaseSpeed;}else if(!closingOnBoss){const visual=visuals.get(u.id)?.v;if(visual)visual.holdingGun=false;if(u.guard||squadIds.has(u.id)){const angle=u.id*2.4;tx=player.x+Math.sin(angle)*3;tz=player.z+Math.cos(angle)*3;pace=act.followSpeed;}else{const structure=world.towers.find(o=>!o.dead&&distance(u,o)<28);if(structure){tx=structure.x;tz=structure.z;pace=act.structureSpeed;if(distance(u,structure)<3&&u.attackCd<=0){world.breakAt(u.x,u.z,2, u.profession===2?24:8,burst);u.attackCd=2;}}else{u.wander-=dt;if(u.wander<=0){u.tx=u.x+(Math.random()-.5)*act.awakeRadius*2;u.tz=u.z+(Math.random()-.5)*act.awakeRadius*2;u.wander=act.awakeIdle*(.55+Math.random()*.9);}tx=u.tx;tz=u.tz;pace=act.awakeSpeed;}}}if(!victim&&u.profession===1&&distance(u,player)<5&&u.attackCd<=0&&state.hp<100){state.hp=Math.min(100,state.hp+10);u.attackCd=25;toast('医生支援 +10',1);}}
-else{const idle=!u.rush&&((!alerted&&state.time<8)||d>(player.crouch?15:27+state.alert*3));if(idle){u.aiming=false;u.aim=0;const visual=visuals.get(u.id)?.v;if(visual){visual.holdingGun=false;updateCharacterVisual(visual,false,dt,d);}u.wander-=dt;if(u.wander<=0){const step=streetStroll(u.x,u.z,world.buildings);const spot=world.free(step.x,step.z,1)?step:world.nearest(step.x,step.z,1);u.tx=spot.x;u.tz=spot.z;u.wander=4+Math.random()*3;}tx=u.tx;tz=u.tz;pace=Math.hypot(tx-u.x,tz-u.z)>.7?Math.min(Math.max(ENEMIES[u.type].speed*.5,.8),1.5):0;}else{let victim=player,nearest=d;for(const a of crowdNear(allyGrid,u.x,u.z,nearest)){const dd=distance(u,a);if(dd<nearest){nearest=dd;victim=a;}}const spec=ENEMIES[u.type];tx=victim.x;tz=victim.z;u.grenadeCd=(u.grenadeCd||0)-dt;if(spec.grenade&&u.grenadeCd<=0&&nearest<14&&nearest>3.2&&world.clear(u,victim))throwGrenade(u,spec,victim);const swing=stepHostileMelee(u,spec,nearest,world.clear(u,victim),dt);if(swing==='start'||swing==='windup'){pace=0;showHostilePose(u,spec,victim,swing==='start');}else if(swing==='hit'){pace=0;enemyFire(u,spec,victim);}else if(swing==='miss'){pace=0;const visual=visuals.get(u.id)?.v;if(visual)visual.holdingGun=false;}else pace=nearest<=spec.range*.82?0:spec.speed;}}
+function runAI(dt){const living=units.filter(u=>!u.dead&&u.kind!=='corpse'),allies=living.filter(u=>u.converted),hostiles=living.filter(u=>!u.converted);const crowd=crowdBuckets(living),allyGrid=crowdBuckets(allies),hostileGrid=crowdBuckets(hostiles);for(const u of living){u.attackCd-=dt*(u.surge>0?1.3:1);u.hurt=Math.max(0,u.hurt-dt);let tx=u.x,tz=u.z,pace=0;if((u.knock||0)>0){u.knock=Math.max(0,u.knock-dt);u.aiming=false;u.chargePhase='';u.attackCd=Math.max(u.attackCd||0,.4);move(u,(u.knockX||0)*6.5*dt,(u.knockZ||0)*6.5*dt);const kd=distance(player,u);const vis=visuals.get(u.id)?.v;if(vis){vis.holder.rotation.y=Math.atan2(u.knockX||0,u.knockZ||0);if(kd<actorViewLimit(u)&&actorInFront(u,kd))updateCharacterVisual(vis,false,dt,kd);else vis.holder.visible=false;}continue;}const d=distance(player,u);if(d<36&&!u.chargePhase){for(const other of crowdNear(crowd,u.x,u.z,1.2)){if(other.id<=u.id)continue;const dx=u.x-other.x,dz=u.z-other.z,gap=Math.hypot(dx,dz);if(gap>.01&&gap<.85){const push=(.85-gap)*dt*2;move(u,dx/gap*push,dz/gap*push);}}}if(d>58||((u.kind==='ally'||u.converted)&&d>ALLY_VIEW)){u.logicWait=(u.logicWait||0)-dt;if(u.logicWait>0)continue;u.logicWait=d>58?.35:.2;}if(u.kind==='human'){const act=TUNE.activity,route=civilianTarget(u,world.buildings);const spot=world.free(route.x,route.z,1)?route:world.nearest(route.x,route.z,1);tx=spot.x;tz=spot.z;pace=Math.hypot(tx-u.x,tz-u.z)>.7?act.shambleSpeed:0;}
+else if(u.kind==='ally'){const act=TUNE.activity,spec=ENEMIES[u.type],look=Math.max(20,(spec.range||2)+2);let victim=null,nearest=look;for(const h of crowdNear(hostileGrid,u.x,u.z,look)){if(!allySeeksHostile(h))continue;if(u.guard&&distance(player,h)>GUARD_LEASH)continue;const dd=distance(u,h);if(dd<nearest){nearest=dd;victim=h;}}let closingOnBoss=false;if(!victim&&boss.active&&!boss.dead&&!(u.guard&&distance(player,boss)>GUARD_LEASH)){const bd=distance(u,boss);if(bd<=look){victim=boss;nearest=bd;}else{tx=boss.x;tz=boss.z;pace=act.chaseSpeed;closingOnBoss=true;}}if(victim||(spec.spray&&u.sprayPhase)||(spec.charge&&u.chargePhase)){if(victim){tx=victim.x;tz=victim.z;}u.grenadeCd=(u.grenadeCd||0)-dt;if(victim&&spec.grenade&&!spec.bomber&&u.grenadeCd<=0&&nearest<14&&nearest>3.2&&world.clear(u,victim))throwAllyGrenade(u,spec,victim);const swing=spec.charge?tickShieldCharge(u,spec,victim,nearest,dt,true):spec.bomber?lobBomb(u,spec,victim,nearest,true):tickPurifier(u,spec,victim,nearest,dt,true)??stepHostileMelee(u,spec,nearest,world.clear(u,victim),dt);if(swing==='start'||swing==='windup'||swing==='spraying'||swing==='stop'||swing==='dash'){pace=0;if(victim)showHostilePose(u,spec,victim,swing==='start');}else if(swing==='hit'){pace=0;if(!spec.spray)allyFire(u,spec,victim);}else if(swing==='miss'){pace=0;const visual=visuals.get(u.id)?.v;if(visual)visual.holdingGun=false;}else pace=nearest<=spec.range*.82&&!(spec.bomber&&victim&&!world.clear(u,victim))&&!(spec.charge&&victim&&!world.clear(u,victim))?0:act.chaseSpeed;}else if(!closingOnBoss){const visual=visuals.get(u.id)?.v;if(visual)visual.holdingGun=false;if(u.guard||squadIds.has(u.id)){const angle=u.id*2.4;tx=player.x+Math.sin(angle)*3;tz=player.z+Math.cos(angle)*3;pace=act.followSpeed;}else{const structure=world.towers.find(o=>!o.dead&&distance(u,o)<28);if(structure){tx=structure.x;tz=structure.z;pace=act.structureSpeed;if(distance(u,structure)<3&&u.attackCd<=0){world.breakAt(u.x,u.z,2, u.profession===2?24:8,burst);u.attackCd=2;}}else{u.wander-=dt;if(u.wander<=0){u.tx=u.x+(Math.random()-.5)*act.awakeRadius*2;u.tz=u.z+(Math.random()-.5)*act.awakeRadius*2;u.wander=act.awakeIdle*(.55+Math.random()*.9);}tx=u.tx;tz=u.tz;pace=act.awakeSpeed;}}}if(!victim&&u.profession===1&&distance(u,player)<5&&u.attackCd<=0&&state.hp<100){state.hp=Math.min(100,state.hp+10);u.attackCd=25;toast('医生支援 +10',1);}}
+else{const idle=!u.rush&&((!alerted&&state.time<8)||d>(player.crouch?15:27+state.alert*3));if(idle&&!u.sprayPhase&&!u.chargePhase){u.aiming=false;u.aim=0;const visual=visuals.get(u.id)?.v;if(visual){visual.holdingGun=false;updateCharacterVisual(visual,false,dt,d);}u.wander-=dt;if(u.wander<=0){const step=streetStroll(u.x,u.z,world.buildings);const spot=world.free(step.x,step.z,1)?step:world.nearest(step.x,step.z,1);u.tx=spot.x;u.tz=spot.z;u.wander=4+Math.random()*3;}tx=u.tx;tz=u.tz;pace=Math.hypot(tx-u.x,tz-u.z)>.7?Math.min(Math.max(ENEMIES[u.type].speed*.5,.8),1.5):0;}else{let victim=player,nearest=d;for(const a of crowdNear(allyGrid,u.x,u.z,nearest)){const dd=distance(u,a);if(dd<nearest){nearest=dd;victim=a;}}const spec=ENEMIES[u.type];tx=victim.x;tz=victim.z;u.grenadeCd=(u.grenadeCd||0)-dt;if(spec.grenade&&!spec.bomber&&u.grenadeCd<=0&&nearest<14&&nearest>3.2&&world.clear(u,victim))throwGrenade(u,spec,victim);const swing=spec.charge?tickShieldCharge(u,spec,victim,nearest,dt,false):spec.bomber?lobBomb(u,spec,victim,nearest,false):tickPurifier(u,spec,victim,nearest,dt,false)??stepHostileMelee(u,spec,nearest,world.clear(u,victim),dt);if(swing==='start'||swing==='windup'||swing==='spraying'||swing==='stop'||swing==='dash'){pace=0;showHostilePose(u,spec,victim,swing==='start');}else if(swing==='hit'){pace=0;if(!spec.spray)enemyFire(u,spec,victim);}else if(swing==='miss'){pace=0;const visual=visuals.get(u.id)?.v;if(visual)visual.holdingGun=false;}else pace=nearest<=spec.range*.82&&!(spec.bomber&&!world.clear(u,victim))&&!(spec.charge&&!world.clear(u,victim))?0:spec.speed;}}
 if(u.surge>0)pace*=1.3;if(u.slow)pace*=.85;if(u.root>0)pace=0;({x:tx,z:tz}=world.waypoint(u,tx,tz));if(u.guard){const spot=guardMoveTarget(player,tx,tz);tx=spot.x;tz=spot.z;if(distance(player,u)>GUARD_LEASH)pace=Math.max(pace,TUNE.activity.followSpeed);}const len=Math.hypot(tx-u.x,tz-u.z);let moving=false;if(pace&&len>.6){const vx=(tx-u.x)/len*pace*dt,vz=(tz-u.z)/len*pace*dt;moving=move(u,vx,vz,true);const vis=visuals.get(u.id)?.v;if(moving&&vis)vis.holder.rotation.y=Math.atan2(vx,vz);}if(u.guard&&distance(player,u)>GUARD_LEASH){const back=guardMoveTarget(player,u.x,u.z),gap=distance(player,u),step=Math.min(gap-GUARD_LEASH,TUNE.activity.followSpeed*dt);moving=move(u,(back.x-u.x)/gap*step,(back.z-u.z)/gap*step)||moving;}const v=visuals.get(u.id)?.v;if(v){if(d<actorViewLimit(u)&&actorInFront(u,d))updateCharacterVisual(v,moving,dt,d);else v.holder.visible=false;}}}
 function dropActorVisual(u){const entry=visuals.get(u.id);if(!entry)return;if(entry.v.aura){removeAura(entry.v.aura);entry.v.aura=null;}releaseCharacterVisual(entry.v);visuals.delete(u.id);}
 function syncActorPresence(){
@@ -1002,8 +1168,8 @@ function syncActorPresence(){
  const keep=new Set(ranked.slice(0,VISUAL_BUDGET).map(item=>item.u.id));
  for(const item of ranked){if(keep.has(item.u.id)){if(!visuals.get(item.u.id))actorVisual(item.u);}else dropActorVisual(item.u);}
 }
-function updateVisuals(dt){syncActorPresence();for(const {v} of visuals.values())v.marker.visible=false;for(const u of units){const entry=visuals.get(u.id);if(!entry)continue;const {v}=entry;if(v.model){v.fitScale??=v.model.scale.x;v.model.scale.setScalar(v.fitScale*(u.surge>0?1.3:1));}const d=distance(player,u);v.holder.visible=d<actorViewLimit(u)&&actorInFront(u,d);v.holder.position.set(u.x,world.heightAt(u.x,u.z),u.z);if(u.converted&&!u.dead&&!v.aura)v.aura=makeAura(v.holder,u.type===0?AURA_COLORS.worker:AURA_COLORS.guard);if(v.aura){if(u.dead){removeAura(v.aura);v.aura=null;}else v.aura.g.visible=v.holder.visible&&distance(player,u)<34;}if(u.dead){v.holder.visible=false;continue;}if(entry.oldKind!==u.kind){if(u.kind==='ally'){const yaw=v.holder.rotation.y;
- // 按转化后的类型选择外观，与离开视野后 actorVisual 的重建保持一致。
+function updateVisuals(dt){syncActorPresence();for(const {v} of visuals.values())v.marker.visible=false;for(const u of units){const entry=visuals.get(u.id);if(!entry)continue;const {v}=entry;if(v.model){v.fitScale??=v.model.scale.x;v.model.scale.setScalar(v.fitScale*(u.surge>0?1.3:1));}const d=distance(player,u);v.holder.visible=d<actorViewLimit(u)&&actorInFront(u,d);v.holder.position.set(u.x,world.heightAt(u.x,u.z)+(u.knock>0?Math.sin((1-Math.min(1,u.knock))*Math.PI)*1.15:0),u.z);if(u.converted&&!u.dead&&!v.aura)v.aura=makeAura(v.holder,u.type===0?AURA_COLORS.worker:AURA_COLORS.guard);if(v.aura){if(u.dead){removeAura(v.aura);v.aura=null;}else v.aura.g.visible=v.holder.visible&&distance(player,u)<34;}if(u.dead){v.holder.visible=false;continue;}if(entry.oldKind!==u.kind){if(u.kind==='ally'){const yaw=v.holder.rotation.y;
+ // 按转化后的类型选择外观。市民换觉醒外形，士兵留着原来的模型；模型不对就换，对了就站直。
  const modelKind=u.type===0?'ally':'guard';
  if(v.poolKey!==modelKind){
   if(v.aura){removeAura(v.aura);v.aura=null;}
@@ -1011,14 +1177,11 @@ function updateVisuals(dt){syncActorPresence();for(const {v} of visuals.values()
   const nv=acquireCharacterVisual(assets,modelKind,u.profession);
   setCharacterKind(nv,'ally');
   nv.holder.position.set(u.x,world.heightAt(u.x,u.z),u.z);
-  nv.holder.rotation.y=yaw;scene.add(nv.holder);entry.v=nv;
- }else{
-  setCharacterKind(v,'ally');
-  // 复用士兵模型时也要撤销尸体的横躺姿态与残留攻击动作。
-  v.holder.rotation.set(0,yaw,0);v.attackTime=0;v.holdingGun=false;
- }
- entry.oldKind=u.kind;burst(u.x,1,u.z,0xba77ed,12);continue;}if(u.kind==='corpse'){v.holder.rotation.x=Math.PI/2;v.holder.position.y=world.heightAt(u.x,u.z)+.3;}entry.oldKind=u.kind;}if(u.kind==='corpse'){v.holder.position.y=world.heightAt(u.x,u.z)+.3;v.holder.visible=distance(player,u)<45;}}
-for(const a of auraVisuals.values())a.visible=false;if(state.abilities.air)aura('mother',player.x,player.z,[0,5,10,15][state.abilities.air],0xb377e7);for(const u of units){if(u.dead||u.kind==='corpse')continue;if(u.aiming&&!isRangedEnemy(ENEMIES[u.type])&&distance(player,u)<22)aura('melee'+u.id,u.x,u.z,ENEMIES[u.type].range+.2,0xf08a4a);else if(u.type===4&&distance(player,u)<32)aura(u.id,u.x,u.z,ENEMIES[4].aura||8,u.converted?0xb377e7:0x69bce8);}}
+  nv.holder.rotation.set(0,yaw,0);scene.add(nv.holder);entry.v=nv;
+ }else{setCharacterKind(v,'ally');v.holder.rotation.set(0,yaw,0);v.attackTime=0;v.holdingGun=false;}entry.oldKind=u.kind;burst(u.x,1,u.z,0xba77ed,12);continue;}if(u.kind==='corpse'){v.holder.rotation.x=Math.PI/2;v.holder.rotation.z=0;v.attackTime=0;v.holdingGun=false;v.holder.position.y=world.heightAt(u.x,u.z)+.3;}entry.oldKind=u.kind;}if(u.kind==='corpse'){v.holder.rotation.x=Math.PI/2;v.holder.rotation.z=0;v.attackTime=0;v.holdingGun=false;if(v.current){v.mixer?.stopAllAction();v.current=null;}v.holder.position.y=world.heightAt(u.x,u.z)+.3;v.holder.visible=distance(player,u)<45;}}
+for(const a of auraVisuals.values())a.visible=false;if(state.abilities.air)aura('mother',player.x,player.z,[0,5,10,15][state.abilities.air],0xb377e7);for(const u of units){if(u.dead||u.kind==='corpse')continue;if(u.aiming&&!isRangedEnemy(ENEMIES[u.type])&&!ENEMIES[u.type].spray&&!ENEMIES[u.type].charge&&distance(player,u)<22)aura('melee'+u.id,u.x,u.z,ENEMIES[u.type].range+.2,u.kind==='ally'?STRIKE.ally.telegraph:STRIKE.enemy.telegraph);else if(u.type===4&&distance(player,u)<32)aura(u.id,u.x,u.z,ENEMIES[4].aura||8,u.converted?0xb377e7:0x69bce8);if(u.sprayPhase&&ENEMIES[u.type]?.spray)showSprayWarning(u,ENEMIES[u.type]);if(u.chargePhase&&ENEMIES[u.type]?.charge&&typeof showChargeWarning==='function')showChargeWarning(u,ENEMIES[u.type]);}
+for(const [id,mesh] of (typeof sprayMarkers==='undefined'?[]:sprayMarkers)){if(!units.some(u=>u.id===id&&u.sprayPhase&&!u.dead))mesh.visible=false;}
+for(const [id,mesh] of (typeof chargeMarkers==='undefined'?[]:chargeMarkers)){if(!units.some(u=>u.id===id&&u.chargePhase&&!u.dead))mesh.visible=false;}}
 function updateEffects(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.v.y-=9*dt;p.m.position.addScaledVector(p.v,dt);p.m.rotation.x+=dt*4;if(p.life<=0){scene.remove(p.m);particles.splice(i,1);}}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.t+=dt;const fade=w.fade||.6,grow=w.grow||.35;w.m.scale.setScalar(w.r*Math.min(1,w.t/grow));if(w.m.material){if(w.opacity==null)w.opacity=w.m.material.opacity||1;w.m.material.opacity=Math.max(0,w.opacity*(1-w.t/fade));}if(w.t>fade){scene.remove(w.m);w.m.geometry?.dispose?.();w.m.material?.dispose?.();waves.splice(i,1);}}
 const bulletAllies=[];for(const a of units)if(a.kind==='ally'&&!a.dead)bulletAllies.push(a);for(let i=tracers.length-1;i>=0;i--){const b=tracers[i];b.life-=dt;if(b.m){
  if(b.bossOrb)updateBossOrb(b);
@@ -1031,7 +1194,7 @@ const bulletAllies=[];for(const a of units)if(a.kind==='ally'&&!a.dead)bulletAll
    if(boom){detonatePowerShot(b);b.life=0;}
   }
  }else if(b.from==='launcher'&&b.manualAim){__comicStepNeedle(b,dt);
- }else{
+ }else if(b.lob){updateLobBomb(b);}else{
   b.x+=b.vx*dt;b.z+=b.vz*dt;b.m.position.set(b.x,b.y??STANDING_CHEST,b.z);
   if(b.grenade){if(world.solid(b.x,b.z,.18))b.life=0;}
   else if(world.solid(b.x,b.z,.1)){if(b.friendly)world.breakAt(b.x,b.z,b.splash||.75,18,burst);b.life=0;}
@@ -1054,7 +1217,7 @@ const bulletAllies=[];for(const a of units)if(a.kind==='ally'&&!a.dead)bulletAll
   }else if(distance(b,player)<.58&&(b.y??STANDING_CHEST)>world.heightAt(player.x,player.z)+player.y+.12&&(b.y??STANDING_CHEST)<world.heightAt(player.x,player.z)+player.y+(player.crouch||player.roll>0?CROUCH_CHEST+.12:PLAYER_HEIGHT+.08)&&invincible<=0){playerHurt(b.damage||12,b.from||'秩序火力');b.life=0;}
   else for(const a of bulletAllies)if(distance(b,a)<.6){damageAlly(a,b.damage,state);b.life=0;break;}
  }
-}if(b.life<=0){if(b.grenade)detonateGrenade(b);if(b.bossOrb)detonateBossOrb(b);if(b.pooled)releaseEnemyBullet(b.m);else{scene.remove(b.m||b.line);if(b.line){b.line.geometry.dispose();b.line.material.dispose();}if(b.isPower||b.bossOrb){b.m.geometry?.dispose?.();b.m.material?.dispose?.();}}tracers.splice(i,1);}}}
+}if(b.life<=0){if(b.grenade)detonateGrenade(b);if(b.bossOrb)detonateBossOrb(b);if(b.pooled)releaseEnemyBullet(b.m);else{scene.remove(b.m||b.line);if(b.lob){b.m?.geometry?.dispose?.();b.m?.material?.dispose?.();}if(b.line){b.line.geometry.dispose();b.line.material.dispose();}if(b.isPower||b.bossOrb){b.m.geometry?.dispose?.();b.m.material?.dispose?.();}}tracers.splice(i,1);}}}
 
 function updateCamera(dt){if(mode==='menu'||mode==='loading'){
  if(world.menuCamera){const {from,look}=world.menuCamera;camera.position.lerp(new T.Vector3(...from),1-Math.exp(-dt*3));camera.lookAt(...look);if(playerVisual)playerVisual.holder.visible=false;return;}
@@ -1075,7 +1238,7 @@ function drawMap(){
  world.towers.forEach((tower,index)=>{const x=px(tower.x),z=pz(tower.z),radius=tower.dead?5:6+Math.sin(performance.now()*.008)*1.2;ctx.save();ctx.shadowColor=tower.dead?'transparent':'#ffd400';ctx.shadowBlur=tower.dead?0:12;ctx.fillStyle=tower.dead?'#746f56':'#ffe34f';ctx.beginPath();ctx.arc(x,z,radius,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle=tower.dead?'#c5bea0':'#332900';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(tower.dead?'×':String(index+1),x,z+.5);ctx.restore();});
  ctx.fillStyle='#e5c8ff';ctx.beginPath();ctx.arc(px(player.x),pz(player.z),3,0,7);ctx.fill();const f=forward();ctx.strokeStyle='#e6cfff';ctx.beginPath();ctx.moveTo(px(player.x),pz(player.z));ctx.lineTo(px(player.x+f.x*7),pz(player.z+f.z*7));ctx.stroke();if(reinforceTimer<7&&state.towers<2){const p=world.entries[reinforceDirection];ctx.fillStyle='#f49c67';ctx.font='bold 15px sans-serif';ctx.fillText('▼',px(p[0])-6,pz(p[1])+4);}
 }
-function drawLabels(){if(mode==='menu'||mode==='loading'){$('worldLabels').innerHTML='';return;}const candidates=units.filter(u=>!u.dead&&distance(player,u)<24&&(u.converted||u.type>0||u.infection>0||u===target||distance(player,u)<8)).sort((a,b)=>distance(player,a)-distance(player,b));let html='',shown=0,folded=0;const rectangles=[];const pos=new T.Vector3();for(const u of candidates){const ally=u.kind==='ally',corpse=u.kind==='corpse';pos.set(u.x,world.heightAt(u.x,u.z)+(corpse?.45:1.08),u.z).project(camera);if(pos.z>1||pos.z<-1||Math.abs(pos.x)>1.1||Math.abs(pos.y)>1.1)continue;const x=(pos.x*.5+.5)*innerWidth;let y=(-pos.y*.5+.5)*innerHeight;if(ally&&u.hurt<=0){html+=`<div class="allyDot" style="left:${x}px;top:${y}px">◆<small>${unitName(u)}</small></div>`;continue;}if(shown++>=12){folded++;continue;}for(let step=0;step<3;step++){if(!rectangles.some(r=>Math.abs(r.x-x)<90&&Math.abs(r.y-y)<28))break;y-=18;}if(y<200){folded++;continue;}rectangles.push({x,y});if(corpse){html+=`<div class="corpseLabel" style="left:${x}px;top:${y}px;border-color:${u.corpseTime<3?'#e46c69':'#e5a376'};--progress:${u.infection/u.threshold*360}deg"><i></i>${Math.floor(u.infection)}<small>${u.corpseTime.toFixed(1)}s · ${state.abilities.air>=2||state.abilities.dot>=2?'可转化':'需空气 Lv2'}</small></div>`;continue;}html+=`<div class="unitLabel ${target===u?'locked':''}" style="left:${x}px;top:${y}px"><div class="name">${unitName(u)}${u.aiming||u.aim?(isRangedEnemy(ENEMIES[u.type])?' ⚠ 举枪':' ⚠ 抬手'):u.purified?` −${Math.round(u.purified)}/s`:''}</div><div class="health"><i style="width:${u.hp/u.maxHp*100}%"></i></div>${ally?'':`<div class="infection"><i style="width:${u.infection/u.threshold*100}%"></i></div><div class="number">${Math.floor(u.infection)} / ${u.threshold}</div>`}</div>`;}if(folded)html+=`<div id="foldedLabels">附近单位 +${folded}</div>`;$('worldLabels').innerHTML=html;}
+function drawLabels(){if(mode==='menu'||mode==='loading'){$('worldLabels').innerHTML='';return;}const candidates=units.filter(u=>!u.dead&&distance(player,u)<24&&(u.converted||u.type>0||u.infection>0||u===target||distance(player,u)<8)).sort((a,b)=>distance(player,a)-distance(player,b));let html='',shown=0,folded=0;const rectangles=[];const pos=new T.Vector3();for(const u of candidates){const ally=u.kind==='ally',corpse=u.kind==='corpse';pos.set(u.x,world.heightAt(u.x,u.z)+(corpse?.45:1.08),u.z).project(camera);if(pos.z>1||pos.z<-1||Math.abs(pos.x)>1.1||Math.abs(pos.y)>1.1)continue;const x=(pos.x*.5+.5)*innerWidth;let y=(-pos.y*.5+.5)*innerHeight;if(ally&&u.hurt<=0){html+=`<div class="allyDot" style="left:${x}px;top:${y}px">◆<small>${unitName(u)}</small></div>`;continue;}if(shown++>=12){folded++;continue;}for(let step=0;step<3;step++){if(!rectangles.some(r=>Math.abs(r.x-x)<90&&Math.abs(r.y-y)<28))break;y-=18;}if(y<200){folded++;continue;}rectangles.push({x,y});if(corpse){html+=`<div class="corpseLabel" style="left:${x}px;top:${y}px;border-color:${u.corpseTime<3?'#e46c69':'#e5a376'};--progress:${u.infection/u.threshold*360}deg"><i></i>${Math.floor(u.infection)}<small>${u.corpseTime.toFixed(1)}s · ${state.abilities.air>=2||state.abilities.dot>=2?'可转化':'需空气 Lv2'}</small></div>`;continue;}html+=`<div class="unitLabel ${target===u?'locked':''}" style="left:${x}px;top:${y}px"><div class="name">${unitName(u)}${u.aiming||u.aim?(isRangedEnemy(ENEMIES[u.type])?' ⚠ 举枪':u.chargePhase?' ⚠ 盾击':' ⚠ 抬手'):u.purified?` −${Math.round(u.purified)}/s`:''}</div><div class="health"><i style="width:${u.hp/u.maxHp*100}%"></i></div>${ally?'':`<div class="infection"><i style="width:${u.infection/u.threshold*100}%"></i></div><div class="number">${Math.floor(u.infection)} / ${u.threshold}</div>`}</div>`;}if(folded)html+=`<div id="foldedLabels">附近单位 +${folded}</div>`;$('worldLabels').innerHTML=html;}
 function hud(){if(import.meta.env.DEV)canvas.dataset.scene=JSON.stringify({buildings:world.buildings.length,spawn:world.spawn,bossSpawn:world.bossSpawn,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,position:{...player},towers:world.towers.map(o=>({x:o.x,z:o.z}))});const s=state;const cap=levelCap(s);$('hpText').textContent=`${Math.max(0,Math.ceil(s.hp))} / ${Math.ceil(s.maxHp)}`;$('hpBar').style.width=Math.max(0,s.hp/s.maxHp*100)+'%';$('staminaBar').style.width=Math.max(0,s.stamina/STAMINA_MAX*100)+'%';$('team').textContent=teamCount(units);$('total').textContent=s.infected;$('clock').textContent=formatTime(s.time);$('level').textContent=s.level;$('xpText').textContent=s.level===cap?'MAX':`${Number(s.xp.toFixed(1))} / ${s.need}`;$('xpBar').style.width=(s.level===cap?100:s.xp/s.need*100)+'%';$('percent').textContent=Math.min(100,Math.floor(s.infected/40*100))+'%';const owned=ownedAbilities(s);$('abilitySlots').innerHTML=owned.map(a=>`<div class="slot owned" data-ability="${a.id}" title="${a.name} ${s.abilities[a.id]}/3">${a.icon}<small>${s.abilities[a.id]}</small></div>`).join('')+'<div class="slot" aria-hidden="true">+</div>'.repeat(ABILITIES.length-owned.length);document.querySelectorAll('#alertLevels b').forEach((b,i)=>b.classList.toggle('on',i+2<=s.alert));$('alertValue').textContent=s.aftermath?'0':Math.floor(alertValue(s));$('alertName').textContent=ALERT_NAMES[s.alert]||'尚未警觉';$('reinforcement').textContent=s.aftermath?'警戒解除':s.bossSpawned?'击败巨像，解除封锁':s.bossCountdown!=null?'镇压已启动':`下一级 · ${[10,100,300,500].find(v=>v>alertValue(s))??500}`;$('hud').classList.toggle('countingDown',s.bossCountdown!=null&&!s.bossSpawned&&!s.aftermath);const weaken=s.weakenTasks;
  if(weaken){
   const done=WEAKEN_TASKS.filter(task=>weaken[task.id]).length;
@@ -1124,7 +1287,7 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.04,(now-last
  attackCd=Math.max(0,attackCd-dt);breakCd=Math.max(0,breakCd-dt);rushCd=Math.max(0,rushCd-dt);invincible=Math.max(0,invincible-dt);if(keys.ArrowLeft)yaw+=dt*1.6;if(keys.ArrowRight)yaw-=dt*1.6;if(keys.ArrowUp)pitch=Math.max(-.25,pitch-dt*.6);if(keys.ArrowDown)pitch=Math.min(.55,pitch+dt*.6);
  if(switchTime>0){switchTime=Math.max(0,switchTime-dt);if(!switchTime){stashMag();state.weapon=nextWeapon;const gun=activeGun();state.gunId=gun?gun.id:null;state.clipMax=gun?gun.clip:0;state.clip=gun?(state.mags[gun.id]||0):0;}}if(reloadTime>0){reloadTime=Math.max(0,reloadTime-dt);if(!reloadTime){const gun=activeGun();if(gun){const n=Math.min(gun.clip-state.clip,state.ammo[gun.id]||0);state.clip+=n;state.ammo[gun.id]-=n;state.mags[gun.id]=state.clip;}}}
  stepPlayerMotion(dt);
- const dx=(keys.KeyD?1:0)-(keys.KeyA?1:0),fw=(keys.KeyW?1:0)-(keys.KeyS?1:0),len=Math.hypot(dx,fw);const sprinting=stepSprint(state,len>0&&!player.crouch&&player.y===0&&player.roll<=0,shiftHeld(),dt);let moving=false,rollProgress=0;if(player.roll>0){player.roll=Math.max(0,player.roll-dt);rollProgress=1-player.roll/ROLL_DURATION;const rollSpeed=1.5+Math.sin(rollProgress*Math.PI)*4.7;move(player,player.rollX*rollSpeed*dt,player.rollZ*rollSpeed*dt);if(rollProgress>.28&&rollProgress<.72)invincible=Math.max(invincible,.05);moving=true;playerVisual.holder.rotation.y=Math.atan2(player.rollX,player.rollZ);
+ const dx=(keys.KeyD?1:0)-(keys.KeyA?1:0),fw=(keys.KeyW?1:0)-(keys.KeyS?1:0),len=Math.hypot(dx,fw);const sprinting=stepSprint(state,len>0&&!player.crouch&&player.y===0&&player.roll<=0&&!(player.knock>0),shiftHeld(),dt);let moving=false,rollProgress=0;if(player.knock>0){player.knock=Math.max(0,player.knock-dt);moving=move(player,(player.knockX||0)*6.5*dt,(player.knockZ||0)*6.5*dt);playerVisual.holder.rotation.y=Math.atan2(player.knockX||0,player.knockZ||0);}else if(player.roll>0){player.roll=Math.max(0,player.roll-dt);rollProgress=1-player.roll/ROLL_DURATION;const rollSpeed=1.5+Math.sin(rollProgress*Math.PI)*4.7;move(player,player.rollX*rollSpeed*dt,player.rollZ*rollSpeed*dt);if(rollProgress>.28&&rollProgress<.72)invincible=Math.max(invincible,.05);moving=true;playerVisual.holder.rotation.y=Math.atan2(player.rollX,player.rollZ);
   if(player.roll===0){finishRoll();if(player.roll>0)rollProgress=0;}
  }else if(len){const f=forward(),pace=speed(state,sprinting)*(player.crouch?.45:1),vx=(-Math.cos(yaw)*dx+f.x*fw)/len*pace*dt,vz=(Math.sin(yaw)*dx+f.z*fw)/len*pace*dt;moving=move(player,vx,vz);if(attackCd<.2)playerVisual.holder.rotation.y=Math.atan2(vx,vz);}if(sprinting&&state.abilities.haste>=3){ramTimer-=dt;for(const u of units){if(u.dead||u.converted||u.kind==='corpse')continue;if(distance(player,u)<1.05&&ramTimer<=0){const spec=meleeSpec(state,'heavy');applyHit(u,spec.infection,spec.damage);ramTimer=.85;burst(u.x,STANDING_CHEST,u.z,0xe8c07a,10);}}}playerVisual.holder.position.set(player.x,world.heightAt(player.x,player.z)+player.y,player.z);
  playerVisual.model.position.y=player.roll>0?Math.sin(rollProgress*Math.PI)*.28:player.crouch?-.33:0;

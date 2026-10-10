@@ -25,13 +25,21 @@ export const ENEMIES=[
  {name:'苦逼打工人',level:1,hp:50,threshold:20,speed:2.2,damage:0,range:1.6,interval:1.5,aim:.2,fodder:true,allyName:'普通狂暴者',allyHp:20,allyAtk:10},
  {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:20,range:1.35,interval:1.7,aim:.7,fodder:true,allyName:'狂暴持棍巡警',allyHp:50,allyAtk:10},
  {name:'持枪巡警',level:2,hp:100,threshold:40,speed:2.45,damage:10,range:12,interval:2,aim:.45,allyName:'狂暴持枪巡警',allyHp:50,allyAtk:5},
- {name:'持盾特警',level:3,hp:200,threshold:150,speed:2.3,damage:30,range:2.3,interval:1.5,aim:1.5,shield:true,cone:true,allyName:'狂暴持盾特警',allyHp:100,allyAtk:15},
- // drain = 敌方每秒清掉的感染（原 4，已削弱）；aid = 被同化后反过来帮玩家扩散的速率，保留原值当奖励。
- {name:'净化工兵',level:4,hp:400,threshold:300,speed:2.05,damage:10,range:8,interval:.5,aim:.25,purifier:true,spray:true,aura:10,drain:2,aid:4,allyName:'狂暴净化士兵',allyHp:200,allyAtk:5},
- {name:'大兵',level:4,hp:300,threshold:200,speed:2.45,damage:5,range:24,interval:.1,aim:0,allyName:'狂暴大兵',allyHp:150,allyAtk:2.5,grenade:{radius:5,max:50,min:10,cd:20}},
- {name:'持枪特警',level:3,hp:150,threshold:100,speed:2.65,damage:10,range:14,interval:.5,aim:.12,allyName:'狂暴持枪特警',allyHp:75,allyAtk:5},
+ // 3 级盾警比 2 级巡警硬一截。不再原地挥盾，短蓄力后沿锁定方向冲一段。
+ {name:'持盾特警',level:3,hp:280,threshold:180,speed:2.5,damage:40,range:7,interval:2.2,aim:.4,shield:true,charge:{windup:.4,speed:13,distance:6.5,wide:1.6,knock:1},allyName:'狂暴持盾特警',allyHp:140,allyAtk:20},
+ // 净化专员和净化士兵合成这一种。扇形喷雾每 0.5 秒 10 点伤害。
+ // 出手前先亮出这块扇形约 1 秒，再至少喷 2 秒。扇形里没人了才停。
+ // drain 按每秒计：10 米内每 0.5 秒清 2 点，所以是 4。同类只取最高的一个，不叠加。
+ // aid 是被同化后反过来扩散的速率，和清感染同一档。
+ {name:'净化士兵',level:4,hp:400,threshold:300,speed:2.05,damage:10,range:8,interval:.5,aim:1,purifier:true,spray:true,sprayWindup:1,spraySustain:2,aura:10,drain:4,aid:4,allyName:'狂暴净化士兵',allyHp:200,allyAtk:5},
+ {name:'大兵',level:4,hp:300,threshold:200,speed:2.45,damage:5,range:24,interval:.1,aim:0,allyName:'狂暴大兵',allyHp:150,allyAtk:2.5},
+ // 3 级枪警同样加厚，射速不变，单发和射程略提高。
+ {name:'持枪特警',level:3,hp:240,threshold:140,speed:2.75,damage:16,range:16,interval:.5,aim:.12,allyName:'狂暴持枪特警',allyHp:120,allyAtk:8},
  // 近战重装：前摇长、命中是以自身为心的范围伤害。range 保持在 3 以内，才会被判成近战而不是远程。
- {name:'重装大锤兵',level:4,hp:700,threshold:500,speed:1.85,damage:55,range:3,interval:2.6,aim:1.9,slam:{radius:4.2},allyName:'狂暴重装大锤兵',allyHp:350,allyAtk:25}
+ {name:'重装大锤兵',level:4,hp:700,threshold:500,speed:1.85,damage:55,range:3,interval:2.6,aim:1.9,slam:{radius:4.2},allyName:'狂暴重装大锤兵',allyHp:350,allyAtk:25},
+ // 掷弹兵只扔炸弹，不开枪。weight 单独写成 20，不走 4 级默认的 16。
+ // 炸弹落地前会在落点亮圈；半径内伤害是平的，不从中心往外衰减。
+ {name:'掷弹兵',level:4,weight:20,hp:400,threshold:300,speed:2.2,damage:50,range:16,interval:1,aim:.2,bomber:true,grenade:{cd:1,radius:2,max:50,min:50,fall:.95,lob:true},allyName:'狂暴掷弹兵',allyHp:200,allyAtk:25}
 ];
 // Canonical eight abilities and all 24 descriptions from the user-supplied comic package.
 export const ABILITIES=[
@@ -344,7 +352,7 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.hp=t.hp;u.maxHp=t.hp;u.infection=0;u.threshold=t.threshold;
  u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
- u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;u.rush=false;u.stuck=0;
+ u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.sprayPhase='';u.sprayTime=0;u.sprayTick=0;u.guardCd=0;u.rush=false;u.stuck=0;u.chargePhase='';u.chargeYaw=0;u.chargeLeft=0;u.chargeDist=0;u.chargeStep=0;u.chargeHit=null;u.knock=0;
  u.playerInfection=false;u.parasite=false;u.root=0;u.slow=false;u.surge=0;u.mistTick=0;u.route=null;u.routeEnd=1;u.stationary=undefined;u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
  return u;
 }
@@ -402,7 +410,7 @@ export function convert(j, A) {
     D !== A.type && (A.type = D, A.threshold = ENEMIES[D].threshold, N = true);
   }
   const I = allyTemplate(A.type);
-  return A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
+  return A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.sprayPhase = "", A.chargePhase = "", A.knock = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
 }
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.dead||u.converted||u.kind==='corpse')return 'none';
@@ -429,10 +437,9 @@ const AIR=[
  {radius:15,perHalf:6,corpse:true}
 ];
 const DOT_RATE=[0,1,2,3];
-// 净化不叠加：站着三四个净化工兵也只按最强的那一个算，不存在围成一圈把感染冻住的情况。
-// 原本是每个各清 4 点线性累加，中后期一轮刷出三四个就能把空气传播（3 级才 12/秒）整个抵消掉，
-// 4 级军队永远感染不动。现在无论多少个，都只有单个净化工兵的 2 点/秒。
-export const PURIFY_MAX=2;
+// 同类净化光环不叠加：旁边站几个净化士兵，也只按其中最强的一个清感染。
+// 单个是每 0.5 秒 2 点，也就是每秒 4 点。再多几个也不会把空气传播整段抵消掉。
+export const PURIFY_MAX=4;
 export function tickInfection(j, A, M, N) {
   let converted = 0;
   const aura = AIR[j.abilities.air] || AIR[0], purifiers = A.filter((u) => !u.dead && u.kind !== "corpse" && u.type === 4);
@@ -560,7 +567,7 @@ export function tickRunClock(s,dt){
 }
 export function threat(s){return cityAlert(s).stage;}
 // 同阶权重用于预算的消耗与供给；召唤护卫不贡献队伍权重。
-export function unitWeight(type){const rank=ENEMIES[type]?.level||1;return TUNE.difficulty['allyRank'+rank]||0;}
+export function unitWeight(type){const e=ENEMIES[type];if(Number.isFinite(e?.weight))return e.weight;const rank=e?.level||1;return TUNE.difficulty['allyRank'+rank]||0;}
 export function difficultyWeight(s,units){
  const d=TUNE.difficulty;
  return d.playerBase+s.level*d.playerPerLevel+(units||[]).reduce((sum,u)=>sum+(u.kind==='ally'&&!u.dead&&!u.guard?unitWeight(u.type):0),0);
@@ -574,7 +581,7 @@ export function isCityFodder(u,stage=1){
  return stage>=3&&u.type===1;
 }
 export function isCombatFodder(u){return isCityFodder(u,99);}
-export function isRangedEnemy(spec){return (spec?.range??0)>3&&!spec.spray;}
+export function isRangedEnemy(spec){return (spec?.range??0)>3&&!spec.spray&&!spec.bomber&&!spec.charge;}
 export function hostileWindup(spec){
  if(Number.isFinite(spec.aim))return spec.aim;
  return isRangedEnemy(spec)?1:.4;
@@ -596,6 +603,68 @@ export function stepHostileMelee(u,spec,distance,clear,dt){
   }
   u.aiming=true;u.aim=wind;
   return 'start';
+ }
+ return 'idle';
+}
+// 持盾冲锋：短蓄力锁定方向，再沿这个方向冲完固定距离。同一冲里每个目标只结算一次。
+export function beginShieldCharge(u,spec,yaw){
+ const wind=spec.charge?.windup??.4;
+ u.chargePhase='windup';u.chargeYaw=yaw;u.chargeLeft=wind;u.chargeDist=0;u.chargeStep=0;u.chargeHit={};
+ u.aiming=true;u.aim=wind;
+ return 'start';
+}
+export function shieldChargeHits(u,spec,target){
+ if(!target)return false;
+ const yaw=u.chargeYaw||0,fx=Math.sin(yaw),fz=Math.cos(yaw);
+ const dx=target.x-u.x,dz=target.z-u.z,along=dx*fx+dz*fz,side=Math.abs(dx*fz-dz*fx);
+ const wide=(spec.charge?.wide||1.6)*.5;
+ return along>=-.45&&along<=1.35&&side<=wide;
+}
+export function stepShieldCharge(u,spec,dt){
+ const c=spec.charge||{};
+ if(u.chargePhase==='windup'){
+  u.aiming=true;u.chargeLeft=Math.max(0,(u.chargeLeft||0)-dt);u.aim=u.chargeLeft;u.chargeStep=0;
+  if(u.chargeLeft>0)return 'windup';
+  u.chargePhase='dash';u.chargeDist=0;u.chargeHit=u.chargeHit||{};
+ }
+ if(u.chargePhase==='dash'){
+  const left=Math.max(0,(c.distance||6.5)-(u.chargeDist||0));
+  const step=Math.min((c.speed||13)*dt,left);
+  u.chargeStep=step;u.chargeDist=(u.chargeDist||0)+step;
+  if(u.chargeDist>=(c.distance||6.5)-.001){u.chargePhase='';u.aiming=false;u.aim=0;u.attackCd=spec.interval;}
+  return 'dash';
+ }
+ return 'idle';
+}
+// 净化士兵：先亮出扇形距离预警约 1 秒，再连续喷至少 2 秒。
+// 满 2 秒后如果这块扇形里已经没人，就停；还有人就继续喷，直到清空。
+export function beginPurifierSpray(u,spec,yaw){
+ u.sprayPhase='windup';u.sprayYaw=yaw;u.aiming=true;u.aim=spec.sprayWindup??1;u.sprayTime=0;u.sprayTick=0;
+ return 'start';
+}
+export function purifierConeHit(u,spec,target){
+ if(!target)return false;
+ const dx=target.x-u.x,dz=target.z-u.z,d=Math.hypot(dx,dz);
+ if(d>(spec.range||0)||d<.02)return false;
+ const yaw=Number.isFinite(u.sprayYaw)?u.sprayYaw:Math.atan2(dx,dz);
+ return (dx*Math.sin(yaw)+dz*Math.cos(yaw))/d>=.5;
+}
+export function stepPurifierSpray(u,spec,occupied,dt){
+ const sustain=spec.spraySustain??2,tick=spec.interval>0?spec.interval:.5;
+ if(u.sprayPhase==='windup'){
+  u.aiming=true;u.aim=Math.max(0,(u.aim||0)-dt);
+  if(u.aim>0)return 'windup';
+  u.sprayPhase='spray';u.sprayTime=0;u.sprayTick=0;
+ }
+ if(u.sprayPhase==='spray'){
+  u.aiming=true;u.sprayTime=(u.sprayTime||0)+dt;u.sprayTick=(u.sprayTick||0)-dt;
+  const hit=u.sprayTick<=0;
+  if(hit)u.sprayTick+=tick;
+  if(u.sprayTime>=sustain&&!occupied){
+   u.sprayPhase='';u.aiming=false;u.aim=0;u.sprayTime=0;u.attackCd=tick;
+   return hit?'hit':'stop';
+  }
+  return hit?'hit':'spraying';
  }
  return 'idle';
 }

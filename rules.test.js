@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from 'three';
-import {makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,guardRoster,guardMissing,guardWanted,PURIFY_MAX,hostileWindup,hostileSwingConnects,stepHostileMelee,xpNeedFor,xpFromUnit,upgradeAutoGap,promoteType,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
+import {makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,reward,tickInfection,stepSimulation,damageAlly,teamCount,outcome,ABILITIES,ENEMIES,hurtMother,bossReady,cityAlert,alertValue,tickRunClock,threat,unitWeight,spawnPlan,fodderCount,speed,WALK_SPEED,SPRINT_MULT,setTuneValue,resetTune,meleeSpec,grantKillAmmo,gunInfection,refreshStats,levelCap,convert,allyTemplate,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,isRangedEnemy,guardRoster,guardMissing,guardWanted,PURIFY_MAX,hostileWindup,hostileSwingConnects,stepHostileMelee,beginShieldCharge,stepShieldCharge,shieldChargeHits,beginPurifierSpray,stepPurifierSpray,purifierConeHit,xpNeedFor,xpFromUnit,upgradeAutoGap,promoteType,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,grenadeBlast,makeSpawnQueue,enqueueSpawnTypes,enqueueSpawnJobs,takeSpawnJobs,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,planArmyWave,armySlot,planCivilianSpot,streetStroll,isRoadside,countStreetCivilians,splitArmyWave,PATROL_KEEP,shouldCullTroop,TROOP_CULL} from './rules.js';
 import {createBoss,hitBoss,canBossBombTarget} from './boss.js';
 import {createSyringe} from './syringe.js';
 
@@ -99,19 +99,19 @@ test('card selection pauses time, corpse expiration and infection growth',()=>{
 });
 test('purifier drains infection and reverses after conversion',()=>{
  const s=makeState(),p=makeUnit(1,4,1,0),u=makeUnit(2,3,0,0);u.infection=80;
- tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,78);
+ tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,76);
  hit(s,p,340,0);assert.equal(p.converted,true);
- // 同化后的净化工兵反过来帮玩家扩散，速率仍是原来的 4/秒，不跟着一起削弱。
- tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,82);
+ // 同化后的净化士兵反过来帮玩家扩散，每秒 4 点，和清感染同一档。
+ tickInfection(s,[p,u],{x:50,z:50},1);assert.equal(u.infection,80);
 });
 test('purifiers never stack: a squad only purifies as fast as one of them',()=>{
  const s=makeState();s.abilities.air=3;
  const target=makeUnit(1,5,0,0);target.infection=100;
  const squad=Array.from({length:6},(_,i)=>makeUnit(10+i,4,.5,0));
- // 空气 3 级 +12/秒。六个净化工兵原本清 24/秒会把进度倒扣，现在只按一个算。
+ // 空气 3 级 +12/秒。六个净化士兵如果各清 4 点会把进度倒扣，现在只按一个算。
  tickInfection(s,[target,...squad],{x:0,z:0},1);
  assert.equal(target.purified,PURIFY_MAX);
- assert.equal(target.purified,2,'围六个也只清 2/秒');
+ assert.equal(target.purified,4,'围六个也只清每秒 4 点');
  assert.equal(target.infection,100+12-PURIFY_MAX);
  assert.ok(target.infection>100,'感染仍在推进，不再被净化锁死');
  // 一个和六个的净化完全一样，多出来的净化兵不再有影响。
@@ -119,6 +119,31 @@ test('purifiers never stack: a squad only purifies as fast as one of them',()=>{
  tickInfection(s,[one,makeUnit(21,4,.5,0)],{x:0,z:0},1);
  assert.equal(one.purified,target.purified);
  assert.equal(one.infection,target.infection);
+});
+test('purifier warns for about a second, then sprays the locked cone for at least two seconds',()=>{
+ const spec=ENEMIES[4];
+ assert.equal(spec.sprayWindup,1);
+ assert.equal(spec.spraySustain,2);
+ const u={x:0,z:0,attackCd:0};
+ assert.equal(beginPurifierSpray(u,spec,0),'start');
+ assert.equal(u.sprayPhase,'windup');
+ for(let t=0;t<.95;t+=.05)assert.equal(stepPurifierSpray(u,spec,true,.05),'windup','预警这一秒还不出伤');
+ assert.equal(stepPurifierSpray(u,spec,false,.05),'hit');
+ assert.equal(u.sprayPhase,'spray');
+ // 这块扇形已经空了，也要先喷满大约 2 秒再停。
+ let steps=0,last='';
+ while(u.sprayPhase==='spray'&&steps<80){last=stepPurifierSpray(u,spec,false,.05);steps++;}
+ assert.ok(steps>=38,'空了也至少再喷接近 2 秒');
+ assert.equal(u.sprayPhase,'');
+ assert.ok(last==='hit'||last==='stop');
+ const keep={x:0,z:0};
+ beginPurifierSpray(keep,spec,0);
+ for(let t=0;t<1;t+=.05)stepPurifierSpray(keep,spec,true,.05);
+ for(let t=0;t<2.5;t+=.05)stepPurifierSpray(keep,spec,true,.05);
+ assert.equal(keep.sprayPhase,'spray','扇形里还有人就继续喷');
+ assert.equal(purifierConeHit(keep,spec,{x:0,z:4}),true);
+ assert.equal(purifierConeHit(keep,spec,{x:4,z:0}),false);
+ assert.equal(purifierConeHit(keep,spec,{x:0,z:9}),false);
 });
 test('berserkers can infect and attack civilians as well as order units',()=>{
  const worker=makeUnit(1,0,0,0);worker.atk=10;
@@ -136,7 +161,29 @@ test('air 3 stays on the player and does not spread from allies',()=>{
 });
 test('shield halves frontal damage only',()=>{
  const s=makeState(),u=makeUnit(1,3,0,0);
- assert.ok(ENEMIES[3].shield);hit(s,u,0,20,true);assert.equal(u.hp,190);hit(s,u,0,20,false);assert.equal(u.hp,170);
+ const hp=u.hp;assert.ok(ENEMIES[3].shield);hit(s,u,0,20,true);assert.equal(u.hp,hp-10);hit(s,u,0,20,false);assert.equal(u.hp,hp-30);
+});
+test('shield cop winds up briefly then dashes a fixed lane',()=>{
+ const spec=ENEMIES[3],gun=ENEMIES[6];
+ assert.equal(spec.cone,undefined);
+ assert.ok(spec.hp>=240&&gun.hp>=200);
+ assert.ok(gun.damage>ENEMIES[2].damage);
+ assert.ok(spec.charge.windup<=.6&&spec.charge.knock===1);
+ assert.equal(isRangedEnemy(spec),false);
+ const u=makeUnit(1,3,0,0);
+ assert.equal(beginShieldCharge(u,spec,0),'start');
+ assert.equal(stepShieldCharge(u,spec,spec.charge.windup-.05),'windup');
+ assert.equal(u.chargeStep,0);
+ assert.equal(stepShieldCharge(u,spec,.1),'dash');
+ let moved=u.chargeStep,guard=0;
+ while(u.chargePhase==='dash'&&guard++<40){stepShieldCharge(u,spec,.05);moved+=u.chargeStep||0;}
+ assert.equal(u.chargePhase,'');
+ assert.ok(Math.abs(moved-spec.charge.distance)<.02);
+ assert.equal(u.attackCd,spec.interval);
+ u.chargeYaw=0;u.x=0;u.z=0;
+ assert.equal(shieldChargeHits(u,spec,{x:0,z:1}),true);
+ assert.equal(shieldChargeHits(u,spec,{x:0,z:-1}),false);
+ assert.equal(shieldChargeHits(u,spec,{x:2,z:.4}),false);
 });
 test('city alert follows earned xp and time, not level or infection',()=>{
  const s=makeState();assert.equal(alertValue(s),0);assert.equal(cityAlert(s).stage,1);assert.equal(cityAlert(s).maxLevel,1);
@@ -204,14 +251,14 @@ test('live convert restores a full ally; corpse convert is sixty percent',()=>{
  assert.equal(corpse.hp,Math.ceil(allyTemplate(0).hp*.6));
 });
 test('converted full stats are half of the living enemy, except civilian attack',()=>{
- for(const [type,hp,atk] of [[0,20,10],[1,50,10],[2,50,5],[3,100,15],[4,200,5],[5,150,2.5],[6,75,5]]){
+ for(const [type,hp,atk] of [[0,20,10],[1,50,10],[2,50,5],[3,140,20],[4,200,5],[5,150,2.5],[6,120,8]]){
   const e=ENEMIES[type],tpl=allyTemplate(type);
   assert.equal(tpl.hp,hp);
   assert.equal(tpl.atk,atk);
   if(type!==0)assert.equal(tpl.hp,e.hp/2);
  }
- assert.equal(grenadeBlast(ENEMIES[5],0),50);
- assert.equal(grenadeBlast(ENEMIES[5],5),10);
+ assert.equal(ENEMIES[5].grenade,undefined);
+ assert.equal(grenadeBlast(ENEMIES[5],0),0);
  assert.equal(allyTemplate(1).name,'狂暴持棍巡警');
  assert.equal(allyTemplate(5).name,'狂暴大兵');
  assert.equal(allyTemplate(6).name,'狂暴持枪特警');
@@ -567,6 +614,27 @@ test('hammer brute is a slow high-HP melee bruiser with long windup and area dam
  assert.ok(spec.speed<ENEMIES[4].speed);
  assert.equal(isRangedEnemy(spec),false,'it stays a melee unit despite the wide swing');
  assert.ok(spec.allyHp>0&&spec.allyAtk>0);
+});
+test('grenadier lobs one flat 50-damage bomb each second and the ally is half',()=>{
+ const spec=ENEMIES[8];
+ assert.equal(spec.name,'掷弹兵');
+ assert.equal(spec.level,4);
+ assert.equal(spec.hp,400);
+ assert.equal(spec.threshold,300);
+ assert.equal(unitWeight(8),20);
+ assert.equal(spec.bomber,true);
+ assert.equal(spec.grenade.cd,1);
+ assert.equal(spec.grenade.radius,2);
+ assert.equal(spec.grenade.lob,true);
+ assert.ok(spec.grenade.fall>=.8,'the bomb stays in the air long enough to warn');
+ assert.equal(grenadeBlast(spec,0),50);
+ assert.equal(grenadeBlast(spec,2),50);
+ assert.equal(grenadeBlast(spec,2.01),0);
+ assert.equal(isRangedEnemy(spec),false);
+ const ally=allyTemplate(8);
+ assert.equal(ally.name,'狂暴掷弹兵');
+ assert.equal(ally.hp,200);
+ assert.equal(ally.atk,25);
 });
 
 
