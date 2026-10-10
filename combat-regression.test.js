@@ -4,9 +4,33 @@ import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import * as rules from './rules.js';
 import * as T from 'three';
+import {createBoss,animateBoss,canBossBombTarget} from './boss.js';
 const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
 function section(start,end){const from=source.indexOf(start);assert.ok(from>=0);const to=source.indexOf(end,from);assert.ok(to>from);return source.slice(from,to);}
 const noop=()=>{};
+test('Boss charge and launch use each map targeting rule, including cancellation out of range',()=>{
+ for(const [map,x,expected] of [['tidewater',0,true],['riverside',0,false],['riverside',20,true],['tidewater',100,false]]){
+  const scene=new T.Scene(),boss=createBoss(scene),elements=new Map();
+  Object.assign(boss,{active:true,x:14.25,z:23.75,attack:0});
+  const world={heightAt:()=>0,free:()=>false,breakAt:noop};
+  if(map==='tidewater')world.bossCanTarget=(b,p)=>rules.distance(b,p)<=28;
+  const ctx=vm.createContext({...rules,T,boss,world,scene,animateBoss,canBossBombTarget,
+   player:{x,z:24},state:rules.makeState(),tracers:[],missionTimer:0,bossMissionTimer:0,
+   BOSS_ORB_WINDUP:.1,createBossTargetMarker:()=>new T.Group(),disposeBossMarker:noop,
+   pulseBossMarker:noop,showBossArrival:noop,showBossMission:noop,burst:noop,music:{effect:noop},
+   document:{querySelector:()=>({style:{}})},$:id=>{if(!elements.has(id))elements.set(id,{style:{}});return elements.get(id);}});
+  vm.runInContext(section('function clearPendingOrb(','function releaseBossExplosion(')+section('function updateBoss(','function updateAlertEffect('),ctx);
+  vm.runInContext('updateBoss(.016)',ctx);
+  assert.equal(!!boss.pendingOrb,expected,`${map} charge at x=${x}`);
+  vm.runInContext('updateBoss(.1)',ctx);
+  assert.equal(ctx.tracers.length,expected?1:0,`${map} launch at x=${x}`);
+  if(expected){
+   boss.attack=0;vm.runInContext('updateBoss(.016)',ctx);assert.ok(boss.pendingOrb);
+   ctx.player.x=100;vm.runInContext('updateBoss(.016)',ctx);
+   assert.equal(boss.pendingOrb,null);assert.equal(ctx.tracers.length,1);
+  }
+ }
+});
 function projectileContext(){
  const state=rules.makeState();state.abilities.launcher=3;
  const ctx=vm.createContext({...rules,state,particles:[],waves:[],tracers:[],units:[],boss:{active:false},world:{solid:()=>false},scene:{remove:noop},burst:noop,applyHit:noop,pulseAim:noop,updateChargeRing:noop,music:{effect:noop},STANDING_CHEST:1});
