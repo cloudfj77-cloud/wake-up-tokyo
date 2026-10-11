@@ -98,18 +98,21 @@ for(const [type,corpse] of [[0,false],[0,true],[1,true]])test(`evolve 3 synchron
  if(corpse){unit.kind='corpse';unit.hp=0;unit.rewarded=true;original.holder.rotation.x=Math.PI/2;}
  const oldKind=unit.kind;
  rules.convert(state,unit);
+ // 进化 3 会把转化后的单位升一级，升到 3 级时可能是持盾特警也可能是持枪特警，
+ // 模型随类型走（前者用警察模型、后者用体素警卫），所以期望值要按实际类型算，不能写死。
+ const expectedPool=unit.type===0?'ally':rules.troopModelKind(unit.type);
  const activeAuras=[],visuals=new Map([[1,{v:original,oldKind}]]);
  const ctx=context({state,assets,units:[unit],visuals,activeAuras,scene:new T.Scene(),auraVisuals:new Map(),world:{heightAt:()=>0},syncActorPresence(){},actorViewLimit:()=>22,actorInFront:()=>true,AURA_COLORS:{worker:{},guard:{}},makeAura(holder){const a={g:new T.Group(),life:0};holder.add(a.g);activeAuras.push(a);return a;},acquireCharacterVisual,releaseCharacterVisual,setCharacterKind,burst(){},aura(){}});
  vm.runInContext(section('function removeAura(','function updateAuras(')+section('function actorVisual(','function acquireUnitRecord(')+section('function updateVisuals(','function updateEffects('),ctx);
  vm.runInContext('updateVisuals(.016);updateVisuals(.016)',ctx);
  const current=visuals.get(1).v;
- assert.equal(current.poolKey,'guard');assert.equal(current.kind,'ally');
+ assert.equal(current.poolKey,expectedPool);assert.equal(current.kind,'ally');
  assert.equal(current.holder.rotation.x,0);assert.equal(activeAuras.length,1);
  if(type===0)assert.notEqual(current,original);
  vm.runInContext('removeAura(visuals.get(1).v.aura);visuals.get(1).v.aura=null',ctx);
  releaseCharacterVisual(current);visuals.clear();
  vm.runInContext('actorVisual(units[0])',ctx);
  const rebuilt=visuals.get(1).v;
- assert.equal(rebuilt.poolKey,'guard');assert.equal(rebuilt.kind,'ally');assert.equal(rebuilt.holder.rotation.x,0);
+ assert.equal(rebuilt.poolKey,expectedPool);assert.equal(rebuilt.kind,'ally');assert.equal(rebuilt.holder.rotation.x,0);
  releaseCharacterVisual(rebuilt);clearCharacterPool();
 });

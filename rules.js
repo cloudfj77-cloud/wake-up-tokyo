@@ -19,7 +19,9 @@ export const ENEMIES=[
  {name:'苦逼打工人',level:1,hp:50,threshold:20,speed:2.2,damage:0,range:1.6,interval:1.5,aim:.2,fodder:true,allyName:'普通狂暴者',allyHp:20,allyAtk:10},
  {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:20,range:1.35,interval:1.7,aim:.7,fodder:true,allyName:'狂暴持棍巡警',allyHp:50,allyAtk:10},
  {name:'持枪巡警',level:2,hp:100,threshold:40,speed:2.45,damage:10,range:12,interval:2,aim:.45,allyName:'狂暴持枪巡警',allyHp:50,allyAtk:5},
- {name:'持盾特警',level:3,hp:200,threshold:150,speed:2.3,damage:30,range:2.3,interval:1.5,aim:1.5,shield:true,cone:true,allyName:'狂暴持盾特警',allyHp:100,allyAtk:15},
+ // 攻击是拿盾向前猛冲：distance 米内沿路撞到的都吃满伤害，并被击飞 launch 秒。
+ // range 保持 2.3，猛冲打不到时才退回原来的扇形近战判定。
+ {name:'持盾特警',level:3,hp:200,threshold:150,speed:2.3,damage:30,range:2.3,interval:1.5,aim:1.5,shield:true,cone:true,dash:{distance:6,speed:9,width:1.8,launch:1},allyName:'狂暴持盾特警',allyHp:100,allyAtk:15},
  // drain = 敌方每秒清掉的感染（原 4，已削弱）；aid = 被同化后反过来帮玩家扩散的速率，保留原值当奖励。
  {name:'净化工兵',level:4,hp:400,threshold:300,speed:2.05,damage:10,range:8,interval:.5,aim:.25,purifier:true,spray:true,aura:10,drain:2,aid:4,allyName:'狂暴净化士兵',allyHp:200,allyAtk:5},
  {name:'大兵',level:4,hp:300,threshold:200,speed:2.45,damage:5,range:24,interval:.1,aim:0,allyName:'狂暴大兵',allyHp:150,allyAtk:2.5,grenade:{radius:5,max:50,min:10,cd:20}},
@@ -276,6 +278,8 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
  u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.guardCd=0;u.rush=false;u.stuck=0;
  u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
+ // 猛冲是逐帧推进的临时状态，存档里要能原样序列化，所以只用普通对象与数组。
+ u.dash=null;u.stun=0;u.stunMax=0;
  return u;
 }
 export function makeUnit(id,type,x,z,city=true,profession=0){
@@ -361,6 +365,9 @@ export function damageAlly(u,damage,s){
  if(u.hp===0){u.kind='fallen';u.dead=true;if(u.guard)u.guardCd=12;}
 }
 export function distance(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
+// 带猛冲的敌人（持盾特警）有专属模型；其余秩序单位沿用体素警卫。
+// 放在规则层是因为转化后的友军也要按原类型选外观，视觉重建和这里必须一致。
+export function troopModelKind(type){return ENEMIES[type]?.dash?'shield':'guard';}
 const AIR=[
  {radius:0,perHalf:0,corpse:false},
  {radius:5,perHalf:2,corpse:false},

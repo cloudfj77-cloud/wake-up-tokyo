@@ -4,6 +4,7 @@ import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { loadMixamoCharacter } from './mixamo.js';
 import { loadWorkerAsset } from './worker.js';
 import { loadAwakenedAssets } from './awakened.js';
+import { loadPoliceAsset } from './police.js';
 
 // 逻辑动作名 → 可能的 clip 名。直接同名优先，其次按顺序回退，
 // 这样 Mixamo 的 Idle / Walking / Running 等命名能无缝接进原有的状态机。
@@ -20,9 +21,14 @@ const CLIP_ALIASES = {
   // 翻滚是后来加的 Mixamo 专属动作，体素模型没有这两个 clip，要能回退到跳跃。
   roll: ['roll', 'diveRoll', 'jump'],
   diveRoll: ['diveRoll', 'roll', 'jump'],
+  // 举盾与盾牌猛冲是持盾特警专属。没有这两个片段的模型照旧回退到普通动作。
+  guard: ['guard', 'raiseShield', 'block', 'idle'],
+  // 奔跑只在持盾特警身上用得到；其余模型没有这段，回退到普通走路即可。
+  run: ['run', 'sprint', 'fastRun', 'walk'],
+  rush: ['rush', 'dash', 'roll', 'diveRoll', 'jump'],
 };
 
-const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee };
+const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee, shield: 0x4f9dff };
 
 // 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
 // 例如现实中 1.82 米的主角，在游戏画面里应约为 1 个单位，才能和汽车比例一致。
@@ -30,6 +36,8 @@ const CITY_MODEL_SCALE = 0.55;
 export const CHARACTER_HEIGHTS = {
   player: 1.7 * CITY_MODEL_SCALE,
   guard: 1.75 * CITY_MODEL_SCALE,
+  // 持盾特警按 1.8 米的制式身高换算，比普通巡警高一点，盾牌才不会压过头顶。
+  shield: 1.8 * CITY_MODEL_SCALE,
   humanBase: 1.58 * CITY_MODEL_SCALE,
   humanVariantStep: 0.025 * CITY_MODEL_SCALE,
 };
@@ -37,6 +45,7 @@ export const CHARACTER_HEIGHTS = {
 export function characterHeight(kind, variant = 0) {
   if (kind === 'player') return CHARACTER_HEIGHTS.player;
   if (kind === 'guard') return CHARACTER_HEIGHTS.guard;
+  if (kind === 'shield') return CHARACTER_HEIGHTS.shield;
   return CHARACTER_HEIGHTS.humanBase + variant * CHARACTER_HEIGHTS.humanVariantStep;
 }
 
@@ -91,6 +100,12 @@ export async function loadCharacterAssets() {
     return null;
   });
   if (mixamo) assets.player = mixamo;
+  // 持盾特警单独一套 FBX；拿不到就退回体素警卫，整局照样能打。
+  const police = await loadPoliceAsset().then(prepareCharacterAsset).catch(error => {
+    console.warn('[characters] 未启用持盾特警模型：', error.message);
+    return null;
+  });
+  if (police) assets.shield = police;
   return assets;
 }
 
@@ -104,6 +119,8 @@ function selectCharacterAsset(assets, kind) {
     if (assets.ally) return assets.ally;
   }
   if (kind === 'guard' && assets.guard) return assets.guard;
+  // 拿不到警察 FBX 时退回体素警卫，绝不能掉进下面的打工人分支。
+  if (kind === 'shield') return assets.shield ?? assets.guard ?? null;
   if (assets.humanMale && assets.humanFemale) return Math.random() < .5 ? assets.humanMale : assets.humanFemale;
   if (assets.ally) return assets.ally;
   return assets.player ?? Object.values(assets)[0];
@@ -179,7 +196,9 @@ export function playCharacterAttack(visual, type, duration = .65) {
   if (visual.airborne) return;
   // 翻滚分徒手和持枪两套：徒手是 Stand To Roll，端着枪是 Running Dive Roll。
   const name = type === 'shoot' ? 'toyRecoil' : type === 'break' ? 'heavyPunch'
-    : type === 'rush' ? (visual.holdingGun ? 'diveRoll' : 'roll') : 'flurry';
+    : type === 'rush' ? (visual.holdingGun ? 'diveRoll' : 'roll')
+    // 盾牌猛冲走 rush 片段，前摇走 guard（举盾）。没有这些片段的模型照旧回退。
+    : type === 'dash' ? 'rush' : type === 'guard' ? 'guard' : 'flurry';
   const action = resolveAction(visual, name);
   if (!action) return;
   // 同一段攻击还在播的时候直接忽略重复触发：AI 在起手阶段可能连续多帧调用这里，
@@ -213,14 +232,19 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
     if (visual.current !== resolveAction(visual, 'jump')) playCharacterJump(visual);
   } else if (visual.attackTime <= 0) {
     // 端着枪移动用 Strafing，徒手移动用跑步（Fast Run），未感染的打工人走蹒跚步。
+    // 持盾特警分两套：巡逻走举盾推进，追起目标来才切持盾奔跑。
     const name = moving
-      ? (visual.kind === 'human' ? 'zombie' : visual.holdingGun ? 'strafe' : 'walk')
+      ? (visual.kind === 'human' ? 'zombie' : visual.holdingGun ? 'strafe'
+        : visual.kind === 'shield' ? (sprinting ? 'run' : 'walk') : 'walk')
       : (visual.holdingGun ? 'toyAim' : 'idle');
     const action = resolveAction(visual, name);
     // 步频要跟实际位移对上，否则脚在原地磨、人在飘，就是滑步。
     // 打工人 0.55 单位/秒配 Sad Walk（1.47 秒/圈）→ 原速；
     // 觉醒者 3.8 单位/秒配 Fast Run（0.53 秒/圈，自然步幅约 1.0 单位）→ 需要 2.0 倍速。
-    const scale = !moving ? 1 : visual.kind === 'human' ? 1.0 : visual.kind === 'ally' ? 2.0 : (sprinting ? 1.45 : 1.0);
+    // 持盾特警跑的是 0.83 秒一圈的持盾跑，按 2.3 的移速要略提一点步频，才不滑步；
+    // 巡逻用的举盾推进本身慢，步频要压下来，否则会出现走得慢、腿倒得飞快的滑步。
+    const scale = !moving ? 1 : visual.kind === 'human' ? 1.0 : visual.kind === 'ally' ? 2.0
+      : visual.kind === 'shield' ? (sprinting ? 1.5 : .75) : (sprinting ? 1.45 : 1.0);
     if (action) action.setEffectiveTimeScale(scale);
     switchAnimation(visual, name);
   }
@@ -241,8 +265,10 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
 export const PROFESSIONS=['厨师','医生','建筑工人','配送员','教师'];
 
 const POOL_CAP=24;
-const visualPools={human:[],guard:[],ally:[]};
-export function visualPoolKey(kind){return kind==='human'||kind==='ally'?kind:'guard';}
+// 警察模型有 57 个网格部件，比体素警卫重得多，单独开一个池子并少留几个。
+const SHIELD_POOL_CAP=6;
+const visualPools={human:[],guard:[],ally:[],shield:[]};
+export function visualPoolKey(kind){return kind==='human'||kind==='ally'||kind==='shield'?kind:'guard';}
 function parkPooledVisual(visual){
  visual.holder.visible=false;
  visual.holder.position.set(0,-120,0);
@@ -282,7 +308,8 @@ export function releaseCharacterVisual(visual){
  // 按建模时的模型类型归还，不能按当前阵营：转化后的警卫仍是警卫模型。
  const key=visual.poolKey||visualPoolKey(visual.kind);
  parkPooledVisual(visual);
- if(visualPools[key].length>=POOL_CAP){disposeCharacterVisual(visual);return false;}
+ const cap=key==='shield'?SHIELD_POOL_CAP:POOL_CAP;
+ if(visualPools[key].length>=cap){disposeCharacterVisual(visual);return false;}
  visualPools[key].push(visual);
  return true;
 }

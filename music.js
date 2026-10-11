@@ -155,7 +155,8 @@ export class Soundtrack {
   // 警力提示使用交替警笛，警戒升级则叠加低频重击，和普通战斗声音明确分开。
   if(type==='police'){for(let i=0;i<4;i++){this.note(i%2?520:740,t+i*.14,.16,.055,'sine',i%2?1.25:.78);}return;}
   if(type==='alertUp'){this.note(92,t,.7,.18,'sawtooth',.45);for(let i=0;i<3;i++)this.note(680+i*90,t+i*.12,.2,.075,'square',1.18);return;}
-  const specs={infect:[420,.18,.12,'triangle',1.8],attack:[155,.16,.09,'sawtooth',2.1],hit:[245,.1,.085,'square',.62],jump:[210,.2,.065,'triangle',1.8],roll:[145,.34,.075,'sawtooth',.38],chargeReady:[760,.35,.08,'sine',1.8],powerBounce:[180,.1,.06,'square',.7],break:[90,.3,.2,'sawtooth',.25],shoot:[125,.13,.11,'square',2.7],hurt:[100,.13,.08,'square',.5],upgrade:[520,.5,.1,'triangle',2]};
+  // 盾牌猛冲是一记闷响加金属余音，和徒手重击、枪声都要分得开。
+  const specs={infect:[420,.18,.12,'triangle',1.8],attack:[155,.16,.09,'sawtooth',2.1],hit:[245,.1,.085,'square',.62],jump:[210,.2,.065,'triangle',1.8],roll:[145,.34,.075,'sawtooth',.38],chargeReady:[760,.35,.08,'sine',1.8],powerBounce:[180,.1,.06,'square',.7],break:[90,.3,.2,'sawtooth',.25],bash:[118,.26,.14,'square',.55],shoot:[125,.13,.11,'square',2.7],hurt:[100,.13,.08,'square',.5],upgrade:[520,.5,.1,'triangle',2]};
   this.note(...(specs[type]?[specs[type][0],t,...specs[type].slice(1)]:[300,t,.1,.08]));
  }
  // 暂停/继续只管音乐床。菜单、选卡、结算这些界面都不再调用它——音乐要一路放下去。
