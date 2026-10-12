@@ -113,3 +113,45 @@ for(const [type,corpse] of [[0,false],[0,true],[1,true]])test(`evolve 3 synchron
  assert.equal(rebuilt.poolKey,'guard');assert.equal(rebuilt.kind,'ally');assert.equal(rebuilt.holder.rotation.x,0);
  releaseCharacterVisual(rebuilt);clearCharacterPool();
 });
+test('army entry circles a plane and drops a bomb that only hurts the player side',()=>{
+ const spoken=[],added=[];
+ const ctx=context({
+  tracers:[],player:{x:3,z:4},music:{muted:false},
+  STRIKE:{enemy:{bomb:0xff3344,glow:0xff8899,bullet:0xff2b2b,spark:0xff4d4d},ally:{}},
+  scene:{add(o){added.push(o);},remove(){}},
+  world:{heightAt:()=>0,nearest:(x,z)=>({x,z})},
+  T,
+  flashPoliceAlert(){ctx.radioShown=true;},
+  bombMarker(x,z,radius){return {x,z,radius};},
+  speechSynthesis:{getVoices:()=>[{lang:'en-US',name:'Alex'}],speak(u){spoken.push(u.text);u.onend?.();},cancel(){},resume(){},speaking:false,pending:false},
+  SpeechSynthesisUtterance:class{constructor(text){this.text=text;}}
+ });
+ vm.runInContext(section('let radioQueue','function spawnReinforcement('),ctx);
+ vm.runInContext('callBackup(3);callBackup(1);beginAirstrike()',ctx);
+ assert.match(spoken[0],/lockdown/i);
+ assert.equal(spoken.length,1);
+ assert.equal(ctx.radioShown,undefined);
+ assert.equal(added.length,1);
+ vm.runInContext('state.alert=4;updateAirstrike(1)',ctx);
+ assert.equal(ctx.tracers.length,1);
+ const bomb=ctx.tracers[0];
+ assert.equal(bomb.allyShot,false);
+ assert.equal(bomb.infection,0);
+ assert.equal(bomb.grenade.max,30);
+ assert.equal(bomb.grenade.min,30);
+ assert.ok(bomb.marker);
+ vm.runInContext('for(let i=0;i<60;i++)updateAirstrike(0.05);snapWarn=readStrafe();for(let i=0;i<50;i++)updateAirstrike(0.05);snapDive=readStrafe();',ctx);
+ assert.equal(ctx.snapWarn.mode,'warn');
+ assert.equal(ctx.snapWarn.warned,true);
+ assert.equal(ctx.snapWarn.shots,0);
+ assert.ok(ctx.snapDive.shots>0);
+ vm.runInContext('const p=planeAimPoint();bullet=shellHitsPlane({x:p.x,y:p.y,z:p.z,damage:12});shell=shellHitsPlane({x:p.x,y:p.y,z:p.z,isPower:true,damage:12});downed=hurtPlane(AIRSTRIKE.hp);gone=!planeAimPoint();',ctx);
+ assert.equal(ctx.bullet,false);
+ assert.equal(ctx.shell,true);
+ assert.equal(ctx.downed,true);
+ assert.equal(ctx.gone,true);
+ vm.runInContext('crash0=readCrash();for(let i=0;i<8;i++)updateAirstrike(0.05);crash1=readCrash();for(let i=0;i<30;i++)updateAirstrike(0.05);crash2=readCrash();',ctx);
+ assert.equal(ctx.crash0.mode,'crash');
+ assert.ok(ctx.crash1.y<ctx.crash0.y);
+ assert.equal(ctx.crash2.mode,'');
+});

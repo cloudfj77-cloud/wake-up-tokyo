@@ -447,7 +447,7 @@ function comicProjectileBlocked(T,world,x,y,z,r=.18){
  }
  return false;
 }
-function resolveComicAim(T,camera,muzzle,{world,units=[],boss=null,range=28,bodyHeight=.935}={}){
+function resolveComicAim(T,camera,muzzle,{world,units=[],boss=null,range=28,bodyHeight=.935,flyers=[]}={}){
  camera.updateMatrixWorld(true);
  const origin=camera.getWorldPosition(new T.Vector3()),direction=camera.getWorldDirection(new T.Vector3()).normalize();
  const ray=new T.Ray(origin,direction),point=new T.Vector3(),delta=new T.Vector3();
@@ -472,6 +472,7 @@ function resolveComicAim(T,camera,muzzle,{world,units=[],boss=null,range=28,body
   consider(new T.Vector3(u.x,world.heightAt(u.x,u.z)+bodyHeight*.62,u.z),bodyHeight*.36,'unit');
  }
  if(boss?.active&&!boss.dead)consider(new T.Vector3(boss.x,(boss.root?.position.y||0)+3.4,boss.z),3.4,'boss');
+ for(const flyer of flyers)if(flyer)consider(new T.Vector3(flyer.x,flyer.y,flyer.z),flyer.radius||2.6,'flyer');
  const target=ray.at(distance,new T.Vector3());
  // A near-camera obstruction behind the muzzle must never launch a shot backwards.
  delta.copy(target).sub(muzzle);

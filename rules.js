@@ -39,7 +39,11 @@ export const ENEMIES=[
  {name:'重装大锤兵',level:4,hp:700,threshold:500,speed:1.85,damage:55,range:3,interval:2.6,aim:1.9,slam:{radius:4.2},allyName:'狂暴重装大锤兵',allyHp:350,allyAtk:25},
  // 掷弹兵只扔炸弹，不开枪。weight 单独写成 20，不走 4 级默认的 16。
  // 炸弹落地前会在落点亮圈；半径内伤害是平的，不从中心往外衰减。
- {name:'掷弹兵',level:4,weight:20,hp:400,threshold:300,speed:2.2,damage:50,range:16,interval:1,aim:.2,bomber:true,grenade:{cd:1,radius:2,max:50,min:50,fall:.95,lob:true},allyName:'狂暴掷弹兵',allyHp:200,allyAtk:25}
+ {name:'掷弹兵',level:4,weight:20,hp:400,threshold:300,speed:2.2,damage:50,range:16,interval:1,aim:.2,bomber:true,grenade:{cd:1,radius:2,max:50,min:50,fall:.95,lob:true},allyName:'狂暴掷弹兵',allyHp:200,allyAtk:25},
+ // 权重 40，是掷弹兵的两倍。军事介入开场单波预算大约只够一辆，剩下的留给步兵。
+ // 只有往前开才压人：敌方步兵被挤到车外。玩家和我方部队被撞飞，并扣 60 点血。坦克不挤坦克，也不挤市民。
+ // 机械单位没有感染值，不能被叫醒。坦克也不吃人物的击飞、定身和减速。
+ {name:'坦克',level:4,onlyStage:4,weight:40,hp:1100,speed:1.35,damage:42,range:18,interval:2.6,aim:.6,tank:true,mechanical:true,bomber:true,tread:{radius:1.25,hit:60,knock:.9,gap:.75},grenade:{cd:2.6,radius:3.4,max:42,min:42,fall:1.15,lob:true},allyName:'狂暴坦克',allyHp:550,allyAtk:21}
 ];
 // Canonical eight abilities and all 24 descriptions from the user-supplied comic package.
 export const ABILITIES=[
@@ -353,7 +357,7 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
  u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.sprayPhase='';u.sprayTime=0;u.sprayTick=0;u.guardCd=0;u.rush=false;u.stuck=0;u.chargePhase='';u.chargeYaw=0;u.chargeLeft=0;u.chargeDist=0;u.chargeStep=0;u.chargeHit=null;u.knock=0;
- u.playerInfection=false;u.parasite=false;u.root=0;u.slow=false;u.surge=0;u.mistTick=0;u.route=null;u.routeEnd=1;u.stationary=undefined;u.logicWait=0;u.logicElapsed=0;u.facingYaw=undefined;u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
+ u.playerInfection=false;u.parasite=false;u.root=0;u.slow=false;u.surge=0;u.mistTick=0;u.route=null;u.routeEnd=1;u.stationary=undefined;u.logicWait=0;u.logicElapsed=0;u.facingYaw=undefined;u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;u.treadHit=null;
  return u;
 }
 export function makeUnit(id,type,x,z,city=true,profession=0){
@@ -399,8 +403,13 @@ export function grenadeBlast(spec,dist){
  const g=spec?.grenade;if(!g||dist>g.radius)return 0;
  return g.max+(g.min-g.max)*(dist/g.radius);
 }
+// 飞机和坦克都是机械。没有感染门槛，感染、定身、减速和击飞都不生效。
+export function isMechanical(unitOrType){
+ const type=typeof unitOrType==='number'?unitOrType:unitOrType?.type;
+ return !!ENEMIES[type]?.mechanical;
+}
 export function convert(j, A) {
-  if (A.converted || A.dead) return false;
+  if (A.converted || A.dead || isMechanical(A)) return false;
   const M = A.kind === "corpse";
   (A.playerInfection || A.tagged === "player" || A.tagged === true) && (A.fromArmy = false);
   reward(j, A, true);
@@ -415,9 +424,12 @@ export function convert(j, A) {
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.dead||u.converted||u.kind==='corpse')return 'none';
  if(ENEMIES[u.type].shield&&fromFront)damage*=.5;
- u.infection=Math.min(u.threshold,u.infection+infection);
- if(infection>0){u.tagged=fromArmy?'army':'player';if(!fromArmy)u.playerInfection=true;}
- if(u.infection>=u.threshold){u.fromArmy=fromArmy;convert(s,u);return 'converted';}
+ // 机械没有感染值。针、空气和持续感染都加不上去，也不会因此被叫醒。
+ if(!isMechanical(u)){
+  u.infection=Math.min(u.threshold,u.infection+infection);
+  if(infection>0){u.tagged=fromArmy?'army':'player';if(!fromArmy)u.playerInfection=true;}
+  if(u.infection>=u.threshold){u.fromArmy=fromArmy;convert(s,u);return 'converted';}
+ }
  u.hp=Math.max(0,u.hp-damage);u.hurt=2;
  if(u.hp<=0){u.kind='corpse';u.corpseTime=12;u.fromArmy=fromArmy;reward(s,u,false);return 'killed';}
  return 'hit';
@@ -446,6 +458,8 @@ export function tickInfection(j, A, M, N) {
   for (const u of A) {
     u.purified = 0;
     if (u.dead || u.converted) continue;
+    // 机械不积累感染，也不吃定身、减速、寄生这些由感染带来的控制。
+    if (isMechanical(u)) { u.infection = 0; u.root = 0; u.slow = false; u.parasite = false; u.knock = 0; continue; }
     const corpse = u.kind === "corpse";
     let rate = 0, drain = 0;
     for (const ally of purifiers) {
@@ -519,6 +533,28 @@ export function resetTune(){applyTune(TUNE_DEFAULTS);}
 export function applyTune(data){if(!data)return TUNE;for(const group of ['alert','difficulty','activity']){if(!data[group])continue;for(const [k,v] of Object.entries(data[group])){if(k in TUNE[group]&&Number.isFinite(+v))TUNE[group][k]=+v;}}return TUNE;}
 export function setTuneValue(path,value){const [group,key]=path.split('.');if(TUNE[group]&&key in TUNE[group]&&Number.isFinite(+value))TUNE[group][key]=+value;return TUNE[group][key];}
 export const ALERT_NAMES=['','尚未警觉','局部警情','城市封锁','军事介入','开启计时','全面镇压','失去警戒能力'];
+// 只在警戒升到新的大阶段时用英语呼叫增援。军队进场不再播，屏幕上也不打这句字。
+export const RADIO_BACKUP={
+ 2:'All units, disturbance reported. Request immediate backup.',
+ 3:'City lockdown. Send reinforcements to this sector now.',
+ 4:'Military intervention authorized. All units, move in.',
+ 5:'Countdown is live. Reinforce the perimeter immediately.',
+ 6:'Full suppression. Every available unit, converge on the target.'
+};
+export function radioBackup(stage){return RADIO_BACKUP[stage]||'';}
+// 飞机只在第 4 阶段（军事介入）和 Boss 战出现，每个阶段只有一架。倒计时不算 Boss 战。
+export function planePhase(stage,bossActive){if(bossActive)return 'boss';if(stage===4)return 'stage4';return '';}
+// 军队进场才有飞机：盘旋一会儿，隔几秒在玩家附近投一枚平伤炸弹。平民补员不触发。
+// hp 是飞机血量。hit 是能被炮弹打中的范围。强化炮弹直接命中会按满血结算，一发炸毁。
+// 盘旋半径和高度都是 12 米。strafe 是俯冲扫射：先在地上亮出整条弹道，再沿这条线开枪。
+export const AIRSTRIKE={radius:3.2,damage:30,fall:1.15,interval:3.2,duration:14,orbit:12,height:12,spin:.75,hp:80,hit:3.6,strafeWarn:1.15,strafeGap:6.5,strafeLength:10,strafeWidth:1.05,strafeDamage:12,strafeShots:5,strafeTime:1.05};
+// 人站在警示弹道的宽度内才算被扫射打中。走到线外面就不受伤。
+export function onStrafeLane(px,pz,lane,width){
+ if(!lane)return false;
+ const vx=px-lane.x,vz=pz-lane.z,along=vx*lane.dx+vz*lane.dz;
+ if(along<0||along>lane.len)return false;
+ return Math.abs(vx*lane.dz-vz*lane.dx)<=width;
+}
 export const BOSS_WARNINGS=[60,30,10];
 // 警戒值 = 累计经验 / 3 + 每秒 0.1 点。凑满 3 点经验才涨 1 点警戒，等级本身不加。
 // 感染人数本身不加；转化和击杀是因为发了经验才加。
@@ -568,6 +604,15 @@ export function tickRunClock(s,dt){
 export function threat(s){return cityAlert(s).stage;}
 // 同阶权重用于预算的消耗与供给；召唤护卫不贡献队伍权重。
 export function unitWeight(type){const e=ENEMIES[type];if(Number.isFinite(e?.weight))return e.weight;const rank=e?.level||1;return TUNE.difficulty['allyRank'+rank]||0;}
+// 波次里能出的兵。onlyStage 用来把坦克留在军事介入，倒计时和 Boss 战不再补。
+export function armyCandidate(type,alert){
+ const e=ENEMIES[type];
+ if(!e||!(type>0)||!alert)return false;
+ if(alert.stage>=3&&type===1)return false;
+ if((e.level||1)>(alert.maxLevel||1))return false;
+ if(e.onlyStage&&e.onlyStage!==alert.stage)return false;
+ return true;
+}
 export function difficultyWeight(s,units){
  const d=TUNE.difficulty;
  return d.playerBase+s.level*d.playerPerLevel+(units||[]).reduce((sum,u)=>sum+(u.kind==='ally'&&!u.dead&&!u.guard?unitWeight(u.type):0),0);
@@ -582,6 +627,28 @@ export function isCityFodder(u,stage=1){
 }
 export function isCombatFodder(u){return isCityFodder(u,99);}
 export function isRangedEnemy(spec){return (spec?.range??0)>3&&!spec.spray&&!spec.bomber&&!spec.charge;}
+// 车身范围内才算压到。敌方步兵只被挤开。玩家和我方部队被撞飞并扣一大截血。闪避中的玩家撞不上。
+export function tankTreadHits(tank,target,radius=1.25){
+ if(!tank||!target||tank===target)return false;
+ const d=Math.hypot((target.x||0)-tank.x,(target.z||0)-tank.z);
+ return d>.02&&d<=radius;
+}
+export function tankTreadKind(driver,target){
+ if(!tankTreadHits(driver,target,driver?.treadRadius??1.25))return '';
+ if(!target||target.dead||target.kind==='corpse'||target.kind==='fallen')return '';
+ const allyDriver=driver.kind==='ally'||driver.converted;
+ if(target.isPlayer)return allyDriver?'':'ram';
+ if(target.kind==='ally'||target.converted)return allyDriver?'':'ram';
+ if(!(target.type>0)||ENEMIES[target.type]?.tank)return '';
+ return 'shove';
+}
+// 把人推到车身外面。返回这一下要挪开的距离。
+export function tankShove(tank,target,radius=1.25){
+ const dx=(target?.x||0)-(tank?.x||0),dz=(target?.z||0)-(tank?.z||0),gap=Math.hypot(dx,dz)||.02;
+ const need=radius+.2-gap;
+ if(need<=0)return {x:0,z:0};
+ return {x:dx/gap*need,z:dz/gap*need};
+}
 export function hostileWindup(spec){
  if(Number.isFinite(spec.aim))return spec.aim;
  return isRangedEnemy(spec)?1:.4;
@@ -829,7 +896,7 @@ export function spawnPlan(s,units,random=Math.random,origin=null,options={}){
  const deficit=Math.max(0,targetWeight-enemyWeight),waveBudget=Math.min(deficit,targetWeight*d.maxWaveRatio);
  let remaining=waveBudget;
  if(!alert.lost&&alert.stage>=2&&options.includeThreat!==false){
-  const pool=ENEMIES.map((e,type)=>({e,type})).filter(({e,type})=>threatType(type)&&e.level<=alert.maxLevel);
+  const pool=ENEMIES.map((e,type)=>({e,type})).filter(({type})=>armyCandidate(type,alert));
   while(true){
    const affordable=pool.filter(({type})=>unitWeight(type)>0&&unitWeight(type)<=remaining);
    if(!affordable.length)break;
