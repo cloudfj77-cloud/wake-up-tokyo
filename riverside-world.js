@@ -75,7 +75,56 @@ export async function loadRiverside(scene){
  function heightAt(x,z){const bridgeHeight=bridgeDeckHeight(x,z),terrainHeight=terrainHeightAt(x,z);return bridgeHeight===null?terrainHeight:Math.max(bridgeHeight,terrainHeight);}
  function solid(x,z,r=.45){return x<=-60||x>=60||z<=-68||z>=57||hitsBridgeRail(x,z,r)||isRiverChannel(x,z,r)||obstacles.some(o=>!o.dead&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r);}
  function free(x,z,r=.45){return !solid(x,z,r);}
- function waypoint(u,x,z){if(u.x*x<0&&Math.abs(x)>9){const bz=[26.4,-15.4].sort((a,b)=>Math.abs(a-u.z)+Math.abs(a-z)-Math.abs(b-u.z)-Math.abs(b-z))[0];if(Math.abs(u.z-bz)>1.2)return {x:Math.sign(u.x)*12.5,z:bz};return {x:Math.sign(x)*13,z:bz};}return {x,z};}
+ const routes=new WeakMap();
+ // 过河仍走桥。同一岸被房子挡住时，绕到房子外侧的角上，而不是对着墙走直线。
+ function waypoint(u,x,z){
+  let gx=x,gz=z;
+  if(u.x*x<0&&Math.abs(x)>9){
+   const bz=[26.4,-15.4].sort((a,b)=>Math.abs(a-u.z)+Math.abs(a-z)-Math.abs(b-u.z)-Math.abs(b-z))[0];
+   if(Math.abs(u.z-bz)>1.2){gx=Math.sign(u.x)*12.5;gz=bz;}
+   else{gx=Math.sign(x)*13;gz=bz;}
+  }
+  const now=performance.now(),old=routes.get(u);
+  const moved=old?Math.hypot(u.x-old.seen.x,u.z-old.seen.z):1;
+  const sameGoal=old&&Math.hypot(old.g.x-gx,old.g.z-gz)<2.5;
+  // 还在往前走就沿用上一个拐角。几乎没动时也先留着，大约每 0.28 秒才重算。
+  // 一群人挤在原地时如果每帧重算，会卡住，持盾冲锋也看不清。
+  if(sameGoal&&moved>.15&&now<old.until&&Math.hypot(old.p.x-u.x,old.p.z-u.z)>.8)return old.p;
+  if(sameGoal&&moved<.1&&now<(old.hold||0))return old.p;
+  const p=steerAround(u,gx,gz);
+  routes.set(u,{g:{x:gx,z:gz},p,seen:{x:u.x,z:u.z},until:now+450,hold:now+280});
+  return p;
+ }
+ function blockingObstacle(a,x,z){
+  const d=Math.hypot(x-a.x,z-a.z),n=Math.max(1,Math.ceil(d/.7));
+  for(let i=1;i<=n;i++){
+   const px=a.x+(x-a.x)*i/n,pz=a.z+(z-a.z)*i/n;
+   const hit=obstacles.find(o=>!o.dead&&Math.abs(px-o.x)<o.w/2+.45&&Math.abs(pz-o.z)<o.d/2+.45);
+   if(hit)return hit;
+  }
+  return null;
+ }
+ function steerAround(u,x,z){
+  if(clear(u,{x,z},.45))return {x,z};
+  const o=blockingObstacle(u,x,z);
+  if(!o)return {x,z};
+  const pad=.9;
+  // 沿可到达的外角绕行；墙面正前方的点会让角色停在原地。
+  const options=[];
+  for(const sx of [-1,1])for(const sz of [-1,1])options.push({x:o.x+sx*(o.w/2+pad),z:o.z+sz*(o.d/2+pad)});
+  let best=null,score=Infinity;
+  for(const c of options){
+   if(!free(c.x,c.z,.45))continue;
+   const gap=Math.hypot(c.x-u.x,c.z-u.z);
+   if(gap<.15||!clear(u,c,.45))continue;
+   let remaining=clear(c,{x,z},.45)?Math.hypot(c.x-x,c.z-z):Infinity;
+   // 把下一段绕墙的距离算进去，避免走到拐角后又选回身后的那个角。
+   for(const next of options)if(clear(c,next,.45)&&clear(next,{x,z},.45))remaining=Math.min(remaining,Math.hypot(c.x-next.x,c.z-next.z)+Math.hypot(next.x-x,next.z-z));
+   const via=gap+remaining;
+   if(via<score){score=via;best=c;}
+  }
+  return best||{x,z};
+ }
  function nearest(x,z,r=.7){if(free(x,z,r))return {x,z};for(let radius=.5;radius<130;radius+=.5)for(let i=0;i<24;i++){const a=i*Math.PI/12,xx=x+Math.cos(a)*radius,zz=z+Math.sin(a)*radius;if(free(xx,zz,r))return {x:xx,z:zz};}throw Error('No walkable spawn');}
  // 每局在中枢这一岸随便找一块空地出生，不再总从西北街口开始。对岸留给 Boss。
  function pickSpawn(){

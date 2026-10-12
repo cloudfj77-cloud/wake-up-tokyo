@@ -46,3 +46,15 @@ test('movement cannot climb a platform by crossing its sheer side',()=>{
  }
  assert.ok(checked>0,'expected at least one real ledge');
 });
+
+test('stationary corner routing reuses the path until the recalculation interval',t=>{
+ let now=0,queries=0;
+ t.mock.method(performance,'now',()=>now);
+ const original=level.queryBlocks.bind(level);
+ t.mock.method(level,'queryBlocks',(...args)=>{queries++;return original(...args);});
+ const u={x:-1,z:-26};nav.waypoint(u,0,12);const first=queries;
+ assert.ok(first>0);
+ for(let i=0;i<100;i++){now=200;nav.waypoint(u,0,12);}
+ assert.equal(queries,first,'a stuck actor must not repeat terrain queries every frame');
+ now=300;nav.waypoint(u,0,12);assert.ok(queries>first,'the route must still refresh after the wait');
+});

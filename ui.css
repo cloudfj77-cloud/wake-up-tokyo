@@ -177,7 +177,12 @@ body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8p
 @media(max-height:560px){.mapPanel{width:178px;padding:9px}.mapLegend{gap:5px;font-size:8px}.objectivePanel{max-height:calc(100vh - 85px);overflow:auto}#infectionFeedback{display:none}}
 @media(prefers-reduced-motion:reduce){.choiceSlot.rerolled .card,#crosshair.ready #chargeRings,#crosshair.discharged #chargeRings,#crosshair.hit .hitMark{animation:none!important}#chargeRings circle{transition:none}}
 
-/* Map selection remains available while either map is loading. */
-.mapChoice{display:flex;flex-direction:column;gap:7px;padding:8px 0 14px;color:#eee8fa;font-size:12px;letter-spacing:.12em}
-.mapChoice select{width:100%;padding:12px 14px;background:#24202e;color:#fff;border:1px solid #b694d7;border-radius:8px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;color-scheme:dark}
-.mapChoice select:focus-visible{outline:3px solid #d9b2ff;outline-offset:3px}
+/* Tab 城市地图：保持原小地图，展开时暂停战场。 */
+#cityMap.expanded{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(80vw,780px);max-height:92vh;padding:22px;z-index:30;pointer-events:auto;background:#17222ef5;}
+#cityMap.expanded canvas{max-height:72vh;object-fit:contain;width:100%;}
+#cityMap.expanded .mapLegend{display:flex;}
+#mapClose{display:block;margin:0 0 12px auto;padding:8px 14px;background:#283744;border:1px solid #aab9c9;border-radius:8px;}
+#mapClose[hidden],#potionStatus[hidden]{display:none;}
+#potionStatus{display:block;margin-top:8px;color:#ffcf55;}
+
+.mapChoice{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;color:#d7c5e4;font-size:12px}.mapChoice select{width:100%;border:1px solid #b88cd855;border-radius:7px;background:#251d32;color:#fff4dc;padding:10px;font:inherit}

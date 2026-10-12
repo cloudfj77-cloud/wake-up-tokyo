@@ -12,6 +12,6 @@ export default {
     assetsInlineLimit: 512 * 1024 * 1024,
     chunkSizeWarningLimit: 4096,
     // 只打游戏本体，fbx-viewer 是给美术调参用的独立页面，不进单文件。
-    rollupOptions: { input: 'index.html' },
+    rollupOptions: { input: 'index.html', output: {inlineDynamicImports:true} },
   },
 };
