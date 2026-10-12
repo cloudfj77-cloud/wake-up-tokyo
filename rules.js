@@ -353,7 +353,7 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
  u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.sprayPhase='';u.sprayTime=0;u.sprayTick=0;u.guardCd=0;u.rush=false;u.stuck=0;u.chargePhase='';u.chargeYaw=0;u.chargeLeft=0;u.chargeDist=0;u.chargeStep=0;u.chargeHit=null;u.knock=0;
- u.playerInfection=false;u.parasite=false;u.root=0;u.slow=false;u.surge=0;u.mistTick=0;u.route=null;u.routeEnd=1;u.stationary=undefined;u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
+ u.playerInfection=false;u.parasite=false;u.root=0;u.slow=false;u.surge=0;u.mistTick=0;u.route=null;u.routeEnd=1;u.stationary=undefined;u.logicWait=0;u.logicElapsed=0;u.facingYaw=undefined;u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;
  return u;
 }
 export function makeUnit(id,type,x,z,city=true,profession=0){
@@ -410,7 +410,7 @@ export function convert(j, A) {
     D !== A.type && (A.type = D, A.threshold = ENEMIES[D].threshold, N = true);
   }
   const I = allyTemplate(A.type);
-  return A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.sprayPhase = "", A.chargePhase = "", A.knock = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
+  return A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.sprayPhase = "", A.chargePhase = "", A.knock = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.logicElapsed = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
 }
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.dead||u.converted||u.kind==='corpse')return 'none';

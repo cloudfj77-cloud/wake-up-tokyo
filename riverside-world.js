@@ -85,10 +85,14 @@ export async function loadRiverside(scene){
    else{gx=Math.sign(x)*13;gz=bz;}
   }
   const now=performance.now(),old=routes.get(u);
-  const closing=old&&Math.hypot(u.x-old.seen.x,u.z-old.seen.z)>.15;
-  if(old&&now<old.until&&Math.hypot(old.g.x-gx,old.g.z-gz)<2.5&&Math.hypot(old.p.x-u.x,old.p.z-u.z)>.8&&closing)return old.p;
+  const moved=old?Math.hypot(u.x-old.seen.x,u.z-old.seen.z):1;
+  const sameGoal=old&&Math.hypot(old.g.x-gx,old.g.z-gz)<2.5;
+  // 还在往前走就沿用上一个拐角。几乎没动时也先留着，大约每 0.28 秒才重算。
+  // 一群人挤在原地时如果每帧重算，会卡住，持盾冲锋也看不清。
+  if(sameGoal&&moved>.15&&now<old.until&&Math.hypot(old.p.x-u.x,old.p.z-u.z)>.8)return old.p;
+  if(sameGoal&&moved<.1&&now<(old.hold||0))return old.p;
   const p=steerAround(u,gx,gz);
-  routes.set(u,{g:{x:gx,z:gz},p,seen:{x:u.x,z:u.z},until:now+450});
+  routes.set(u,{g:{x:gx,z:gz},p,seen:{x:u.x,z:u.z},until:now+450,hold:now+280});
   return p;
  }
  function blockingObstacle(a,x,z){
