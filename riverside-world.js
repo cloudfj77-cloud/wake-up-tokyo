@@ -105,23 +105,22 @@ export async function loadRiverside(scene){
   return null;
  }
  function steerAround(u,x,z){
-  if(clear(u,{x,z},.35))return {x,z};
+  if(clear(u,{x,z},.45))return {x,z};
   const o=blockingObstacle(u,x,z);
   if(!o)return {x,z};
   const pad=.9;
-  const along=(v,c,h)=>Math.min(c+h/2+pad,Math.max(c-h/2-pad,v));
-  // 近侧贴边的一点，加上朝目标那一侧的外角。贴着墙走，不穿进房子里。
-  const options=[
-   {x:u.x<o.x?o.x-o.w/2-pad:o.x+o.w/2+pad,z:along(u.z,o.z,o.d)},
-   {x:along(u.x,o.x,o.w),z:u.z<o.z?o.z-o.d/2-pad:o.z+o.d/2+pad},
-   {x:x<o.x?o.x-o.w/2-pad:o.x+o.w/2+pad,z:z<o.z?o.z-o.d/2-pad:o.z+o.d/2+pad}
-  ];
+  // 沿可到达的外角绕行；墙面正前方的点会让角色停在原地。
+  const options=[];
+  for(const sx of [-1,1])for(const sz of [-1,1])options.push({x:o.x+sx*(o.w/2+pad),z:o.z+sz*(o.d/2+pad)});
   let best=null,score=Infinity;
   for(const c of options){
-   if(!free(c.x,c.z,.4))continue;
+   if(!free(c.x,c.z,.45))continue;
    const gap=Math.hypot(c.x-u.x,c.z-u.z);
-   if(gap>1.4&&!clear(u,c,.3))continue;
-   const via=gap+Math.hypot(c.x-x,c.z-z);
+   if(gap<.15||!clear(u,c,.45))continue;
+   let remaining=clear(c,{x,z},.45)?Math.hypot(c.x-x,c.z-z):Infinity;
+   // 把下一段绕墙的距离算进去，避免走到拐角后又选回身后的那个角。
+   for(const next of options)if(clear(c,next,.45)&&clear(next,{x,z},.45))remaining=Math.min(remaining,Math.hypot(c.x-next.x,c.z-next.z)+Math.hypot(next.x-x,next.z-z));
+   const via=gap+remaining;
    if(via<score){score=via;best=c;}
   }
   return best||{x,z};

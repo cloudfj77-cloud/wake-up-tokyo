@@ -432,8 +432,9 @@ function createComicAbilityFX(T, scene, { height = .935, reducedMotion = false, 
 /* Camera-ray aiming, straight infection needles and empowered ballistic movement. */
 const __comicObstacleBounds=new WeakMap();
 function comicProjectileBlocked(T,world,x,y,z,r=.18){
- if(typeof world.cameraBlocked==='function')return !!world.cameraBlocked(x,y,z,r);
- const obstacles=world.obstacles||world.destructibles||[];
+ if(world.cameraBlocked?.(x,y,z,r))return true;
+ // 海滨的相机碰撞只覆盖场景，后来投放的削弱设施还需要单独检查。
+ const obstacles=world.obstacles?.length?world.obstacles:world.destructibles||[];
  for(const o of obstacles){
   if(o.dead||!Number.isFinite(o.x)||!Number.isFinite(o.z))continue;
   if(Math.abs(x-o.x)>o.w/2+r||Math.abs(z-o.z)>o.d/2+r)continue;
