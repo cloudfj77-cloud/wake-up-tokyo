@@ -26,7 +26,7 @@ export const ENEMIES=[
  {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:20,range:1.35,interval:1.7,aim:.7,fodder:true,allyName:'狂暴持棍巡警',allyHp:50,allyAtk:10},
  {name:'持枪巡警',level:2,hp:100,threshold:40,speed:2.45,damage:10,range:12,interval:2,aim:.45,allyName:'狂暴持枪巡警',allyHp:50,allyAtk:5},
  // 3 级盾警比 2 级巡警硬一截。不再原地挥盾，短蓄力后沿锁定方向冲一段。
- {name:'持盾特警',level:3,hp:280,threshold:180,speed:2.5,damage:40,range:7,interval:2.2,aim:.4,shield:true,charge:{windup:.4,speed:13,distance:6.5,wide:1.6,knock:1},allyName:'狂暴持盾特警',allyHp:140,allyAtk:20},
+ {name:'持盾特警',level:3,hp:280,threshold:180,speed:2.5,damage:40,range:4.3,interval:2.2,aim:.4,shield:true,charge:{windup:.4,speed:13,distance:3.2,wide:1.6,knock:1},allyName:'狂暴持盾特警',allyHp:140,allyAtk:20},
  // 净化专员和净化士兵合成这一种。扇形喷雾每 0.5 秒 10 点伤害。
  // 出手前先亮出这块扇形约 1 秒，再至少喷 2 秒。扇形里没人了才停。
  // drain 按每秒计：10 米内每 0.5 秒清 2 点，所以是 4。同类只取最高的一个，不叠加。
@@ -134,7 +134,12 @@ export const ABILITIES=[
       "护卫提升至 3 级，编制扩大至 5 名。",
       "护卫提升至 4 级，编制扩大至 10 名，额外获得 100% 生命与攻击力加成，且会自动组成合适的阵容。"
     ]
-  }
+  },
+  {id:'kindling',name:'薪火',icon:'♨',group:'指挥系',descriptions:[
+   '18 米内每有一名友方觉醒者在战斗中倒下，获得 1 层【薪火】，最多叠加 3 层，持续 8 秒。每层【薪火】使自身及 18 米内友方觉醒者的伤害和感染值提高 6%，最高提升 18%。每次触发刷新持续时间。',
+   '【薪火】触发及增益范围扩大至 24 米，最大叠加层数提高至 5 层，持续时间延长至 12 秒。每层【薪火】使自身及范围内友方觉醒者的伤害和感染值提高 8%，最高提升 40%。每次触发刷新持续时间。',
+   '【薪火】最大叠加 5 层，持续 12 秒，触发及增益范围保持 24 米。每层【薪火】使自身及范围内友方觉醒者的伤害和感染值提高 10%，最高提升 50%。新增效果——薪火脉冲：满 5 层后，每有一名友方觉醒者在 24 米内倒下，以指挥者为中心释放一次半径 24 米的紫色火焰脉冲，对范围内所有敌人增加基础 1 点感染值（享受薪火加成，满层为 1.5 点）。每次触发刷新持续时间。'
+  ]}
 ];
 export const GUNS=[
  {id:'pistol',name:'手枪',unlock:1,damage:16,range:16,cd:.32,pellets:1,spread:0,clip:12,speed:38,color:0xc078ff},
@@ -148,9 +153,9 @@ export const WEAPONS=GUNS;
 export const LAUNCHER_SLOT=-2;
 export function makeState(){
  return {
-  hp:BASE_HP,maxHp:BASE_HP,stamina:STAMINA_MAX,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,
+  kindlingStacks:0,kindlingTime:0,kindlingPulses:[],hp:BASE_HP,maxHp:BASE_HP,stamina:STAMINA_MAX,infected:0,cityInfected:0,kills:0,towers:0,destroyed:0,
   xp:0,xpEarned:0,need:xpNeedFor(1),level:1,pending:1,time:0,alert:1,peakAlert:1,
-  abilities:{air:0,guns:0,launcher:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0},
+  abilities:{air:0,guns:0,launcher:0,frenzy:0,dot:0,haste:0,tough:0,evolve:0,command:0,kindling:0},
   history:[],ammo:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   mags:{pistol:0,shotgun:0,rifle:0,sniper:0,rpg:0},
   clip:0,clipMax:0,weapon:-1,gunId:null,powerCharge:0,weaponOrder:[],
@@ -295,7 +300,7 @@ export function releaseFleshTide(j, A, M) {
   for (const D of A || []) {
     if (D.dead || D.converted || D.kind === "corpse" || distance(M, D) > FLESH_RADIUS) continue;
     const T = D.x - M.x, w = D.z - M.z, O = Math.hypot(T, w) || 1;
-    D.x += T / O * 3, D.z += w / O * 3, hit(j, D, 0, N.damage, false, false), I.push(D.id);
+    D.x += T / O * 3, D.z += w / O * 3, hit(j, D, 0, N.damage*kindlingMultiplier(j,M,M), false, false), I.push(D.id);
   }
   return j.tideBurst = { x: M.x, z: M.z }, j.tideLock = false, I;
 }
@@ -354,10 +359,10 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  u.id=id;u.type=type;u.x=x;u.z=z;u.city=city;u.profession=profession;
  u.kind=type===0?'human':'guard';
  u.hp=t.hp;u.maxHp=t.hp;u.infection=0;u.threshold=t.threshold;
- u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;
+ u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;u.explosionPending=false;
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
- u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.sprayPhase='';u.sprayTime=0;u.sprayTick=0;u.guardCd=0;u.rush=false;u.stuck=0;u.chargePhase='';u.chargeYaw=0;u.chargeLeft=0;u.chargeDist=0;u.chargeStep=0;u.chargeHit=null;u.knock=0;
- u.playerInfection=false;u.parasite=false;u.root=0;u.slow=false;u.surge=0;u.mistTick=0;u.route=null;u.routeEnd=1;u.stationary=undefined;u.logicWait=0;u.logicElapsed=0;u.facingYaw=undefined;u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;u.treadHit=null;
+ u.guard=false;u.fromArmy=false;u.grenadeCd=0;u.aiming=false;u.aim=0;u.sightRetry=0;u.sightBlocked=false;u.sightTarget=undefined;u.sprayPhase='';u.sprayTime=0;u.sprayTick=0;u.guardCd=0;u.rush=false;u.stuck=0;u.chargePhase='';u.chargeYaw=0;u.chargeLeft=0;u.chargeDist=0;u.chargeStep=0;u.chargeHit=null;u.knock=0;
+ u.playerInfection=false;u.parasite=false;u.root=0;u.slow=false;u.surge=0;u.mistTick=0;u.route=null;u.routeEnd=1;u.stationary=undefined;u.logicWait=0;u.logicElapsed=0;u.facingYaw=undefined;u.rankBoost=false;u.rewarded=false;u.atk=undefined;u.promoted=false;u.treadHit=null;u.ingressTime=0;u.ingressGoal=null;u.ingressCull=0;
  return u;
 }
 export function makeUnit(id,type,x,z,city=true,profession=0){
@@ -419,7 +424,7 @@ export function convert(j, A) {
     D !== A.type && (A.type = D, A.threshold = ENEMIES[D].threshold, N = true);
   }
   const I = allyTemplate(A.type);
-  return A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.sprayPhase = "", A.chargePhase = "", A.knock = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.logicElapsed = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
+  return A.ingressTime = 0, A.ingressGoal = null, A.ingressCull = 0, A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.sprayPhase = "", A.chargePhase = "", A.knock = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.logicElapsed = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
 }
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.dead||u.converted||u.kind==='corpse')return 'none';
@@ -431,15 +436,48 @@ export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
   if(u.infection>=u.threshold){u.fromArmy=fromArmy;convert(s,u);return 'converted';}
  }
  u.hp=Math.max(0,u.hp-damage);u.hurt=2;
- if(u.hp<=0){u.kind='corpse';u.corpseTime=12;u.fromArmy=fromArmy;reward(s,u,false);return 'killed';}
+ if(u.hp<=0){
+  const mechanical=isMechanical(u);
+  u.kind=mechanical?'expired':'corpse';u.dead=mechanical;u.corpseTime=mechanical?0:12;u.explosionPending=mechanical;
+  u.ingressTime=0;u.ingressGoal=null;u.fromArmy=fromArmy;reward(s,u,false);return 'killed';
+ }
  return 'hit';
 }
 // 皮糙肉厚的减伤档位。3 级不再自带回血。
 const TOUGH_DR=[0,.15,.25,.35];
-export function damageAlly(u,damage,s){
+export const KINDLING=[
+ {radius:0,max:0,duration:0,perStack:0},
+ {radius:18,max:3,duration:8,perStack:.06},
+ {radius:24,max:5,duration:12,perStack:.08},
+ {radius:24,max:5,duration:12,perStack:.10}
+];
+export function kindlingSpec(s){return KINDLING[s?.abilities?.kindling||0]||KINDLING[0];}
+export function kindlingStacks(s){return s?.kindlingTime>0?Math.min(kindlingSpec(s).max,Math.max(0,s.kindlingStacks||0)):0;}
+export function kindlingMultiplier(s,commander,actor=commander){
+ const stacks=kindlingStacks(s);if(!stacks||!commander||!actor)return 1;
+ if(actor!==commander&&(!actor.converted||isMechanical(actor)||distance(commander,actor)>kindlingSpec(s).radius))return 1;
+ return 1+stacks*kindlingSpec(s).perStack;
+}
+export function registerKindlingFall(s,u,commander){
+ const spec=kindlingSpec(s);
+ if(!spec.max||!commander||u.kind!=='ally'||!u.converted||isMechanical(u)||distance(commander,u)>spec.radius)return false;
+ const previous=kindlingStacks(s);s.kindlingStacks=Math.min(spec.max,previous+1);s.kindlingTime=spec.duration;
+ if(s.abilities.kindling>=3&&previous===spec.max)(s.kindlingPulses??=[]).push({x:commander.x,z:commander.z,radius:spec.radius});
+ return true;
+}
+export function releaseKindlingPulses(s,units){
+ const pulses=s.kindlingPulses||[];s.kindlingPulses=[];
+ for(const pulse of pulses)for(const u of units){
+  if(u.dead||u.converted||u.kind==='corpse'||isMechanical(u)||distance(pulse,u)>pulse.radius)continue;
+  hit(s,u,kindlingMultiplier(s,pulse),0,false,false);
+ }
+ return pulses;
+}
+export function damageAlly(u,damage,s,commander){
+ if(u.dead||u.hp<=0)return;
  const dr=s?.abilities.tough>=3?TOUGH_DR[1]:0;
  u.hp=Math.max(0,u.hp-damage*(1-dr));u.hurt=2;
- if(u.hp===0){u.kind='fallen';u.dead=true;if(u.guard)u.guardCd=guardWanted(s).revive||30;}
+ if(u.hp===0){registerKindlingFall(s,u,commander);u.kind='fallen';u.dead=true;if(u.guard)u.guardCd=guardWanted(s).revive||30;}
 }
 export function distance(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
 const AIR=[
@@ -454,9 +492,12 @@ const DOT_RATE=[0,1,2,3];
 export const PURIFY_MAX=4;
 export function tickInfection(j, A, M, N) {
   let converted = 0;
+  const fireBonus=kindlingMultiplier(j,M);
   const aura = AIR[j.abilities.air] || AIR[0], purifiers = A.filter((u) => !u.dead && u.kind !== "corpse" && u.type === 4);
   for (const u of A) {
     u.purified = 0;
+    // Old checkpoints may contain mechanical wrecks saved with the human corpse state.
+    if (isMechanical(u) && u.kind === "corpse") {u.kind="expired";u.dead=true;u.corpseTime=0;u.infection=0;u.explosionPending=true;}
     if (u.dead || u.converted) continue;
     // 机械不积累感染，也不吃定身、减速、寄生这些由感染带来的控制。
     if (isMechanical(u)) { u.infection = 0; u.root = 0; u.slow = false; u.parasite = false; u.knock = 0; continue; }
@@ -464,7 +505,7 @@ export function tickInfection(j, A, M, N) {
     let rate = 0, drain = 0;
     for (const ally of purifiers) {
       if (ally === u || distance(ally, u) > (ENEMIES[ally.type].aura || 8)) continue;
-      if (ally.kind === "ally") rate = Math.max(rate, ENEMIES[ally.type].aid ?? ENEMIES[ally.type].drain ?? 8);
+      if (ally.kind === "ally") rate = Math.max(rate, (ENEMIES[ally.type].aid ?? ENEMIES[ally.type].drain ?? 8)*kindlingMultiplier(j,M,ally));
       else drain = Math.max(drain, ENEMIES[ally.type].drain ?? 8);
     }
     drain = Math.min(drain, PURIFY_MAX);
@@ -473,7 +514,7 @@ export function tickInfection(j, A, M, N) {
     const inMother = !!(aura.radius && (!corpse || aura.corpse) && distance(M, u) <= aura.radius);
     let mistGain = 0;
     if (inMother) {
-      rate += aura.perHalf * 2;
+      rate += aura.perHalf * 2 * fireBonus;
       u.mistTick = 0;
     } else if (!corpse && j.abilities.air >= 3) {
       let exposure = 0;
@@ -482,7 +523,7 @@ export function tickInfection(j, A, M, N) {
       }
       if (exposure > 0) {
         const elapsed = (u.mistTick || 0) + exposure, ticks = Math.floor((elapsed + 1e-9) / 0.5);
-        mistGain = ticks * 4;
+        mistGain = ticks * 4 * fireBonus;
         u.mistTick = Math.max(0, elapsed - ticks * 0.5);
       } else u.mistTick = 0;
     } else u.mistTick = 0;
@@ -494,7 +535,7 @@ export function tickInfection(j, A, M, N) {
       u.root = 2;
     }
     if (u.parasite) dot *= 2;
-    rate += dot;
+    rate += dot * fireBonus;
     u.slow = !!(j.abilities.dot >= 2 && !corpse && (playerTag || armyTag) && u.infection > 0);
     if (u.root > 0) u.root = Math.max(0, u.root - N);
     if (corpse && !aura.corpse && j.abilities.dot < 2) rate = 0;
@@ -525,7 +566,7 @@ export function incomingDamage(s,damage){
 export const TUNE_DEFAULTS={
  // 警戒档：10 局部警情，100 城市封锁，300 军事介入，500 开启 120 秒 Boss 倒计时。
  alert:{xpPerAlert:3,perSecond:.1,stage2At:10,stage3At:100,stage4At:300,bossAt:500,countdown:120,maxLevel1:1,maxLevel2:2,maxLevel3:3,maxLevel4:4,pressureTime:0},
- difficulty:{playerBase:100,playerPerLevel:20,allyRank1:4,allyRank2:8,allyRank3:12,allyRank4:16,maxWaveRatio:.25,bossWeightRatio:1.25,intervalMin:10,intervalMax:20,bossIntervalMin:8,bossIntervalMax:15,regionCount:4,civiliansPerRegion:12,patrolsPerRegion:2,fodderWaveRatio:.15,fodderCheck:10,spawnPerBurst:2,spawnGap:.08,spawnQueueMax:18},
+ difficulty:{playerBase:100,playerPerLevel:20,allyRank1:4,allyRank2:8,allyRank3:12,allyRank4:16,maxWaveRatio:.25,bossWeightRatio:1.25,intervalMin:3,intervalMax:5,bossIntervalMin:2,bossIntervalMax:4,regionCount:4,civiliansPerRegion:12,patrolsPerRegion:2,fodderWaveRatio:.15,fodderCheck:10,spawnPerBurst:1,spawnGap:.18,spawnQueueMax:18},
  activity:{shambleSpeed:.55,shambleRadius:4,shambleIdle:6,fleeSpeed:.7,awakeSpeed:3.8,awakeRadius:34,awakeIdle:1.05,chaseSpeed:3.6,followSpeed:4.4,structureSpeed:3.2}
 };
 export const TUNE=structuredClone(TUNE_DEFAULTS);
@@ -695,10 +736,10 @@ export function stepShieldCharge(u,spec,dt){
   u.chargePhase='dash';u.chargeDist=0;u.chargeHit=u.chargeHit||{};
  }
  if(u.chargePhase==='dash'){
-  const left=Math.max(0,(c.distance||6.5)-(u.chargeDist||0));
+  const left=Math.max(0,(c.distance||3.2)-(u.chargeDist||0));
   const step=Math.min((c.speed||13)*dt,left);
   u.chargeStep=step;u.chargeDist=(u.chargeDist||0)+step;
-  if(u.chargeDist>=(c.distance||6.5)-.001){u.chargePhase='';u.aiming=false;u.aim=0;u.attackCd=spec.interval;}
+  if(u.chargeDist>=(c.distance||3.2)-.001){u.chargePhase='';u.aiming=false;u.aim=0;u.attackCd=spec.interval;}
   return 'dash';
  }
  return 'idle';
@@ -752,6 +793,50 @@ export function enqueueSpawnJobs(queue,jobs){
  }
  return jobs.length;
 }
+export const REINFORCEMENT_LIMITS={queue:18,hostiles:96,memberGap:.18,ingressSeconds:6};
+export function enqueueSquads(queue,jobs,goal,random=Math.random,cap=18){
+ const room=Math.max(0,Math.min(REINFORCEMENT_LIMITS.queue,cap)-queue.jobs.length);
+ const accepted=jobs.slice(0,room),roll=()=>Math.max(0,Math.min(.999999,random()));let squad=null,index=0,group=0;
+ for(let at=0;at<accepted.length;at++){
+  const job=accepted[at],next=accepted[at+1];
+  const army=job.role==='army'&&job.type>0,mechanical=isMechanical({type:job.type});
+  if(!army||!squad||index>=squad.size||mechanical){
+   squad={goal:{x:goal.x,z:goal.z},front:roll()<.45,size:army&&!mechanical?2+Math.floor(roll()*2):1,group:group++,anchor:null};index=0;
+  }
+  const member=index++,last=member+1>=squad.size||!next||next.role!=='army'||isMechanical(next.type);
+  queue.jobs.push({...job,squad:army?squad:null,member,gap:last?.8+roll()*.7+(squad.group%3===2?.6:0):REINFORCEMENT_LIMITS.memberGap});
+  if(last)squad=null;
+ }
+ return accepted.length;
+}
+export function takeSquadJob(queue,dt,memberGap=REINFORCEMENT_LIMITS.memberGap){
+ if(!queue.jobs.length){queue.wait=0;return null;}
+ queue.wait=Math.max(0,(queue.wait||0)-Math.max(0,dt));
+ if(queue.wait>0)return null;
+ const job=queue.jobs.shift();queue.wait=job.gap>.5?job.gap:memberGap;return job;
+}
+// Front arrivals start beyond actor visibility; rear arrivals also stay outside the camera cone.
+// Sample a continuous approach area rather than a list of spawn coordinates or fixed spokes.
+export function reinforcementCandidate(player,viewDirection,front,random=Math.random){
+ const roll=()=>Math.max(0,Math.min(.999999,random()));
+ const angle=Math.atan2(viewDirection.x,viewDirection.z)+(front?0:Math.PI)+(roll()-.5)*2.6;
+ const radius=front?56+roll()*18:22+roll()*20;
+ return {x:player.x+Math.sin(angle)*radius,z:player.z+Math.cos(angle)*radius,angle};
+}
+export function hiddenSpawn(point,player,viewOrigin,viewDirection,viewLimit=46){
+ const d=distance(player,point);if(d>viewLimit+8)return true;if(d<20)return false;
+ const dx=point.x-viewOrigin.x,dz=point.z-viewOrigin.z,len=Math.hypot(dx,dz)||1;
+ return (dx*viewDirection.x+dz*viewDirection.z)/len<-.25;
+}
+export function stepIngress(u,dt){
+ if(u.dead||u.converted){u.ingressTime=0;u.ingressGoal=null;u.ingressCull=0;return null;}
+ if(u.ingressCull&&distance(u,u.ingressGoal||u)<48)u.ingressCull=0;
+ if(!(u.ingressTime>0)||!u.ingressGoal)return null;
+ u.ingressTime=Math.max(0,u.ingressTime-dt);
+ if(distance(u,u.ingressGoal)<2)u.ingressTime=0;
+ if(!u.ingressTime)return null;
+ return u.ingressGoal;
+}
 export function isStreetCivilian(u){
  return !!(u&&u.type===0&&!u.dead&&!u.converted&&u.kind==='human');
 }
@@ -763,7 +848,7 @@ export function isStreetPatrol(u){
 export const TROOP_CULL=50;
 export function shouldCullTroop(u,dist,range=TROOP_CULL){
  if(!u||u.guard||u.converted||u.kind==='ally'||u.type===0)return false;
- if(!(dist>=range))return false;
+ if(!(dist>=Math.max(range,u.ingressCull||0)))return false;
  if(u.kind==='corpse'||u.kind==='expired'||u.dead)return true;
  return !(u.infection>0);
 }
@@ -947,6 +1032,7 @@ export function guardMissing(s,units){
 }
 export function stepSimulation(s,units,player,dt,mode){
  if(mode!=='playing')return;
+ s.kindlingTime=Math.max(0,(s.kindlingTime||0)-dt);if(!s.kindlingTime)s.kindlingStacks=0;
  s.time+=dt;s.potionTime=Math.max(0,(s.potionTime||0)-dt);
  if(s.burstTime>0)s.burstTime=Math.max(0,s.burstTime-dt);
  for(const u of units)if(u.surge>0)u.surge=Math.max(0,u.surge-dt);

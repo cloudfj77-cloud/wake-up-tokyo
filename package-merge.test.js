@@ -70,8 +70,8 @@ test('comic effects pool and dispose geometry with bounded active groups',()=>{
 test('all eight ability names and all 24 descriptions match the supplied comic package',async()=>{
  const {readFile}=await import('node:fs/promises');
  const canonical=JSON.parse(await readFile(new URL('./fixtures/comic-package-abilities.json',import.meta.url),'utf8'));
- assert.deepEqual(r.ABILITIES,canonical);
- assert.equal(r.ABILITIES.length,8);assert.equal(r.ABILITIES.flatMap(a=>a.descriptions).length,24);
+ assert.deepEqual(r.ABILITIES.filter(a=>a.id!=='kindling'),canonical);
+ assert.equal(r.ABILITIES.length,9);assert.equal(r.ABILITIES.filter(a=>a.id!=='kindling').flatMap(a=>a.descriptions).length,24);
  for(const level of [0,1,2]){
   const s=r.makeState();for(const a of r.ABILITIES)s.abilities[a.id]=level;
   for(let i=0;i<20;i++)assert.ok(r.choices(s).every(a=>a.id!=='guns'));

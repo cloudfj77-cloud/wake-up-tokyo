@@ -256,3 +256,31 @@ test('warning meshes are released on actor recycle, skill completion, and restor
  vm.runInContext(section('function restore(saved)','async function start('),ctx);vm.runInContext('restore(saved)',ctx);
  assert.equal(scene.children.length,0);assert.equal(geometries,6);assert.equal(materials,6);
 });
+
+
+test('destroyed tanks explode once on release, never convert, and recycle without corpse UI or duplicate rewards',()=>{
+ const state=rules.makeState(),tank=rules.makeUnit(90,9,1,2);
+ state.abilities.air=3;state.abilities.dot=3;state.abilities.evolve=3;
+ assert.equal(rules.hit(state,tank,999,2000),'killed');
+ assert.equal(tank.dead,true);assert.equal(tank.kind,'expired');assert.equal(tank.corpseTime,0);
+ assert.equal(tank.infection,0);assert.equal(tank.converted,false);assert.equal(rules.convert(state,tank),false);
+ const earned=state.xpEarned;assert.equal(rules.hit(state,tank,999,2000),'none');assert.equal(state.xpEarned,earned);
+ const bursts=[],waves=[],sounds=[],visuals=new Map(),pool=[];
+ const ctx=vm.createContext({tank,world:{heightAt:()=>2},burst:(...args)=>bursts.push(args),wave:(...args)=>{waves.push(args);return {position:{y:0}};},music:{effect:t=>sounds.push(t)},clearActorWarnings:noop,visuals,squadIds:new Set(),unitPool:pool,releaseCharacterVisual:noop});
+ vm.runInContext(section('function releaseActor(','// 尸体消失'),ctx);
+ vm.runInContext('releaseActor(tank)',ctx);assert.equal(bursts.length,2);assert.equal(waves.length,1);assert.equal(sounds.length,1);assert.equal(tank.explosionPending,false);
+ vm.runInContext('releaseActor(tank)',ctx);assert.equal(waves.length,1);
+ rules.resetUnit(tank,91,1,0,0);assert.equal(tank.explosionPending,false);
+ const old=rules.makeUnit(92,9,0,0);old.kind='corpse';old.hp=0;old.corpseTime=12;
+ rules.tickInfection(state,[old],{x:0,z:0},.1);assert.equal(old.kind,'expired');assert.equal(old.dead,true);assert.equal(old.explosionPending,true);
+ const human=rules.makeUnit(93,1,0,0);rules.hit(state,human,0,1000);assert.equal(human.kind,'corpse');assert.equal(human.dead,false);assert.equal(human.corpseTime,12);
+});
+
+
+test('large checkpoints restore logic without synchronously cloning every actor model',()=>{
+ const saved={state:rules.makeState(),units:Array.from({length:200},(_,i)=>rules.makeUnit(i,1,i%20,i%10)),player:{x:0,z:0},objects:[]};
+ let clones=0;
+ const ctx=vm.createContext({...rules,T,saved,state:rules.makeState(),sprayMarkers:new Map(),chargeMarkers:new Map(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:()=>clones++,world:{destructibles:[],spawnWeakenSites:noop}});
+ vm.runInContext(section('function restore(saved)','async function start('),ctx);vm.runInContext('restore(saved)',ctx);
+ assert.equal(ctx.units.length,200);assert.equal(clones,0,'visibility budget must build models as needed after resuming');
+});

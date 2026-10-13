@@ -198,7 +198,7 @@ test('early stock refill supplies patrols without a threat wave',()=>{
  const plan=spawnPlan(s,units,()=>0,{x:0,z:0});
  assert.equal(plan.stage,1);assert.equal(plan.threatN,0);assert.deepEqual(plan.rush,[]);
  assert.ok(plan.patrol.every(t=>t===1));assert.ok(plan.civilians.every(t=>t===0));
- assert.ok(plan.interval>=10&&plan.interval<=20);
+ assert.ok(plan.interval>=3&&plan.interval<=5);
  const crowded=Array.from({length:4},(_,i)=>makeUnit(10+i,1,i,0));
  const full=spawnPlan(s,crowded,()=>0,{x:0,z:0});
  assert.deepEqual(full.rush,[]);assert.ok(full.waveWeight===0);
@@ -481,7 +481,7 @@ test('army rushes from outside the facing while civilians stay a street refill',
  const s=makeState();s.level=8;s.xpEarned=500;
  const allies=Array.from({length:20},(_,i)=>{const u=makeUnit(i,0,0,0);u.converted=true;u.kind='ally';return u;});
  const plan=spawnPlan(s,allies,()=>0,{x:0,z:0});
- assert.ok(plan.interval>=10&&plan.interval<=20);
+ assert.ok(plan.interval>=3&&plan.interval<=5);
  assert.ok(plan.rush.length>=1);
  assert.ok(plan.patrol.length>=1);
  assert.ok(plan.rush.every(t=>t>0));

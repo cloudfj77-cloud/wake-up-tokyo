@@ -1,0 +1,190 @@
+{
+  "case": "late",
+  "lifetime": {
+    "frames": 23690,
+    "maxFrameMs": 158.3,
+    "over50ms": 2,
+    "over100ms": 2
+  },
+  "elapsedSeconds": 263.7,
+  "samples": 3600,
+  "fps": 85.6,
+  "p95FrameMs": 16.8,
+  "p99FrameMs": 17.6,
+  "maxFrameMs": 25.9,
+  "over50ms": 0,
+  "over100ms": 0,
+  "p95WorkMs": 10.9,
+  "heapMB": 958.1,
+  "current": {
+    "enemies": 96,
+    "allies": 0,
+    "models": 64,
+    "queue": 12,
+    "navigation": {
+      "steps": 0,
+      "queries": 0,
+      "pending": 0,
+      "cached": 32
+    },
+    "calls": 1526,
+    "triangles": 7294578,
+    "player": {
+      "x": 6.4,
+      "z": -27.23
+    },
+    "yaw": 0
+  },
+  "peaks": {
+    "hostiles": 96,
+    "allies": 97,
+    "models": 72,
+    "queue": 18
+  },
+  "spawnCount": 7,
+  "sectors": {
+    "南": 4,
+    "北": 1,
+    "东": 2
+  },
+  "visibleBirths": 0,
+  "cameraRaceBirths": 0,
+  "firstFrameVisible": 0,
+  "profile": {
+    "actorHeight": {
+      "calls": 8550945,
+      "totalMs": 2455.5,
+      "maxMs": 1
+    },
+    "crowdQuery": {
+      "calls": 4303127,
+      "totalMs": 832.4,
+      "maxMs": 1
+    },
+    "attackSight": {
+      "calls": 1213054,
+      "totalMs": 19354.6,
+      "maxMs": 9.7
+    },
+    "movement": {
+      "calls": 1468074,
+      "totalMs": 5290.5,
+      "maxMs": 1.1
+    },
+    "waypoint": {
+      "calls": 410912,
+      "totalMs": 3536.3,
+      "maxMs": 1.2
+    },
+    "nearest": {
+      "calls": 73,
+      "totalMs": 11.1,
+      "maxMs": 0.9
+    },
+    "AI": {
+      "calls": 23691,
+      "totalMs": 30282.5,
+      "maxMs": 13.2
+    },
+    "effects": {
+      "calls": 23691,
+      "totalMs": 3630.1,
+      "maxMs": 10.4
+    },
+    "visuals": {
+      "calls": 23691,
+      "totalMs": 4031.5,
+      "maxMs": 100.4
+    },
+    "modelCreate": {
+      "calls": 2119,
+      "totalMs": 150.9,
+      "maxMs": 50.9
+    },
+    "HUD": {
+      "calls": 2442,
+      "totalMs": 1496.4,
+      "maxMs": 1.6
+    },
+    "animation": {
+      "calls": 1470081,
+      "totalMs": 7194.6,
+      "maxMs": 1
+    },
+    "enemyFire": {
+      "calls": 29902,
+      "totalMs": 83.6,
+      "maxMs": 0.2
+    },
+    "tankMovement": {
+      "calls": 34157,
+      "totalMs": 78.1,
+      "maxMs": 0.9
+    }
+  },
+  "lastBirths": [
+    {
+      "id": 316,
+      "x": 14.17,
+      "z": -43.15,
+      "distance": 32.06,
+      "sector": "南",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 317,
+      "x": -10.82,
+      "z": 39.23,
+      "distance": 59.3,
+      "sector": "北",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 318,
+      "x": 11.69,
+      "z": -37.2,
+      "distance": 26.15,
+      "sector": "东",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 319,
+      "x": 15.6,
+      "z": -29.64,
+      "distance": 25.49,
+      "sector": "东",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 320,
+      "x": 0.3,
+      "z": -44.24,
+      "distance": 25.62,
+      "sector": "南",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 321,
+      "x": 4.46,
+      "z": -40.77,
+      "distance": 24.22,
+      "sector": "南",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 322,
+      "x": 4.75,
+      "z": -44.25,
+      "distance": 27.4,
+      "sector": "南",
+      "visible": false,
+      "auditFrames": 2
+    }
+  ]
+}

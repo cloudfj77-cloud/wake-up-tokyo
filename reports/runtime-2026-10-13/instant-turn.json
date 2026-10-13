@@ -1,0 +1,151 @@
+{
+  "case": "normal",
+  "elapsedSeconds": 51.3,
+  "samples": 3600,
+  "fps": 119.3,
+  "p95FrameMs": 9.1,
+  "p99FrameMs": 9.3,
+  "maxFrameMs": 66.6,
+  "over50ms": 3,
+  "over100ms": 0,
+  "p95WorkMs": 6.1,
+  "current": {
+    "enemies": 34,
+    "allies": 0,
+    "models": 38,
+    "queue": 0,
+    "calls": 536,
+    "triangles": 3072606,
+    "player": {
+      "x": -14.69,
+      "z": -24.3
+    },
+    "yaw": 109.96
+  },
+  "peaks": {
+    "hostiles": 35,
+    "allies": 25,
+    "models": 53,
+    "queue": 18
+  },
+  "spawnCount": 35,
+  "sectors": {
+    "北": 17,
+    "南": 8,
+    "东": 10
+  },
+  "visibleBirths": 0,
+  "cameraRaceBirths": 17,
+  "firstFrameVisible": 17,
+  "profile": {
+    "waypoint": {
+      "calls": 123878,
+      "totalMs": 4713.4,
+      "maxMs": 4.9
+    },
+    "nearest": {
+      "calls": 28,
+      "totalMs": 10.2,
+      "maxMs": 1.2
+    },
+    "AI": {
+      "calls": 5936,
+      "totalMs": 10519.7,
+      "maxMs": 20.4
+    },
+    "modelCreate": {
+      "calls": 71,
+      "totalMs": 1317.3,
+      "maxMs": 52.2
+    },
+    "visuals": {
+      "calls": 5936,
+      "totalMs": 1691.6,
+      "maxMs": 98.2
+    },
+    "effects": {
+      "calls": 5936,
+      "totalMs": 139.5,
+      "maxMs": 2.8
+    },
+    "HUD": {
+      "calls": 480,
+      "totalMs": 184.8,
+      "maxMs": 0.9
+    }
+  },
+  "lastBirths": [
+    {
+      "id": 171,
+      "x": 18.73,
+      "z": -9.65,
+      "distance": 28.67,
+      "sector": "东",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 172,
+      "x": -2.55,
+      "z": -41.53,
+      "distance": 22.21,
+      "sector": "南",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 173,
+      "x": -13.45,
+      "z": 14.55,
+      "distance": 34.97,
+      "sector": "北",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 174,
+      "x": 5.84,
+      "z": -40.91,
+      "distance": 25.08,
+      "sector": "南",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 175,
+      "x": -20.17,
+      "z": 2.8,
+      "distance": 26.22,
+      "sector": "北",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 176,
+      "x": 4.05,
+      "z": -43.18,
+      "distance": 24.85,
+      "sector": "南",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 177,
+      "x": 0.7,
+      "z": 10.88,
+      "distance": 34.74,
+      "sector": "北",
+      "visible": false,
+      "auditFrames": 2
+    },
+    {
+      "id": 178,
+      "x": 9.41,
+      "z": -37.25,
+      "distance": 23.96,
+      "sector": "东",
+      "visible": false,
+      "auditFrames": 2
+    }
+  ]
+}
