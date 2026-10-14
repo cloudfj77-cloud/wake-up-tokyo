@@ -186,3 +186,83 @@ body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8p
 #potionStatus{display:block;margin-top:8px;color:#ffcf55;}
 
 .mapChoice{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;color:#d7c5e4;font-size:12px}.mapChoice select{width:100%;border:1px solid #b88cd855;border-radius:7px;background:#251d32;color:#fff4dc;padding:10px;font:inherit}
+
+/* ===== Critter Clash 换肤：亮黄主视觉 + 黑斜切 + 品红 CTA =====
+   参考：亮黄渐变大底、黑色斜切按钮、品红主按钮、半调网点、黄徽章黑字。
+   ui.css 的变量体系不动，lime 一律映射成主视觉黄，紫色仍是感染主题色。 */
+:root{--lime:#ffd21e;--cc-pink:#ff3da6}
+/* 主界面要能预览地图：黄只铺左下半边并向右上淡出，右上整片留给实时城市。 */
+#menu{background:transparent}
+#menu .menuShade{background:linear-gradient(202deg,#ffd21ef0 0,#ffd21ed9 14%,#ffc4008c 32%,#ff9d0038 46%,transparent 60%)}
+/* 这里原本压了一块黑色斜切，结果和黑色按钮叠在一起、谁也看不清谁。
+   改为：不铺额外深色区，按钮自己带白描边和黄色竖条，直接坐在黄色底上。 */
+#menu .menuGrid{opacity:.4;transform:none;background-image:radial-gradient(#141414 1.1px,transparent 1.4px);background-size:11px 11px;mask-image:linear-gradient(200deg,#000 30%,transparent 72%);-webkit-mask-image:linear-gradient(200deg,#000 30%,transparent 72%)}
+#menu .menuNoise{opacity:.09;mix-blend-mode:multiply}
+#menu:after{background:radial-gradient(ellipse at 88% -12%,#ff9d0099,transparent 55%)}
+/* 副标题出现重影：整块 logo 挂着 7px 实心投影，小字下面会复制出一层黑字。
+   投影只留给主标题，小字干净地坐在黄底上。 */
+.gameLogo{filter:none}
+.gameLogo>span,.gameLogo>strong{filter:drop-shadow(5px 6px 0 #14101d)}
+.gameLogo>p{color:#4a3a08;font-weight:700;text-shadow:none;letter-spacing:.5px}
+/* 菜单按钮：深黑斜切 + 白描边 + 左侧黄色竖条。白描边是把按钮从黄底里「抠」出来的关键，
+   斜切用 clip-path（不变形文字），投影用 filter（box-shadow 会被 clip-path 裁掉）。 */
+#menu .mainMenuNav>button{background:linear-gradient(90deg,#ffd21e 0 6px,#171322f2 6px);color:#fff;border:0;border-radius:0;box-shadow:none;clip-path:polygon(11px 0,100% 0,calc(100% - 11px) 100%,0 100%);filter:drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(4px 5px 0 #141414)}
+#menu .mainMenuNav>button:before{color:#ffd21e}
+#menu .mainMenuNav>button:hover:not(:disabled){background:linear-gradient(90deg,#ffd21e 0 6px,var(--purple) 6px);color:#fff}
+#menu .mainMenuNav>#start{background:var(--cc-pink);color:#fff;box-shadow:none;clip-path:polygon(13px 0,100% 0,calc(100% - 13px) 100%,0 100%);filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(5px 6px 0 #141414)}
+#menu .mainMenuNav>#start:before{color:#fff}
+#menu .mainMenuNav>#start:hover:not(:disabled){background:#ff5cb8;color:#fff}
+#menu .mainMenuNav .menuStatus p{color:#4a3a08;font-weight:800}
+.menuStatus .liveDot{background:#171322}
+.menuIntel{border-radius:0;border:3px solid #171322;background:#171322f0;box-shadow:8px 8px 0 #1713224d}
+.intelHeader{background:#ffd21e;color:#171322;border-bottom:3px solid #171322}
+.intelHeader strong{color:#171322}
+.menuIntel dt{color:#bdbdbd}.menuIntel dd{color:#fff}
+.genePreview h2{color:#ffd21e;font-weight:900}
+.genePreview i{border-color:#4a4a4a;background:#0f0f0f;color:#6d6d6d}
+.genePreview i.active{background:#ffd21e;color:#171322;border-color:#ffd21e}
+.infectionNotice{background:var(--cc-pink);color:#171322;border-color:#171322}
+.infectionNotice strong{color:#171322}.infectionNotice span{color:#5c0a38}
+#menu .menuFooter{background:#171322e6;color:#e8e8e8}
+#menu .menuFooter kbd{background:#ffd21e;color:#171322}
+.mapChoice{color:#4a3a08;font-weight:800}
+.mapChoice select{background:#171322;color:#fff;border:2px solid #171322;border-radius:0;font-weight:700}
+
+/* ===== 主界面清爽化：左下白色斜切面板承载菜单，右侧整片留给城市预览 =====
+   参考图构图：浅色斜切区放可读内容，主视觉让位给场景；文字一律高对比。 */
+#menu .mainMenuNav{bottom:10%;padding:20px 40px 20px 20px;background:#fffdf5f5;clip-path:polygon(0 0,100% 0,calc(100% - 36px) 100%,0 100%);box-shadow:10px 10px 0 #14141433}
+#menu .mainMenuNav .mapChoice{color:#171322;font-weight:800}
+#menu .mainMenuNav .mapChoice select{border:2px solid #171322;border-radius:0;background:#171322;color:#fff;font-weight:700}
+#menu .mainMenuNav>button{border-radius:0;box-shadow:none;filter:drop-shadow(3px 4px 0 #171322)}
+#menu .mainMenuNav>#start{filter:drop-shadow(3px 5px 0 #171322)}
+#menu .mainMenuNav .menuStatus p{color:#4a3a08;font-weight:800}
+/* 副标题垫黄色高亮条：斜切小色块，黑字在场景上也稳。 */
+.gameLogo>p{display:inline-block;width:max-content;margin:14px 0 0 2px;padding:5px 14px;background:#ffd21e;color:#171322;font-weight:800;transform:skewX(-7deg);text-shadow:none}
+
+/* ===== 去脏：场景区不再罩黄、不再加噪点，颜色只留在 UI 元件上 =====
+   黄渐变盖在实景上会混出灰绿，噪点和 sepia 让画面发浑 —— 三样一起去掉，
+   左侧靠白色面板保证可读性，不再需要压暗/染色场景。 */
+#menu .menuShade{background:linear-gradient(15deg,#14141466 0,#1414141f 24%,transparent 42%)}
+#menu .menuGrid,#menu .menuNoise{display:none}
+#menu:after{background:none}
+body.menuMode #game{filter:saturate(1.06) contrast(1.04) brightness(1.02)}
+/* 半调网点改铺在白色面板内部，是 UI 的质感而不是场景上的脏点。 */
+#menu .mainMenuNav{background:#fffdf5f7 radial-gradient(#17132214 1px,transparent 1.2px) 0 0/10px 10px}
+
+/* ===== 菜单布局重排：左列 = 标题/菜单/页脚，右列 = 情报/警告 =====
+   原先情报面板、警告卡、页脚三块全挤在右下角 20 像素内，看着就是叠在一起。
+   现在右侧上下各一块、页脚挪到左下，每块之间留出呼吸。 */
+.menuIntel{right:4%;bottom:16%}
+.infectionNotice{right:4%;bottom:3%}
+#menu .menuFooter{left:5%;right:auto;bottom:2%}
+#menu .mainMenuNav{border-left:6px solid #ffd21e;padding:18px 40px 18px 24px}
+
+/* ===== 再简化：右侧那块灰色迷你地图是「又高又杂」的来源，去掉后面板立刻清爽；
+    同时把左右两列的块间距再拉开，避免看上去贴在一起。 */
+.menuMap{display:none}
+.menuIntel{right:4%;bottom:19%;width:250px}
+.infectionNotice{right:4%;bottom:2%;width:248px}
+#menu .mainMenuNav{bottom:12%;padding:16px 38px 16px 22px}
+.gameLogo{top:6%}
+#menu .menuShade{background:linear-gradient(15deg,#14141440 0,#14141412 22%,transparent 38%)}
+#menu .mainMenuNav{background:#fffdf5f7}

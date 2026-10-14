@@ -4,6 +4,7 @@ import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { loadMixamoCharacter } from './mixamo.js';
 import { loadWorkerAsset } from './worker.js';
 import { loadAwakenedAssets } from './awakened.js';
+import { loadShieldCopAsset, loadBatonCopAsset } from './police.js';
 
 // 逻辑动作名 → 可能的 clip 名。直接同名优先，其次按顺序回退，
 // 这样 Mixamo 的 Idle / Walking / Running 等命名能无缝接进原有的状态机。
@@ -22,7 +23,8 @@ const CLIP_ALIASES = {
   diveRoll: ['diveRoll', 'roll', 'jump'],
 };
 
-const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee };
+// 脚下光环色。持盾/持棍两套警察模型和警卫同阵营但兵种不同，给两个可分辨的颜色。
+const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee, shieldCop: 0x2f6fbf, batonCop: 0x8fbf6a };
 
 // 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
 // 例如现实中 1.82 米的主角，在游戏画面里应约为 1 个单位，才能和汽车比例一致。
@@ -36,7 +38,8 @@ export const CHARACTER_HEIGHTS = {
 
 export function characterHeight(kind, variant = 0) {
   if (kind === 'player') return CHARACTER_HEIGHTS.player;
-  if (kind === 'guard') return CHARACTER_HEIGHTS.guard;
+  // 两套警察模型和警卫一样是成年男性身高，共用同一档。
+  if (kind === 'guard' || kind === 'shieldCop' || kind === 'batonCop') return CHARACTER_HEIGHTS.guard;
   return CHARACTER_HEIGHTS.humanBase + variant * CHARACTER_HEIGHTS.humanVariantStep;
 }
 
@@ -91,6 +94,17 @@ export async function loadCharacterAssets() {
     return null;
   });
   if (mixamo) assets.player = mixamo;
+  // 持盾特警 / 持棍巡警：public/police/ 下的专属 FBX，拿不到就继续用通用警卫模型。
+  const shieldCop = await loadShieldCopAsset().then(prepareCharacterAsset).catch(error => {
+    console.warn('[characters] 未启用持盾特警模型：', error.message);
+    return null;
+  });
+  if (shieldCop) assets.shieldCop = shieldCop;
+  const batonCop = await loadBatonCopAsset().then(prepareCharacterAsset).catch(error => {
+    console.warn('[characters] 未启用持棍巡警模型：', error.message);
+    return null;
+  });
+  if (batonCop) assets.batonCop = batonCop;
   return assets;
 }
 
@@ -103,6 +117,9 @@ function selectCharacterAsset(assets, kind) {
     if (assets.allyVariants?.length) return assets.allyVariants[Math.floor(Math.random() * assets.allyVariants.length)];
     if (assets.ally) return assets.ally;
   }
+  // 两套警察模型优先于通用警卫：兵种有了专属外观，才分得清拿盾的还是拿棍的。
+  if (kind === 'shieldCop' && assets.shieldCop) return assets.shieldCop;
+  if (kind === 'batonCop' && assets.batonCop) return assets.batonCop;
   if (kind === 'guard' && assets.guard) return assets.guard;
   if (assets.humanMale && assets.humanFemale) return Math.random() < .5 ? assets.humanMale : assets.humanFemale;
   if (assets.ally) return assets.ally;
@@ -241,6 +258,8 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
 export const PROFESSIONS=['厨师','医生','建筑工人','配送员','教师'];
 
 const POOL_CAP=24;
+// poolKey 只分三类，是既有契约（回归测试断言秩序单位一律 guard）：持盾/持棍也归在 guard 池里。
+// 模型不能拿错，所以复用时在同池内再按 kind 精确匹配，见 acquireCharacterVisual。
 const visualPools={human:[],guard:[],ally:[]};
 export function visualPoolKey(kind){return kind==='human'||kind==='ally'?kind:'guard';}
 function parkPooledVisual(visual){
@@ -266,7 +285,12 @@ function disposeCharacterVisual(visual){
 }
 export function acquireCharacterVisual(assets,kind,variant=0){
  const key=visualPoolKey(kind);
- const pooled=visualPools[key].pop();
+ const pool=visualPools[key];
+ // 池里混着警卫和两套警察，随便 pop 一个会让拿盾的顶着拿棍的模型出场。
+ // 从尾部往前找同兵种的；没有就新建，绝不将就。
+ let index=-1;
+ for(let i=pool.length-1;i>=0;i--)if(pool[i].kind===kind){index=i;break;}
+ const pooled=index>=0?pool.splice(index,1)[0]:null;
  if(pooled){
   setCharacterKind(pooled,kind);
   pooled.holder.visible=true;
