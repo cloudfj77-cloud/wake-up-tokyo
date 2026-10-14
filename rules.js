@@ -23,18 +23,19 @@ export const SPRINT_MULT=1.38;
 export const ENEMIES=[
  // 类型下标保持现有存档含义。数值和技能按飞书《敌人相关系统》6.1；转化后满状态砍半。
  {name:'苦逼打工人',level:1,hp:50,threshold:20,speed:2.2,damage:0,range:1.6,interval:1.5,aim:.2,fodder:true,allyName:'普通狂暴者',allyHp:20,allyAtk:10},
- {name:'持棍巡警',level:2,hp:100,threshold:40,speed:2.55,damage:20,range:1.35,interval:1.7,aim:.7,fodder:true,allyName:'狂暴持棍巡警',allyHp:50,allyAtk:10},
- {name:'持枪巡警',level:2,hp:100,threshold:40,speed:2.45,damage:10,range:12,interval:2,aim:.45,allyName:'狂暴持枪巡警',allyHp:50,allyAtk:5},
- // 3 级盾警比 2 级巡警硬一截。不再原地挥盾，短蓄力后沿锁定方向冲一段。
- {name:'持盾特警',level:3,hp:280,threshold:180,speed:2.5,damage:40,range:4.3,interval:2.2,aim:.4,shield:true,charge:{windup:.4,speed:13,distance:3.2,wide:1.6,knock:1},allyName:'狂暴持盾特警',allyHp:140,allyAtk:20},
+ // 2 阶巡警只比原来厚一截：生命 120、感染上限 50，大约多挨一两下，伤害不动。
+ {name:'持棍巡警',level:2,hp:120,threshold:50,speed:2.55,damage:20,range:1.35,interval:1.7,aim:.7,fodder:true,allyName:'狂暴持棍巡警',allyHp:60,allyAtk:10},
+ {name:'持枪巡警',level:2,hp:120,threshold:50,speed:2.45,damage:10,range:12,interval:2,aim:.45,allyName:'狂暴持枪巡警',allyHp:60,allyAtk:5},
+ // 3 阶盾警冲撞和挥盾都是 50 点。满血玩家挨一下还剩 50。
+ {name:'持盾特警',level:3,hp:340,threshold:220,speed:2.5,damage:50,range:4.3,interval:2.2,aim:.4,shield:true,charge:{windup:.4,speed:13,distance:3.2,wide:1.6,knock:1},allyName:'狂暴持盾特警',allyHp:170,allyAtk:25},
  // 净化专员和净化士兵合成这一种。扇形喷雾每 0.5 秒 10 点伤害。
  // 出手前先亮出这块扇形约 1 秒，再至少喷 2 秒。扇形里没人了才停。
  // drain 按每秒计：10 米内每 0.5 秒清 2 点，所以是 4。同类只取最高的一个，不叠加。
  // aid 是被同化后反过来扩散的速率，和清感染同一档。
  {name:'净化士兵',level:4,hp:400,threshold:300,speed:2.05,damage:10,range:8,interval:.5,aim:1,purifier:true,spray:true,sprayWindup:1,spraySustain:2,aura:10,drain:4,aid:4,allyName:'狂暴净化士兵',allyHp:200,allyAtk:5},
  {name:'大兵',level:4,hp:300,threshold:200,speed:2.45,damage:5,range:24,interval:.1,aim:0,allyName:'狂暴大兵',allyHp:150,allyAtk:2.5},
- // 3 级枪警同样加厚，射速不变，单发和射程略提高。
- {name:'持枪特警',level:3,hp:240,threshold:140,speed:2.75,damage:16,range:16,interval:.5,aim:.12,allyName:'狂暴持枪特警',allyHp:120,allyAtk:8},
+ // 3 阶枪警射速不变。单发从 16 提到 20，血和感染上限各加约两成。
+ {name:'持枪特警',level:3,hp:300,threshold:170,speed:2.75,damage:20,range:16,interval:.5,aim:.12,allyName:'狂暴持枪特警',allyHp:150,allyAtk:10},
  // 近战重装：前摇长、命中是以自身为心的范围伤害。range 保持在 3 以内，才会被判成近战而不是远程。
  {name:'重装大锤兵',level:4,hp:700,threshold:500,speed:1.85,damage:55,range:3,interval:2.6,aim:1.9,slam:{radius:4.2},allyName:'狂暴重装大锤兵',allyHp:350,allyAtk:25},
  // 掷弹兵只扔炸弹，不开枪。weight 单独写成 20，不走 4 级默认的 16。

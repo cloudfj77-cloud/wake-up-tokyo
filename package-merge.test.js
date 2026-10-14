@@ -38,7 +38,7 @@ test('mist drops pause, land after flight, and do not double mother aura',()=>{
  const distant=r.makeUnit(2,7,20,0);s.airClouds=[{x:20,z:0,time:3},{x:20,z:0,time:3}];r.tickInfection(s,[distant],{x:0,z:0},.5);assert.equal(distant.infection,4);
 });
 test('deep parasite triggers once and preserves player attribution',()=>{
- const s=r.makeState();s.abilities.dot=3;const u=r.makeUnit(1,1,0,0);u.infection=20;u.tagged='player';
+ const s=r.makeState();s.abilities.dot=3;const u=r.makeUnit(1,1,0,0);u.infection=u.threshold*.5;u.tagged='player';
  r.tickInfection(s,[u],{x:30,z:30},.1);assert.equal(u.parasite,true);assert.ok(u.root>0);assert.equal(u.slow,true);
  r.tickInfection(s,[u],{x:30,z:30},2.1);assert.equal(u.root,0);
  r.tickInfection(s,[u],{x:30,z:30},.1);assert.equal(u.root,0);

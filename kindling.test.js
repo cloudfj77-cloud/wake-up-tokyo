@@ -70,9 +70,9 @@ test('actual hit and Boss paths buff player and nearby allies exactly once, buff
  const ctx=vm.createContext({...r,state:s,player,enemy,ally,outside,visuals:new Map(),
   boss:{},baseHitBoss:(b,d)=>bossHits.push(d),burst(){},music:{effect(){}},toast(){},spawnPickup(){},PROFESSIONS:[],STANDING_CHEST:1});
  vm.runInContext(section('function hitBoss(','function playerHurt('),ctx);
- vm.runInContext('applyHit(enemy,2,10)',ctx);assert.equal(enemy.hp,85);assert.equal(enemy.infection,3);
- vm.runInContext('applyHit(enemy,2,10,true,ally)',ctx);assert.equal(enemy.hp,70);assert.equal(enemy.infection,6);
- vm.runInContext('applyHit(enemy,2,10,true,outside)',ctx);assert.equal(enemy.hp,60);
+ vm.runInContext('applyHit(enemy,2,10)',ctx);assert.equal(enemy.hp,105);assert.equal(enemy.infection,3);
+ vm.runInContext('applyHit(enemy,2,10,true,ally)',ctx);assert.equal(enemy.hp,90);assert.equal(enemy.infection,6);
+ vm.runInContext('applyHit(enemy,2,10,true,outside)',ctx);assert.equal(enemy.hp,80);
  vm.runInContext('hitBoss(boss,10);hitBoss(boss,10,ally);hitBoss(boss,10,outside)',ctx);
  assert.deepEqual(bossHits,[15,15,10]);
 });

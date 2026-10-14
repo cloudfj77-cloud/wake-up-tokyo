@@ -185,14 +185,14 @@ test('shield defense uses each melee or projectile origin instead of the player 
   spawnPickup:noop,STANDING_CHEST:1,PROFESSIONS:[],particles:[],waves:[],tracers:[],
   world:{solid:()=>false},scene:{remove:noop},enemy});
  vm.runInContext(section('function facingFront(','function playerHurt(')+section('function updateEffects(','function updateCamera('),ctx);
- vm.runInContext('applyHit(enemy,0,20,true,{x:0,z:-5})',ctx);assert.equal(enemy.hp,260);
- ctx.player.z=-5;vm.runInContext('applyHit(enemy,0,20,true,{x:0,z:5})',ctx);assert.equal(enemy.hp,250);
+ vm.runInContext('applyHit(enemy,0,20,true,{x:0,z:-5})',ctx);assert.equal(enemy.hp,320);
+ ctx.player.z=-5;vm.runInContext('applyHit(enemy,0,20,true,{x:0,z:5})',ctx);assert.equal(enemy.hp,310);
  // A friendly projectile travelling from behind still bypasses the shield with the player in front.
  ctx.player.z=5;ctx.tracers=[{m:{position:{set:noop}},x:0,z:-.28,y:1,vx:0,vz:18,life:1,damage:20,allyShot:true}];
- vm.runInContext('updateEffects(.016)',ctx);assert.equal(enemy.hp,230);
+ vm.runInContext('updateEffects(.016)',ctx);assert.equal(enemy.hp,290);
  // Facing remains available even while the model is culled.
  ctx.visuals.clear();enemy.facingYaw=0;
- vm.runInContext('applyHit(enemy,0,20,true,{x:0,z:5})',ctx);assert.equal(enemy.hp,220);
+ vm.runInContext('applyHit(enemy,0,20,true,{x:0,z:5})',ctx);assert.equal(enemy.hp,280);
 });
 
 function armyAIContext(x,{hp=100,maxHp=100,doctor=false}={}){
