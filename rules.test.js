@@ -83,6 +83,7 @@ test('allied death does not subtract cumulative infection',()=>{
  hit(s,u,60,0);damageAlly(u,999,s);assert.equal(teamCount([u]),0);assert.equal(s.infected,1);
 });
 test('corpse requires air 2, revives before expiration, does not duplicate experience',()=>{
+ // 2 阶感染上限是 50。空气 2 级每秒 8 点，从 20 点起四秒能跨过上限。
  const s=makeState(),u=makeUnit(1,2,0,0);u.infection=20;hit(s,u,0,999);
  assert.equal(u.kind,'corpse');const xp=s.xp;
  s.abilities.air=1;tickInfection(s,[u],{x:0,z:0},1);assert.equal(u.kind,'corpse');
@@ -198,7 +199,7 @@ test('early stock refill supplies patrols without a threat wave',()=>{
  const plan=spawnPlan(s,units,()=>0,{x:0,z:0});
  assert.equal(plan.stage,1);assert.equal(plan.threatN,0);assert.deepEqual(plan.rush,[]);
  assert.ok(plan.patrol.every(t=>t===1));assert.ok(plan.civilians.every(t=>t===0));
- assert.ok(plan.interval>=10&&plan.interval<=20);
+ assert.ok(plan.interval>=3&&plan.interval<=5);
  const crowded=Array.from({length:4},(_,i)=>makeUnit(10+i,1,i,0));
  const full=spawnPlan(s,crowded,()=>0,{x:0,z:0});
  assert.deepEqual(full.rush,[]);assert.ok(full.waveWeight===0);
@@ -251,7 +252,7 @@ test('live convert restores a full ally; corpse convert is sixty percent',()=>{
  assert.equal(corpse.hp,Math.ceil(allyTemplate(0).hp*.6));
 });
 test('converted full stats are half of the living enemy, except civilian attack',()=>{
- for(const [type,hp,atk] of [[0,20,10],[1,50,10],[2,50,5],[3,140,20],[4,200,5],[5,150,2.5],[6,120,8]]){
+ for(const [type,hp,atk] of [[0,20,10],[1,60,10],[2,60,5],[3,170,25],[4,200,5],[5,150,2.5],[6,150,10]]){
   const e=ENEMIES[type],tpl=allyTemplate(type);
   assert.equal(tpl.hp,hp);
   assert.equal(tpl.atk,atk);
@@ -286,6 +287,14 @@ test('stick cops reach only at stick length and telegraph before damage',()=>{
  const dodge={aiming:false,aim:0,attackCd:0};
  assert.equal(stepHostileMelee(dodge,cop,1.2,true,0),'start');
  assert.equal(stepHostileMelee(dodge,cop,2.2,true,.8),'miss');
+});
+test('rank 2 and 3 soldiers keep the raised health, infection cap, and rank 3 damage',()=>{
+ const stick=ENEMIES[1],gun=ENEMIES[2],shield=ENEMIES[3],eliteGun=ENEMIES[6];
+ assert.equal(stick.level,2);assert.equal(stick.hp,120);assert.equal(stick.threshold,50);assert.equal(stick.damage,20);
+ assert.equal(gun.level,2);assert.equal(gun.hp,120);assert.equal(gun.threshold,50);assert.equal(gun.damage,10);
+ assert.equal(shield.level,3);assert.equal(shield.hp,340);assert.equal(shield.threshold,220);assert.equal(shield.damage,50);
+ assert.equal(eliteGun.level,3);assert.equal(eliteGun.hp,300);assert.equal(eliteGun.threshold,170);assert.equal(eliteGun.damage,20);
+ assert.ok(eliteGun.damage>gun.damage&&shield.damage>stick.damage);
 });
 test('elite soldiers outlast and outdamage converted workers',()=>{
  const worker=allyTemplate(0),elite=ENEMIES[5];
@@ -481,7 +490,7 @@ test('army rushes from outside the facing while civilians stay a street refill',
  const s=makeState();s.level=8;s.xpEarned=500;
  const allies=Array.from({length:20},(_,i)=>{const u=makeUnit(i,0,0,0);u.converted=true;u.kind='ally';return u;});
  const plan=spawnPlan(s,allies,()=>0,{x:0,z:0});
- assert.ok(plan.interval>=10&&plan.interval<=20);
+ assert.ok(plan.interval>=3&&plan.interval<=5);
  assert.ok(plan.rush.length>=1);
  assert.ok(plan.patrol.length>=1);
  assert.ok(plan.rush.every(t=>t>0));

@@ -1,7 +1,7 @@
 // ForgeaX's WKWebView may omit the browser Pointer Lock API. Use its
 // existing desktop command in that case; browser builds keep the web API.
 export function createPointerLock(canvas, notify, win = window, doc = document) {
-  let nativeLocked = false, pending = false, generation = 0;
+  let nativeLocked = false, pending = false, generation = 0, quiet = false;
   let invoke;
   for (let current = win; current;) {
     try {
@@ -23,9 +23,10 @@ export function createPointerLock(canvas, notify, win = window, doc = document) 
     const exit = doc.exitPointerLock ?? doc.webkitExitPointerLock;
     if (exit && (doc.pointerLockElement === canvas || doc.webkitPointerLockElement === canvas)) exit.call(doc);
   };
-  const request = async () => {
+  const request = async (options={}) => {
     if (pending || locked()) return;
     pending = true;
+    quiet = !!options.quiet;
     const ticket = generation;
     try {
       const webRequest = canvas.requestPointerLock ?? canvas.webkitRequestPointerLock;
@@ -43,12 +44,12 @@ export function createPointerLock(canvas, notify, win = window, doc = document) 
       if (ticket !== generation) { release(); return; }
       nativeLocked = true;
       canvas.style.cursor = 'none';
-      notify('鼠标已捕获 · 移动鼠标转向 · Esc 释放', 4);
+      if(!quiet) notify('鼠标已捕获 · 移动鼠标转向 · Esc 释放', 4);
     } catch (error) {
       notify('鼠标锁定失败：'+(error?.message ?? String(error)), 8);
     } finally { pending = false; }
   };
-  const changed = () => { if (locked()) notify('鼠标已锁定 · 移动鼠标转向 · Esc 释放', 3); };
+  const changed = () => { if (locked() && !quiet) notify('鼠标已锁定 · 移动鼠标转向 · Esc 释放', 3); };
   doc.addEventListener('pointerlockchange', changed);
   doc.addEventListener('webkitpointerlockchange', changed);
   win.addEventListener('pagehide', release);

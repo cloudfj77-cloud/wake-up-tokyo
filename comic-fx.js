@@ -159,6 +159,7 @@ function createComicAbilityFX(T, scene, { height = .935, reducedMotion = false, 
     else if(kind==='powerImpact') {node(e,'rangeNet',false);node(e,'rangeNet',false);node(e,'ring',false);node(e,'star',false);for(let i=0;i<4;i++)node(e,'shard',false);}
     else if(kind==='haste') {for(let i=0;i<5;i++)node(e,'chevron',i<2);for(let i=0;i<3;i++)node(e,'streak',false);}
     else if(kind==='tough') {for(let i=0;i<5;i++)node(e,'hex',i<3);}
+    else if(kind==='kindling') {node(e,'ring',false);for(let i=0;i<8;i++)node(e,'eruption',i<4);}
     else if(kind==='command') {for(let i=0;i<3;i++)node(e,'flag');for(let i=0;i<3;i++)node(e,'chevron',false);for(let i=0;i<3;i++)node(e,'streak',false);}
     else if(kind==='evolve') {node(e,'crystal');node(e,'helix',false);node(e,'helix',false);for(let i=0;i<3;i++)node(e,'crystal',i===0);for(let i=0;i<3;i++)node(e,'diamond',false);}
     else if(kind==='heal') {for(let i=0;i<4;i++)node(e,'cross',i<2);}
@@ -312,6 +313,9 @@ function createComicAbilityFX(T, scene, { height = .935, reducedMotion = false, 
       for(let i=0;i<3;i++){const a=e.seed+i*TAU/3+t*.5*motion,g=n[i],d=h*(.16+.48*inward);g.position.set(Math.cos(a)*d,h*.46+Math.sin(a)*h*.18,Math.sin(a)*d);g.rotation.set(-.4,0,a+Math.PI/2);scale(g,h*.25*(.4+.6*fade));paint(g,3,band);}
       n[3].position.y=h*.46;n[3].rotation.set(-.3,0,0);scale(n[3],h*(.1+.24*pop)*fade,h*(.12+.42*pop)*fade);paint(n[3],1,band);
       n[4].position.y=h*.46;n[4].rotation.set(-.3,0,t*4*motion);scale(n[4],h*(.9-.4*ease(t)));paint(n[4],3,band);
+    } else if(e.kind==='kindling') {
+      const d=r*ease(t);ground(n[0],.02);scale(n[0],d*2);paint(n[0],2,band);
+      for(let i=1;i<n.length;i++){const a=e.seed+(i-1)*TAU/8,g=n[i];g.position.set(Math.cos(a)*d,h*.55,Math.sin(a)*d);g.rotation.set(0,-a,0);scale(g,h*.8*fade,h*1.4*fade);paint(g,2,band);}
     } else if(e.kind==='air') {
       for(let i=0;i<6;i++){const a=e.seed+i*TAU/6,g=n[i],d=r*(.16+(i%2)*.34)*pop;g.position.set(Math.cos(a)*d,h*(.1+(i%3)*.045),Math.sin(a)*d);g.rotation.set(0,a,0);g.scale.set(r*(.55+(i%2)*.2)*(1-t*.2),h*(.27+(i%3)*.04),r*(.5+(i%2)*.15)*(1-t*.2));paint(g,2,t>.2?2:1);}
       for(let i=6;i<9;i++){const a=e.seed+(i-6)*TAU/3,g=n[i];g.position.set(Math.cos(a)*Math.min(r,h)*.45,h*(.25+.6*ease(t)),Math.sin(a)*Math.min(r,h)*.45);g.rotation.set(-.2,0,Math.sin(a)*.2);scale(g,h*.045*fade,h*.65*fade);paint(g,i===7?1:2,band);}
@@ -333,12 +337,12 @@ function createComicAbilityFX(T, scene, { height = .935, reducedMotion = false, 
     const length=Math.hypot(dx,dz)||1; e.x=finite(x); e.z=finite(z); e.dx=finite(dx)/length; e.dz=finite(dz)/length;
     e.yaw=Math.atan2(-e.dx,-e.dz); e.power=empowered?2:1;e.g.scale.setScalar(empowered?.75:.4); animate(e); return e;
   }
-  const kindColor={air:2,dot:3,frenzy:4,haste:7,tough:7,evolve:5,command:2,convert:2,upgrade:5,charge:3,heal:6};
+  const kindColor={air:2,dot:3,frenzy:4,haste:7,tough:7,evolve:5,command:2,kindling:2,convert:2,upgrade:5,charge:3,heal:6};
   function pulse(x,y,z,kind,level=1,radius=1) {
     kind=Object.prototype.hasOwnProperty.call(kindColor,kind)?kind:'evolve';
-    const lives={air:1.1,dot:.66,frenzy:.54,haste:.46,tough:.76,evolve:1.05,command:.72,convert:.9,upgrade:.85,charge:.68,heal:1.0};
+    const lives={air:1.1,dot:.66,frenzy:.54,haste:.46,tough:.76,evolve:1.05,command:.72,kindling:.8,convert:.9,upgrade:.85,charge:.68,heal:1.0};
     const e=acquire(kind,x,y,z,palette[kindColor[kind]],lives[kind]); if(!e)return null;
-    e.power=clamp(level,1,5); e.radius=clamp(radius,.25,kind==='air'||kind==='frenzy'?8:H*4); animate(e); return e;
+    e.power=clamp(level,1,5); e.radius=clamp(radius,.25,kind==='kindling'?24:kind==='air'||kind==='frenzy'?8:H*4); animate(e); return e;
   }
   function airDrop(x,groundY,z,radius,{onImpact}={}) {
     const e=acquire('airDrop',x,groundY,z,palette[2],AIR_DROP_FLIGHT+3);if(!e)return null;

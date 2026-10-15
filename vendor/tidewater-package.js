@@ -11213,7 +11213,7 @@ async function HB(j, A, { quality: M = "standard" } = {}) {
   }
   PA(M);
   let MA = 0;
-  return { root: N, buildings: q, obstacles: [], destructibles: S, towers: v, spawn: f, bossSpawn: h, entries: X, spawnWeakenSites: t, breakAt: p, bossCanTarget: (wA, xA) => Math.hypot(xA.x - wA.x, xA.z - wA.z) <= 28, heightAt: s.heightAt, free: G, nearest: r, solid: (wA, xA, YA) => !G(wA, xA, YA), canMove: (wA, xA, YA, eA = 0.4) => s.canMove(wA, xA, YA, eA) && !c(xA, YA, eA), clear: (wA, xA, YA = 0.1) => s.clear(wA, xA, YA) && !v.some((eA) => !eA.dead && fB(wA, xA, eA, YA)), waypoint: s.waypoint, drawMap: W, setQuality: PA, cameraBlocked: (wA, xA, YA, eA) => s.bodyBlocked(wA, xA - eA, YA, eA, eA * 2), menuCamera: { from: w.art.from, look: w.art.look }, update(wA, xA) {
+  return { root: N, buildings: q, obstacles: [], destructibles: S, towers: v, spawn: f, bossSpawn: h, entries: X, spawnWeakenSites: t, breakAt: p, bossCanTarget: (wA, xA) => Math.hypot(xA.x - wA.x, xA.z - wA.z) <= 28, heightAt: s.heightAt, free: G, nearest: r, solid: (wA, xA, YA) => !G(wA, xA, YA), canMove: (wA, xA, YA, eA = 0.4) => s.canMove(wA, xA, YA, eA) && !c(xA, YA, eA), clear: (wA, xA, YA = 0.1) => s.clear(wA, xA, YA) && !v.some((eA) => !eA.dead && fB(wA, xA, eA, YA)), waypoint: s.waypoint, beginNavigationFrame: s.beginNavigationFrame, navigationStats: s.navigationStats, drawMap: W, setQuality: PA, cameraBlocked: (wA, xA, YA, eA) => s.bodyBlocked(wA, xA - eA, YA, eA, eA * 2), menuCamera: { from: w.art.from, look: w.art.look }, update(wA, xA) {
     MA += wA, I.update(wA, MA), x.update(wA), k.update(wA, xA);
   }, diagnostics: { bakedAO: !!P, nodes: s.nodeCount, props: I.stats(), blocks: O.blocks.length } };
 }

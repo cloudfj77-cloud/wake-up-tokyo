@@ -186,3 +186,5 @@ body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8p
 #potionStatus{display:block;margin-top:8px;color:#ffcf55;}
 
 .mapChoice{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;color:#d7c5e4;font-size:12px}.mapChoice select{width:100%;border:1px solid #b88cd855;border-radius:7px;background:#251d32;color:#fff4dc;padding:10px;font:inherit}
+
+#kindlingStatus{display:block;color:#e6baff;font-weight:700;margin:4px 0}#kindlingStatus[hidden]{display:none}

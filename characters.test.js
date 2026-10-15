@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {Box3} from 'three';
-import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,playCharacterJump,updateCharacterVisual,characterHeight,acquireCharacterVisual,releaseCharacterVisual,clearCharacterPool,characterPoolSize} from './characters.js';
+import {Box3,Scene} from 'three';
+import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,playCharacterJump,updateCharacterVisual,characterHeight,acquireCharacterVisual,releaseCharacterVisual,clearCharacterPool,characterPoolSize,warmCharacterPool} from './characters.js';
 const buffer=await readFile(new URL('./assets/character.glb',import.meta.url));
 const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
 const asset=prepareCharacterAsset(gltf);
@@ -84,4 +84,43 @@ test('airborne attacks do not reset jump playback and landing resumes movement',
  assert.equal(a.current.getClip().name,'jump');assert.ok(a.current.time>before);assert.equal(a.attackTime,0);
  a.airborne=false;updateCharacterVisual(a,true,.016);
  assert.equal(a.current.getClip().name,'walk');assert.equal(a.current.paused,false);
+});
+
+
+test('battle reserve retains all 72 guard skeletons for reuse and keeps pool size bounded',()=>{
+ clearCharacterPool();assert.equal(warmCharacterPool(asset,'guard',100),72);
+ const held=Array.from({length:72},()=>acquireCharacterVisual(asset,'guard'));
+ assert.equal(characterPoolSize('guard'),0);
+ for(const v of held)releaseCharacterVisual(v);assert.equal(characterPoolSize('guard'),72);
+ const reused=Array.from({length:72},()=>acquireCharacterVisual(asset,'guard'));
+ assert.ok(reused.every(v=>held.includes(v)));for(const v of reused)releaseCharacterVisual(v);clearCharacterPool();
+});
+test('nearby NPCs do not add dynamic shadow passes while the player keeps its shadow',()=>{
+ const npc=createCharacterVisual(asset,'guard'),player=createCharacterVisual(asset,'player');
+ assert.ok(npc.meshes.every(m=>!m.castShadow));updateCharacterVisual(npc,true,.016,2);
+ updateCharacterVisual(player,true,.016,0);assert.ok(npc.meshes.every(m=>!m.castShadow));assert.ok(player.meshes.every(m=>m.castShadow));
+});
+
+
+test('pooled characters detach from the scene so hidden skeletons are not traversed every frame',()=>{
+ clearCharacterPool();const scene=new Scene(),v=acquireCharacterVisual(asset,'guard');scene.add(v.holder);
+ releaseCharacterVisual(v);assert.equal(scene.children.length,0);assert.equal(v.holder.parent,null);
+ assert.equal(acquireCharacterVisual(asset,'guard'),v);clearCharacterPool();
+});
+
+
+test('guards share unmodified body materials while preserving independent skeletons and faction markers',()=>{
+ clearCharacterPool();const a=acquireCharacterVisual(asset,'guard'),b=acquireCharacterVisual(asset,'guard');
+ assert.equal(a.meshes[0].material,b.meshes[0].material);assert.notEqual(a.meshes[0].skeleton.bones[0],b.meshes[0].skeleton.bones[0]);assert.notEqual(a.marker.material,b.marker.material);
+ let disposed=0;a.meshes[0].material.addEventListener('dispose',()=>disposed++);
+ releaseCharacterVisual(a);releaseCharacterVisual(b);clearCharacterPool();assert.equal(disposed,0,'recycling actors must not dispose shared asset materials');
+});
+
+
+test('body parts reuse one skeleton update per actor while different actors stay independent',()=>{
+ const a=createCharacterVisual(asset,'guard'),b=createCharacterVisual(asset,'guard');
+ const rigs=new Set(a.meshes.filter(m=>m.isSkinnedMesh).map(m=>m.skeleton));assert.equal(rigs.size,1);
+ assert.notEqual(a.meshes[0].skeleton,b.meshes[0].skeleton);assert.notEqual(a.meshes[0].skeleton.bones[0],b.meshes[0].skeleton.bones[0]);
+ updateCharacterVisual(a,true,.1,0);a.holder.updateMatrixWorld(true);
+ const mesh=a.meshes.find(m=>m.isSkinnedMesh);assert.ok(mesh.skeleton.bones.every(b=>b.matrixWorld.elements.every(Number.isFinite)));
 });
