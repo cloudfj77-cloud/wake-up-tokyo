@@ -4,7 +4,7 @@ import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { loadMixamoCharacter } from './mixamo.js';
 import { loadWorkerAsset } from './worker.js';
 import { loadAwakenedAssets } from './awakened.js';
-import { loadShieldCopAsset, loadBatonCopAsset } from './police.js';
+import { loadShieldCopAsset, loadBatonCopAsset, loadInfectedCopAsset, loadPoliceProps } from './police.js';
 
 // 逻辑动作名 → 可能的 clip 名。直接同名优先，其次按顺序回退，
 // 这样 Mixamo 的 Idle / Walking / Running 等命名能无缝接进原有的状态机。
@@ -24,7 +24,7 @@ const CLIP_ALIASES = {
 };
 
 // 脚下光环色。持盾/持棍两套警察模型和警卫同阵营但兵种不同，给两个可分辨的颜色。
-const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee, shieldCop: 0x2f6fbf, batonCop: 0x8fbf6a };
+const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee, shieldCop: 0x2f6fbf, batonCop: 0x8fbf6a, infectedCop: 0xb478f1 };
 
 // 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
 // 例如现实中 1.82 米的主角，在游戏画面里应约为 1 个单位，才能和汽车比例一致。
@@ -32,14 +32,24 @@ const CITY_MODEL_SCALE = 0.55;
 export const CHARACTER_HEIGHTS = {
   player: 1.7 * CITY_MODEL_SCALE,
   guard: 1.75 * CITY_MODEL_SCALE,
+  // 变异形态体型壮，按成年男性身高缩放会显得比周围单位大一圈，压矮一点才协调。
+  infectedCop: 1.55 * CITY_MODEL_SCALE,
   humanBase: 1.58 * CITY_MODEL_SCALE,
   humanVariantStep: 0.025 * CITY_MODEL_SCALE,
 };
 
+// 按「现实身高（米）」改某一类角色的高度，方便按模型实际比例微调（URL ?copheight=1.5）。
+export function setCharacterHeight(kind, meters) {
+  if (!Number.isFinite(meters) || meters <= 0) return CHARACTER_HEIGHTS[kind];
+  CHARACTER_HEIGHTS[kind] = meters * CITY_MODEL_SCALE;
+  return CHARACTER_HEIGHTS[kind];
+}
+
 export function characterHeight(kind, variant = 0) {
   if (kind === 'player') return CHARACTER_HEIGHTS.player;
+  if (kind === 'infectedCop') return CHARACTER_HEIGHTS.infectedCop;
   // 两套警察模型和警卫一样是成年男性身高，共用同一档。
-  if (kind === 'guard' || kind === 'shieldCop' || kind === 'batonCop') return CHARACTER_HEIGHTS.guard;
+  if (kind === 'guard' || kind === 'shieldCop' || kind === 'batonCop' || kind === 'infectedCop') return CHARACTER_HEIGHTS.guard;
   return CHARACTER_HEIGHTS.humanBase + variant * CHARACTER_HEIGHTS.humanVariantStep;
 }
 
@@ -48,7 +58,8 @@ export function prepareCharacterAsset(gltf) {
   const bounds = new THREE.Box3().setFromObject(gltf.scene);
   const height = bounds.max.y - bounds.min.y;
   if (!Number.isFinite(height) || height <= 0) throw new Error('人物模型尺寸无效');
-  return { scene: gltf.scene, clips: gltf.animations, bounds, height };
+  // groundY：可选的地面基准（脚部骨骼高度）。模型自带时用它对齐地面，否则按包围盒底。
+  return { scene: gltf.scene, clips: gltf.animations, bounds, height, groundY: gltf.groundY ?? null };
 }
 
 export async function loadCharacterAsset() {
@@ -105,6 +116,18 @@ export async function loadCharacterAssets() {
     return null;
   });
   if (batonCop) assets.batonCop = batonCop;
+  // 感染后的警察（转化成我方狂暴巡警/特警）用专属的变异形态。
+  const infectedCop = await loadInfectedCopAsset().then(prepareCharacterAsset).catch(error => {
+    console.warn('[characters] 未启用感染警察模型：', error.message);
+    return null;
+  });
+  if (infectedCop) assets.infectedCop = infectedCop;
+  // 盾牌 / 棍子配件，挂到手部骨骼上。
+  const props = await loadPoliceProps().catch(error => {
+    console.warn('[characters] 未启用警察配件：', error.message);
+    return null;
+  });
+  if (props) assets.props = props;
   return assets;
 }
 
@@ -118,6 +141,7 @@ function selectCharacterAsset(assets, kind) {
     if (assets.ally) return assets.ally;
   }
   // 两套警察模型优先于通用警卫：兵种有了专属外观，才分得清拿盾的还是拿棍的。
+  if (kind === 'infectedCop' && assets.infectedCop) return assets.infectedCop;
   if (kind === 'shieldCop' && assets.shieldCop) return assets.shieldCop;
   if (kind === 'batonCop' && assets.batonCop) return assets.batonCop;
   if (['guard', 'shieldCop', 'batonCop'].includes(kind) && assets.guard) return assets.guard;
@@ -136,7 +160,8 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   const center = asset.bounds.getCenter(new THREE.Vector3());
   // 三个方向必须使用同一个倍率，否则人物会被压扁或拉长。
   model.scale.setScalar(scale);
-  root.position.set(-center.x, -asset.bounds.min.y, -center.z);
+  const groundY = asset.groundY ?? asset.bounds.min.y;
+  root.position.set(-center.x, -groundY, -center.z);
   model.add(root);
   const holder = new THREE.Group();
   holder.add(model);

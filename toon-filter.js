@@ -105,8 +105,10 @@ void main(){
   vec3 cel = mix(shade, painted, q);
   // 厚涂的「顶光」：最亮一档再往上抬一档。参考图（Roboquest 原画）的亮面都是
   // 直接提到发白的亮色块，没有这档的话物体只有明暗两截，厚涂感出不来。
+  // 顶光要「提亮」而不是「加白」：加常数白会把亮面冲成灰白，饱和度就没了，
+  // 所以只乘不补白，色相留在原色上。
   float hi = smoothstep(0.72, 0.95, lum);
-  cel = mix(cel, painted * 1.35 + 0.06, hi * uHi);
+  cel = mix(cel, painted * 1.32, hi * uHi);
 
   // 鲜艳度：先提饱和再提对比，对应 "vibrant and vivid"
   float l = dot(cel, vec3(0.299, 0.587, 0.114));
@@ -183,7 +185,7 @@ export class ToonFilter {
     // 明暗档数：3 档是典型三渲二，2 档更硬，5 档更接近原图
     this.levels = 3;
     // 厚涂参考（Roboquest 原画）：高饱和、强对比，阴影带明显色相偏移。
-    this.saturation = 1.45;
+    this.saturation = 1.62;
     // 对比别给太高：它会把暗部往黑里压，画面整体就发闷。
     this.contrast = 1.08;
     // 顶光强度：0 = 关掉最亮一档的提亮。
