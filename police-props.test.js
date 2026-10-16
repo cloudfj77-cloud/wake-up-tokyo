@@ -86,3 +86,13 @@ test('refresh keeps one correct attachment, preserves tuning, and excludes guard
  f.attach(v,{type:1,kind:'enemy',converted:false});
  assert.equal(previous.parent,null);assert.equal(propCount(v),0,'clear stale props when no longer eligible');
 });
+
+test('prop tuning keeps the pointer free while normal play still captures it',()=>{
+ const calls=[],window={};
+ const ctx=vm.createContext({window,showDebug:false,pointerLock:{request:options=>calls.push(options)}});
+ vm.runInContext(main.match(/function captureView\(\)\{[^\n]+/)[0],ctx);
+ ctx.captureView();assert.equal(calls.length,1);
+ window.__propUi=true;ctx.captureView();assert.equal(calls.length,1,'panel must keep its pointer');
+ window.__propUi=false;ctx.captureView();assert.equal(calls.length,2,'normal play still captures');
+ ctx.showDebug=true;ctx.captureView();assert.equal(calls.length,2);
+});
