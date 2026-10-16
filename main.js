@@ -456,20 +456,23 @@ function propQuery(key){return (typeof location!=='undefined'&&typeof URLSearchP
 function propVec(key,fallback){const raw=propQuery(key);if(!raw)return fallback;const a=raw.split(',').map(Number);return a.length===3&&a.every(Number.isFinite)?a:fallback;}
 function propNum(key,fallback){const raw=propQuery(key);if(raw==null)return fallback;const n=Number(raw);return Number.isFinite(n)?n:fallback;}
 function attachCopProp(v,u){
- const props=assets?.props;if(!props)return;
- // 只有被感染（转化成我方）的警察才拿配件；感染前的巡警保持原样。
- if(!(u.converted||u.kind==='ally'))return;
- const spec=u.type===3?PROP_XFORM.shield:u.type===1?PROP_XFORM.baton:null;
- if(!spec)return;
+ const props=assets?.props;
+ // 只有感染变异模型加配件；护卫和原警察模型已经自带武器。
+ const eligible=props&&v.modelKind==='infectedCop'&&!u.guard&&(u.converted||u.kind==='ally');
+ const propType=eligible?(u.type===3?'shield':u.type===1?'baton':null):null;
+ if(!propType){detachCopProp(v);return;}
+ if(v.userData?.propType===propType&&v.userData.propMesh)return;
+ // 两种感染警察共用模型池，换兵种时必须换掉上次的武器。
+ detachCopProp(v);
+ const spec=PROP_XFORM[propType];
  if(!v.userData)v.userData={};
- if(v.userData.prop)return;   // 模型池复用时不要重复挂
  let bone=null;
  for(const name of spec.bones){
   v.root.traverse(n=>{if(!bone&&n.isBone&&n.name===name)bone=n;});
   if(bone)break;
  }
  if(!bone)return;
- const mesh=(u.type===3?props.shield:props.baton).clone(true);
+ const mesh=props[propType].clone(true);
  // 长条配件（棍子）要把柄端落在手心：沿自身长度方向（局部 +Y，也就是手指方向）
  // 平移半个长度，长度 = 1 个单位 × 缩放。偏移必须跟着倾角一起旋转，
  // 否则棍子一倾斜，柄端就绕着手腕转出去了。
@@ -510,13 +513,13 @@ function attachCopProp(v,u){
  let ox=0,oy=0,oz=0;
  if(half){const dir=new T.Vector3(0,half,0).applyQuaternion(mesh.quaternion);ox=dir.x;oy=dir.y;oz=dir.z;}
  mesh.position.set(spec.pos[0]+ox,spec.pos[1]+oy,spec.pos[2]+oz);
- bone.add(mesh);v.userData.prop=bone.name;v.userData.propMesh=mesh;
+ bone.add(mesh);v.userData.prop=bone.name;v.userData.propMesh=mesh;v.userData.propType=propType;
 }
 // 调参面板用：把配件摘下来按新参数重挂，所有在场的角色一起更新。
 function detachCopProp(v){
  if(!v.userData)return;
  if(v.userData.propMesh){v.userData.propMesh.removeFromParent();v.userData.propMesh=null;}
- v.userData.prop=null;
+ v.userData.prop=null;v.userData.propType=null;
 }
 function refreshCopProps(){
  for(const entry of visuals.values())detachCopProp(entry.v);
