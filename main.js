@@ -6,6 +6,8 @@ import {createBoss,hitBoss as baseHitBoss,animateBoss,canBossBombTarget} from '.
 import {createFirearms} from './guns.js';
 import {createSyringe} from './syringe.js';
 import {loadCharacterAssets,createCharacterVisual,setCharacterKind,playCharacterAttack,playCharacterJump,updateCharacterVisual,characterHeight,PROFESSIONS,acquireCharacterVisual,releaseCharacterVisual,warmCharacterPool} from './characters.js';
+import {OutlineFilter,createFilterBlitter} from './outline-filter.js';
+import {ToonFilter} from './toon-filter.js';
 import {block} from './world.js';
 import {bridgeDeckHeight,loadRiverside} from './riverside-world.js';
 import {Soundtrack} from './music.js';
@@ -33,11 +35,89 @@ const spawnQueue=makeSpawnQueue(),unitPool=[],recentSpawnPoints=[];
 let fodderTimer=10;
 try{settings={...settings,...JSON.parse(localStorage.getItem('groundzero-settings')||'{}')};}catch{}
 music.volume=settings.volume;
-const renderer=new T.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.setClearColor(0xbacdd4);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
-const scene=new T.Scene();scene.fog=new T.Fog(0xbacdd4,85,185);scene.add(new T.HemisphereLight(0xe5f1f5,0x8d9281,2.2));const sun=new T.DirectionalLight(0xffefda,2.8);sun.position.set(-28,55,-22);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-52,right:52,top:52,bottom:-52,near:1,far:140});sun.shadow.bias=-.0003;sun.shadow.normalBias=.05;scene.add(sun);scene.add(sun.target);
+const renderer=new T.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.setClearColor(0xffffff);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.32;
+// Roboquest 风格化描边：片元程序来自原版 DXBC，输入绑诊断重建。?outline=0 可关掉。
+const outlineQuery=new URLSearchParams(location.search).get('outline'),outlineFilter=new OutlineFilter(renderer);
+outlineFilter.enabled=outlineQuery!=='0';
+// ?outline=0.5 这类数字直接当描边半径用，不写数字就用默认 1，?outline=0 关闭。
+const outlineRadius=parseFloat(outlineQuery);if(Number.isFinite(outlineRadius)&&outlineRadius>0)outlineFilter.radius=outlineRadius;
+// ?nativeline=1 打开原版 DXBC 描边 pass（默认关：它会以主角为界立一张平面，平面另一侧不出线）。
+outlineFilter.lines=new URLSearchParams(location.search).get('nativeline')==='1';
+const blitFilter=createFilterBlitter();
+outlineFilter.init().then(()=>{if(outlineFilter.enabled){console.log('[outline] Roboquest 描边滤镜已启用 · 半径',outlineFilter.radius);toast('Roboquest 描边滤镜已启用',2.6);}}).catch(error=>{console.warn('[outline] 未启用描边滤镜：',error.message);outlineFilter.enabled=false;});
+// 风格化厚涂三渲二：?toon=0 关掉，?toon=2 之类数字改明暗档数。串在描边之后。
+const toonQuery=new URLSearchParams(location.search).get('toon'),toonFilter=new ToonFilter(renderer);
+toonFilter.enabled=toonQuery!=='0';
+const toonLevels=parseFloat(toonQuery);if(Number.isFinite(toonLevels)&&toonLevels>=2)toonFilter.levels=toonLevels;
+// ?shadow=0.6 调阴影强度（0 不吃阴影，1 完全冷色）；?shadowtint=r,g,b / ?shadowshift=r,g,b 直接调暗部颜色
+const shadowQuery=parseFloat(new URLSearchParams(location.search).get('shadow'));if(Number.isFinite(shadowQuery)&&shadowQuery>=0&&shadowQuery<=1)toonFilter.shadow=shadowQuery;
+const vecQuery=k=>{const v=new URLSearchParams(location.search).get(k);if(!v)return;const a=v.split(',').map(Number);if(a.length===3&&a.every(Number.isFinite))toonFilter[k==='shadowtint'?'shadowTint':'shadowShift']=a;};
+vecQuery('shadowtint');vecQuery('shadowshift');
+// ?sat=1.6 ?con=1.2 ?hi=0.5 直接调厚涂的饱和、对比和顶光强度
+const satQuery=parseFloat(new URLSearchParams(location.search).get('sat'));if(Number.isFinite(satQuery))toonFilter.saturation=satQuery;
+const conQuery=parseFloat(new URLSearchParams(location.search).get('con'));if(Number.isFinite(conQuery))toonFilter.contrast=conQuery;
+const hiQuery=parseFloat(new URLSearchParams(location.search).get('hi'));if(Number.isFinite(hiQuery))toonFilter.hi=hiQuery;
+// ?bright=1.25 整体明度倍率（1 = 不动）
+const brightQuery=parseFloat(new URLSearchParams(location.search).get('bright'));if(Number.isFinite(brightQuery))toonFilter.exposure=brightQuery;
+toonFilter.init().then(()=>{if(toonFilter.enabled){console.log('[toon] 厚涂三渲二已启用 · 明暗档数',toonFilter.levels);toast('厚涂三渲二已启用',2.6);}}).catch(error=>{console.warn('[toon] 未启用厚涂三渲二：',error.message);toonFilter.enabled=false;});
+const scene=new T.Scene();scene.fog=new T.Fog(0xffffff,16,52);
+// 纯白 0xffffff 经 ACES 会被压成灰白，想让雾「真白」就得给超过 1 的 HDR 值。
+scene.fog.color.setRGB(1.18,1.18,1.2);scene.add(new T.HemisphereLight(0xe5f1f5,0x8d9281,2.2));const sun=new T.DirectionalLight(0xffefda,2.8);sun.position.set(-28,55,-22);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-52,right:52,top:52,bottom:-52,near:1,far:140});sun.shadow.bias=-.0003;sun.shadow.normalBias=.05;scene.add(sun);scene.add(sun.target);
+// 紫雾可见范围可用 ?fog=近距,远距 调，比如 ?fog=10,40 更闷、?fog=40,120 更通透。
+const fogQuery=(new URLSearchParams(location.search).get('fog')||'').split(',').map(Number);
+if(fogQuery.length===2&&fogQuery.every(Number.isFinite)){scene.fog.near=fogQuery[0];scene.fog.far=fogQuery[1];}
+// 两关要同一个观感，所以记下这套雾参数；海滨那关的环境包建场景时会自己 new 一个 Fog 盖掉它，
+// 世界加载完再写回一次（见 applyGameFog）。
+const gameFog={color:scene.fog.color.clone(),near:scene.fog.near,far:scene.fog.far};
+// 雾只在开局后拉满：菜单要能看清整张地图做预览，所以菜单期间把雾推到看不到的距离（等于关掉）。
+// 直接置 null 会让全场材质重编译，改 near/far 只是 uniform 变化，切换是瞬间的。
+function fogVisible(){return mode!=='menu'&&mode!=='loading';}
+function syncFogMode(){
+ if(!scene.fog)return;
+ const near=fogVisible()?gameFog.near:4000,far=fogVisible()?gameFog.far:5000;
+ if(scene.fog.near!==near||scene.fog.far!==far){scene.fog.near=near;scene.fog.far=far;}
+}
+function applyGameFog(){
+ // 环境包给的是 70~1500 / 主题里 25~900，远景几乎不吃雾，跟河畔完全两个观感。
+ // 这里统一成本作的数值；雾色也一起换，否则海滨会拿天空色当雾色。
+ if(!scene.fog||!scene.fog.isFog)scene.fog=new T.Fog(0xffffff,gameFog.near,gameFog.far);
+ scene.fog.color.copy(gameFog.color);scene.fog.near=gameFog.near;scene.fog.far=gameFog.far;
+}
+// 描边是后处理，不受三维雾影响；后处理里再按深度补一层雾，让远处描边同步被雾吃掉。
+// ?fogpass=0 关掉这层补偿，?fogpass=0.6 减弱。
+const fogPassQuery=parseFloat(new URLSearchParams(location.search).get('fogpass')),fogPassAmount=Number.isFinite(fogPassQuery)?fogPassQuery:1;
+// 原描边（DXBC 反编译）只朝一个方向采样，物体经常只有一侧有线 —— 转到另一侧看就「没描边」。
+// 这段用中心差分把左右上下都采一遍，方向无关，任何朝向的边都出线（= 全向描边）。?edgepass=0 可关。
+const edgeQuery=parseFloat(new URLSearchParams(location.search).get('edgepass')),edgePassAmount=Number.isFinite(edgeQuery)?edgeQuery:1;
+// 阈值 = 相邻像素的法线差到多大才算边（1 - cos 夹角）：0.3 ≈ 45°，0.15 ≈ 31°，0.6 ≈ 76°。
+// 地面是平面、法线处处相同，所以差恒为 0，不会被误判成边。?edgethr=0.15 连缓转折也描。
+const edgeThrQuery=parseFloat(new URLSearchParams(location.search).get('edgethr')),edgeThreshold=Number.isFinite(edgeThrQuery)?edgeThrQuery:.3;
+// 线色默认纯黑。?edgecolor=r,g,b 可调（比如 ?edgecolor=0.16,0.15,0.20 回到深冷灰）。
+const edgeColorRaw=(new URLSearchParams(location.search).get('edgecolor')||'').split(',').map(Number);
+const edgeColor=edgeColorRaw.length===3&&edgeColorRaw.every(Number.isFinite)?edgeColorRaw:[0,0,0];
+// 按距离整片抹掉描边。默认关：它会在视野里切出一道以相机为界、跟着主角移动的「无描边」分界平面。
+// 远处该消失交给雾（雾把线和场景一起吞），该变细交给 edgefar / edgefarthr。?linefade=1 可开回来。
+const lineFadeQuery=parseFloat(new URLSearchParams(location.search).get('linefade')),lineFade=Number.isFinite(lineFadeQuery)?lineFadeQuery:0;
+const lineFadeRaw=(new URLSearchParams(location.search).get('linefaderange')||'').split(',').map(Number);
+// 描边渐隐：[起淡距离, 过渡宽度]。
+// 放在雾「后半段」：物体到这个距离已经白掉大半，描边跟着一起消失就看不出分界。
+// 早先放在 10~18 米，物体还清清楚楚描边却没了，那道边界看着就像以主角为中心立了张平面。
+const fogFade=scene.fog?(scene.fog.far-scene.fog.near)*.5:12;
+const lineFadeRange=lineFadeRaw.length===2&&lineFadeRaw.every(Number.isFinite)?lineFadeRaw:[scene.fog?scene.fog.near+fogFade:10,fogFade];
+// 线宽 = 采样步长，1.0 是下限（shader 里 max(...,1.0)），也就是最细的一档。?edgestep=2.4 可加粗。
+const edgeStepQuery=parseFloat(new URLSearchParams(location.search).get('edgestep')),edgeStep=Number.isFinite(edgeStepQuery)?edgeStepQuery:1;
+// ?edgefar=0.6 让远处线更细（远处采样步长 = edgeStep × 这个值）。
+// 默认中性 1：任何随距离变化的参数都会在某个距离跨过临界值，画出一圈等值线，看着又像一张平面。
+const edgeFarQuery=parseFloat(new URLSearchParams(location.search).get('edgefar')),edgeFarScale=Number.isFinite(edgeFarQuery)?edgeFarQuery:1;
+// ?edgefarthr=3 远处少画线（阈值倍率，越大远处线越少越细）；?edgefarlighten=1 远处线色并入雾色（越轻）
+// 线要纯黑，这个值就不能给高，否则远处的线又被雾色冲成灰的；0.35 只在很远处淡一点。
+const edgeCutQuery=parseFloat(new URLSearchParams(location.search).get('edgecut'));if(Number.isFinite(edgeCutQuery)&&edgeCutQuery>0)lineFadeRange[0]=edgeCutQuery;
+// 同上，默认中性 1（远处阈值不抬高）。?edgefarthr=1.5 可让远处弱边少画一点，但会带回等值线。
+const edgeFarThrQuery=parseFloat(new URLSearchParams(location.search).get('edgefarthr')),edgeFarThreshold=Number.isFinite(edgeFarThrQuery)?edgeFarThrQuery:1;
+const edgeFarLitQuery=parseFloat(new URLSearchParams(location.search).get('edgefarlighten')),edgeFarLighten=Number.isFinite(edgeFarLitQuery)?edgeFarLitQuery:.35;
 const camera=new T.PerspectiveCamera(64,innerWidth/innerHeight,.12,180);camera.position.set(8,8,-21);camera.lookAt(0,3,5);
 $('mapSelect').value=mapConfig.id;$('mapSelect').onchange=e=>{const url=new URL(location.href);url.searchParams.set('map',e.target.value);location.href=url.href;};$('mapName').textContent=mapConfig.hud;$('regionName').textContent=mapConfig.name;
-try{world=mapConfig.id==='tidewater'?await (await import('./vendor/tidewater-package.js')).loadTidewater(scene,renderer,{quality:settings.quality}):await loadRiverside(scene);}catch(error){console.error(error);$('loading').textContent='场景加载失败，请刷新重试';$('start').textContent='刷新重试';$('start').disabled=false;$('start').onclick=()=>location.reload();throw error;}Object.assign(player,world.spawn);yaw=mapConfig.id==='tidewater'?0:Math.PI;const menuHero=world.nearest(-10,10,.55);const boss=createBoss(scene),firearms=createFirearms(),syringe=createSyringe();
+try{world=mapConfig.id==='tidewater'?await (await import('./vendor/tidewater-package.js')).loadTidewater(scene,renderer,{quality:settings.quality}):await loadRiverside(scene);}catch(error){console.error(error);$('loading').textContent='场景加载失败，请刷新重试';$('start').textContent='刷新重试';$('start').disabled=false;$('start').onclick=()=>location.reload();throw error;}applyGameFog();Object.assign(player,world.spawn);yaw=mapConfig.id==='tidewater'?0:Math.PI;const menuHero=world.nearest(-10,10,.55);const boss=createBoss(scene),firearms=createFirearms(),syringe=createSyringe();
 firearms.root.scale.setScalar(PLAYER_HEIGHT/1.1);
 // 注射枪按 2.25 身高做的，人物缩小后武器跟着缩。
 syringe.g.scale.setScalar(PLAYER_HEIGHT/2.25);
@@ -293,9 +373,10 @@ function actorInFront(u,d){
  return actorFrustum.intersectsSphere(actorSphere);
 }
 async function warmBattleVisuals(){
- for(const [kind,count]of [['guard',VISUAL_BUDGET],['ally',24]])for(let n=1;n<=count;n++){
+ let prepared=0;
+ for(const [kind,count]of [['guard',48],['shieldCop',12],['batonCop',12],['ally',24]])for(let n=1;n<=count;n++){
   warmCharacterPool(assets,kind,n);
-  $('loading').textContent=`准备战斗角色 ${kind==='guard'?n:VISUAL_BUDGET+n} / ${VISUAL_BUDGET+24}`;
+  $('loading').textContent=`准备战斗角色 ${++prepared} / ${VISUAL_BUDGET+24}`;
   await new Promise(resolve=>requestAnimationFrame(resolve));
  }
 }
@@ -330,8 +411,10 @@ function syncTankShell(v,u){
  if(v.root)v.root.visible=false;
 }
 function actorVisual(u){
- // 转化后的士兵留着原来的警卫模型，名字才对得上是巡警还是大兵。市民才换成觉醒外形。
- const kind=u.kind==='ally'&&u.type>0?'guard':u.kind==='ally'?'ally':u.type===0?'human':'guard';
+ // 转化后的士兵留着原来的兵种模型，名字才对得上是巡警还是大兵。市民才换成觉醒外形。
+ // 持盾特警（type 3）和持棍巡警（type 1）有专属模型，其余秩序单位共用警卫模型。
+ const copKind=t=>t===3?'shieldCop':t===1?'batonCop':null;
+ const kind=u.kind==='ally'?(u.type>0?(copKind(u.type)||'guard'):'ally'):u.type===0?'human':(copKind(u.type)||'guard');
  const v=acquireCharacterVisual(assets,kind,u.profession);
  if(u.kind==='ally')setCharacterKind(v,'ally');
  v.holder.position.set(u.x,world.heightAt(u.x,u.z),u.z);
@@ -1582,7 +1665,47 @@ for(const a of auraVisuals.values())a.visible=false;if(state.abilities.air)aura(
 const spraying=new Set(),charging=new Set();for(const u of units){if(u.dead)continue;if(u.sprayPhase)spraying.add(u.id);if(u.chargePhase)charging.add(u.id);}
 for(const [id] of (typeof sprayMarkers==='undefined'?[]:sprayMarkers))if(!spraying.has(id))disposeActorWarning(sprayMarkers,id);
 for(const [id] of (typeof chargeMarkers==='undefined'?[]:chargeMarkers))if(!charging.has(id))disposeActorWarning(chargeMarkers,id);}
-function updateEffects(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.v.y-=9*dt;p.m.position.addScaledVector(p.v,dt);p.m.rotation.x+=dt*4;if(p.life<=0){scene.remove(p.m);particles.splice(i,1);}}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.t+=dt;const fade=w.fade||.6,grow=w.grow||.35;w.m.scale.setScalar(w.r*Math.min(1,w.t/grow));if(w.m.material){if(w.opacity==null)w.opacity=w.m.material.opacity||1;w.m.material.opacity=Math.max(0,w.opacity*(1-w.t/fade));}if(w.t>fade){scene.remove(w.m);w.m.geometry?.dispose?.();w.m.material?.dispose?.();waves.splice(i,1);}}
+// 全城弥漫的紫色烟雾（参考 Megabonk）：大号半透明紫烟片铺满城市上空，缓慢漂移旋转；
+// 远处那些本身也会被紫雾吞掉，和雾叠在一起就是「蒙在迷雾里」的效果。
+const citySmoke=[];let citySmokeGroup=null,citySmokeT=0;
+// 主角 SMOKE_INNER 米内完全没烟，到 SMOKE_OUTER 米加满：中间用 smoothstep 过渡，
+// 避免出现「主角周围一圈干净、外面突然全白」的硬边。
+const SMOKE_INNER=9,SMOKE_OUTER=34;
+function buildCitySmoke(){
+ if(citySmokeGroup)return;
+ // 测试沙箱只注入部分全局，缺 Three/场景/烟图集时直接跳过，不建烟。
+ if(typeof T==='undefined'||typeof scene==='undefined'||typeof makeSmokeSprite!=='function'||typeof smokeTexture==='undefined')return;
+ citySmokeGroup=new T.Group();
+ // 体积感来自分层：近地薄而实、中层、高空大而淡，三层用不同漂浮速度形成视差。
+ for(let i=0;i<108;i++){
+  // 复用 Galaxy 的 8x8 烟雾图集，普通半透明叠加（不加光），白紫两档颜色交错。
+  // 白紫浓雾：颜色接近白、只带一点紫味，靠不透明度堆浓度，而不是靠压暗。
+  const layer=i%3;
+  const size=layer===0?15+Math.random()*10:layer===1?21+Math.random()*13:30+Math.random()*18;
+  const y=layer===0?.6+Math.random()*2:layer===1?2.6+Math.random()*4.4:7+Math.random()*7;
+  const op=layer===0?Math.min(1,.84+Math.random()*.2):layer===1?Math.min(1,.78+Math.random()*.2):Math.min(1,.7+Math.random()*.22);
+  const s=makeSmokeSprite(0xffffff,size,op);
+  s.material.color.multiplyScalar(1.25);  // 烟片同样给到 HDR，跟雾一起被 ACES 提亮，不然白得发灰
+  const ang=Math.random()*6.283,rad=Math.sqrt(Math.random())*70;
+  s.position.set(Math.cos(ang)*rad,y,Math.sin(ang)*rad);
+  s.material.rotation=Math.random()*6.283;
+  s.userData={phase:Math.random()*6.283,baseY:y,bob:.35+layer*.3,spin:(Math.random()<.5?-1:1)*(.03+Math.random()*.05),op,rad};
+  citySmokeGroup.add(s);citySmoke.push(s);
+ }
+ scene.add(citySmokeGroup);
+}
+buildCitySmoke();
+function updateEffects(dt){
+ if(typeof citySmokeGroup!=='undefined'&&citySmokeGroup){citySmokeT+=dt;
+  // 紫烟跟着雾走：菜单预览要看清整张地图，烟一并收起来，进游戏再弥漫。
+  citySmokeGroup.visible=typeof fogVisible==='function'?fogVisible():true;
+  // 雾跟着玩家平移，跑到哪都泡在雾里；没有 player（菜单/测试沙箱）就留在原点。
+  if(typeof player!=='undefined'&&player)citySmokeGroup.position.set(player.x,0,player.z);
+  for(const s of citySmoke){const u=s.userData;s.position.y=u.baseY+Math.sin(citySmokeT*.3+u.phase)*u.bob;s.material.rotation+=u.spin*dt;
+   // 烟跟着玩家走，rad 就是这片烟到玩家的距离：近处淡到 0，往外平滑加浓。
+   const t=Math.min(1,Math.max(0,(u.rad-SMOKE_INNER)/(SMOKE_OUTER-SMOKE_INNER)));
+   s.material.opacity=u.op*(t*t*(3-2*t));}}
+for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.v.y-=9*dt;p.m.position.addScaledVector(p.v,dt);p.m.rotation.x+=dt*4;if(p.life<=0){scene.remove(p.m);particles.splice(i,1);}}for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.t+=dt;const fade=w.fade||.6,grow=w.grow||.35;w.m.scale.setScalar(w.r*Math.min(1,w.t/grow));if(w.m.material){if(w.opacity==null)w.opacity=w.m.material.opacity||1;w.m.material.opacity=Math.max(0,w.opacity*(1-w.t/fade));}if(w.t>fade){scene.remove(w.m);w.m.geometry?.dispose?.();w.m.material?.dispose?.();waves.splice(i,1);}}
 const bulletAllies=[];for(const a of units)if(a.kind==='ally'&&!a.dead)bulletAllies.push(a);for(let i=tracers.length-1;i>=0;i--){const b=tracers[i];b.life-=dt;if(b.m){
  if(b.bossOrb)updateBossOrb(b);
  else if(b.isPower){
@@ -1708,7 +1831,10 @@ function frame(now){requestAnimationFrame(frame);let cameraUpdated=false;const d
   if(mode==='upgrade'&&upgradeLock>0){upgradeLock=Math.max(0,upgradeLock-dt);if(upgradeLock<=0)$('dialog')?.classList.remove('choiceLock');}
   try{updateEffects(dt);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}catch{}
  }else if(mode==='menu'){for(const {v}of visuals.values())updateCharacterVisual(v,false,dt,0);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}
- updateAlertEffect(dt);updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;policeAlertTimer=Math.max(0,policeAlertTimer-dt);if(!policeAlertTimer)$('policeAlert').classList.remove('active','upgrade','boss','win','quest','radio');if(!cameraUpdated)updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}renderer.render(scene,camera);
+ updateAlertEffect(dt);updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;policeAlertTimer=Math.max(0,policeAlertTimer-dt);if(!policeAlertTimer)$('policeAlert').classList.remove('active','upgrade','boss','win','quest','radio');if(!cameraUpdated)updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}// 链：场景 → 描边 → 厚涂三渲二 → 屏幕。描边关掉时厚涂直接吃场景。
+syncFogMode();
+if(toonFilter?.ready&&toonFilter.enabled){const outlined=(outlineFilter?.ready&&outlineFilter.enabled)?outlineFilter.render(scene,camera):null;blitFilter(renderer,toonFilter.render(scene,camera,outlined,outlined&&scene.fog?{depthTexture:outlineFilter.color.depthTexture,normalTexture:outlineFilter.normal?outlineFilter.normal.texture:null,color:scene.fog.color,near:scene.fog.near,far:scene.fog.far,cameraNear:camera.near,cameraFar:camera.far,amount:fogVisible()?fogPassAmount:0,edge:edgePassAmount,edgeThreshold,edgeStep,edgeFarScale,edgeFarThreshold,edgeFarLighten,edgeColor,lineFade,lineFadeRange}:null));}
+else if(outlineFilter?.ready&&outlineFilter.enabled)blitFilter(renderer,outlineFilter.render(scene,camera));else renderer.render(scene,camera);
 }
 /* Wake Up Tokyo — revised range mesh, restrained personal effects and half-second airborne infection. */
 const __comicFX=createComicAbilityFX(T,scene,{height:PLAYER_HEIGHT,reducedMotion:reducedMotion.matches,quality:settings.quality});
@@ -1880,7 +2006,9 @@ window.gameFXSnapshot=()=>({edition:'comic-ability-v6',syringeAim:'crosshair',..
 
 
 requestAnimationFrame(frame);
-try{assets=await loadCharacterAssets();playerVisual=createCharacterVisual(assets,'player',1);scene.add(playerVisual.holder);playerVisual.holder.position.set(player.x,world.heightAt(player.x,player.z),player.z);playerVisual.holder.rotation.y=Math.PI;initUnits();scatterPickups();await warmBattleVisuals();if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='boss'){state.infected=40;state.highestEnemy=5;state.mission=4;state.pending=0;state.weapon=0;state.abilities.guns=3;state.bossCountdown=0;player.z=-15;units.forEach(u=>{u.dead=true;const visual=visuals.get(u.id)?.v;if(visual)visual.holder.visible=false;});}if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='melee'){state.pending=0;alerted=true;units.forEach(u=>{u.dead=true;const visual=visuals.get(u.id)?.v;if(visual)visual.holder.visible=false;});const p=world.nearest(player.x,player.z+1.15,1);const cop=makeUnit(900,1,p.x,p.z,false,0);cop.attackCd=0;units.push(cop);actorVisual(cop);}if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='launcher'){state.pending=0;state.abilities.launcher=3;state.weapon=LAUNCHER_SLOT;state.powerCharge=POWER_HITS;}if(import.meta.env.DEV&&debugQuery.get('test')==='abilities'){state.pending=1;for(const a of ABILITIES)state.abilities[a.id]=Math.min(2,Math.max(0,Number(debugQuery.get('abilityLevel')||0)));}if(import.meta.env.DEV&&debugQuery.get('test')==='comic'){state.pending=0;state.hp=state.maxHp=500;for(const id of ['air','frenzy','dot','evolve','tough','haste','command','launcher'])state.abilities[id]=3;state.weapon=LAUNCHER_SLOT;state.powerCharge=POWER_HITS;}if(import.meta.env.DEV&&['hud','charge'].includes(debugQuery.get('test'))){
+try{assets=await loadCharacterAssets();playerVisual=createCharacterVisual(assets,'player',1);scene.add(playerVisual.holder);playerVisual.holder.position.set(player.x,world.heightAt(player.x,player.z),player.z);playerVisual.holder.rotation.y=Math.PI;initUnits();scatterPickups();await warmBattleVisuals();if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='boss'){state.infected=40;state.highestEnemy=5;state.mission=4;state.pending=0;state.weapon=0;state.abilities.guns=3;state.bossCountdown=0;player.z=-15;units.forEach(u=>{u.dead=true;const visual=visuals.get(u.id)?.v;if(visual)visual.holder.visible=false;});}if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='melee'){state.pending=0;alerted=true;units.forEach(u=>{u.dead=true;const visual=visuals.get(u.id)?.v;if(visual)visual.holder.visible=false;});const p=world.nearest(player.x,player.z+1.15,1);const cop=makeUnit(900,1,p.x,p.z,false,0);cop.attackCd=0;units.push(cop);actorVisual(cop);}
+// ?test=shield 把持盾特警摆在眼前，方便直接看新模型（只在 DEV 生效）。
+if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='shield'){state.pending=0;const sp=world.nearest(player.x,player.z+2.4,1);const shield=makeUnit(901,3,sp.x,sp.z,false,0);shield.attackCd=999;units.push(shield);actorVisual(shield);}if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='launcher'){state.pending=0;state.abilities.launcher=3;state.weapon=LAUNCHER_SLOT;state.powerCharge=POWER_HITS;}if(import.meta.env.DEV&&debugQuery.get('test')==='abilities'){state.pending=1;for(const a of ABILITIES)state.abilities[a.id]=Math.min(2,Math.max(0,Number(debugQuery.get('abilityLevel')||0)));}if(import.meta.env.DEV&&debugQuery.get('test')==='comic'){state.pending=0;state.hp=state.maxHp=500;for(const id of ['air','frenzy','dot','evolve','tough','haste','command','launcher'])state.abilities[id]=3;state.weapon=LAUNCHER_SLOT;state.powerCharge=POWER_HITS;}if(import.meta.env.DEV&&['hud','charge'].includes(debugQuery.get('test'))){
  state.pending=0;state.hp=state.maxHp=500;state.abilities.launcher=3;state.abilities.guns=3;
  state.weapon=0;state.clip=12;state.weaponOrder=['pistol','shotgun','rifle','sniper','rpg','launcher'];
  for(const gun of GUNS){state.mags[gun.id]=gun.clip;state.ammo[gun.id]=30;}

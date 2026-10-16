@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {Box3,Scene} from 'three';
+import {Box3,Scene,Group,Mesh,BoxGeometry,MeshStandardMaterial,Texture} from 'three';
 import {prepareCharacterAsset,createCharacterVisual,setCharacterKind,playCharacterAttack,playCharacterJump,updateCharacterVisual,characterHeight,acquireCharacterVisual,releaseCharacterVisual,clearCharacterPool,characterPoolSize,warmCharacterPool} from './characters.js';
 const buffer=await readFile(new URL('./assets/character.glb',import.meta.url));
 const gltf=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
@@ -123,4 +123,62 @@ test('body parts reuse one skeleton update per actor while different actors stay
  assert.notEqual(a.meshes[0].skeleton,b.meshes[0].skeleton);assert.notEqual(a.meshes[0].skeleton.bones[0],b.meshes[0].skeleton.bones[0]);
  updateCharacterVisual(a,true,.1,0);a.holder.updateMatrixWorld(true);
  const mesh=a.meshes.find(m=>m.isSkinnedMesh);assert.ok(mesh.skeleton.bones.every(b=>b.matrixWorld.elements.every(Number.isFinite)));
+});
+
+
+test('body and glove material slots retain their own colors and textures for every character model',()=>{
+ const scene=new Group(),body=new MeshStandardMaterial({color:0xcccccc,map:new Texture()}),gloves=new MeshStandardMaterial({color:0x0b0c10});
+ scene.add(new Mesh(new BoxGeometry(1,2,1),[body,gloves]));
+ const fixture=prepareCharacterAsset({scene,animations:[]});
+ for(const kind of ['player','human','guard','shieldCop','batonCop']){
+  const v=createCharacterVisual(fixture,kind),m=v.meshes[0].material;
+  assert.notEqual(m[0],m[1],kind);
+  assert.equal(m[0].color.getHex(),body.color.getHex());assert.equal(m[1].color.getHex(),gloves.color.getHex());
+  assert.equal(m[0].map,body.map);assert.equal(m[1].map,null);
+ }
+});
+
+test('converted police reuse their original model without mixing guard, shield and baton rigs',()=>{
+ clearCharacterPool();
+ const kinds=['guard','shieldCop','batonCop'],models=kinds.map(kind=>acquireCharacterVisual(asset,kind));
+ for(const v of models){setCharacterKind(v,'ally');releaseCharacterVisual(v);}
+ assert.equal(characterPoolSize('guard'),3);
+ for(const [i,kind]of kinds.entries()){
+  const v=acquireCharacterVisual(asset,kind);
+  assert.equal(v,models[i]);assert.equal(v.kind,kind);assert.equal(v.modelKind,kind);
+  assert.equal(v.meshes[0].skeleton,models[i].meshes[0].skeleton);
+ }
+ assert.equal(characterPoolSize('guard'),0);
+ for(const v of models)releaseCharacterVisual(v);
+ clearCharacterPool();
+});
+
+test('battle warmup reserves each police model within the shared pool limit',()=>{
+ clearCharacterPool();const kinds=['guard','shieldCop','batonCop'];
+ for(const kind of kinds)warmCharacterPool(asset,kind,2);
+ assert.equal(characterPoolSize('guard'),6);
+ const held=kinds.flatMap(kind=>[acquireCharacterVisual(asset,kind),acquireCharacterVisual(asset,kind)]);
+ assert.equal(characterPoolSize('guard'),0,'all three model reserves must actually be reused');
+ for(const v of held)releaseCharacterVisual(v);
+ warmCharacterPool(asset,'shieldCop',100);
+ assert.equal(characterPoolSize('guard'),72);
+ clearCharacterPool();
+});
+
+test('missing dedicated police assets fall back to the guard model',()=>{
+ const guard={...asset,scene:asset.scene.clone()},civilian={...asset,scene:asset.scene.clone()};
+ guard.scene.name='guard-fallback';civilian.scene.name='civilian';
+ const assets={guard,humanMale:civilian,humanFemale:civilian};
+ for(const kind of ['shieldCop','batonCop'])assert.equal(createCharacterVisual(assets,kind).root.name,'guard-fallback');
+});
+
+
+test('a full mixed pool retains a newly used police model by replacing an idle model of another type',()=>{
+ clearCharacterPool();warmCharacterPool(asset,'guard',72);
+ const shield=acquireCharacterVisual(asset,'shieldCop');setCharacterKind(shield,'ally');
+ assert.equal(releaseCharacterVisual(shield),true);
+ assert.equal(characterPoolSize('guard'),72);
+ assert.equal(acquireCharacterVisual(asset,'shieldCop'),shield);
+ assert.equal(characterPoolSize('guard'),71);
+ releaseCharacterVisual(shield);clearCharacterPool();
 });
