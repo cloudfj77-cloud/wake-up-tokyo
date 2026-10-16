@@ -38,7 +38,7 @@ test('mist drops pause, land after flight, and do not double mother aura',()=>{
  const distant=r.makeUnit(2,7,20,0);s.airClouds=[{x:20,z:0,time:3},{x:20,z:0,time:3}];r.tickInfection(s,[distant],{x:0,z:0},.5);assert.equal(distant.infection,4);
 });
 test('deep parasite triggers once and preserves player attribution',()=>{
- const s=r.makeState();s.abilities.dot=3;const u=r.makeUnit(1,1,0,0);u.infection=20;u.tagged='player';
+ const s=r.makeState();s.abilities.dot=3;const u=r.makeUnit(1,1,0,0);u.infection=u.threshold*.5;u.tagged='player';
  r.tickInfection(s,[u],{x:30,z:30},.1);assert.equal(u.parasite,true);assert.ok(u.root>0);assert.equal(u.slow,true);
  r.tickInfection(s,[u],{x:30,z:30},2.1);assert.equal(u.root,0);
  r.tickInfection(s,[u],{x:30,z:30},.1);assert.equal(u.root,0);
@@ -70,8 +70,8 @@ test('comic effects pool and dispose geometry with bounded active groups',()=>{
 test('all eight ability names and all 24 descriptions match the supplied comic package',async()=>{
  const {readFile}=await import('node:fs/promises');
  const canonical=JSON.parse(await readFile(new URL('./fixtures/comic-package-abilities.json',import.meta.url),'utf8'));
- assert.deepEqual(r.ABILITIES,canonical);
- assert.equal(r.ABILITIES.length,8);assert.equal(r.ABILITIES.flatMap(a=>a.descriptions).length,24);
+ assert.deepEqual(r.ABILITIES.filter(a=>a.id!=='kindling'),canonical);
+ assert.equal(r.ABILITIES.length,9);assert.equal(r.ABILITIES.filter(a=>a.id!=='kindling').flatMap(a=>a.descriptions).length,24);
  for(const level of [0,1,2]){
   const s=r.makeState();for(const a of r.ABILITIES)s.abilities[a.id]=level;
   for(let i=0;i<20;i++)assert.ok(r.choices(s).every(a=>a.id!=='guns'));

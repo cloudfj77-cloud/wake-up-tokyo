@@ -266,3 +266,5 @@ body.menuMode #game{filter:saturate(1.06) contrast(1.04) brightness(1.02)}
 .gameLogo{top:6%}
 #menu .menuShade{background:linear-gradient(15deg,#14141440 0,#14141412 22%,transparent 38%)}
 #menu .mainMenuNav{background:#fffdf5f7}
+
+#kindlingStatus{display:block;color:#e6baff;font-weight:700;margin:4px 0}#kindlingStatus[hidden]{display:none}

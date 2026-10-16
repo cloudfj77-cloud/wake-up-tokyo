@@ -28,3 +28,9 @@ test('web API failure falls back to desktop capture',async()=>{
 test('web builds retain real browser pointer-lock state',async()=>{
  const s=setup(undefined,async()=>{s.doc.pointerLockElement=s.canvas;});await s.lock.request();assert.equal(s.lock.locked(),true);
 });
+test('quiet capture hides the success toast',async()=>{
+ const s=setup(undefined,async()=>{s.doc.pointerLockElement=s.canvas;s.doc.dispatchEvent(new Event('pointerlockchange'));});
+ await s.lock.request({quiet:true});
+ assert.equal(s.lock.locked(),true);
+ assert.deepEqual(s.messages,[]);
+});

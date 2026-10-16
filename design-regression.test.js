@@ -52,10 +52,10 @@ test('regional stock includes the queue and stage-three refills use basic patrol
 });
 test('Boss pressure uses its own range and weakening restores normal pacing',()=>{
  const s=r.makeState();s.bossSpawned=true;s.rushReinforce=true;
- const boss=r.spawnPlan(s,[],()=>0);assert.equal(boss.interval,8);assert.equal(boss.targetWeight,boss.weight*1.25);
- assert.equal(r.spawnPlan(s,[],()=>1).interval,15);
+ const boss=r.spawnPlan(s,[],()=>0);assert.equal(boss.interval,2);assert.equal(boss.targetWeight,boss.weight*1.25);
+ assert.equal(r.spawnPlan(s,[],()=>1).interval,4);
  s.rushReinforce=false;const normal=r.spawnPlan(s,[],()=>0);
- assert.equal(normal.interval,10);assert.equal(normal.targetWeight,normal.weight);
+ assert.equal(normal.interval,3);assert.equal(normal.targetWeight,normal.weight);
 });
 test('full-health pickup stays; a blood pack restores 30% of maximum health',()=>{
  const s=r.makeState();assert.equal(r.collectPickup(s,'health'),null);

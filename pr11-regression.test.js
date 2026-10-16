@@ -34,7 +34,7 @@ test('uncompleted reinforcement task shortens Boss wave interval and aftermath s
  for(const rush of [false,true]){
   const ctx=reinforcementContext(rush);ctx.spawnQueue.jobs=[];ctx.reinforceTimer=0;
   vm.runInContext('updateReinforcements(.1)',ctx);
-  assert.ok(ctx.reinforceTimer>=(rush?8:10)&&ctx.reinforceTimer<=(rush?15:20));
+  assert.ok(ctx.reinforceTimer>=(rush?2:3)&&ctx.reinforceTimer<=(rush?4:5));
   ctx.state.aftermath=true;ctx.spawnQueue.jobs=[{type:1}];const before=ctx.flushed;
   vm.runInContext('updateReinforcements(.1)',ctx);assert.equal(ctx.flushed,before);assert.equal(ctx.spawnQueue.jobs.length,0);
  }
@@ -47,12 +47,15 @@ test('budgeted Boss waves drain and later waves still arrive',()=>{
   ctx.placeArmyRusher=ctx.placeOnStreet=type=>ctx.units.push(rules.makeUnit(++spawned,type,15,0));
   vm.runInContext(section('function spawnReinforcement(','function hostileConeHits('),ctx);
   vm.runInContext('updateReinforcements(.04)',ctx);
-  assert.equal(spawned,2);
+  assert.equal(spawned,0,'new plans must not spawn before the next camera-aware frame');
+  vm.runInContext('updateReinforcements(.04)',ctx);assert.equal(spawned,1);
   assert.ok(ctx.spawnQueue.jobs.length>0,'a budgeted wave must enter the frame queue');
   const waveSize=spawned+ctx.spawnQueue.jobs.length;
-  for(let i=0;i<100;i++)vm.runInContext('updateReinforcements(.04)',ctx);
+  ctx.reinforceTimer=1e6;ctx.fodderTimer=1e6;
+  for(let i=0;i<800&&ctx.spawnQueue.jobs.length;i++)vm.runInContext('updateReinforcements(.04)',ctx);
   assert.equal(ctx.spawnQueue.jobs.length,0,'a large wave must continue draining during the Boss fight');
   assert.equal(spawned,waveSize);
+  ctx.reinforceTimer=0;ctx.fodderTimer=0;
   for(let i=0;i<600;i++)vm.runInContext('updateReinforcements(.04)',ctx);
   assert.ok(spawned>waveSize,'reinforcement weakening must not disable subsequent waves');
  }

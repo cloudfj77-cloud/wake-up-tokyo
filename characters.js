@@ -120,7 +120,7 @@ function selectCharacterAsset(assets, kind) {
   // 两套警察模型优先于通用警卫：兵种有了专属外观，才分得清拿盾的还是拿棍的。
   if (kind === 'shieldCop' && assets.shieldCop) return assets.shieldCop;
   if (kind === 'batonCop' && assets.batonCop) return assets.batonCop;
-  if (kind === 'guard' && assets.guard) return assets.guard;
+  if (['guard', 'shieldCop', 'batonCop'].includes(kind) && assets.guard) return assets.guard;
   if (assets.humanMale && assets.humanFemale) return Math.random() < .5 ? assets.humanMale : assets.humanFemale;
   if (assets.ally) return assets.ally;
   return assets.player ?? Object.values(assets)[0];
@@ -140,18 +140,24 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   model.add(root);
   const holder = new THREE.Group();
   holder.add(model);
-  const materials = new Map();
-  const meshes = [];
+  const materials = new Map(),ownsMaterials=!['guard','shieldCop','batonCop'].includes(kind);
+  const meshes = [],skeletons=[];
   root.traverse(node => {
     if (!node.isMesh) return;
-    node.castShadow = true;
+    if(node.isSkinnedMesh){
+      // SkeletonUtils duplicates the same rig for each body part. Share it within this actor only.
+      const rig=node.skeleton,shared=skeletons.find(s=>s.bones.length===rig.bones.length&&s.bones.every((bone,i)=>bone===rig.bones[i])&&(s.boneInverses===rig.boneInverses||s.boneInverses.length===rig.boneInverses.length&&s.boneInverses.every((matrix,i)=>matrix.equals(rig.boneInverses[i]))));
+      if(shared)node.skeleton=shared;else skeletons.push(rig);
+    }
+    node.castShadow = kind === 'player';
     node.receiveShadow = true;
     // 动画中的手脚会超出模型原始边界，关闭自动裁剪可避免动作时身体突然消失。
     node.frustumCulled = false;
     // 沿用模型自带外观：顶点色与贴图原样保留，不做程序化染色。
     const copyMaterial = source => {
-      if (!materials.has(node)) materials.set(node, source.clone());
-      return materials.get(node);
+      if(!ownsMaterials)return source;
+      if (!materials.has(source)) materials.set(source, source.clone());
+      return materials.get(source);
     };
     node.material = Array.isArray(node.material) ? node.material.map(copyMaterial) : copyMaterial(node.material);
     meshes.push(node);
@@ -163,7 +169,7 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   holder.add(marker);
   const mixer = new THREE.AnimationMixer(root);
   const actions = Object.fromEntries(asset.clips.map(clip => [clip.name, mixer.clipAction(clip)]));
-  const visual = { holder, root, model, meshes, materials, marker, mixer, actions, kind, current: null, attackTime: 0, accumulated: 0, poolKey: visualPoolKey(kind) };
+  const visual = { holder, root, model, meshes, materials, ownsMaterials, marker, mixer, actions, kind, modelKind: kind, current: null, attackTime: 0, accumulated: 0, poolKey: visualPoolKey(kind) };
   setCharacterKind(visual, kind, variant);
   switchAnimation(visual, 'idle', .0);
   mixer.update(variant * .27);
@@ -243,7 +249,7 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
   }
   // 第八章：16 米内动画照常，再远降低骨骼刷新，大约 58 米外不再刷新。影子只在大约 18 米内打开。
   visual.holder.visible = distance < 58;
-  const shadows = distance < 18;
+  const shadows = visual.kind==='player' && distance < 18;
   for (const mesh of visual.meshes) mesh.castShadow = shadows;
   if (distance >= 58) return;
   if (distance > 16) {
@@ -257,12 +263,12 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
 
 export const PROFESSIONS=['厨师','医生','建筑工人','配送员','教师'];
 
-const POOL_CAP=24;
-// poolKey 只分三类，是既有契约（回归测试断言秩序单位一律 guard）：持盾/持棍也归在 guard 池里。
-// 模型不能拿错，所以复用时在同池内再按 kind 精确匹配，见 acquireCharacterVisual。
+const POOL_CAP={human:36,guard:72,ally:36};
+// Model identity stays fixed when the actor changes faction.
 const visualPools={human:[],guard:[],ally:[]};
 export function visualPoolKey(kind){return kind==='human'||kind==='ally'?kind:'guard';}
 function parkPooledVisual(visual){
+ visual.holder.removeFromParent();
  visual.holder.visible=false;
  visual.holder.position.set(0,-120,0);
  visual.holder.rotation.set(0,0,0);
@@ -276,10 +282,8 @@ function parkPooledVisual(visual){
 function disposeCharacterVisual(visual){
  visual.mixer.stopAllAction();
  visual.holder.removeFromParent();
- for(const mesh of visual.meshes){
-  const mats=Array.isArray(mesh.material)?mesh.material:[mesh.material];
-  for(const mat of mats)mat?.dispose?.();
- }
+ if(visual.ownsMaterials!==false)for(const mat of visual.materials.values())mat?.dispose?.();
+ for(const skeleton of new Set(visual.meshes.filter(m=>m.isSkinnedMesh).map(m=>m.skeleton)))skeleton.dispose();
  visual.marker.geometry.dispose();
  visual.marker.material.dispose();
 }
@@ -289,7 +293,7 @@ export function acquireCharacterVisual(assets,kind,variant=0){
  // 池里混着警卫和两套警察，随便 pop 一个会让拿盾的顶着拿棍的模型出场。
  // 从尾部往前找同兵种的；没有就新建，绝不将就。
  let index=-1;
- for(let i=pool.length-1;i>=0;i--)if(pool[i].kind===kind){index=i;break;}
+ for(let i=pool.length-1;i>=0;i--)if(pool[i].modelKind===kind){index=i;break;}
  const pooled=index>=0?pool.splice(index,1)[0]:null;
  if(pooled){
   setCharacterKind(pooled,kind);
@@ -306,13 +310,21 @@ export function releaseCharacterVisual(visual){
  // 按建模时的模型类型归还，不能按当前阵营：转化后的警卫仍是警卫模型。
  const key=visual.poolKey||visualPoolKey(visual.kind);
  parkPooledVisual(visual);
- if(visualPools[key].length>=POOL_CAP){disposeCharacterVisual(visual);return false;}
- visualPools[key].push(visual);
+ const pool=visualPools[key];
+ if(pool.length>=POOL_CAP[key]){
+  // Keep recently used model types instead of discarding them behind idle reserves.
+  const stale=pool.findIndex(v=>v.modelKind!==visual.modelKind);
+  if(stale<0){disposeCharacterVisual(visual);return false;}
+  disposeCharacterVisual(pool.splice(stale,1)[0]);
+ }
+ pool.push(visual);
  return true;
 }
 export function warmCharacterPool(assets,kind,count=6){
  const key=visualPoolKey(kind);
- while(visualPools[key].length<count){
+ count=Math.min(count,POOL_CAP[key]);
+ const existing=visualPools[key].filter(v=>v.modelKind===kind).length;
+ for(let n=existing;n<count&&visualPools[key].length<POOL_CAP[key];n++){
   const visual=createCharacterVisual(assets,kind,0);
   visual.poolKey=key;
   parkPooledVisual(visual);

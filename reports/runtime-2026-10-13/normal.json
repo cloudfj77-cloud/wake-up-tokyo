@@ -1,0 +1,104 @@
+{
+  "case": "normal",
+  "elapsedSeconds": 102.7,
+  "samples": 3600,
+  "fps": 67.1,
+  "p95FrameMs": 24.9,
+  "p99FrameMs": 25.5,
+  "maxFrameMs": 158.4,
+  "over50ms": 13,
+  "over100ms": 10,
+  "p95WorkMs": 8.5,
+  "current": {
+    "enemies": 37,
+    "allies": 0,
+    "models": 38,
+    "queue": 0,
+    "calls": 739,
+    "triangles": 4128920,
+    "player": {
+      "x": -6.84,
+      "z": -14.8
+    },
+    "yaw": 1.57
+  },
+  "peaks": {
+    "hostiles": 37,
+    "allies": 27,
+    "models": 38,
+    "queue": 18
+  },
+  "spawnCount": 43,
+  "sectors": {
+    "北": 7,
+    "南": 24,
+    "东": 12
+  },
+  "visibleBirths": 0,
+  "lastBirths": [
+    {
+      "id": 179,
+      "x": 6.09,
+      "z": -42.99,
+      "distance": 41.51,
+      "sector": "南",
+      "visible": false
+    },
+    {
+      "id": 180,
+      "x": 19.8,
+      "z": -26.08,
+      "distance": 35.54,
+      "sector": "东",
+      "visible": false
+    },
+    {
+      "id": 181,
+      "x": 21.04,
+      "z": -28.87,
+      "distance": 38.27,
+      "sector": "东",
+      "visible": false
+    },
+    {
+      "id": 182,
+      "x": 3.12,
+      "z": -27.09,
+      "distance": 25.68,
+      "sector": "南",
+      "visible": false
+    },
+    {
+      "id": 183,
+      "x": -1.97,
+      "z": -33.93,
+      "distance": 30.59,
+      "sector": "南",
+      "visible": false
+    },
+    {
+      "id": 184,
+      "x": 10.73,
+      "z": -23.25,
+      "distance": 26.9,
+      "sector": "南",
+      "visible": false
+    },
+    {
+      "id": 185,
+      "x": 5.92,
+      "z": -40.02,
+      "distance": 38.67,
+      "sector": "南",
+      "visible": false
+    },
+    {
+      "id": 186,
+      "x": 15.17,
+      "z": -38.25,
+      "distance": 41.39,
+      "sector": "南",
+      "visible": false
+    }
+  ]
+}
