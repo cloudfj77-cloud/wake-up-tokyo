@@ -1,3 +1,4 @@
+import {flashCharacter} from './hit-response.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -55,11 +56,16 @@ test('unconverted humans shamble; converted allies switch to a fast walk',()=>{
 test('character visual pool reuses the same skeleton instead of cloning again',()=>{
   clearCharacterPool();
   const a=acquireCharacterVisual(asset,'guard');
-  const skeleton=a.meshes[0].skeleton.bones[0];
+  const skeleton=a.meshes[0].skeleton.bones[0],originalMaterial=a.meshes[0].material;
+  flashCharacter(a,{name:'temporary white'},.1);
+  a.model.rotation.x=-.2; // 上一名士兵刚刚受到攻击。
   releaseCharacterVisual(a);
   assert.equal(characterPoolSize('guard'),1);
   const b=acquireCharacterVisual(asset,'guard');
   assert.equal(b,a);
+  assert.equal(b.model.rotation.x,0);
+  assert.equal(b.meshes[0].material,originalMaterial);
+  assert.equal(b.hitFlash,null);
   assert.equal(b.meshes[0].skeleton.bones[0],skeleton);
   assert.equal(characterPoolSize('guard'),0);
   clearCharacterPool();
@@ -125,7 +131,6 @@ test('body parts reuse one skeleton update per actor while different actors stay
  const mesh=a.meshes.find(m=>m.isSkinnedMesh);assert.ok(mesh.skeleton.bones.every(b=>b.matrixWorld.elements.every(Number.isFinite)));
 });
 
-
 test('body and glove material slots retain their own colors and textures for every character model',()=>{
  const scene=new Group(),body=new MeshStandardMaterial({color:0xcccccc,map:new Texture()}),gloves=new MeshStandardMaterial({color:0x0b0c10});
  scene.add(new Mesh(new BoxGeometry(1,2,1),[body,gloves]));
@@ -172,7 +177,6 @@ test('missing dedicated police assets fall back to the guard model',()=>{
  for(const kind of ['shieldCop','batonCop'])assert.equal(createCharacterVisual(assets,kind).root.name,'guard-fallback');
 });
 
-
 test('a full mixed pool retains a newly used police model by replacing an idle model of another type',()=>{
  clearCharacterPool();warmCharacterPool(asset,'guard',72);
  const shield=acquireCharacterVisual(asset,'shieldCop');setCharacterKind(shield,'ally');
@@ -181,4 +185,12 @@ test('a full mixed pool retains a newly used police model by replacing an idle m
  assert.equal(acquireCharacterVisual(asset,'shieldCop'),shield);
  assert.equal(characterPoolSize('guard'),71);
  releaseCharacterVisual(shield);clearCharacterPool();
+});
+
+test('jump poses follow physical ascent and descent instead of advancing through anticipation',()=>{
+ const v=createCharacterVisual(asset,'player');v.airborne=true;playCharacterJump(v,.78);
+ v.jumpPhase=.5;updateCharacterVisual(v,false,.016);const peak=v.current.time;
+ assert.ok(Math.abs(peak-v.current.getClip().duration*.5)<.001);
+ v.jumpPhase=.8;updateCharacterVisual(v,false,.016);assert.ok(v.current.time>peak);
+ v.airborne=false;updateCharacterVisual(v,false,.016);assert.equal(v.jumpPlayback,null);assert.notEqual(v.current.getClip().name,'jump');
 });

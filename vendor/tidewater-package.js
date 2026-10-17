@@ -6489,6 +6489,8 @@ class rQ {
     for (const [M, N] of this._buckets) {
       if (!N.length) continue;
       const [I, D] = M.split("~"), T = new GM(SQ(N), this.mat[I]);
+      // 柱体在道具合并前保留范围，避免运行时扫描整张合并网格。
+      T.userData.cameraPillars=N.flatMap(part=>{if(!part.g.boundingBox)part.g.computeBoundingBox();const box=part.g.boundingBox.clone().applyMatrix4(part.m),size=box.getSize(new DA());return size.y>1.6&&Math.max(size.x,size.z)<1.8&&size.y>Math.max(size.x,size.z)*2?[{min:box.min.toArray(),max:box.max.toArray()}]:[];});
       T.name = "props:" + M, T.castShadow = this.castShadow && C7[I] && D !== "ns", T.receiveShadow = I !== "glow" && I !== "blob", I === "blob" && (T.renderOrder = 1), T.matrixAutoUpdate = false, this.group.add(T), this._meshes.push(T);
     }
     const A = {};
@@ -11213,7 +11215,7 @@ async function HB(j, A, { quality: M = "standard" } = {}) {
   }
   PA(M);
   let MA = 0;
-  return { root: N, buildings: q, obstacles: [], destructibles: S, towers: v, spawn: f, bossSpawn: h, entries: X, spawnWeakenSites: t, breakAt: p, bossCanTarget: (wA, xA) => Math.hypot(xA.x - wA.x, xA.z - wA.z) <= 28, heightAt: s.heightAt, free: G, nearest: r, solid: (wA, xA, YA) => !G(wA, xA, YA), canMove: (wA, xA, YA, eA = 0.4) => s.canMove(wA, xA, YA, eA) && !c(xA, YA, eA), clear: (wA, xA, YA = 0.1) => s.clear(wA, xA, YA) && !v.some((eA) => !eA.dead && fB(wA, xA, eA, YA)), waypoint: s.waypoint, beginNavigationFrame: s.beginNavigationFrame, navigationStats: s.navigationStats, drawMap: W, setQuality: PA, cameraBlocked: (wA, xA, YA, eA) => s.bodyBlocked(wA, xA - eA, YA, eA, eA * 2), menuCamera: { from: w.art.from, look: w.art.look }, update(wA, xA) {
+  return { root: N, pillarData: [{name: Q.name, pillars: O.blocks.filter(b=>!b.hidden && b.axes[1].y>.999 && b.half.y*2>.7 && Math.max(b.half.x,b.half.z)*2<1.8 && b.half.y>Math.max(b.half.x,b.half.z)*1.6).map(b=>({min:b.aabbMin.toArray(),max:b.aabbMax.toArray()}))}], buildings: q, obstacles: [], destructibles: S, towers: v, spawn: f, bossSpawn: h, entries: X, spawnWeakenSites: t, breakAt: p, bossCanTarget: (wA, xA) => Math.hypot(xA.x - wA.x, xA.z - wA.z) <= 28, heightAt: s.heightAt, free: G, nearest: r, solid: (wA, xA, YA) => !G(wA, xA, YA), canMove: (wA, xA, YA, eA = 0.4) => s.canMove(wA, xA, YA, eA) && !c(xA, YA, eA), clear: (wA, xA, YA = 0.1) => s.clear(wA, xA, YA) && !v.some((eA) => !eA.dead && fB(wA, xA, eA, YA)), waypoint: s.waypoint, beginNavigationFrame: s.beginNavigationFrame, navigationStats: s.navigationStats, drawMap: W, setQuality: PA, cameraBlocked: (wA, xA, YA, eA) => s.bodyBlocked(wA, xA - eA, YA, eA, eA * 2), menuCamera: { from: w.art.from, look: w.art.look }, update(wA, xA) {
     MA += wA, I.update(wA, MA), x.update(wA), k.update(wA, xA);
   }, diagnostics: { bakedAO: !!P, nodes: s.nodeCount, props: I.stats(), blocks: O.blocks.length } };
 }

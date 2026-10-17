@@ -1,0 +1,115 @@
+/* 最终主题统一层：集中补齐旧样式和动态面板，战斗尺寸与反馈逻辑沿用现有版本。 */
+:root{--ui-surface:#101014f2;--ui-divider:#fffdf24d;--ui-secondary:#d6d4d1;--ui-shadow:4px 4px 0 #08080a;--ui-focus:var(--paper)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--ui-focus);outline-offset:4px}
+kbd{border-radius:0;background:var(--paper);color:var(--ui-black);border:1px solid var(--ui-black);box-shadow:2px 2px #000}
+#modal{background:#070709d9;backdrop-filter:blur(3px)}
+.dialog,body.awakened .dialog,body.defeated .dialog{border-radius:0;background:radial-gradient(#fff1 1px,transparent 1.5px) 0 0/8px 8px,var(--ui-surface);border:3px solid var(--paper);border-top:8px solid var(--rebel);box-shadow:8px 8px #000}
+.dialog h2{color:var(--paper);text-shadow:3px 3px #000}.dialog p,.dialog .choiceHint{color:var(--ui-secondary)}
+.dialog .action,.dialog .reroll,#mapClose,#endAftermath,#tuneHud footer button{border-radius:0;border:2px solid var(--paper);background:var(--rebel);color:var(--paper);font-weight:900;box-shadow:var(--ui-shadow);clip-path:var(--cut);transition:background .12s,color .12s,translate .12s}
+.dialog .action.secondary,.dialog .reroll,#mapClose,#tuneHud footer button{background:var(--ui-black);color:var(--paper)}
+.dialog .action:hover:not(:disabled),.dialog .reroll:hover:not(:disabled),#mapClose:hover,#endAftermath:hover,#tuneHud footer button:hover{background:var(--paper);color:var(--ui-black);border-color:var(--paper);translate:2px -2px;box-shadow:var(--ui-shadow)}
+.dialog .action:active:not(:disabled),.dialog .reroll:active:not(:disabled),#mapClose:active,#endAftermath:active,#tuneHud footer button:active{translate:0 2px}
+.dialog .reroll:disabled{background:#161619;color:#a5a3a0;box-shadow:none;opacity:.5}
+.controlTable{border-radius:0;border:1px solid var(--ui-divider);border-left:4px solid var(--rebel);background:#09090c;padding:15px;color:var(--ui-secondary);line-height:1.85}
+/* 选项控件也使用同一套黑白纸片；滑块保留足够的拖动区域。 */
+.setting{gap:18px;margin:12px 0;padding:12px 0;border-bottom:1px solid var(--ui-divider);color:var(--paper)}
+.setting select,.mapChoice select{appearance:none;border-radius:0;border:2px solid var(--paper);background-color:var(--ui-black);color:var(--paper);padding:10px 32px 10px 12px;font-weight:800;background-image:linear-gradient(45deg,transparent 50%,var(--paper) 50%),linear-gradient(135deg,var(--paper) 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.setting select option,.mapChoice select option{background:#0b0b0e;color:var(--paper)}.mapChoice{color:var(--paper)}
+.setting input[type=range],#tuneHud input[type=range]{appearance:none;background:transparent;height:32px;min-width:100px;accent-color:var(--rebel);cursor:pointer}
+.setting input[type=range]::-webkit-slider-runnable-track,#tuneHud input[type=range]::-webkit-slider-runnable-track{height:6px;background:var(--paper);border:1px solid var(--paper);border-radius:0}
+.setting input[type=range]::-webkit-slider-thumb,#tuneHud input[type=range]::-webkit-slider-thumb{appearance:none;width:18px;height:22px;margin-top:-9px;background:var(--rebel);border:2px solid var(--paper);border-radius:0;transform:skewX(-10deg);box-shadow:2px 2px #000}
+.setting input[type=range]::-moz-range-track,#tuneHud input[type=range]::-moz-range-track{height:5px;background:var(--paper);border-radius:0}
+.setting input[type=range]::-moz-range-thumb,#tuneHud input[type=range]::-moz-range-thumb{width:15px;height:20px;background:var(--rebel);border:2px solid var(--paper);border-radius:0}
+/* 能力卡的焦点、刷新和领取状态，消除旧的圆按钮和荧光绿整卡。 */
+.card .type,.card kbd,.card .icon,.cardCta b,.card.claimed:after{border-radius:0}
+.card .type{clip-path:var(--cut)}.card .icon{clip-path:polygon(0 6%,91% 0,100% 92%,8% 100%);box-shadow:none}
+.cardCta b{background:var(--rebel);color:var(--paper);border-color:var(--ui-black);transform:skewX(-8deg)}
+.choiceSlot .card:focus-visible{background:var(--paper);transform:translateY(-6px) rotate(-2deg);box-shadow:8px 10px var(--rebel);outline:3px solid var(--paper);outline-offset:5px}
+#modal[data-closing='1'] .card.claimed{background:var(--rebel);border-color:var(--paper);box-shadow:5px 7px #000;outline:none}
+#modal[data-closing='1'] .card.claimed strong,#modal[data-closing='1'] .card.claimed em,#modal[data-closing='1'] .card.claimed small{color:var(--paper)}
+.card.claimed:after{background:var(--paper);color:var(--ui-black);border:2px solid var(--ui-black);clip-path:var(--cut)}
+/* 复盘与任务列表使用相同的纸片分区和白色文字层级。 */
+.stats>div{border-radius:0;background:var(--ui-black);border:1px solid var(--ui-divider);border-top:4px solid var(--rebel);box-shadow:3px 3px #000}
+.stats small{color:var(--ui-secondary)}.stats strong{color:var(--paper)}
+.recap{scrollbar-color:var(--rebel) var(--ui-black)}.recap>div{border-radius:0;background:#09090c;border:1px solid var(--ui-divider);padding:14px}.recap>div>b{color:var(--paper)}.recap p{color:var(--ui-secondary)}
+body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--rebel)}.winSub{color:var(--paper)}
+.missionEntry{border-radius:0;background:var(--ui-black);border:1px solid var(--ui-divider);color:var(--ui-secondary)}.missionEntry.current{background:#161619;border-left:5px solid var(--rebel);border-color:var(--paper);color:var(--paper)}.missionEntry>small{color:var(--purple)}
+/* 展开地图、装填、任务完成和升级提示，保持与 HUD 相同的硬边轮廓。 */
+#cityMap.expanded{border-radius:0;background:var(--ui-surface);border:3px solid var(--paper);border-bottom:8px solid var(--rebel);box-shadow:8px 8px #000}
+#mapClose{padding:8px 15px;font-size:11px}
+#reloadIndicator{border-radius:0;background:var(--ui-black);color:var(--paper);border:2px solid var(--paper);border-left:5px solid var(--rebel);box-shadow:3px 3px #000;clip-path:var(--cut)}#reloadIndicator b{color:var(--paper)}#reloadIndicator i{background:var(--rebel)}
+#targetHint:empty{display:none}#targetHint{padding:2px 6px;background:#0b0b0ebf;color:var(--paper);clip-path:var(--cut);text-shadow:none}
+#missionComplete{border-radius:0;background:var(--ui-black);border:2px solid var(--paper);border-left:6px solid var(--rebel);box-shadow:var(--ui-shadow);clip-path:var(--cut);color:var(--paper)}#missionComplete b,#missionComplete small{color:var(--ui-secondary)}
+#endAftermath{font-size:13px;padding:10px 25px}
+#objectiveSteps span i{border-radius:0;border-color:var(--paper);transform:rotate(45deg)}#objectiveSteps span.done i{background:var(--paper);box-shadow:none}
+#objectiveDistance{color:var(--paper)}
+#levelUpFx .levelUpWord:before{mask:none;-webkit-mask:none;background:var(--rebel);clip-path:polygon(0 25%,31% 8%,39% 0,60% 16%,100% 0,87% 54%,100% 73%,56% 81%,45% 100%,31% 75%,0 95%,10% 55%)}
+.levelUpDialog .eyebrow,.levelUpDialog strong,.levelUpDialog b{color:var(--paper);text-shadow:3px 3px #000}.levelUpDialog b{display:inline-block;background:var(--rebel);padding:4px 12px;clip-path:var(--cut)}
+.levelUpBurst{border-radius:0;background:var(--rebel);clip-path:polygon(50% 0,60% 28%,92% 10%,72% 42%,100% 50%,70% 59%,90% 92%,59% 72%,50% 100%,40% 70%,10% 90%,28% 58%,0 50%,29% 41%,10% 10%,41% 29%);opacity:.35}
+#policeAlert,#policeAlert.boss{background:repeating-linear-gradient(-12deg,#fff1 0 1px,transparent 1px 8px),#0b0b0eef;border-top:4px solid var(--rebel);border-bottom:4px solid var(--paper);color:var(--paper);box-shadow:0 5px #000}
+#policeAlert.boss b,#policeAlert.boss small,#policeAlert.boss em{color:var(--paper);text-shadow:3px 3px #000}#policeAlert.boss strong{color:#ed183c44}#policeAlert.boss:before,#policeAlert.boss:after{color:var(--paper)}
+/* 动态插入的血潮样式用更明确的选择器统一，避免载入顺序恢复旧圆角。 */
+.playerPanel #fleshProgress{border-color:var(--ui-divider);color:var(--paper)}.playerPanel #fleshProgress .fleshHeading strong{color:var(--paper)}.playerPanel #fleshProgress [data-flesh-count]{background:var(--purple);color:var(--ui-black);padding:1px 5px;clip-path:var(--cut)}
+.playerPanel #fleshProgress .fleshTrack i{border-radius:0;transform:skewX(-10deg);background:#fff2}.playerPanel #fleshProgress .fleshTrack i.filled{background:var(--purple);box-shadow:none}.playerPanel #fleshProgress [data-flesh-hint]{color:var(--ui-secondary)}
+#potionStatus,#kindlingStatus{padding:3px 6px;border-left:3px solid var(--purple);background:#0b0b0ecc;color:var(--paper);font-size:9px;line-height:1.5}
+.corpseLabel{background:var(--ui-surface);color:var(--paper);box-shadow:3px 3px #000}.corpseLabel small{color:var(--paper)}.corpseLabel>i{background:conic-gradient(var(--purple) var(--progress),transparent 0)}
+#menu .menuFooter{border-radius:0;background:#0b0b0ee8;border-left:3px solid var(--rebel)}#menu .menuFooter b{color:var(--paper)}
+/* F3 调参台沿用同一主题，不再出现蓝色独立皮肤。 */
+#tuneHud{background:var(--ui-surface);color:var(--paper);border:2px solid var(--paper);border-top:6px solid var(--rebel);box-shadow:var(--ui-shadow)}#tuneHud header span,#tuneHud section>p,#tuneHud label>span{color:var(--ui-secondary)}#tuneHud h3{color:var(--paper)}
+#tuneLive{background:var(--ui-black);border-color:var(--ui-divider);color:var(--paper)}#tuneHud input[type=number]{border-radius:0;border:1px solid var(--paper);background:var(--ui-black);color:var(--paper)}
+@media(max-width:760px){.setting{flex-wrap:wrap;gap:10px}.setting input[type=range]{flex:1}.controlTable{padding:12px;font-size:11px}.recap>div{padding:11px}}
+@media(prefers-reduced-motion:reduce){.dialog .action,.dialog .reroll,#mapClose,#endAftermath,#tuneHud footer button{transition:none}}
+/* 装填条换色时保留原有百分比显示。 */
+#reloadIndicator i{background:linear-gradient(90deg,var(--rebel) var(--reload),#ffffff20 var(--reload))}
+#menu .mainMenuNav>#start:hover:not(:disabled):before{color:var(--rebel)}
+/* 可滚动复盘区也保留白色键盘焦点，避免出现浏览器默认蓝框。 */
+.recap:focus-visible,.dialog:focus-visible,#cityMap:focus-visible,.controlTable:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
+.mapLegend .enemy{background:var(--rebel)}.mapLegend .ally{background:var(--purple)}
+/* 展开地图时收起中央战斗提示，避免计时文字透在地图标题下面。 */
+#hud:has(#cityMap.expanded) #runTimer,#hud:has(#cityMap.expanded) #crosshair,#hud:has(#cityMap.expanded) #targetHint,#hud:has(#cityMap.expanded) #toast,#hud:has(#cityMap.expanded) #reloadIndicator{visibility:hidden}
+/* 命中浮字快速弹出，不再用过小的起始尺寸延后可读时机。 */
+.combatPop{animation:ui-feedback-immediate .1s ease-out both}
+@keyframes ui-feedback-immediate{from{scale:.78;translate:0 4px}to{scale:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){.combatPop{animation:none}}
+/* 漫画纸片负责轮廓，涂鸦笔触只落在标题和边角，让城市与操作保持清楚。 */
+.menuGraffiti{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:hidden}
+.sprayCloud{color:var(--rebel);opacity:.26}.sprayRed{color:var(--rebel);opacity:.78}.sprayWhite{color:var(--paper);opacity:.65}.sprayPurple{color:var(--purple);opacity:.65}
+#menu .menuShade{background:linear-gradient(90deg,#0b0b0ef2 0,#111014ae 33%,#10101408 68%,#0b0b0e70 100%)}
+.gameLogo{isolation:isolate;filter:drop-shadow(4px 7px 0 #08080a);width:min(580px,70vw)}
+.gameLogo:before{left:-27px;top:-17px;width:480px;height:192px;transform:rotate(-3deg);clip-path:polygon(0 23%,13% 21%,3% 15%,58% 5%,95% 0,88% 12%,100% 9%,94% 34%,99% 40%,89% 50%,95% 72%,64% 77%,69% 88%,30% 92%,8% 100%,13% 85%,0 88%,6% 54%,0 57%);background:radial-gradient(#0b0b0e50 1px,transparent 1.5px) 0 0/7px 7px,var(--rebel)}
+.gameLogo>span{font-family:'Marker Felt','Chalkduster',Impact,'Arial Black',sans-serif;font-size:clamp(56px,6.8vw,92px);font-weight:1000;font-style:italic;letter-spacing:-3px;transform:rotate(-3deg);text-shadow:4px 5px #000;-webkit-text-stroke:1px var(--paper)}
+.gameLogo>strong{position:relative;margin-top:16px;font-size:clamp(30px,3.7vw,51px);letter-spacing:-1px;line-height:1.15}
+.gameLogo>strong:after{content:'';position:absolute;left:0;bottom:-15px;width:83%;height:9px;background:var(--paper);clip-path:polygon(0 35%,100% 0,91% 40%,98% 55%,7% 100%,15% 65%,0 85%);transform:rotate(-2deg)}
+.gameLogo>strong span{color:var(--paper);display:inline-block;transform:rotate(12deg) scale(1.2);margin-left:4px}
+#menu .mainMenuNav{bottom:14%;gap:10px}
+#menu .mainMenuNav>button{position:relative;background:radial-gradient(#ffffff12 1px,transparent 1.5px) 0 0/6px 6px,#0b0b0e}
+#menu .mainMenuNav>button:after{content:'';position:absolute;right:13px;bottom:8px;width:38px;height:5px;background:var(--rebel);clip-path:polygon(0 25%,100% 0,80% 45%,98% 65%,5% 100%,14% 60%);transform:rotate(-12deg);pointer-events:none}
+#menu .mainMenuNav>#start{background:radial-gradient(#08080a30 1px,transparent 1.5px) 0 0/6px 6px,var(--rebel);transform:rotate(-2deg)}
+#menu .mainMenuNav>#start:after{background:var(--paper)}
+#menu .mainMenuNav>#start:hover:not(:disabled){background:var(--paper)}
+#menu .mainMenuNav>#start:hover:not(:disabled):after{background:var(--rebel)}
+.menuIntel{bottom:17%;border-width:2px 2px 7px;box-shadow:7px 8px #0008;background:radial-gradient(#ffffff12 1px,transparent 1.5px) 0 0/7px 7px,#0b0b0eeb}
+.menuIntel .intelHeader{border-bottom:2px solid var(--paper)}
+.menuIntel dt{color:var(--ui-secondary)}
+.menuMap{opacity:.65}
+/* 刷痕和网点沿用到菜单弹窗与能力卡，不给战斗 HUD 增加额外占位。 */
+.dialog{border-top-style:solid;background:radial-gradient(#fff1 1px,transparent 1.5px) 0 0/8px 8px,linear-gradient(166deg,#ed183c1c,transparent 26%),var(--ui-surface)}
+.dialog h2{position:relative;width:fit-content;padding-bottom:9px}
+.dialog h2:after{content:'';position:absolute;left:0;bottom:0;width:100%;height:5px;transform:rotate(-2deg);background:var(--rebel);clip-path:polygon(0 25%,100% 0,92% 55%,98% 75%,4% 100%,10% 55%)}
+.card .type{background-image:radial-gradient(#0004 1px,transparent 1.5px);background-size:5px 5px}
+.cardCta{border-top-style:dashed}
+@media(max-width:760px){.gameLogo{width:88vw}.gameLogo:before{width:min(425px,88vw);height:170px}.gameLogo>span{font-size:60px}.gameLogo>strong{font-size:31px}.sprayRed,.sprayWhite{opacity:.3}#menu .mainMenuNav{bottom:13%}}
+@media(max-height:560px){.gameLogo:before{height:130px;width:360px}.gameLogo>span{font-size:48px}.gameLogo>strong{font-size:28px;margin-top:8px}#menu .mainMenuNav{bottom:11%;gap:5px}#menu .mainMenuNav>button{min-height:34px;padding:6px 14px}#menu .mainMenuNav>#start{min-height:42px}.gameLogo>strong:after{bottom:-9px;height:5px}}
+/* HUD 的喷点收在面板内角，刷痕沿着原有边线，中央战斗区域不加装饰。 */
+.playerPanel,.alertPanel,.objectivePanel,.mapPanel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='32' fill='%23fff' opacity='.18'%3E%3Ccircle cx='38' cy='4' r='1.5'/%3E%3Ccircle cx='30' cy='8' r='1'/%3E%3Ccircle cx='42' cy='14' r='2'/%3E%3Ccircle cx='24' cy='16' r='1.4'/%3E%3Ccircle cx='36' cy='23' r='1'/%3E%3Ccircle cx='16' cy='5' r='.8'/%3E%3Ccircle cx='12' cy='24' r='.7'/%3E%3Ccircle cx='45' cy='29' r='1.5'/%3E%3C/svg%3E");background-size:48px 32px;background-position:right 8px top 8px;background-repeat:no-repeat}
+.playerPanel:after,.objectivePanel:after{content:'';position:absolute;pointer-events:none;width:34px;height:4px;background:var(--rebel);clip-path:polygon(0 40%,100% 0,82% 45%,96% 65%,4% 100%,14% 60%);transform:rotate(-9deg)}
+.playerPanel:after{right:9px;top:8px}.objectivePanel:after{left:10px;top:8px}
+.mapPanel{border-bottom-width:5px}.mapPanel .eyebrow{border-bottom:1px dashed #fff5;padding-bottom:5px}
+.slot.owned{background-image:radial-gradient(#ffffff16 .8px,transparent 1.3px);background-size:5px 5px}
+/* 爆贴只改内部纹理和细刷痕，尺寸、身体侧边避让、遮挡与同伴淡化沿用原规则。 */
+.combatPop:before{background-image:radial-gradient(#0b0b0e30 .8px,transparent 1.3px);background-size:5px 5px;clip-path:polygon(0 25%,15% 19%,8% 10%,60% 5%,96% 0,89% 20%,100% 30%,92% 58%,100% 69%,78% 77%,83% 88%,40% 92%,8% 100%,13% 79%,0 85%,6% 52%)}
+.combatPop.infection:before{background-image:radial-gradient(#0b0b0e35 .8px,transparent 1.3px)}
+.combatPop.infection:after{inset:auto 3px -5px 4px;height:3px;background:var(--paper);clip-path:polygon(0 35%,100% 0,84% 50%,95% 70%,4% 100%);transform:rotate(-5deg)}
+.combatPop b{font-family:'Marker Felt',Impact,'Arial Black',sans-serif;font-style:italic}
+.combatPop small{background-image:linear-gradient(-12deg,transparent 75%,#ffffff30 76%,transparent 80%)}
+.combatPop.subdued:before{background-image:none}

@@ -180,7 +180,7 @@ test('reflection hits only the real attacker in range, including projectile sour
 
 test('shield defense uses each melee or projectile origin instead of the player position',()=>{
  const state=rules.makeState(),enemy=rules.makeUnit(2,3,0,0);
- const ctx=vm.createContext({...rules,state,player:{x:0,z:5},units:[enemy],boss:{active:false},
+ const ctx=vm.createContext({...rules,state,player:{x:0,z:5},units:[enemy],boss:{active:false},hitStyles:new Map(),performance:{now:()=>0},
   visuals:new Map([[2,{v:{holder:{rotation:{y:0}}}}]]),burst:noop,music:{effect:noop},toast:noop,
   spawnPickup:noop,STANDING_CHEST:1,PROFESSIONS:[],particles:[],waves:[],tracers:[],
   world:{solid:()=>false},scene:{remove:noop},enemy});

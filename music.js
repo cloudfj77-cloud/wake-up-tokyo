@@ -145,6 +145,8 @@ export class Soundtrack {
   if(type==='convert'){this.note(620,t,.24,.1,'sine',1.35);this.note(930,t+.08,.38,.08,'triangle',1.7);return;}
   // 六段圆环每亮一格音高就升一级，玩家不看脚下也知道当前蓄力进度。
   if(type==='chargeTick'){const level=Math.max(1,Math.min(6,step)),frequency=320*2**((level-1)*2/12);this.note(frequency,t,.12,.065,'sine',1.18);return;}
+  // 重击使用低频撞击叠加短促高频，和轻击的短方波区分开。
+  if(type==='heavyHit'){this.note(76,t,.19,.15,'sawtooth',.42);this.note(340,t,.08,.095,'square',.55);return;}
   if(type==='powerImpact'){this.note(110,t,.45,.2,'sawtooth',.35);this.note(560,t,.5,.12,'sine',2);return;}
   // 炮弹出手、撞墙和触地爆炸各用不同声音，光听声音也能判断当前阶段。
   if(type==='powerThrow'){this.note(140,t,.32,.14,'sawtooth',3.2);this.note(440,t+.05,.2,.07,'triangle',1.5);return;}
