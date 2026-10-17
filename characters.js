@@ -1,7 +1,8 @@
+import {restoreCharacterFlash,stepCharacterFlash} from './hit-response.js';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
-import { loadMixamoCharacter } from './mixamo.js';
+import { loadMixamoCharacter,jumpClipTime } from './mixamo.js';
 import { loadWorkerAsset } from './worker.js';
 import { loadAwakenedAssets } from './awakened.js';
 import { loadShieldCopAsset, loadBatonCopAsset } from './police.js';
@@ -224,16 +225,21 @@ export function playCharacterJump(visual, duration = 7 / 9) {
   visual.attackTime = 0;
   action.setLoop(THREE.LoopOnce, 1);
   action.clampWhenFinished = true;
-  action.setEffectiveTimeScale(action.getClip().duration / duration);
+  visual.jumpPlayback={elapsed:0,duration};visual.jumpPhase=null;
+  action.setEffectiveTimeScale(0);
   if (visual.current === action) action.reset().setEffectiveWeight(1).play();
-  else switchAnimation(visual, 'jump', .07);
+  else switchAnimation(visual, 'jump', .025);
+  action.time=jumpClipTime(action.getClip(),0);
 }
 
 export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false) {
+  stepCharacterFlash(visual,dt);
   if (visual.attackTime > 0) visual.attackTime -= dt;
   if (visual.airborne) {
     visual.attackTime = 0;
     if (visual.current !== resolveAction(visual, 'jump')) playCharacterJump(visual);
+    const playback=visual.jumpPlayback;
+    if(playback){playback.elapsed+=dt;visual.current.time=jumpClipTime(visual.current.getClip(),visual.jumpPhase??playback.elapsed/playback.duration);}
   } else if (visual.attackTime <= 0) {
     // 端着枪移动用 Strafing，徒手移动用跑步（Fast Run），未感染的打工人走蹒跚步。
     const name = moving
@@ -245,7 +251,9 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
     // 觉醒者 3.8 单位/秒配 Fast Run（0.53 秒/圈，自然步幅约 1.0 单位）→ 需要 2.0 倍速。
     const scale = !moving ? 1 : visual.kind === 'human' ? 1.0 : visual.kind === 'ally' ? 2.0 : (sprinting ? 1.45 : 1.0);
     if (action) action.setEffectiveTimeScale(scale);
-    switchAnimation(visual, name);
+    const landing=visual.current===resolveAction(visual,'jump');
+    switchAnimation(visual, name,landing?.06:.18);
+    visual.jumpPlayback=null;visual.jumpPhase=null;
   }
   // 第八章：16 米内动画照常，再远降低骨骼刷新，大约 58 米外不再刷新。影子只在大约 18 米内打开。
   visual.holder.visible = distance < 58;
@@ -268,18 +276,23 @@ const POOL_CAP={human:36,guard:72,ally:36};
 const visualPools={human:[],guard:[],ally:[]};
 export function visualPoolKey(kind){return kind==='human'||kind==='ally'?kind:'guard';}
 function parkPooledVisual(visual){
+ restoreCharacterFlash(visual);
  visual.holder.removeFromParent();
  visual.holder.visible=false;
  visual.holder.position.set(0,-120,0);
  visual.holder.rotation.set(0,0,0);
+ // 清掉受击后仰，避免归还模型池后下一名士兵带着旧姿势出生。
+ visual.model.rotation.set(0,0,0);
  visual.holdingGun=false;
  visual.airborne=false;
+ visual.jumpPlayback=null;visual.jumpPhase=null;
  visual.attackTime=0;
  visual.accumulated=0;
  visual.mixer.stopAllAction();
  visual.current=null;
 }
 function disposeCharacterVisual(visual){
+ restoreCharacterFlash(visual);
  visual.mixer.stopAllAction();
  visual.holder.removeFromParent();
  if(visual.ownsMaterials!==false)for(const mat of visual.materials.values())mat?.dispose?.();

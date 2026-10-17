@@ -1,0 +1,26 @@
+{
+  "scenario": "Same decoded original riverside street meshes; 180 camera frames, warmup 21; camera CPU cost only, not total game FPS",
+  "date": "2026-10-15",
+  "baseline": "0.3.53",
+  "candidate": "0.3.54",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "results": {
+    "before": {
+      "medianMs": 34.79441700000007,
+      "p95Ms": 35.54204099999993,
+      "meshRaycasts": 2880,
+      "fade": 0
+    },
+    "after": {
+      "medianMs": 0.009707999999591266,
+      "p95Ms": 0.012208999999529624,
+      "meshRaycasts": 0,
+      "fade": 0.9999999999999999,
+      "boxTests": 900,
+      "candidateChecks": 1440,
+      "triangleRaycasts": 0,
+      "patchedMeshes": 4,
+      "pillars": 92
+    }
+  }
+}

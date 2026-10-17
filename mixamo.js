@@ -43,7 +43,30 @@ export function clipToSkeleton(clip, boneNames) {
 function renameClip(clip, name) {
   const copy = clip.clone();
   copy.name = name;
+  if(name==='jump')prepareJumpClip(copy);
   return stripRootMotion(copy);
+}
+
+// 从骨盆高度找出真正离地、最高点和落地，跳过 FBX 自带的原地下蹲前摇。
+export function prepareJumpClip(clip){
+ const track=clip.tracks.find(t=>/hips\.position$/i.test(t.name));
+ if(!track)return clip;
+ const y=Array.from(track.times,(_,i)=>track.values[i*3+1]),base=y[0];
+ let peak=0;for(let i=1;i<y.length;i++)if(y[i]>y[peak])peak=i;
+ if(y[peak]-base<.02)return clip;
+ let start=peak,end=peak;
+ while(start>0&&y[start-1]>base)start--;
+ while(end<y.length-1&&y[end]>base)end++;
+ clip.userData={...clip.userData,jumpWindow:{start:track.times[start],apex:track.times[peak],end:track.times[end]}};
+ // 身体升降由跳跃物理统一驱动，避免骨骼里烘焙的位移再次叠加。
+ for(let i=0;i<y.length;i++)track.values[i*3+1]=base;
+ return clip;
+}
+
+export function jumpClipTime(clip,phase){
+ const {start,apex,end}=clip.userData?.jumpWindow||{start:0,apex:clip.duration*.5,end:clip.duration};
+ const p=THREE.MathUtils.clamp(phase,0,1);
+ return p<=.5?THREE.MathUtils.lerp(start,apex,p*2):THREE.MathUtils.lerp(apex,end,(p-.5)*2);
 }
 
 // 颜色贴图要按 sRGB 解码，法线 / 粗糙度 / 金属度是数据贴图，必须保持线性，否则材质会发灰或发黏。

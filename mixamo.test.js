@@ -24,3 +24,14 @@ test('root-motion cleanup preserves jump height and prunes absent bones',()=>{
  stripRootMotion(clip);clipToSkeleton(clip,new Set(['mixamorigHips']));
  assert.equal(clip.tracks.length,1);assert.deepEqual([...clip.tracks[0].values],[1,2,3,1,5,3]);
 });
+
+test('real jump asset skips anticipation and removes duplicated vertical root travel',async()=>{
+ const {prepareJumpClip,jumpClipTime}=await import('./mixamo.js');
+ const {readFile}=await import('node:fs/promises');const {FBXLoader}=await import('three/addons/loaders/FBXLoader.js');
+ const b=await readFile(new URL('./public/mixamo/jump.fbx',import.meta.url));
+ const clip=new FBXLoader().parse(b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength),'').animations[0];
+ prepareJumpClip(clip);const w=clip.userData.jumpWindow;
+ assert.ok(w.start>.6&&w.start<.9);assert.ok(w.apex>.9&&w.apex<1.2);assert.ok(w.end>w.apex&&w.end<1.5);
+ assert.equal(jumpClipTime(clip,0),w.start);assert.equal(jumpClipTime(clip,.5),w.apex);assert.equal(jumpClipTime(clip,1),w.end);
+ const t=clip.tracks.find(t=>/hips.position$/i.test(t.name));assert.ok(Array.from(t.times,(_,i)=>t.values[i*3+1]).every(y=>y===t.values[1]));
+});
