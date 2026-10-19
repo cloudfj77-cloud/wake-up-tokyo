@@ -71,13 +71,16 @@ export function jumpClipTime(clip,phase){
 
 // 颜色贴图要按 sRGB 解码，法线 / 粗糙度 / 金属度是数据贴图，必须保持线性，否则材质会发灰或发黏。
 const SRGB_SLOTS = new Set(['map', 'emissiveMap']);
+const texturePromises = new Map();
 
 // 按清单载入整套 PBR 贴图。单张贴图缺失时只丢掉那一槽，不让整个角色加载失败。
-export async function loadTextureSet(textures, base = BASE) {
-  const loader = new THREE.TextureLoader();
+export async function loadTextureSet(textures, base = BASE, loader = new THREE.TextureLoader()) {
   const results = await Promise.all(Object.entries(textures).map(async ([slot, file]) => {
     try {
-      const texture = await loader.loadAsync(base + file);
+      const cacheKey=(SRGB_SLOTS.has(slot)?'srgb:':'linear:')+base+file;
+      let pending=texturePromises.get(cacheKey);
+      if(!pending){pending=loader.loadAsync(base+file).catch(error=>{texturePromises.delete(cacheKey);throw error;});texturePromises.set(cacheKey,pending);}
+      const texture = await pending;
       // 别被「FBX 的 UV 原点在左上」这句话带偏：实测这套贴图按 three 默认（flipY=true）才连贯，
       // 相邻面采样色差 8.9；反过来设成 false 会跳到 19.7，画面就是碎的。改这个前先量一遍。
       texture.flipY = true;
@@ -140,16 +143,14 @@ export async function loadMixamoCharacter() {
   const own = model.animations[0];
   if (own) animations.push(renameClip(own, manifest.modelClip || own.name || 'idle'));
 
-  for (const [name, file] of Object.entries(manifest.clips || {})) {
-    // 同一个文件已被当作模型载入时，直接复用已解析的动画，避免重复下载。
-    if (file === manifest.model) {
-      if (own) animations.push(renameClip(own, name));
-      continue;
-    }
-    const animated = await loader.loadAsync(BASE + file);
-    const source = animated.animations[0];
-    if (source) animations.push(renameClip(source, name));
-  }
+  const animatedFiles = new Map([[manifest.model, Promise.resolve(model)]]);
+  const namedClips = await Promise.all(Object.entries(manifest.clips || {}).map(async ([name, file]) => {
+    let pending=animatedFiles.get(file);
+    if(!pending){pending=loader.loadAsync(BASE+file);animatedFiles.set(file,pending);}
+    const source=(await pending).animations[0];
+    return source?renameClip(source,name):null;
+  }));
+  animations.push(...namedClips.filter(Boolean));
 
   if (!animations.length) throw new Error('mixamo 资源中没有任何动画');
   return { scene: model, animations };

@@ -68,7 +68,7 @@ test('actual hit and Boss paths buff player and nearby allies exactly once, buff
  const player={...commander},enemy=r.makeUnit(20,1,5,0),ally=awake(21),outside=awake(22,25);
  const bossHits=[];
  const ctx=vm.createContext({...r,state:s,player,enemy,ally,outside,visuals:new Map(),hitStyles:new Map(),performance:{now:()=>0},
-  boss:{},baseHitBoss:(b,d)=>bossHits.push(d),burst(){},music:{effect(){}},toast(){},spawnPickup(){},PROFESSIONS:[],STANDING_CHEST:1});
+  boss:{},baseHitBoss:(b,d)=>bossHits.push(d),burst(){},music:{effect(){}},worldSfx(){},toast(){},spawnPickup(){},PROFESSIONS:[],STANDING_CHEST:1});
  vm.runInContext(section('function hitBoss(','function playerHurt('),ctx);
  vm.runInContext('applyHit(enemy,2,10)',ctx);assert.equal(enemy.hp,105);assert.equal(enemy.infection,3);
  vm.runInContext('applyHit(enemy,2,10,true,ally)',ctx);assert.equal(enemy.hp,90);assert.equal(enemy.infection,6);

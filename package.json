@@ -1,14 +1,17 @@
 {
   "name": "wake-up-tokyo",
-  "version": "0.3.54",
+  "version": "0.3.55",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5200 --strictPort",
-    "build": "vite build",
+    "build": "node scripts/wwise/runtime-catalog.mjs && vite build",
     "serve": "node scripts/serve.mjs 5310 dist",
-    "local": "vite build && node scripts/serve.mjs 5310 dist",
+    "local": "npm run build && node scripts/serve.mjs 5310 dist",
     "build:single": "vite build --config vite.config.single.js && node scripts/inline-single.mjs",
-    "test": "node --test rules.test.js characters.test.js terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js music.test.js design-regression.test.js package-merge.test.js pr19-regression.test.js launcher.test.js tidewater.test.js kindling.test.js reinforcement.test.js combat-ui.test.js hit-response.test.js feedback-visibility.test.js camera-cutaway.test.js police-props.test.js"
+    "test": "node --test rules.test.js characters.test.js character-loading.test.mjs package-performance.test.mjs wwise-stream.test.mjs terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js music.test.js music-director.test.mjs sfx-director.test.mjs design-regression.test.js package-merge.test.js pr19-regression.test.js launcher.test.js tidewater.test.js kindling.test.js reinforcement.test.js combat-ui.test.js hit-response.test.js feedback-visibility.test.js camera-cutaway.test.js police-props.test.js",
+    "package:local": "npm run build && node scripts/package-local.mjs",
+    "predev": "node scripts/wwise/runtime-catalog.mjs",
+    "wwise:sync": "node scripts/wwise/sync-runtime.mjs"
   },
   "dependencies": {
     "three": "^0.180.0",

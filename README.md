@@ -1,6 +1,8 @@
 # 都给我醒过来！ / WAKE UP TOKYO
 
-当前版本以 `package.json` 和游戏主菜单为准。当前开发版本为 **Demo v0.3.0**（企微设计对齐，待试玩验收）；上一团队同步节点为 Demo v0.2.3，更新记录见 [CHANGELOG.md](CHANGELOG.md)，后续编号规则见 [VERSIONING.md](VERSIONING.md)。
+整合试玩版默认进入海滨钟楼广场；菜单可切换东京河畔，或通过 `?map=riverside` 打开。两张地图继续使用各自的存档。
+
+当前版本以 `package.json` 和游戏主菜单为准。当前整合试玩版本为 **Demo v0.3.55**（PR22、PR23、PR24，待整体验收）；上一团队同步节点为 Demo v0.2.3，更新记录见 [CHANGELOG.md](CHANGELOG.md)，后续编号规则见 [VERSIONING.md](VERSIONING.md)。
 
 桌面键鼠第三人称体素感染游戏。能力设计依据为用户提供的漫画技能包；补兵、掉落等系统沿用企业微信「代号：Wake Up」的详细配置，已核实范围与适配值见 [企微设计对齐说明](docs/wecom-design-alignment.md)。DESIGN.md 保留历史方案。能力树以用户提供的漫画技能包为准：八种三级变异，人物整体移速已下调。
 
@@ -59,7 +61,9 @@ npm run dev
 
 本地地址 http://127.0.0.1:5200/ 。npm test 执行规则与模型测试；npm run build 生成生产版本。
 
-npm run build:single 会额外产出一个可离线双击运行的单文件 HTML（release/wake-up-tokyo.html，约 200MB）。模型、贴图、Mixamo 角色资源与 Draco 解码器全部以 data URI 内联；运行时由注入的拦截器把 fetch / XHR / img.src 指向相对路径的请求改写成内联资源，因此 file:// 下无需任何服务。每帧都需要重新构建，改动代码后要重跑一次。
+音乐、音效、环境和固定电台现已接入 Wwise，完整声音版使用 `npm run local`，交付使用 `npm run package:local`；设计、工程和验证说明见 [Wwise 声音工程](audio/wwise/README.md)。
+
+npm run build:single 会额外产出一个单文件视觉预览（release/wake-up-tokyo.html），直接双击时不支持 Wwise 音乐。模型、贴图、Mixamo 角色资源与 Draco 解码器全部以 data URI 内联；运行时由注入的拦截器把 fetch / XHR / img.src 指向相对路径的请求改写成内联资源，因此 file:// 下无需任何服务。每帧都需要重新构建，改动代码后要重跑一次。
 
 不想开终端的话，双击仓库根目录的 `启动游戏-Mac.command`（Windows 用 `启动游戏-Windows.bat`），脚本会装依赖、起本机服务并自动打开浏览器。缺 Node.js 时会提示去 nodejs.org 安装。
 
@@ -67,7 +71,13 @@ npm run build:single 会额外产出一个可离线双击运行的单文件 HTML
 
 `npm run local` = `vite build` + `node scripts/serve.mjs 5310 dist`，构建完直接在 http://127.0.0.1:5310/ 起服务。`scripts/serve.mjs` 只依赖 Node 内置模块，不需要 `npm install`，也不联网，只监听 127.0.0.1。
 
-分发给同学时用 `scripts/launch-mac.command`：把它和 `dist/` 的产物放进同一个文件夹，双击即可（脚本会依次找 PATH 里的 node、常见安装位置、WorkBuddy 托管版本，都没有时退回 `python3 -m http.server`）。这条路径**比 200MB 单文件可靠得多**——实测构建产物 148MB 的本地版 1.9 秒进入可点击，而单文件要塞进 206MB 的 HTML，Chrome 能扛、Safari 基本打不开。
+分发使用 `npm run package:local` 生成的完整文件夹。Mac 双击其中的启动器，使用 Node.js，缺少时退回 Python3；Windows 使用 Node.js 和对应 bat。收件人无需安装开发依赖或 Wwise。
+
+2026-10-19 的精选声音版包含 **193 个音效媒体 + 7 个音乐媒体 = 200 个**，保留全部 91 类声音。清理重复音乐并无损压缩后，本地交付文件从 221.4 MiB 降至 **89.8 MiB**，减少 **59.4%**，逐文件校验压缩前后 SHA-256。压缩包须使用随附服务器和启动器；普通 `dist/` 保持标准资源格式，供静态部署使用。完整记录见 [包体优化数据](audio/wwise/package-optimization.json)。长音乐和环境现使用 Wwise 分段流式读取，常驻银行为 2.85 MiB，另设 2 MiB I/O 缓冲；总音频交付文件约 11.03 MiB。
+
+长时间播放增加了分段读取超时/重试、绕过 HTTP 区间缓存及循环音乐自动恢复。遇到断音可在 `?audio=1` 下载当前音频诊断；暂停和结局短句不会被自动重播。
+
+角色加载同时启动独立任务，优先使用现有替换模型，仅在失败时加载对应备用模型；正常启动跳过原先额外下载的 22.3 MiB 主角 GLB。警察共享贴图，重复动画文件只解析一次。模型与贴图保留原资源；音乐与主要战斗音效保持原 Vorbis Q4，环境和电台使用独立压缩档位，听感待验收。尚未量化帧率和峰值内存收益。
 
 ## Demo v0.2.5 战斗体验更新
 
@@ -101,7 +111,8 @@ WASD 移动；进入游戏后鼠标隐藏并转向，Esc 暂停后显示鼠标�
 - syringe.js：程序化巨型紫液注射枪、透明液罐、发光针头。
 - boss.js：基于参考角色轮廓的程序化体素巨像。
 - world.js：东京十字路口、体素立面分块与可破坏设施。
-- music.js：原创程序合成电子音乐和音效。
+- music.js：共用 Wwise 引擎的音乐、音效、环境与电台接入。
+- music-director.mjs：音乐状态、初始化和混音意图。
 - main.js：输入、AI、弹道、镜头、存档与界面。
 
 ## 验证与范围
@@ -131,7 +142,7 @@ WASD 移动；进入游戏后鼠标隐藏并转向，Esc 暂停后显示鼠标�
 
 已将桌面上的 `WakeUpTokyo-v0.3.0-漫画技能特效版.html` 合入当前源码。主菜单可选择东京河畔或海滨钟楼广场，两张地图使用独立存档。新版漫画特效、准星感染针、强化抛射弹、空投气雾、血潮进度条及新版狂杀/持续感染/进化规则已接入；企微文档对齐后的补兵、三类掉落、Shift 短按闪避 / 长按奔跑、R 装填、F 号令、Tab 地图继续生效。v0.3.1 已纠正能力合并：八种能力与全部 24 条描述恢复为漫画包原文；普通注射器无伤害，感染值为 8/14，强化炮弹 32/12。新局不再出现枪械能力卡；旧档已有枪械仍可使用。
 
-`comic-fx.js` 是恢复出的特效/瞄准模块；`vendor/tidewater-package.js` 从单文件包恢复，保留地图内部标识，待获得上游源码后可替换。地图和字体许可位于 `public/third-party/`。运行 `npm run build:single` 生成合并版 `release/wake-up-tokyo.html`，可双击离线运行。
+`comic-fx.js` 是恢复出的特效/瞄准模块；`vendor/tidewater-package.js` 从单文件包恢复，保留地图内部标识，待获得上游源码后可替换。地图和字体许可位于 `public/third-party/`。运行 `npm run build:single` 生成合并版 `release/wake-up-tokyo.html`，可双击预览画面；完整 Wwise 声音使用本地启动器。
 
 短按 Shift 的判定为按下不足 180 毫秒后松开，触发一次闪避；持续按住达到 180 毫秒后才进入奔跑，松开不再追加闪避。闪避按 WASD 方向移动，未按方向时向前；长按不会连续翻滚。暂停、打开地图或窗口失焦会取消未完成的按键。
 

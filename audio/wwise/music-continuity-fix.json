@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-19T03:41:39.119973+00:00",
+  "reportedSymptom": "music stops while SFX continue",
+  "reproducedFailure": "default browser HTTP cache returned a 200 full WEM for a 32768-byte Range request; failed native stream ended the music event",
+  "originalUserSessionNetworkTraceAvailable": false,
+  "fixes": [
+    "Range fetch cache=no-store; Wwise keeps its own bounded media cache",
+    "750ms transfer deadline, at most three attempts",
+    "looped music playing-ID / position watchdog, without replacing shared engine"
+  ],
+  "testsPassed": 226,
+  "browserCheck": "music-continuity-recovery.json",
+  "browserSeconds": 182.3284849999547,
+  "injectedHttpFailures": 4,
+  "successfulRecoveryCount": 1,
+  "unexpectedRangeErrorsAfterFix": 0,
+  "streamRetries": 3,
+  "minimumPostRecoveryRms": 0.004254987543555486,
+  "mediaCount": 200,
+  "streamedMediaCount": 9,
+  "release": "music-fix-package.json",
+  "actualGameplayCheck": "music-gameplay-continuity.json",
+  "actualGameplayObservedHudSeconds": 153,
+  "actualGameplayPreset": "existing DEV comic high-ability preset",
+  "actualGameplayIoErrors": 0,
+  "actualGameplayRecoveries": 0
+}

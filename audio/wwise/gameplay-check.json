@@ -1,0 +1,18 @@
+{
+  "url": "http://127.0.0.1:5218/?test=boss&audio=1&debug=1",
+  "observedMusic": "跟随游戏 · ready\n场景：defeat\n后端：wwise · 事件 5\nInit.bnk + TokyoMusic.bnk",
+  "bossHud": "终局 · 秩序巨像 6000 / 6000Ⅰ 炮火苏醒进入巨像所在河岸后，炮击才会开始",
+  "scope": "actual Boss entry through existing developer test=boss route; Wwise state followed real game",
+  "stagesObserved": [
+    {
+      "scene": "boss",
+      "playingId": 2,
+      "evidence": "actual Boss HUD 6000 / 6000 and musicLive from browser inspection before defeat"
+    },
+    {
+      "scene": "defeat",
+      "playingId": 5,
+      "evidence": "musicLive captured after player defeat"
+    }
+  ]
+}

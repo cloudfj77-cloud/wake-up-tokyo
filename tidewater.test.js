@@ -12,9 +12,10 @@ const L=STAGES.tidewater.LAYOUT;
 const level=new Level({...L,single:L.single.filter(p=>p.onlyIn!=='zones'),half:L.half.filter(p=>p.onlyIn!=='zones')},cols);
 const nav=createTidewaterNavigation(level);
 test('existing save key survives and new map saves are isolated',()=>{
- assert.equal(selectedMap('').saveKey,'wake-up-tokyo-riverside-v4');
- assert.equal(selectedMap('?map=bad').id,'riverside');
- assert.notEqual(selectedMap('?map=tidewater').saveKey,selectedMap('').saveKey);
+ assert.equal(selectedMap('').saveKey,'wake-up-tokyo-tidewater-v1');
+ assert.equal(selectedMap('?map=riverside').saveKey,'wake-up-tokyo-riverside-v4');
+ assert.equal(selectedMap('?map=bad').id,'tidewater');
+ assert.notEqual(selectedMap('?map=riverside').saveKey,selectedMap('').saveKey);
 });
 test('clock tower, sea and roof interiors are not walkable',()=>{
  assert.equal(nav.free(0,0),false);

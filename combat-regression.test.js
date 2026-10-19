@@ -59,7 +59,7 @@ test('Boss collision contributes only one ring for a piercing projectile',()=>{
 test('an empty magazine preserves full charge; a loaded gun spends it on one power projectile',()=>{
  const state=rules.makeState();state.abilities.launcher=3;state.powerCharge=3;
  const emitted=[];
- const ctx=vm.createContext({...rules,state,gun:rules.GUNS[0],attackCd:0,playerVisual:{},weaponPivot:{position:{y:0}},reloadGun:noop,playCharacterAttack:noop,emitLauncherShot:(...args)=>emitted.push(args)});
+ const ctx=vm.createContext({...rules,state,gun:rules.GUNS[0],attackCd:0,playerVisual:{},weaponPivot:{position:{y:0}},music:{effect:noop},reloadGun:noop,playCharacterAttack:noop,emitLauncherShot:(...args)=>emitted.push(args)});
  vm.runInContext(section('function fireGun(gun)','function primary()'),ctx);
  state.clip=0;vm.runInContext('fireGun(gun)',ctx);assert.equal(state.powerCharge,3);assert.equal(emitted.length,0);
  state.clip=2;vm.runInContext('fireGun(gun)',ctx);
@@ -68,7 +68,7 @@ test('an empty magazine preserves full charge; a loaded gun spends it on one pow
 });
 function motionContext(){
  const actions=[];
- const ctx=vm.createContext({state:rules.makeState(),mode:'playing',player:{roll:0,y:0,vy:0,crouch:false},keys:{},forward:()=>({x:0,z:1}),yaw:0,ROLL_DURATION:.72,ACTION_BUFFER:.18,JUMP_SPEED:7,GRAVITY:18,rushCd:10,rollBuffered:0,jumpBuffered:0,attackCd:.7,reloadTime:.5,playerVisual:{attackTime:0},playCharacterAttack:(v,type,duration)=>{v.attackTime=duration;actions.push(type);},playCharacterJump:v=>{v.attackTime=0;actions.push('jump');},music:{effect:noop},mouseHeld:true,dragging:true,pointerLock:{release:noop}});
+ const ctx=vm.createContext({state:rules.makeState(),world:{heightAt:()=>0},mode:'playing',player:{roll:0,y:0,vy:0,crouch:false},keys:{},forward:()=>({x:0,z:1}),yaw:0,ROLL_DURATION:.72,ACTION_BUFFER:.18,JUMP_SPEED:7,GRAVITY:18,rushCd:10,rollBuffered:0,jumpBuffered:0,attackCd:.7,reloadTime:.5,playerVisual:{attackTime:0},playCharacterAttack:(v,type,duration)=>{v.attackTime=duration;actions.push(type);},playCharacterJump:v=>{v.attackTime=0;actions.push('jump');},music:{effect:noop},mouseHeld:true,dragging:true,pointerLock:{release:noop}});
  vm.runInContext(section('function rush()','function reloadGun(')+source.match(/function clearInput\(\)\{[^\n]+/)[0],ctx);
  return {ctx,actions,run:code=>vm.runInContext(code,ctx)};
 }
@@ -181,7 +181,7 @@ test('reflection hits only the real attacker in range, including projectile sour
 test('shield defense uses each melee or projectile origin instead of the player position',()=>{
  const state=rules.makeState(),enemy=rules.makeUnit(2,3,0,0);
  const ctx=vm.createContext({...rules,state,player:{x:0,z:5},units:[enemy],boss:{active:false},hitStyles:new Map(),performance:{now:()=>0},
-  visuals:new Map([[2,{v:{holder:{rotation:{y:0}}}}]]),burst:noop,music:{effect:noop},toast:noop,
+  visuals:new Map([[2,{v:{holder:{rotation:{y:0}}}}]]),burst:noop,music:{effect:noop},worldSfx:noop,toast:noop,
   spawnPickup:noop,STANDING_CHEST:1,PROFESSIONS:[],particles:[],waves:[],tracers:[],
   world:{solid:()=>false},scene:{remove:noop},enemy});
  vm.runInContext(section('function facingFront(','function playerHurt(')+section('function updateEffects(','function updateCamera('),ctx);
@@ -283,4 +283,15 @@ test('large checkpoints restore logic without synchronously cloning every actor 
  const ctx=vm.createContext({...rules,T,saved,state:rules.makeState(),sprayMarkers:new Map(),chargeMarkers:new Map(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:()=>clones++,world:{destructibles:[],spawnWeakenSites:noop}});
  vm.runInContext(section('function restore(saved)','async function start('),ctx);vm.runInContext('restore(saved)',ctx);
  assert.equal(ctx.units.length,200);assert.equal(clones,0,'visibility budget must build models as needed after resuming');
+});
+
+test('integrated hits retain both visual impact tags and Wwise hit cues',()=>{
+ const state=rules.makeState(),player={x:0,z:0},enemy=rules.makeUnit(901,1,0,1),sounds=[];
+ const ctx=vm.createContext({...rules,state,player,hitStyles:new Map(),performance:{now:()=>10},
+  facingFront:()=>false,burst:noop,worldSfx:key=>sounds.push(key),music:{effect:noop},toast:noop,
+  spawnPickup:noop,PROFESSIONS:[],STANDING_CHEST:1});
+ vm.runInContext(section('function applyHit(','function playerHurt('),ctx);
+ const result=ctx.applyHit(enemy,2,1,false,player,player,'heavy');
+ assert.equal(result,'hit');assert.equal(ctx.hitStyles.get(enemy.id).kind,'heavy');
+ assert.deepEqual(sounds,['infectionHit']);
 });

@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-18T14:16:11.837091+00:00",
+  "reason": "User approved a selection within the current Wwise project trial media limit; full sources are retained. Selection uses gameplay role, repetition frequency and measured level consistency; artistic review remains pending.",
+  "maximumMedia": 200,
+  "reservedMusic": 7,
+  "selectedSfx": 193,
+  "fullSfx": 245,
+  "families": {
+    "stepRoad": [
+      "tokyo-lib-steproad-1",
+      "tokyo-lib-steproad-2",
+      "tokyo-lib-steproad-3",
+      "tokyo-lib-steproad-4"
+    ],
+    "stepStone": [
+      "tokyo-lib-stepstone-1",
+      "tokyo-lib-stepstone-2",
+      "tokyo-lib-stepstone-3",
+      "tokyo-lib-stepstone-4"
+    ],
+    "jump": [
+      "tokyo-lib-jump-1",
+      "tokyo-lib-jump-2",
+      "tokyo-lib-jump-3"
+    ],
+    "land": [
+      "tokyo-lib-land-1",
+      "tokyo-lib-land-2",
+      "tokyo-lib-land-3",
+      "tokyo-lib-land-4"
+    ],
+    "roll": [
+      "tokyo-lib-roll-1",
+      "tokyo-lib-roll-2",
+      "tokyo-lib-roll-3"
+    ],
+    "meleeLight": [
+      "tokyo-lib-meleelight-1",
+      "tokyo-lib-meleelight-2",
+      "tokyo-lib-meleelight-3",
+      "tokyo-library-detail-meleelight-1"
+    ],
+    "meleeHeavy": [
+      "tokyo-lib-meleeheavy-1",
+      "tokyo-lib-meleeheavy-2",
+      "tokyo-lib-meleeheavy-3",
+      "tokyo-library-detail-meleeheavy-1"
+    ],
+    "hitBody": [
+      "tokyo-lib-hitbody-1",
+      "tokyo-lib-hitbody-2",
+      "tokyo-lib-hitbody-3",
+      "tokyo-library-detail-hitbody-1"
+    ],
+    "hitArmor": [
+      "tokyo-lib-hitarmor-1",
+      "tokyo-lib-hitarmor-2",
+      "tokyo-lib-hitarmor-3"
+    ],
+    "hurt": [
+      "tokyo-lib-hurt-1",
+      "tokyo-lib-hurt-2",
+      "tokyo-lib-hurt-3"
+    ],
+    "defeatSfx": [
+      "tokyo-lib-defeatsfx-1",
+      "tokyo-lib-defeatsfx-2",
+      "tokyo-lib-defeatsfx-3"
+    ],
+    "reload": [
+      "tokyo-lib-reload-1",
+      "tokyo-lib-reload-2",
+      "tokyo-lib-reload-3"
+    ],
+    "switchWeapon": [
+      "tokyo-lib-switchweapon-1",
+      "tokyo-lib-switchweapon-2",
+      "tokyo-lib-switchweapon-3"
+    ],
+    "empty": [
+      "tokyo-lib-empty-1"
+    ],
+    "uiFocus": [
+      "tokyo-lib-uifocus-1",
+      "tokyo-lib-uifocus-2"
+    ],
+    "uiConfirm": [
+      "tokyo-lib-uiconfirm-2",
+      "tokyo-lib-uiconfirm-3"
+    ],
+    "uiBack": [
+      "tokyo-lib-uiback-1",
+      "tokyo-lib-uiback-2"
+    ],
+    "uiOpen": [
+      "tokyo-lib-uiopen-1"
+    ],
+    "uiClose": [
+      "tokyo-lib-uiclose-3"
+    ],
+    "uiReroll": [
+      "tokyo-lib-uireroll-2",
+      "tokyo-lib-uireroll-3"
+    ],
+    "upgrade": [
+      "tokyo-lib-upgrade-1",
+      "tokyo-library-detail-upgrade-1"
+    ],
+    "pickupHealth": [
+      "tokyo-library-detail-pickuphealth-1",
+      "tokyo-library-detail-pickuphealth-2"
+    ],
+    "pickupFactor": [
+      "tokyo-library-detail-pickupfactor-1",
+      "tokyo-library-detail-pickupfactor-2"
+    ],
+    "pickupPotion": [
+      "tokyo-lib-pickuppotion-1",
+      "tokyo-library-detail-pickuppotion-1"
+    ],
+    "powerBounce": [
+      "tokyo-lib-powerbounce-1",
+      "tokyo-lib-powerbounce-2",
+      "tokyo-lib-powerbounce-3"
+    ],
+    "powerImpact": [
+      "tokyo-lib-powerimpact-2",
+      "tokyo-lib-powerimpact-3",
+      "tokyo-lib-powerimpact-9",
+      "tokyo-lib-powerimpact-10"
+    ],
+    "explosion": [
+      "tokyo-lib-explosion-1",
+      "tokyo-lib-explosion-3",
+      "tokyo-library-detail-explosion-1"
+    ],
+    "grenadeThrow": [
+      "tokyo-lib-grenadethrow-1"
+    ],
+    "bossImpact": [
+      "tokyo-library-detail-bossimpact-1",
+      "tokyo-library-detail-bossimpact-2",
+      "tokyo-library-detail-bossimpact-3"
+    ],
+    "bossDeath": [
+      "tokyo-lib-bossdeath-1",
+      "tokyo-library-detail-bossdeath-1"
+    ],
+    "breakGlass": [
+      "tokyo-lib-breakglass-3",
+      "tokyo-lib-breakglass-4"
+    ],
+    "breakStone": [
+      "tokyo-lib-breakstone-1",
+      "tokyo-lib-breakstone-3",
+      "tokyo-library-detail-breakstone-1"
+    ],
+    "breakMetal": [
+      "tokyo-library-detail-breakmetal-1",
+      "tokyo-library-detail-breakmetal-2",
+      "tokyo-library-detail-breakmetal-3"
+    ],
+    "tankLoop": [
+      "tokyo-lib-tankloop-1"
+    ],
+    "sprayLoop": [
+      "tokyo-lib-sprayloop-2",
+      "tokyo-lib-sprayloop-3"
+    ],
+    "cityBed": [
+      "tokyo-lib-citybed-1"
+    ],
+    "riverBed": [
+      "tokyo-lib-riverbed-1"
+    ],
+    "seaBed": [
+      "tokyo-lib-seabed-1"
+    ],
+    "police": [
+      "tokyo-lib-police-3"
+    ],
+    "windBed": [
+      "tokyo-lib-windbed-1"
+    ],
+    "syringe": [
+      "tokyo-syringe-01",
+      "tokyo-syringe-02",
+      "tokyo-syringe-03",
+      "tokyo-syringe-04"
+    ],
+    "convert": [
+      "tokyo-convert-pilot-a",
+      "tokyo-convert-01",
+      "tokyo-convert-02",
+      "tokyo-convert-03"
+    ],
+    "power": [
+      "tokyo-power-01",
+      "tokyo-power-02",
+      "tokyo-power-03",
+      "tokyo-power-04"
+    ],
+    "bossThrow": [
+      "tokyo-bossthrow-01",
+      "tokyo-bossthrow-02",
+      "tokyo-bossthrow-03",
+      "tokyo-bossthrow-04"
+    ],
+    "stepMetal": [
+      "tokyo-stepmetal-01",
+      "tokyo-stepmetal-02",
+      "tokyo-stepmetal-03",
+      "tokyo-stepmetal-04"
+    ],
+    "gunPistol": [
+      "tokyo-c2-gunpistol-4",
+      "tokyo-c2-gunpistol-1",
+      "tokyo-c2-gunpistol-2",
+      "tokyo-c2-gunpistol-3"
+    ],
+    "gunShotgun": [
+      "tokyo-c2-gunshotgun-1",
+      "tokyo-c2-gunshotgun-3",
+      "tokyo-c2-gunshotgun-4",
+      "tokyo-c2-gunshotgun-2"
+    ],
+    "gunRifle": [
+      "tokyo-c2-gunrifle-1",
+      "tokyo-c2-gunrifle-2",
+      "tokyo-c2-gunrifle-3",
+      "tokyo-c2-gunrifle-4"
+    ],
+    "gunSniper": [
+      "tokyo-c2-gunsniper-1",
+      "tokyo-c2-gunsniper-2",
+      "tokyo-c2-gunsniper-3",
+      "tokyo-c2-gunsniper-4"
+    ],
+    "gunRpg": [
+      "tokyo-c2-gunrpg-1",
+      "tokyo-c2-gunrpg-2",
+      "tokyo-c2-gunrpg-3",
+      "tokyo-c2-gunrpg-4"
+    ],
+    "infectionHit": [
+      "tokyo-c2-infectionhit-1",
+      "tokyo-c2-infectionhit-2",
+      "tokyo-c2-infectionhit-3",
+      "tokyo-c2-infectionhit-4"
+    ],
+    "abilityBlood": [
+      "tokyo-c2-abilityblood-3",
+      "tokyo-library-detail-abilityblood-1"
+    ],
+    "abilityEvolve": [
+      "tokyo-c2-abilityevolve-1",
+      "tokyo-c2-abilityevolve-2",
+      "tokyo-c2-abilityevolve-3"
+    ],
+    "abilityAir": [
+      "tokyo-c2-abilityair-1",
+      "tokyo-c2-abilityair-2",
+      "tokyo-c2-abilityair-3"
+    ],
+    "abilityParasite": [
+      "tokyo-library-detail-abilityparasite-1",
+      "tokyo-library-detail-abilityparasite-2"
+    ],
+    "charge1": [
+      "tokyo-authored-charge1"
+    ],
+    "charge2": [
+      "tokyo-authored-charge2"
+    ],
+    "charge3": [
+      "tokyo-authored-charge3"
+    ],
+    "lowHp": [
+      "tokyo-authored-lowhp"
+    ],
+    "radio2": [
+      "tokyo-radio-2"
+    ],
+    "radio3": [
+      "tokyo-radio-3"
+    ],
+    "radio4": [
+      "tokyo-radio-4"
+    ],
+    "radio5": [
+      "tokyo-radio-5"
+    ],
+    "radio6": [
+      "tokyo-radio-6"
+    ],
+    "abilityKindling": [
+      "tokyo-c2-abilitykindling-2",
+      "tokyo-library-detail-abilitykindling-1"
+    ],
+    "chargeReady": [
+      "tokyo-c2-chargeready-2"
+    ],
+    "alertUp": [
+      "tokyo-c2-alertup-1"
+    ],
+    "bossWarning": [
+      "tokyo-c2-bosswarning-1",
+      "tokyo-c2-bosswarning-2",
+      "tokyo-c2-bosswarning-3"
+    ],
+    "bossArrival": [
+      "tokyo-c2-bossarrival-1"
+    ],
+    "bossCore": [
+      "tokyo-c2-bosscore-1",
+      "tokyo-c2-bosscore-2"
+    ],
+    "bossPhase": [
+      "tokyo-c2-bossphase-1"
+    ],
+    "planeLoop": [
+      "tokyo-c2-planeloop-1"
+    ],
+    "sprayWarning": [
+      "tokyo-c2-spraywarning-1"
+    ],
+    "potionEnd": [
+      "tokyo-c2-potionend-1"
+    ],
+    "abilityCommand": [
+      "tokyo-command-designed-1",
+      "tokyo-command-designed-2"
+    ],
+    "commandDismiss": [
+      "tokyo-command-designed-4"
+    ],
+    "guardSpawn": [
+      "tokyo-command-designed-5"
+    ],
+    "kindlingGain": [
+      "tokyo-functional-kindlinggain-1"
+    ],
+    "kindlingEnd": [
+      "tokyo-functional-kindlingend-1"
+    ],
+    "uiAcquire": [
+      "tokyo-functional-uiacquire-2",
+      "tokyo-functional-uiacquire-3"
+    ],
+    "planeWarning": [
+      "tokyo-functional-planewarning-2"
+    ],
+    "grenadeFall": [
+      "tokyo-functional-grenadefall-1"
+    ],
+    "bossCoreOpen": [
+      "tokyo-functional-bosscoreopen-1"
+    ],
+    "enemyWindup": [
+      "tokyo-functional-enemywindup-1",
+      "tokyo-functional-enemywindup-2"
+    ],
+    "shieldDash": [
+      "tokyo-functional-shielddash-1"
+    ],
+    "tankRam": [
+      "tokyo-functional-tankram-1"
+    ],
+    "planeDive": [
+      "tokyo-functional-planedive-1"
+    ],
+    "planeCrash": [
+      "tokyo-functional-planecrash-1"
+    ],
+    "bridgeCreak": [
+      "tokyo-functional-bridgecreak-1"
+    ],
+    "clockBell": [
+      "tokyo-functional-clockbell-1"
+    ],
+    "worldMachinery": [
+      "tokyo-functional-worldmachinery-1"
+    ]
+  }
+}

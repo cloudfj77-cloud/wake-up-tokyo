@@ -45,9 +45,70 @@ if [ -n "$NODE_BIN" ]; then
   open_browser
   exec "$NODE_BIN" "$SCRIPT_DIR/serve.mjs" "$PORT" "$GAME_DIR"
 elif command -v python3 >/dev/null 2>&1; then
-  echo "（没找到 Node.js，改用 Python3 兜底，加载会稍慢）"
+  echo "（没找到 Node.js，改用带音乐隔离响应头的 Python3 服务）"
   open_browser
-  exec python3 -m http.server "$PORT" --bind 127.0.0.1 --directory "$GAME_DIR"
+  exec python3 -c '
+import http.server, functools, sys, os, gzip, re
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def send_head(self):
+        path = self.translate_path(self.path)
+        self._range_remaining = None
+        if path.endswith(".wem") and os.path.isfile(path) and self.headers.get("Range"):
+            size = os.path.getsize(path)
+            match = re.fullmatch(r"bytes=(\d*)-(\d*)", self.headers["Range"])
+            start = end = None
+            if match and (match[1] or match[2]):
+                start = int(match[1]) if match[1] else max(0, size - int(match[2]))
+                end = min(int(match[2]), size - 1) if match[1] and match[2] else size - 1
+            if start is None or start >= size or end < start:
+                self.send_response(416)
+                self.send_header("Content-Range", "bytes */" + str(size))
+                self.end_headers()
+                return None
+            self.send_response(206)
+            self.send_header("Content-Type", "application/octet-stream")
+            self.send_header("Accept-Ranges", "bytes")
+            self.send_header("Content-Range", "bytes %d-%d/%d" % (start, end, size))
+            self.send_header("Content-Length", str(end - start + 1))
+            self.end_headers()
+            source = open(path, "rb")
+            source.seek(start)
+            self._range_remaining = end - start + 1
+            return source
+        if not os.path.exists(path) and os.path.isfile(path + ".gz"):
+            self.send_response(200)
+            self.send_header("Content-Type", self.guess_type(path))
+            self.send_header("Vary", "Accept-Encoding")
+            tokens = {}
+            for token in self.headers.get("Accept-Encoding", "").lower().split(","):
+                parts = [p.strip() for p in token.split(";")]
+                try:
+                    tokens[parts[0]] = float(next((p[2:] for p in parts[1:] if p.startswith("q=")), "1"))
+                except ValueError:
+                    tokens[parts[0]] = 0
+            encoded = tokens.get("gzip", tokens.get("*", 0)) > 0
+            if encoded:
+                self.send_header("Content-Encoding", "gzip")
+                self.send_header("Content-Length", str(os.path.getsize(path + ".gz")))
+            self.end_headers()
+            return open(path + ".gz", "rb") if encoded else gzip.open(path + ".gz", "rb")
+        return super().send_head()
+    def copyfile(self, source, outputfile):
+        if self._range_remaining is None:
+            return super().copyfile(source, outputfile)
+        remaining = self._range_remaining
+        while remaining:
+            data = source.read(min(65536, remaining))
+            if not data:
+                break
+            outputfile.write(data)
+            remaining -= len(data)
+    def end_headers(self):
+        self.send_header("Cross-Origin-Opener-Policy", "same-origin")
+        self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
+        super().end_headers()
+http.server.ThreadingHTTPServer(("127.0.0.1", int(sys.argv[1])), functools.partial(Handler, directory=sys.argv[2])).serve_forever()
+' "$PORT" "$GAME_DIR"
 else
   echo "没找到 Node.js 或 Python3，没法启动本地服务。"
   echo "装一个 Node.js（https://nodejs.org）之后，把这个文件再双击一次。"

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile,access} from 'node:fs/promises';
 import {FBXLoader} from 'three/addons/loaders/FBXLoader.js';
 import {VectorKeyframeTrack,AnimationClip} from 'three';
-import {stripRootMotion,clipToSkeleton} from './mixamo.js';
+import {stripRootMotion,clipToSkeleton,loadTextureSet} from './mixamo.js';
 const publicFile=path=>new URL('./public/'+path,import.meta.url);
 test('all shipped character FBX files contain skinned meshes and animation',async()=>{
  const manifest=JSON.parse(await readFile(publicFile('mixamo/manifest.json'),'utf8'));
@@ -34,4 +34,7 @@ test('real jump asset skips anticipation and removes duplicated vertical root tr
  assert.ok(w.start>.6&&w.start<.9);assert.ok(w.apex>.9&&w.apex<1.2);assert.ok(w.end>w.apex&&w.end<1.5);
  assert.equal(jumpClipTime(clip,0),w.start);assert.equal(jumpClipTime(clip,.5),w.apex);assert.equal(jumpClipTime(clip,1),w.end);
  const t=clip.tracks.find(t=>/hips.position$/i.test(t.name));assert.ok(Array.from(t.times,(_,i)=>t.values[i*3+1]).every(y=>y===t.values[1]));
+});
+test('shared police texture URLs load once and reuse GPU texture objects',async()=>{
+ let requests=0;const loader={loadAsync:async()=>{requests++;return {};}};const [a,b]=await Promise.all([loadTextureSet({normalMap:'shared.png'},'/texture-cache-test/',loader),loadTextureSet({normalMap:'shared.png'},'/texture-cache-test/',loader)]);assert.equal(requests,1);assert.equal(a.normalMap,b.normalMap);assert.equal(a.normalMap.flipY,true);
 });

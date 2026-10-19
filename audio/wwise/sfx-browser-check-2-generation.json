@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-10-18T13:31:18.012Z",
+  "sdkVersion": "2025.1.10.9233",
+  "project": "wwise/WakeUpTokyo/WakeUpTokyo.wproj",
+  "projectHash": "df3206e70625af53614cd63826a9436b3d6d6afc991dcedccef57f0c9ebb6ce3",
+  "command": "WwiseConsole generate-soundbank <project> --platform Web --bank TokyoMusic TokyoSfx --soundbank-path Web <bankSource> --root-output-path <bankSource> --abort-on-load-issues --no-source-control",
+  "result": "completed successfully",
+  "files": [
+    {
+      "file": "Init.bnk",
+      "sha256": "db9b3e4f6c6377b5bbf40a21c634e48410618546281b3657bde30edaca1f3de8",
+      "bytes": 988
+    },
+    {
+      "file": "Init.json",
+      "sha256": "61819be6d32987d1f1efdd89b43fafd5758eab58449febd889e353f98c0af39a",
+      "bytes": 3079
+    },
+    {
+      "file": "TokyoMusic.bnk",
+      "sha256": "c07e0f084cbaea0718f7ae4326bec146f82522621bf7ea173a35ec9a101aaa48",
+      "bytes": 5687088
+    },
+    {
+      "file": "TokyoMusic.json",
+      "sha256": "7df1523f1eafc26a05e64ecf4f4fae43ae90267f2f7d5a83d7c15eab1bdff652",
+      "bytes": 6194
+    },
+    {
+      "file": "TokyoSfx.bnk",
+      "sha256": "775a311542c174203910184610626dd37ccc097c40457a1d81c557e111bf90d0",
+      "bytes": 6879491
+    },
+    {
+      "file": "TokyoSfx.json",
+      "sha256": "988d7683b6fa8485212b2e78b23431be04cc851c2a7d3f7833e8825108eeb7a5",
+      "bytes": 71636
+    },
+    {
+      "file": "ProjectInfo.json",
+      "sha256": "e30347681083895601b3cda48c15b8410e5cd8a736bf0fa9a46282fc8a491a59",
+      "bytes": 642
+    },
+    {
+      "file": "PluginInfo.json",
+      "sha256": "b1960b50008485ed75347fdaf6162f5730d0897bf8379431c78e2d8d7f7384ca",
+      "bytes": 323
+    }
+  ]
+}

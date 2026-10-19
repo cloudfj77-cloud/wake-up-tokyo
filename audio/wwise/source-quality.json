@@ -1,0 +1,48 @@
+{
+  "method": "ffmpeg loudnorm input metering on delivered PCM sources",
+  "hearing": "pending",
+  "cues": [
+    {
+      "cue": "boss",
+      "integratedLUFS": -18.0,
+      "truePeakDbTP": -6.34,
+      "loudnessRangeLU": 1.5
+    },
+    {
+      "cue": "countdown",
+      "integratedLUFS": -18.0,
+      "truePeakDbTP": -6.96,
+      "loudnessRangeLU": 4.2
+    },
+    {
+      "cue": "defeat",
+      "integratedLUFS": -18.0,
+      "truePeakDbTP": -7.5,
+      "loudnessRangeLU": 2.8
+    },
+    {
+      "cue": "menu",
+      "integratedLUFS": -18.0,
+      "truePeakDbTP": -4.78,
+      "loudnessRangeLU": 1.0
+    },
+    {
+      "cue": "pressure",
+      "integratedLUFS": -18.0,
+      "truePeakDbTP": -6.82,
+      "loudnessRangeLU": 2.7
+    },
+    {
+      "cue": "street",
+      "integratedLUFS": -18.0,
+      "truePeakDbTP": -6.43,
+      "loudnessRangeLU": 3.1
+    },
+    {
+      "cue": "victory",
+      "integratedLUFS": -18.0,
+      "truePeakDbTP": -6.45,
+      "loudnessRangeLU": 1.9
+    }
+  ]
+}

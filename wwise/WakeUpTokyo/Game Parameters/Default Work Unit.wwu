@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{23134277-8929-4514-BC42-5F55500A01A7}" SchemaVersion="133">
+	<GameParameters>
+		<WorkUnit Name="Default Work Unit" ID="{23134277-8929-4514-BC42-5F55500A01A7}" PersistMode="Standalone">
+			<ChildrenList>
+				<GameParameter Name="Music_GainDb" ID="{B6BCAB84-2A56-4254-9D80-21120E6B8B19}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="-14.4"/>
+						<Property Name="Max" Type="Real64" Value="0"/>
+						<Property Name="Min" Type="Real64" Value="-96"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="Music_DuckDb" ID="{DAF16F4B-9B7E-4BEE-A251-E30013D183E2}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="0"/>
+						<Property Name="Max" Type="Real64" Value="0"/>
+						<Property Name="Min" Type="Real64" Value="-24"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="SFX_GainDb" ID="{F2DA08D2-DC81-45BF-A816-E5FBE423D910}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="-12"/>
+						<Property Name="Max" Type="Real64" Value="0"/>
+						<Property Name="Min" Type="Real64" Value="-96"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="Ambience_GainDb" ID="{0D381793-A41C-4965-ABD3-052812CD059E}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="-12"/>
+						<Property Name="Max" Type="Real64" Value="0"/>
+						<Property Name="Min" Type="Real64" Value="-96"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="Voice_GainDb" ID="{137CFF85-F3A0-481B-B1C4-E95156F95454}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="-12"/>
+						<Property Name="Max" Type="Real64" Value="0"/>
+						<Property Name="Min" Type="Real64" Value="-96"/>
+					</PropertyList>
+				</GameParameter>
+				<GameParameter Name="Impact_Strength" ID="{617296AA-5E98-45D5-ACDA-C708D1ABCE1E}">
+					<PropertyList>
+						<Property Name="InitialValue" Type="Real64" Value="0.5"/>
+						<Property Name="Max" Type="Real64" Value="1"/>
+					</PropertyList>
+				</GameParameter>
+			</ChildrenList>
+		</WorkUnit>
+	</GameParameters>
+</WwiseDocument>

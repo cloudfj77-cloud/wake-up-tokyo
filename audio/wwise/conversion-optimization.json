@@ -1,0 +1,42 @@
+{
+  "beforeBanks": {
+    "TokyoMusic.bnk": 5687088,
+    "Init.bnk": 1014,
+    "TokyoSfx.bnk": 5955265
+  },
+  "afterBanks": {
+    "TokyoMusic.bnk": 409050,
+    "Init.bnk": 1014,
+    "TokyoSfx.bnk": 2582801
+  },
+  "beforeBankBytes": 11643367,
+  "afterBankBytes": 2992865,
+  "residentBankReduction": 0.7429553667766378,
+  "streamPoolBytes": 2097152,
+  "streamedMedia": 9,
+  "totalDeliveredAudioBytes": 11561352,
+  "overallAudioReduction": 0.00704392466543402,
+  "totalMedia": 200,
+  "subjectiveReview": "pending",
+  "musicEncodedPayloadUnchanged": {
+    "2611905": true,
+    "53097435": true,
+    "659547489": true,
+    "663454604": true,
+    "879483395": true
+  },
+  "measuredWasmHeapAtPostLoopCheckpoint": {
+    "beforeBytes": 22478848,
+    "afterBytes": 16777216,
+    "isPeakMemoryMeasurement": false
+  },
+  "streamingBrowserCheck": {
+    "report": "sfx-browser-check-streaming.json",
+    "completedReads": 79,
+    "bytesRead": 2581501,
+    "stoppedOpenFiles": 0,
+    "stoppedPendingReads": 0,
+    "errors": 0,
+    "musicLoops": 2
+  }
+}

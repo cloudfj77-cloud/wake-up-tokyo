@@ -1,0 +1,24 @@
+{
+  "capturedAt": "2026-10-19T03:05:40.993Z",
+  "map": "tidewater",
+  "sourceWebm": "workshop-output://gameplay-streaming.webm",
+  "sourceSha256": "58b41083664a0f4ce45fb241c6840adfe03e325a5bdbc096521d11e598358c98",
+  "captureWallSeconds": 90.08404499995709,
+  "activeGameplaySeconds": 23.505974999964238,
+  "auditionTrimSeconds": 23.5,
+  "peak": 0.1341264843940735,
+  "rmsIncludingEndedSilence": 0.008579946024496713,
+  "modes": [
+    "playing",
+    "ended"
+  ],
+  "actionsObserved": [
+    "movement",
+    "sprint",
+    "jump",
+    "syringe shots",
+    "enemy hits",
+    "defeat"
+  ],
+  "subjectiveReview": "pending"
+}

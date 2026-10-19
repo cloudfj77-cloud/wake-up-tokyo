@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-19T03:07:19.693461+00:00",
+  "releaseFolder": "release/wake-up-tokyo-local-2026-10-19T03-04-16-091Z",
+  "baselineBytes": 232149889,
+  "rawSourcesAndLaunchersBytes": 202085431,
+  "packageBytesIncludingManifest": 94189159,
+  "packageFileCount": 86,
+  "compressedFiles": 38,
+  "allStoredAndDecodedHashesVerified": true,
+  "reductionFromBaseline": 0.5942743741738339,
+  "rangeFilesVerified": 9,
+  "pythonRangeVerified": true,
+  "unitAndRegressionTests": 220,
+  "visualLossyChanges": false,
+  "audioEncoding": "music/combat Q4 as input; environment Q3/32k; radio Q3/24k",
+  "performanceLimits": "FPS and peak memory improvements have not been quantified.",
+  "httpAssetHashesVerified": 85,
+  "zipFile": "release/wake-up-tokyo-local-2026-10-19T03-04-16-091Z.zip",
+  "zipBytes": 92531210,
+  "zipSha256": "9948d81b157990b0eae8c3bfa4f30f930414a5d4b6c2ad9b37a4be1f7e68029a"
+}

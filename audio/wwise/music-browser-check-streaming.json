@@ -1,0 +1,288 @@
+{
+  "url": "http://127.0.0.1:5310/?audio=1&map=riverside",
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+  "crossOriginIsolated": true,
+  "backend": "wwise",
+  "hearing": "pending user audition",
+  "scenes": [
+    {
+      "scene": "menu",
+      "playingId": 1,
+      "rms": 0.014721688169349333,
+      "peak": 0.07265668362379074,
+      "samples": 51200
+    },
+    {
+      "scene": "street",
+      "playingId": 2,
+      "rms": 0.014871850246622575,
+      "peak": 0.06136462092399597,
+      "samples": 51200
+    },
+    {
+      "scene": "pressure",
+      "playingId": 3,
+      "rms": 0.01327443838977917,
+      "peak": 0.06004207581281662,
+      "samples": 51200
+    },
+    {
+      "scene": "countdown",
+      "playingId": 4,
+      "rms": 0.00317127156484958,
+      "peak": 0.05003466084599495,
+      "samples": 51200
+    },
+    {
+      "scene": "boss",
+      "playingId": 5,
+      "rms": 0.014665328001983124,
+      "peak": 0.05737306550145149,
+      "samples": 51200
+    },
+    {
+      "scene": "victory",
+      "playingId": 6,
+      "rms": 0.013182318089799108,
+      "peak": 0.06753088533878326,
+      "samples": 51200
+    },
+    {
+      "scene": "defeat",
+      "playingId": 7,
+      "rms": 0.020187001828182848,
+      "peak": 0.05966454744338989,
+      "samples": 51200
+    },
+    {
+      "scene": "aftermath",
+      "playingId": 8,
+      "rms": 0.013348086322243253,
+      "peak": 0.06753088533878326,
+      "samples": 51200
+    }
+  ],
+  "errors": [],
+  "aftermathLoop": {
+    "rms": 0.009343060467412397,
+    "peak": 0.04286859184503555,
+    "samples": 51200
+  },
+  "cancelledDelayed": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "paused": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "resumed": {
+    "rms": 0.014922279894128225,
+    "peak": 0.06136462092399597,
+    "samples": 51200
+  },
+  "halfVolume": {
+    "rms": 0.007566786210804884,
+    "peak": 0.05119635537266731,
+    "samples": 51200
+  },
+  "muted": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "ducked": {
+    "rms": 0.006332650002248838,
+    "peak": 0.03231144696474075,
+    "samples": 51200
+  },
+  "stopped": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "beforeDispose": {
+    "status": "ready",
+    "error": null,
+    "scene": null,
+    "posted": null,
+    "paused": false,
+    "muted": false,
+    "radio": false,
+    "playingId": 15,
+    "runtime": {
+      "backend": "wwise",
+      "disposed": false,
+      "loadedBanks": [
+        {
+          "name": "Init.bnk",
+          "id": 1355168291,
+          "bytes": 1014
+        },
+        {
+          "name": "TokyoMusic.bnk",
+          "id": 268141082,
+          "bytes": 409050
+        },
+        {
+          "name": "TokyoSfx.bnk",
+          "id": 736008490,
+          "bytes": 2582801
+        }
+      ],
+      "objects": 1,
+      "heapBytes": 16777216,
+      "streaming": {
+        "mode": "wwise-http-range",
+        "mediaCount": 9,
+        "poolBytes": 2097152,
+        "completedReads": 13,
+        "bytesRead": 425984,
+        "pendingReads": 0,
+        "openFiles": 0,
+        "nativePending": 0,
+        "peakInFlight": 2,
+        "errors": [],
+        "recentReads": [
+          {
+            "id": 2611905,
+            "offset": 29909,
+            "bytes": 32768
+          },
+          {
+            "id": 2611905,
+            "offset": 62677,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 28866,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 61634,
+            "bytes": 32768
+          },
+          {
+            "id": 663454604,
+            "offset": 31473,
+            "bytes": 32768
+          },
+          {
+            "id": 663454604,
+            "offset": 64241,
+            "bytes": 32768
+          },
+          {
+            "id": 879483395,
+            "offset": 35361,
+            "bytes": 32768
+          },
+          {
+            "id": 879483395,
+            "offset": 68129,
+            "bytes": 32768
+          },
+          {
+            "id": 879483395,
+            "offset": 100897,
+            "bytes": 32768
+          },
+          {
+            "id": 659547489,
+            "offset": 30019,
+            "bytes": 32768
+          },
+          {
+            "id": 659547489,
+            "offset": 62787,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 94402,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 127170,
+            "bytes": 32768
+          }
+        ]
+      },
+      "renderCount": 4296,
+      "maxRenderMs": 8.084999978542328,
+      "lastError": null
+    }
+  },
+  "contextAfterDispose": "closed",
+  "restarted": {
+    "rms": 0.013843582278121477,
+    "peak": 0.06136462092399597,
+    "samples": 51200
+  },
+  "afterRestart": {
+    "status": "ready",
+    "error": null,
+    "scene": "street",
+    "posted": "street",
+    "paused": false,
+    "muted": false,
+    "radio": false,
+    "playingId": 1,
+    "runtime": {
+      "backend": "wwise",
+      "disposed": false,
+      "loadedBanks": [
+        {
+          "name": "Init.bnk",
+          "id": 1355168291,
+          "bytes": 1014
+        },
+        {
+          "name": "TokyoMusic.bnk",
+          "id": 268141082,
+          "bytes": 409050
+        },
+        {
+          "name": "TokyoSfx.bnk",
+          "id": 736008490,
+          "bytes": 2582801
+        }
+      ],
+      "objects": 1,
+      "heapBytes": 16777216,
+      "streaming": {
+        "mode": "wwise-http-range",
+        "mediaCount": 9,
+        "poolBytes": 2097152,
+        "completedReads": 2,
+        "bytesRead": 65536,
+        "pendingReads": 0,
+        "openFiles": 1,
+        "nativePending": 0,
+        "peakInFlight": 1,
+        "errors": [],
+        "recentReads": [
+          {
+            "id": 53097435,
+            "offset": 28866,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 61634,
+            "bytes": 32768
+          }
+        ]
+      },
+      "renderCount": 180,
+      "maxRenderMs": 4.235000014305115,
+      "lastError": null
+    }
+  },
+  "ok": true
+}
