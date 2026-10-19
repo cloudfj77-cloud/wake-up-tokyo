@@ -187,84 +187,94 @@ body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8p
 
 .mapChoice{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;color:#d7c5e4;font-size:12px}.mapChoice select{width:100%;border:1px solid #b88cd855;border-radius:7px;background:#251d32;color:#fff4dc;padding:10px;font:inherit}
 
-/* ===== Critter Clash 换肤：亮黄主视觉 + 黑斜切 + 品红 CTA =====
-   参考：亮黄渐变大底、黑色斜切按钮、品红主按钮、半调网点、黄徽章黑字。
-   ui.css 的变量体系不动，lime 一律映射成主视觉黄，紫色仍是感染主题色。 */
-:root{--lime:#ffd21e;--cc-pink:#ff3da6}
-/* 主界面要能预览地图：黄只铺左下半边并向右上淡出，右上整片留给实时城市。 */
-#menu{background:transparent}
-#menu .menuShade{background:linear-gradient(202deg,#ffd21ef0 0,#ffd21ed9 14%,#ffc4008c 32%,#ff9d0038 46%,transparent 60%)}
-/* 这里原本压了一块黑色斜切，结果和黑色按钮叠在一起、谁也看不清谁。
-   改为：不铺额外深色区，按钮自己带白描边和黄色竖条，直接坐在黄色底上。 */
-#menu .menuGrid{opacity:.4;transform:none;background-image:radial-gradient(#141414 1.1px,transparent 1.4px);background-size:11px 11px;mask-image:linear-gradient(200deg,#000 30%,transparent 72%);-webkit-mask-image:linear-gradient(200deg,#000 30%,transparent 72%)}
-#menu .menuNoise{opacity:.09;mix-blend-mode:multiply}
-#menu:after{background:radial-gradient(ellipse at 88% -12%,#ff9d0099,transparent 55%)}
-/* 副标题出现重影：整块 logo 挂着 7px 实心投影，小字下面会复制出一层黑字。
-   投影只留给主标题，小字干净地坐在黄底上。 */
-.gameLogo{filter:none}
-.gameLogo>span,.gameLogo>strong{filter:drop-shadow(5px 6px 0 #14101d)}
-.gameLogo>p{color:#4a3a08;font-weight:700;text-shadow:none;letter-spacing:.5px}
-/* 菜单按钮：深黑斜切 + 白描边 + 左侧黄色竖条。白描边是把按钮从黄底里「抠」出来的关键，
-   斜切用 clip-path（不变形文字），投影用 filter（box-shadow 会被 clip-path 裁掉）。 */
-#menu .mainMenuNav>button{background:linear-gradient(90deg,#ffd21e 0 6px,#171322f2 6px);color:#fff;border:0;border-radius:0;box-shadow:none;clip-path:polygon(11px 0,100% 0,calc(100% - 11px) 100%,0 100%);filter:drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff) drop-shadow(4px 5px 0 #141414)}
-#menu .mainMenuNav>button:before{color:#ffd21e}
-#menu .mainMenuNav>button:hover:not(:disabled){background:linear-gradient(90deg,#ffd21e 0 6px,var(--purple) 6px);color:#fff}
-#menu .mainMenuNav>#start{background:var(--cc-pink);color:#fff;box-shadow:none;clip-path:polygon(13px 0,100% 0,calc(100% - 13px) 100%,0 100%);filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(5px 6px 0 #141414)}
-#menu .mainMenuNav>#start:before{color:#fff}
-#menu .mainMenuNav>#start:hover:not(:disabled){background:#ff5cb8;color:#fff}
-#menu .mainMenuNav .menuStatus p{color:#4a3a08;font-weight:800}
-.menuStatus .liveDot{background:#171322}
-.menuIntel{border-radius:0;border:3px solid #171322;background:#171322f0;box-shadow:8px 8px 0 #1713224d}
-.intelHeader{background:#ffd21e;color:#171322;border-bottom:3px solid #171322}
-.intelHeader strong{color:#171322}
-.menuIntel dt{color:#bdbdbd}.menuIntel dd{color:#fff}
-.genePreview h2{color:#ffd21e;font-weight:900}
-.genePreview i{border-color:#4a4a4a;background:#0f0f0f;color:#6d6d6d}
-.genePreview i.active{background:#ffd21e;color:#171322;border-color:#ffd21e}
-.infectionNotice{background:var(--cc-pink);color:#171322;border-color:#171322}
-.infectionNotice strong{color:#171322}.infectionNotice span{color:#5c0a38}
-#menu .menuFooter{background:#171322e6;color:#e8e8e8}
-#menu .menuFooter kbd{background:#ffd21e;color:#171322}
-.mapChoice{color:#4a3a08;font-weight:800}
-.mapChoice select{background:#171322;color:#fff;border:2px solid #171322;border-radius:0;font-weight:700}
-
-/* ===== 主界面清爽化：左下白色斜切面板承载菜单，右侧整片留给城市预览 =====
-   参考图构图：浅色斜切区放可读内容，主视觉让位给场景；文字一律高对比。 */
-#menu .mainMenuNav{bottom:10%;padding:20px 40px 20px 20px;background:#fffdf5f5;clip-path:polygon(0 0,100% 0,calc(100% - 36px) 100%,0 100%);box-shadow:10px 10px 0 #14141433}
-#menu .mainMenuNav .mapChoice{color:#171322;font-weight:800}
-#menu .mainMenuNav .mapChoice select{border:2px solid #171322;border-radius:0;background:#171322;color:#fff;font-weight:700}
-#menu .mainMenuNav>button{border-radius:0;box-shadow:none;filter:drop-shadow(3px 4px 0 #171322)}
-#menu .mainMenuNav>#start{filter:drop-shadow(3px 5px 0 #171322)}
-#menu .mainMenuNav .menuStatus p{color:#4a3a08;font-weight:800}
-/* 副标题垫黄色高亮条：斜切小色块，黑字在场景上也稳。 */
-.gameLogo>p{display:inline-block;width:max-content;margin:14px 0 0 2px;padding:5px 14px;background:#ffd21e;color:#171322;font-weight:800;transform:skewX(-7deg);text-shadow:none}
-
-/* ===== 去脏：场景区不再罩黄、不再加噪点，颜色只留在 UI 元件上 =====
-   黄渐变盖在实景上会混出灰绿，噪点和 sepia 让画面发浑 —— 三样一起去掉，
-   左侧靠白色面板保证可读性，不再需要压暗/染色场景。 */
-#menu .menuShade{background:linear-gradient(15deg,#14141466 0,#1414141f 24%,transparent 42%)}
-#menu .menuGrid,#menu .menuNoise{display:none}
-#menu:after{background:none}
-body.menuMode #game{filter:saturate(1.06) contrast(1.04) brightness(1.02)}
-/* 半调网点改铺在白色面板内部，是 UI 的质感而不是场景上的脏点。 */
-#menu .mainMenuNav{background:#fffdf5f7 radial-gradient(#17132214 1px,transparent 1.2px) 0 0/10px 10px}
-
-/* ===== 菜单布局重排：左列 = 标题/菜单/页脚，右列 = 情报/警告 =====
-   原先情报面板、警告卡、页脚三块全挤在右下角 20 像素内，看着就是叠在一起。
-   现在右侧上下各一块、页脚挪到左下，每块之间留出呼吸。 */
-.menuIntel{right:4%;bottom:16%}
-.infectionNotice{right:4%;bottom:3%}
-#menu .menuFooter{left:5%;right:auto;bottom:2%}
-#menu .mainMenuNav{border-left:6px solid #ffd21e;padding:18px 40px 18px 24px}
-
-/* ===== 再简化：右侧那块灰色迷你地图是「又高又杂」的来源，去掉后面板立刻清爽；
-    同时把左右两列的块间距再拉开，避免看上去贴在一起。 */
-.menuMap{display:none}
-.menuIntel{right:4%;bottom:19%;width:250px}
-.infectionNotice{right:4%;bottom:2%;width:248px}
-#menu .mainMenuNav{bottom:12%;padding:16px 38px 16px 22px}
-.gameLogo{top:6%}
-#menu .menuShade{background:linear-gradient(15deg,#14141440 0,#14141412 22%,transparent 38%)}
-#menu .mainMenuNav{background:#fffdf5f7}
-
 #kindlingStatus{display:block;color:#e6baff;font-weight:700;margin:4px 0}#kindlingStatus[hidden]{display:none}
+
+/* Persona-inspired cut-paper edition: red for damage, violet for contamination. */
+:root{--paper:#fffdf2;--ui-black:#0b0b0e;--ink:#101014ed;--purple:#bd79ff;--lime:#e7ff58;--rebel:#ed183c;--cut:polygon(3% 0,100% 0,97% 100%,0 100%)}
+.panel{border-radius:0;background:var(--ink);border:2px solid var(--paper);box-shadow:5px 5px 0 #09090c}
+.eyebrow{color:var(--paper);letter-spacing:1.4px;font-weight:900}
+.bar,.bar i{border-radius:0}.bar{background:#fff2}.bar i{background:var(--purple)}
+.playerPanel{top:auto;bottom:24px;left:24px;width:256px;padding:16px 20px 16px 16px;transform:skewY(-2deg);border-width:3px;border-right:9px solid var(--rebel)}
+.playerPanel>.eyebrow{font-size:11px}.purpleDot{background:var(--rebel);border-radius:0;transform:rotate(45deg);box-shadow:none}
+#hpText{font-family:Impact,'Arial Black',sans-serif;font-size:22px;letter-spacing:1px}
+.bar.hp{position:relative;height:19px;margin:8px 0;border:2px solid var(--paper);background:#09090c;transform:skewX(-12deg)}
+.bar.hp i{position:absolute;left:0;top:0;background:var(--rebel);transition:width .12s ease-out;z-index:1}
+.bar.hp #hpTrail{background:var(--paper);z-index:0;transition:none}
+.stamina{height:5px;margin:0}.stamina i{background:var(--paper)}
+.counters{margin-top:12px;color:#fff;font-size:10px}.counters b{color:var(--paper);font-family:Impact,sans-serif;font-size:24px}
+#abilitySlots{position:fixed;left:calc(50vw - 24px);bottom:7px;transform:translateX(-50%) skewY(2deg);width:min(390px,33vw);display:flex;gap:5px;justify-content:center}
+.slot{flex:1;height:37px;line-height:32px;font-size:22px;border-radius:0;border:2px solid #fff5;background:#0b0b0ef2;transform:skewX(-8deg);color:#fff4}
+.slot.owned{color:var(--paper);border-color:var(--paper);background:#361449}.slot small{border-radius:0;background:var(--paper);font-size:10px;right:-3px;bottom:-5px}
+.xpPanel{top:16px;left:24px;bottom:auto;transform:skewX(-8deg);width:calc(100% - 48px);height:36px;padding:3px 10px 3px 4px;gap:12px;border:2px solid var(--paper);background:#0a0a0de8;box-shadow:3px 3px 0 #000}
+.levelBadge{display:flex;align-items:center;gap:5px;width:67px;flex-shrink:0;justify-content:center;padding:0;border:0;border-radius:0;background:var(--rebel);color:var(--paper);transform:none;font-size:10px}.levelBadge b{font-family:Impact,sans-serif;font-size:25px;line-height:1}
+.xpPanel>div:last-child{display:flex;align-items:center;gap:12px}.xpPanel .eyebrow{flex-shrink:0;font-size:9px}.xpPanel .bar{flex:1;height:12px;margin:0}.xpPanel .bar i{background:var(--paper)}.xpPanel small{display:none}
+.alertPanel{left:24px;top:72px;width:216px;padding:10px 14px;transform:none;border:0;border-left:5px solid var(--rebel);background:#0a0a0de3;box-shadow:none;clip-path:var(--cut)}
+#clock{position:fixed;top:67px;left:50%;transform:translateX(-50%) rotate(-3deg);font:italic 900 36px/1 Impact,'Arial Black',sans-serif;color:var(--paper);letter-spacing:2px;text-shadow:3px 3px #000,-2px -2px #000}
+.alertReading>b{color:var(--rebel);font-family:Impact,sans-serif;font-size:36px}.alertReading>span{color:var(--paper);font-size:11px}#alertLevels b{border-radius:0;background:#fff2}#alertLevels b.on{background:var(--rebel);color:var(--paper)}#reinforcement{color:#ddd}
+.mapPanel{top:115px;right:24px;left:auto;bottom:auto;width:204px;padding:10px;border:2px solid var(--paper);border-bottom:6px solid var(--rebel);border-radius:0;background:#0b0b0ee8}
+.mapPanel canvas{border-radius:0}.mapLegend{font-size:9px;gap:7px}.mapPanel .eyebrow{font-size:9px}
+.objectivePanel{bottom:24px;right:24px;width:242px;border:0;border-top:5px solid var(--paper);border-right:5px solid var(--rebel);padding:12px 16px;background:#0b0b0ee8;box-shadow:4px 4px #000}
+.objectivePanel strong{font-size:16px}.objectivePanel>small{font-size:10px;color:#d6d6da}#percent{color:var(--paper);font-family:Impact,sans-serif}#objectiveSteps span small{color:#bbb}#ammo span{border-radius:0}#ammo span.selected{background:var(--paper);color:#0b0b0e;clip-path:var(--cut)}.weaponHeading{margin-top:9px;padding-top:9px}.weaponHeading>small{font-size:8px;color:#ccc}
+.hudTools{top:72px;right:75px}.hudTools button,#pauseButton{border-radius:0;background:#0b0b0e;border:2px solid var(--paper);color:var(--paper);box-shadow:3px 3px #000;transform:skewX(-8deg)}#pauseButton{top:68px;right:24px;width:36px;height:36px}.hudTools button:hover{background:var(--rebel)}
+#runCountdown{top:115px;border-radius:0;background:var(--rebel);color:var(--paper);border:2px solid var(--paper);clip-path:var(--cut)}#runCountdown b,#runCountdown small{color:var(--paper)}
+#toast,#infectionFeedback{border-radius:0;border:2px solid var(--paper);background:#0b0b0eef;box-shadow:4px 4px #000;clip-path:var(--cut)}#toast{top:163px}#hud.countingDown #toast{top:164px}
+#infectionFeedback{bottom:auto;top:315px;right:24px;border-color:var(--purple);background:#361449}#infectionFeedback>b{font-size:13px;color:var(--paper)}#infectionFeed{top:358px;right:24px;max-width:208px}#infectionFeed>div{border-radius:0;border-left:3px solid var(--purple);background:#0b0b0ee8}
+#bossHud{top:207px;border-radius:0;border-color:var(--paper);border-bottom:5px solid var(--rebel);background:#0b0b0ef2}#bossHud .bar i{background:var(--rebel)}
+#hurtVignette{border:0;border-radius:0;box-shadow:inset 0 0 80px #e4003666;background:radial-gradient(ellipse at center,transparent 65%,#ed183c88 100%)}
+#hurtVignette:before,#hurtVignette:after{top:0;bottom:0;width:15%;height:100%;background:var(--rebel);clip-path:polygon(0 0,75% 0,18% 10%,55% 17%,10% 30%,32% 40%,5% 53%,30% 67%,10% 78%,60% 92%,100% 100%,0 100%)}
+#playerHit{position:absolute;right:-8px;top:-40px;font:italic 900 38px/1 Impact,sans-serif;color:var(--paper);-webkit-text-stroke:1px #000;text-shadow:4px 4px var(--rebel);opacity:0;pointer-events:none}
+.playerPanel.impact{animation:rebel-panel-hit .24s ease-out}.playerPanel.impact #playerHit{animation:rebel-hit-tag .7s ease-out both}.playerPanel.critical .bar.hp{outline:2px solid var(--rebel);outline-offset:3px}
+#combatFeedback{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.combatPop{position:absolute;transform:translate(-50%,-100%) rotate(-9deg);min-width:75px;text-align:center;isolation:isolate;animation:rebel-pop .18s cubic-bezier(.2,1.4,.5,1) both}
+.combatPop:before{content:'';position:absolute;inset:-8px -18px;z-index:-1;background:var(--paper);clip-path:polygon(0 18%,26% 21%,32% 0,48% 18%,81% 3%,75% 32%,100% 42%,81% 59%,95% 88%,62% 77%,50% 100%,36% 78%,7% 94%,17% 58%);filter:drop-shadow(4px 4px #000)}
+.combatPop b{display:block;color:#0b0b0e;font:italic 900 38px/1 Impact,'Arial Black',sans-serif;letter-spacing:-1px;text-shadow:2px 2px #fff}
+.combatPop small{display:inline-block;padding:2px 7px;background:#0b0b0e;color:var(--paper);font-weight:900;font-size:9px;letter-spacing:1px;transform:rotate(4deg)}
+.combatPop.infection{transform:translate(-50%,-100%) rotate(7deg)}.combatPop.infection:before{background:var(--purple)}.combatPop.infection b{font-size:30px;text-shadow:2px 2px #dcb6ff}.combatPop.player:before,.combatPop.ally:before{background:var(--rebel)}.combatPop.player b,.combatPop.ally b{color:var(--paper);text-shadow:3px 3px #000}.combatPop.shield:before{background:#e7ff58}.combatPop.awaken:before{background:var(--purple)}.combatPop.awaken b{font-size:25px;line-height:1.3}.combatPop.awaken small{background:var(--paper);color:#0b0b0e}
+.unitLabel .name{background:#0b0b0eee;border-left:3px solid var(--paper);transform:skewX(-8deg);font-weight:900}.unitLabel .health{height:7px;background:#09090c;border:1px solid var(--paper);transform:skewX(-12deg)}.unitLabel .health i{background:var(--rebel);transition:width .12s}.unitLabel.friendly .health i{background:var(--paper)}.unitLabel .infection{height:5px;transform:skewX(-12deg);background:#0b0b0e}.unitLabel .infection i{background:var(--purple)}.unitLabel.polluted .name{border-color:var(--purple)}.unitLabel.polluted .number{display:inline-block;float:right;background:#361449;padding:2px 5px;color:var(--paper);font-weight:900}.unitLabel.locked .name{border-left:5px solid var(--paper)}.unitLabel.recentHit .health{box-shadow:2px 2px var(--paper)}
+#menu .menuShade{background:linear-gradient(105deg,#07070aec 0,#07070ac9 37%,#07070a30 68%,#07070a55 100%)}
+#menu:after{background:repeating-linear-gradient(135deg,transparent 0 20px,#ed183c08 20px 22px)}.gameLogo:before{mask:none;-webkit-mask:none;clip-path:polygon(0 25%,32% 8%,39% 0,60% 15%,100% 0,89% 56%,100% 70%,56% 81%,45% 100%,31% 75%,0 95%,9% 55%);background:var(--rebel);width:470px;height:215px;left:-30px}
+.gameLogo>span{font-style:italic;letter-spacing:-2px;text-shadow:5px 5px #000}.gameLogo>strong span{color:var(--rebel)}.gameLogo>small{background:var(--paper);border-radius:0;clip-path:var(--cut);transform:rotate(2deg);color:#0b0b0e}
+#menu .mainMenuNav>button,#menu .mainMenuNav>#continue{border-radius:0;background:#0b0b0e;border:2px solid var(--paper);clip-path:var(--cut);box-shadow:none;font-weight:900}
+#menu .mainMenuNav>#start{background:var(--rebel);color:var(--paper);box-shadow:none;border:3px solid var(--paper)}#menu .mainMenuNav>#start:before{color:var(--paper)}#menu .mainMenuNav>#start:hover:not(:disabled){background:var(--paper);color:#0b0b0e}#menu .mainMenuNav>button:before{color:var(--rebel)}
+.menuIntel{border-radius:0;border:3px solid var(--paper);border-bottom:8px solid var(--rebel);background:#0b0b0ee8}.intelHeader strong{color:var(--paper)}.genePreview i,.menuMap{border-radius:0}.genePreview i.active{background:var(--purple);color:#0b0b0e}.infectionNotice{border-radius:0;background:var(--rebel);border:2px solid var(--paper);color:var(--paper);clip-path:var(--cut)}.infectionNotice span{color:var(--paper)}.mapChoice select{border-radius:0;background:#0b0b0e;border:2px solid var(--paper)}
+.dialog{border-radius:0;background:radial-gradient(circle at 100% 0,#ffffff12 1px,transparent 2px) 0 0/7px 7px,#0b0b0e;border:3px solid var(--paper);border-top:9px solid var(--rebel);box-shadow:10px 10px #000}.dialog>.eyebrow{border-radius:0;background:var(--rebel);color:var(--paper);clip-path:var(--cut)}.dialog:before{background:var(--rebel);opacity:.8}.choiceSlot .card{border-radius:0;border:3px solid #0b0b0e;box-shadow:5px 5px 0 var(--rebel);background:var(--paper)}.card .type,.card .icon,.card kbd,.cardCta,.reroll,.action,.stats>div{border-radius:0}.card .type{background:#0b0b0e;color:var(--paper)}.card .icon{background:#0b0b0e;color:var(--purple)}.cardCta{color:#0b0b0e;border-color:#0b0b0e}.choiceSlot .card:hover:not(:disabled){background:var(--paper);transform:translateY(-6px) rotate(-2deg);box-shadow:8px 10px 0 var(--rebel)}.action{background:var(--rebel);color:var(--paper);border:2px solid var(--paper);clip-path:var(--cut)}.stats strong{color:var(--paper)}
+@keyframes rebel-pop{from{scale:.45;translate:0 14px}to{scale:1;translate:0 0}}
+@keyframes rebel-panel-hit{0%,60%{translate:6px 0}30%,90%{translate:-4px 0}100%{translate:0 0}}
+@keyframes rebel-hit-tag{0%{opacity:1;scale:1.4}30%,60%{opacity:1;scale:1}100%{opacity:0;translate:0 -15px}}
+@media(max-width:1000px){.playerPanel{left:16px;bottom:16px;width:220px}.objectivePanel{right:16px;bottom:16px;width:218px}.mapPanel{right:16px;width:180px}.xpPanel{left:16px;width:calc(100% - 32px)}.alertPanel{left:16px;width:195px}#abilitySlots{left:calc(50vw - 16px);width:32vw;bottom:5px}.slot{font-size:18px;height:31px;line-height:26px}}
+@media(max-width:760px){.xpPanel{top:10px;height:32px}.xpPanel .eyebrow{font-size:8px;letter-spacing:0}.levelBadge{width:51px}.playerPanel{width:190px;bottom:12px;left:10px;padding:10px}.objectivePanel{width:188px;right:10px;bottom:12px;padding:10px}.alertPanel{top:60px;left:10px;right:auto;width:165px}.mapPanel{top:105px;right:10px;width:155px}#clock{top:60px;font-size:28px}.hudTools{top:61px;right:55px}.hudTools button{font-size:9px;padding:5px}#pauseButton{top:57px;right:10px;width:32px;height:32px}#abilitySlots{left:calc(50vw - 10px);bottom:160px;width:290px;max-width:70vw}#runCountdown{top:103px;right:auto;left:50%;transform:translateX(-50%)}#infectionFeedback{top:293px;right:10px}#infectionFeed{top:330px;right:10px}#bossHud{top:200px;width:min(410px,72vw)}#toast{top:153px}#hud.countingDown #toast{top:153px}.gameLogo:before{width:340px}.dialog{padding:18px}}
+@media(max-height:560px){.mapPanel{width:140px;top:103px}.mapLegend{display:none}.objectivePanel{max-height:calc(100vh - 285px);overflow:auto}.playerPanel{padding:10px}.alertPanel{padding:7px 12px}#infectionFeed{display:none}.gameLogo:before{height:150px}.gameLogo>p{display:none}}
+@media(prefers-reduced-motion:reduce){.combatPop,.playerPanel.impact,.playerPanel.impact #playerHit{animation:none}.playerPanel.impact #playerHit{display:none}.unitLabel .health i{transition:none}}
+
+/* 能力栏和计时独立定位，避免斜切面板裁掉全屏元素。 */
+.playerPanel{transform:none}#abilitySlots{left:50%;bottom:26px;transform:translateX(-50%)}#runTimer{position:absolute;z-index:2;inset:0;pointer-events:none}
+@media(max-width:1000px){#abilitySlots{left:50%;bottom:21px}}
+@media(max-width:760px){#abilitySlots{left:50%;bottom:170px}}
+/* 污染持续状态用小型斜切标签，避免战场长期被大幅特效遮挡。 */
+.unitLabel.polluted .name:after{content:'☣ 污染';position:absolute;right:-6px;bottom:100%;padding:2px 7px;background:var(--purple);color:#0b0b0e;font-size:8px;font-weight:1000;letter-spacing:1px;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);text-shadow:none}
+.unitLabel.polluted .infection{box-shadow:2px 2px 0 #0b0b0e,3px 3px 0 var(--purple)}
+.combatPop.infection:after{content:'';position:absolute;inset:-6px -12px;pointer-events:none;z-index:-1;background:radial-gradient(#0b0b0e44 1px,transparent 1.5px) 0 0/4px 4px;clip-path:polygon(0 18%,26% 21%,32% 0,48% 18%,81% 3%,75% 32%,100% 42%,81% 59%,95% 88%,62% 77%,50% 100%,36% 78%,7% 94%,17% 58%)}
+/* 命中闪击贴在胸口：粗黑裂片、白色冲击核和红/紫残影，只停留约四分之一秒。 */
+.combatImpact{position:absolute;width:100px;height:100px;transform:translate(-50%,-50%);pointer-events:none;z-index:-1;animation:combat-impact-snap .26s ease-out both}
+.combatImpact:before,.combatImpact:after{content:'';position:absolute;inset:0;clip-path:polygon(50% 0,58% 30%,90% 12%,72% 42%,100% 50%,70% 58%,89% 91%,59% 70%,50% 100%,40% 70%,9% 90%,28% 58%,0 50%,30% 42%,12% 10%,42% 30%)}
+.combatImpact:before{background:#09090c;transform:rotate(13deg);filter:drop-shadow(5px 5px #ed183c)}
+.combatImpact:after{inset:10px;background:var(--paper);transform:rotate(-8deg)}
+.combatImpact.pollutionImpact:before{background:#09090c;filter:drop-shadow(5px 5px #bd79ff)}.combatImpact.pollutionImpact:after{background:#dfbbff}
+.combatPop{transform:translate(-50%,-50%) rotate(-9deg)}.combatPop.infection{transform:translate(-50%,-50%) rotate(7deg)}
+@keyframes combat-impact-snap{0%{scale:.4;rotate:-15deg}24%{scale:1.25;rotate:5deg}100%{scale:.8;rotate:12deg}}
+@media(prefers-reduced-motion:reduce){.combatImpact{animation:none}.combatImpact:before,.combatImpact:after{transform:none}}
+.combatPop{z-index:1}.combatImpact{z-index:0}
+/* 数字缩小并留在身体两侧；重击的差异由冲击、后仰和顿帧表达。 */
+.combatPop{min-width:48px}.combatPop b{font-size:24px;letter-spacing:-.5px}.combatPop.infection b{font-size:20px}.combatPop small{font-size:8px;padding:1px 5px}
+.combatPop:before{inset:-5px -9px}.combatPop.infection:after{inset:-4px -8px}
+.combatImpact{width:65px;height:65px}.combatImpact.heavy{width:105px;height:105px;animation-duration:.3s}.combatImpact.heavy:before{filter:drop-shadow(7px 7px #ed183c)}
+#playerHit{font-size:27px}
+/* 整张反馈爆贴随数值缩放，HUD 面板保留原尺寸。 */
+.combatPop{min-width:60px;transform:translate(-50%,-50%) rotate(-9deg) scale(var(--combat-scale,.8));transition:transform .08s ease-out}
+.combatPop.infection{transform:translate(-50%,-50%) rotate(7deg) scale(var(--combat-scale,.8))}
+.combatPop b{font-size:32px}.combatPop.infection b{font-size:26px}.combatPop small{font-size:9px}.combatPop:before{inset:-6px -12px}.combatPop.infection:after{inset:-5px -10px}
+@media(prefers-reduced-motion:reduce){.combatPop{transition:none}}
+/* 同伴攻击和受击作为次要信息：整体更小、更淡，减少尖角爆贴的存在感。 */
+.combatPop.subdued{filter:saturate(.45)}.combatPop.subdued small{display:none}.combatPop.subdued:before{inset:-3px -6px;clip-path:polygon(5% 0,100% 5%,95% 100%,0 94%)}.combatPop.subdued:after{display:none}
+.combatImpact.subdued{width:30px;height:30px}.combatImpact.subdued:before{filter:none}
+.unitLabel.friendly,.allyDot{opacity:.55}

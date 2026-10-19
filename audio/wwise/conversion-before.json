@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-19T02:38:29.878388+00:00",
+  "banks": {
+    "TokyoMusic.bnk": 5687088,
+    "Init.bnk": 1014,
+    "TokyoSfx.bnk": 5955265
+  },
+  "authorProjectBackup": "workshop-output://wwise-200-before-conversion.zip",
+  "currentEncoding": "Vorbis quality 4; source channels and sample rates"
+}

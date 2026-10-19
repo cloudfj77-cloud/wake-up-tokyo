@@ -1,10 +1,12 @@
+import {restoreCharacterFlash,stepCharacterFlash} from './hit-response.js';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
-import { loadMixamoCharacter } from './mixamo.js';
+import {resolveCharacterAssets} from './character-loading.mjs';
+import { loadMixamoCharacter,jumpClipTime } from './mixamo.js';
 import { loadWorkerAsset } from './worker.js';
 import { loadAwakenedAssets } from './awakened.js';
-import { loadShieldCopAsset, loadBatonCopAsset } from './police.js';
+import { loadShieldCopAsset, loadBatonCopAsset, loadInfectedCopAsset, loadPoliceProps } from './police.js';
 
 // 逻辑动作名 → 可能的 clip 名。直接同名优先，其次按顺序回退，
 // 这样 Mixamo 的 Idle / Walking / Running 等命名能无缝接进原有的状态机。
@@ -24,7 +26,7 @@ const CLIP_ALIASES = {
 };
 
 // 脚下光环色。持盾/持棍两套警察模型和警卫同阵营但兵种不同，给两个可分辨的颜色。
-const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee, shieldCop: 0x2f6fbf, batonCop: 0x8fbf6a };
+const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee, shieldCop: 0x2f6fbf, batonCop: 0x8fbf6a, infectedCop: 0xb478f1 };
 
 // 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
 // 例如现实中 1.82 米的主角，在游戏画面里应约为 1 个单位，才能和汽车比例一致。
@@ -32,14 +34,24 @@ const CITY_MODEL_SCALE = 0.55;
 export const CHARACTER_HEIGHTS = {
   player: 1.7 * CITY_MODEL_SCALE,
   guard: 1.75 * CITY_MODEL_SCALE,
+  // 变异形态体型壮，按成年男性身高缩放会显得比周围单位大一圈，压矮一点才协调。
+  infectedCop: 1.55 * CITY_MODEL_SCALE,
   humanBase: 1.58 * CITY_MODEL_SCALE,
   humanVariantStep: 0.025 * CITY_MODEL_SCALE,
 };
 
+// 按「现实身高（米）」改某一类角色的高度，方便按模型实际比例微调（URL ?copheight=1.5）。
+export function setCharacterHeight(kind, meters) {
+  if (!Number.isFinite(meters) || meters <= 0) return CHARACTER_HEIGHTS[kind];
+  CHARACTER_HEIGHTS[kind] = meters * CITY_MODEL_SCALE;
+  return CHARACTER_HEIGHTS[kind];
+}
+
 export function characterHeight(kind, variant = 0) {
   if (kind === 'player') return CHARACTER_HEIGHTS.player;
+  if (kind === 'infectedCop') return CHARACTER_HEIGHTS.infectedCop;
   // 两套警察模型和警卫一样是成年男性身高，共用同一档。
-  if (kind === 'guard' || kind === 'shieldCop' || kind === 'batonCop') return CHARACTER_HEIGHTS.guard;
+  if (kind === 'guard' || kind === 'shieldCop' || kind === 'batonCop' || kind === 'infectedCop') return CHARACTER_HEIGHTS.guard;
   return CHARACTER_HEIGHTS.humanBase + variant * CHARACTER_HEIGHTS.humanVariantStep;
 }
 
@@ -48,7 +60,8 @@ export function prepareCharacterAsset(gltf) {
   const bounds = new THREE.Box3().setFromObject(gltf.scene);
   const height = bounds.max.y - bounds.min.y;
   if (!Number.isFinite(height) || height <= 0) throw new Error('人物模型尺寸无效');
-  return { scene: gltf.scene, clips: gltf.animations, bounds, height };
+  // groundY：可选的地面基准（脚部骨骼高度）。模型自带时用它对齐地面，否则按包围盒底。
+  return { scene: gltf.scene, clips: gltf.animations, bounds, height, groundY: gltf.groundY ?? null };
 }
 
 export async function loadCharacterAsset() {
@@ -67,45 +80,17 @@ const CHARACTER_MODEL_FILES = {
 };
 
 export async function loadCharacterAssets() {
-  // 打工人优先用 public/workers/ 下的 FBX 资源；拿到之后就不再下载原来的体素打工人模型。
-  const worker = await loadWorkerAsset().then(prepareCharacterAsset).catch(error => {
-    console.warn('[characters] 未启用打工人模型：', error.message);
-    return null;
+  const optional=(load,label)=>async()=>{try{return prepareCharacterAsset(await load());}catch(error){console.warn('[characters] 未启用'+label+'：',error.message);return null;}};
+  return resolveCharacterAssets({
+    worker:optional(loadWorkerAsset,'打工人模型'),
+    player:optional(loadMixamoCharacter,'Mixamo 主角'),
+    shieldCop:optional(loadShieldCopAsset,'持盾特警模型'),
+    batonCop:optional(loadBatonCopAsset,'持棍巡警模型'),
+    infectedCop:optional(loadInfectedCopAsset,'感染警察模型'),
+    props:()=>loadPoliceProps().catch(error=>{console.warn('[characters] 未启用警察配件：',error.message);return null;}),
+    awakened:async()=>{try{return (await loadAwakenedAssets()).map(prepareCharacterAsset);}catch(error){console.warn('[characters] 未启用觉醒形态：',error.message);return []; }},
+    fallback:async key=>prepareCharacterAsset(await new GLTFLoader().loadAsync(CHARACTER_MODEL_FILES[key])),
   });
-  // 觉醒形态：画家与读者两套外观，替代原来的 awakened.glb，感染时随机取一个。
-  let awakenedVariants = [];
-  try {
-    awakenedVariants = (await loadAwakenedAssets()).map(prepareCharacterAsset);
-  } catch (error) {
-    console.warn('[characters] 未启用觉醒形态：', error.message);
-  }
-  const files = Object.entries(CHARACTER_MODEL_FILES)
-    .filter(([key]) => !(worker && (key === 'humanMale' || key === 'humanFemale')) && !(awakenedVariants.length && key === 'ally'));
-  const entries = await Promise.all(files.map(async ([key, file]) => {
-    const gltf = await new GLTFLoader().loadAsync(file);
-    return [key, prepareCharacterAsset(gltf)];
-  }));
-  const assets = Object.fromEntries(entries);
-  if (worker) { assets.humanMale = worker; assets.humanFemale = worker; }
-  if (awakenedVariants.length) { assets.ally = awakenedVariants[0]; assets.allyVariants = awakenedVariants; }
-  // 若 public/mixamo/manifest.json 存在，主人公改用 Mixamo 角色与动作；否则沿用体素主角。
-  const mixamo = await loadMixamoCharacter().then(prepareCharacterAsset).catch(error => {
-    console.warn('[characters] 未启用 Mixamo 主角：', error.message);
-    return null;
-  });
-  if (mixamo) assets.player = mixamo;
-  // 持盾特警 / 持棍巡警：public/police/ 下的专属 FBX，拿不到就继续用通用警卫模型。
-  const shieldCop = await loadShieldCopAsset().then(prepareCharacterAsset).catch(error => {
-    console.warn('[characters] 未启用持盾特警模型：', error.message);
-    return null;
-  });
-  if (shieldCop) assets.shieldCop = shieldCop;
-  const batonCop = await loadBatonCopAsset().then(prepareCharacterAsset).catch(error => {
-    console.warn('[characters] 未启用持棍巡警模型：', error.message);
-    return null;
-  });
-  if (batonCop) assets.batonCop = batonCop;
-  return assets;
 }
 
 // 单个资产（旧写法）直接透传；资产集按主人公、觉醒者、警卫和打工人选择专属模型。
@@ -118,6 +103,7 @@ function selectCharacterAsset(assets, kind) {
     if (assets.ally) return assets.ally;
   }
   // 两套警察模型优先于通用警卫：兵种有了专属外观，才分得清拿盾的还是拿棍的。
+  if (kind === 'infectedCop' && assets.infectedCop) return assets.infectedCop;
   if (kind === 'shieldCop' && assets.shieldCop) return assets.shieldCop;
   if (kind === 'batonCop' && assets.batonCop) return assets.batonCop;
   if (['guard', 'shieldCop', 'batonCop'].includes(kind) && assets.guard) return assets.guard;
@@ -136,7 +122,8 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   const center = asset.bounds.getCenter(new THREE.Vector3());
   // 三个方向必须使用同一个倍率，否则人物会被压扁或拉长。
   model.scale.setScalar(scale);
-  root.position.set(-center.x, -asset.bounds.min.y, -center.z);
+  const groundY = asset.groundY ?? asset.bounds.min.y;
+  root.position.set(-center.x, -groundY, -center.z);
   model.add(root);
   const holder = new THREE.Group();
   holder.add(model);
@@ -224,16 +211,21 @@ export function playCharacterJump(visual, duration = 7 / 9) {
   visual.attackTime = 0;
   action.setLoop(THREE.LoopOnce, 1);
   action.clampWhenFinished = true;
-  action.setEffectiveTimeScale(action.getClip().duration / duration);
+  visual.jumpPlayback={elapsed:0,duration};visual.jumpPhase=null;
+  action.setEffectiveTimeScale(0);
   if (visual.current === action) action.reset().setEffectiveWeight(1).play();
-  else switchAnimation(visual, 'jump', .07);
+  else switchAnimation(visual, 'jump', .025);
+  action.time=jumpClipTime(action.getClip(),0);
 }
 
 export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false) {
+  stepCharacterFlash(visual,dt);
   if (visual.attackTime > 0) visual.attackTime -= dt;
   if (visual.airborne) {
     visual.attackTime = 0;
     if (visual.current !== resolveAction(visual, 'jump')) playCharacterJump(visual);
+    const playback=visual.jumpPlayback;
+    if(playback){playback.elapsed+=dt;visual.current.time=jumpClipTime(visual.current.getClip(),visual.jumpPhase??playback.elapsed/playback.duration);}
   } else if (visual.attackTime <= 0) {
     // 端着枪移动用 Strafing，徒手移动用跑步（Fast Run），未感染的打工人走蹒跚步。
     const name = moving
@@ -245,7 +237,9 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
     // 觉醒者 3.8 单位/秒配 Fast Run（0.53 秒/圈，自然步幅约 1.0 单位）→ 需要 2.0 倍速。
     const scale = !moving ? 1 : visual.kind === 'human' ? 1.0 : visual.kind === 'ally' ? 2.0 : (sprinting ? 1.45 : 1.0);
     if (action) action.setEffectiveTimeScale(scale);
-    switchAnimation(visual, name);
+    const landing=visual.current===resolveAction(visual,'jump');
+    switchAnimation(visual, name,landing?.06:.18);
+    visual.jumpPlayback=null;visual.jumpPhase=null;
   }
   // 第八章：16 米内动画照常，再远降低骨骼刷新，大约 58 米外不再刷新。影子只在大约 18 米内打开。
   visual.holder.visible = distance < 58;
@@ -268,18 +262,23 @@ const POOL_CAP={human:36,guard:72,ally:36};
 const visualPools={human:[],guard:[],ally:[]};
 export function visualPoolKey(kind){return kind==='human'||kind==='ally'?kind:'guard';}
 function parkPooledVisual(visual){
+ restoreCharacterFlash(visual);
  visual.holder.removeFromParent();
  visual.holder.visible=false;
  visual.holder.position.set(0,-120,0);
  visual.holder.rotation.set(0,0,0);
+ // 清掉受击后仰，避免归还模型池后下一名士兵带着旧姿势出生。
+ visual.model.rotation.set(0,0,0);
  visual.holdingGun=false;
  visual.airborne=false;
+ visual.jumpPlayback=null;visual.jumpPhase=null;
  visual.attackTime=0;
  visual.accumulated=0;
  visual.mixer.stopAllAction();
  visual.current=null;
 }
 function disposeCharacterVisual(visual){
+ restoreCharacterFlash(visual);
  visual.mixer.stopAllAction();
  visual.holder.removeFromParent();
  if(visual.ownsMaterials!==false)for(const mat of visual.materials.values())mat?.dispose?.();

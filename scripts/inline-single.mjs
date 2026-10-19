@@ -73,10 +73,13 @@ console.log(`内联外部资源 ${Object.keys(assets).length} 个，原始体积
 // 所以在这里统一拦截 fetch / XHR / img.src，把已知路径替换成内联的 data URI。
 const prelude = `<script>
 window.__SINGLE_FILE__=true;
+addEventListener('DOMContentLoaded',function(){var n=document.createElement('div');n.style.cssText='position:fixed;left:12px;bottom:12px;z-index:20000;background:#241b30;color:#fff0cb;padding:10px;font:13px system-ui';n.textContent='单文件预览不支持 Wwise 音乐。完整声音版请使用本地启动器。';document.body.append(n);});
 window.__SF_ASSETS__=${JSON.stringify(assets)};
 (function(){
  var MAP=window.__SF_ASSETS__||{};
- var DIRS=['mixamo','awakened','awakened-reader','workers','draco','music'];
+ // 单文件网页没有服务器。警察模型和贴图也是运行时按路径去取的，
+ // 不放进这份名单就会取失败，游戏会悄悄退回旧的警卫模型。
+ var DIRS=['mixamo','awakened','awakened-reader','workers','draco','music','police'];
  function rewrite(url){
   if(typeof url!=='string'||url.slice(0,5)==='data:')return url;
   var clean=url.split('?')[0].split('#')[0];

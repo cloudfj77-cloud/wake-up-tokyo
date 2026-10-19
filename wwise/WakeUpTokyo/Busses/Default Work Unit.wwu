@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{87AF61F6-6FFD-4872-A8AD-C0C3C9AD43E8}" SchemaVersion="133">
+	<Busses>
+		<WorkUnit Name="Default Work Unit" ID="{87AF61F6-6FFD-4872-A8AD-C0C3C9AD43E8}" PersistMode="Standalone">
+			<ChildrenList>
+				<Bus Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}">
+					<PropertyList>
+						<Property Name="BusVolume" Type="Real64">
+							<ValueList>
+								<Value>-6</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="AudioDevice" PluginName="System" CompanyID="0" PluginID="174" PluginType="7">
+							<ObjectRef Name="System" ID="{D26DFCA6-3D51-4747-A898-2B20C6C9DFD0}" WorkUnitID="{69CD459E-FF69-49E3-B976-B4F94C5B9113}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Bus Name="Tokyo_Music" ID="{81879DC4-F224-42C2-91D0-196AE2C3ED06}">
+							<PropertyList>
+								<Property Name="BusVolume" Type="Real64">
+									<ValueList>
+										<Value>-9</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<RTPC Name="" ID="{FB2ED8FA-2CEA-4B5A-B730-087BDD6D65B6}" ShortID="956151692">
+										<PropertyList>
+											<Property Name="PropertyName" Type="string" Value="BusVolume"/>
+										</PropertyList>
+										<ReferenceList>
+											<Reference Name="ControlInput">
+												<ObjectRef Name="Music_GainDb" ID="{B6BCAB84-2A56-4254-9D80-21120E6B8B19}" WorkUnitID="{23134277-8929-4514-BC42-5F55500A01A7}"/>
+											</Reference>
+											<Reference Name="Curve">
+												<Custom>
+													<Curve Name="" ID="{D399CD43-290D-4E31-9261-1FDEC0C5F8AC}">
+														<PropertyList>
+															<Property Name="Flags" Type="int32" Value="3"/>
+														</PropertyList>
+														<PointList>
+															<Point>
+																<XPos>-96</XPos>
+																<YPos>-96</YPos>
+																<Flags>5</Flags>
+															</Point>
+															<Point>
+																<XPos>0</XPos>
+																<YPos>0</YPos>
+																<Flags>37</Flags>
+															</Point>
+														</PointList>
+													</Curve>
+												</Custom>
+											</Reference>
+										</ReferenceList>
+									</RTPC>
+								</ObjectList>
+							</ObjectLists>
+						</Bus>
+						<Bus Name="Tokyo_SFX" ID="{792984FB-1705-456B-B514-4BF5AAD407FB}">
+							<PropertyList>
+								<Property Name="BusVolume" Type="Real64">
+									<ValueList>
+										<Value>-2</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+						</Bus>
+						<Bus Name="Tokyo_Ambience" ID="{18C7AD2B-8AC5-4D4E-AFA0-F3CE6D5D311A}"/>
+						<Bus Name="Tokyo_Voice" ID="{B1FD8A64-EE4F-4745-9543-63801D834192}"/>
+					</ChildrenList>
+				</Bus>
+			</ChildrenList>
+		</WorkUnit>
+	</Busses>
+</WwiseDocument>

@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-19T03:39:43.616200+00:00",
+  "releaseFolder": "release/wake-up-tokyo-local-2026-10-19T03-38-14-377Z",
+  "packageBytes": 94192505,
+  "zipFile": "release/wake-up-tokyo-local-2026-10-19T03-38-14-377Z.zip",
+  "zipBytes": 92534488,
+  "zipSha256": "a7ab6bddf8e26235b09c0f124e92f229a9be868f38b03f65f0953146e0eaad56",
+  "storedAndDecodedAndHttpAssetsVerified": 86,
+  "rangeFilesVerified": 9,
+  "totalMedia": 200,
+  "testsPassed": 226,
+  "reductionFromBaseline": 0.5942599610719608
+}

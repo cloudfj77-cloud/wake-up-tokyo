@@ -1,0 +1,1903 @@
+{
+  "objective": "完成高质量游戏音效，使用声音工坊、现有素材及必要时Splice；Wwise接入",
+  "status": "implemented_trial_pending_listening",
+  "approvedDirection": "弹性液体与街头反抗，对比冷硬机械秩序；已有Funk/Breakbeat音乐",
+  "requirements": [
+    {
+      "id": "ui.focus",
+      "group": "界面",
+      "name": "悬停与键盘焦点",
+      "variants": 3,
+      "duration": "40–90 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 823,
+        "anchor": "function chooseUpgrade",
+        "verified": true
+      },
+      "trigger": "有效焦点变化",
+      "stop": "单次；去抖",
+      "sound": "轻纸片/塑料敲击，连续移动时不刺耳",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "uiFocus"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ui.confirm",
+      "group": "界面",
+      "name": "菜单确认",
+      "variants": 3,
+      "duration": "100–180 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 841,
+        "anchor": "async function start",
+        "verified": true
+      },
+      "trigger": "确认按钮实际生效",
+      "stop": "单次，不在指针按下和 click 各响一次",
+      "sound": "短促上挑，与战斗感染音不混淆",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "uiConfirm"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ui.back",
+      "group": "界面",
+      "name": "返回与取消",
+      "variants": 2,
+      "duration": "80–160 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 846,
+        "anchor": "function settingsDialog",
+        "verified": true
+      },
+      "trigger": "返回/取消实际完成",
+      "stop": "单次",
+      "sound": "低一档的柔和回落，与确认成对",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "uiBack"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ui.panel",
+      "group": "界面",
+      "name": "暂停、地图开合",
+      "variants": 4,
+      "duration": "120–250 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 844,
+        "anchor": "function togglePause",
+        "verified": true
+      },
+      "trigger": "面板实际打开/关闭",
+      "stop": "暂停时属于可播放的 UI 总线",
+      "sound": "纸张展开/收拢，加轻电子边缘；打开与关闭分文件",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "uiOpen",
+        "uiClose"
+      ],
+      "availableClips": 6,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ui.reroll",
+      "group": "界面",
+      "name": "单张能力卡刷新",
+      "variants": 3,
+      "duration": "180–350 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 823,
+        "anchor": "function chooseUpgrade",
+        "verified": true
+      },
+      "trigger": "当前卡片刷新成功",
+      "stop": "刷新不可用时不播放成功音",
+      "sound": "短洗牌加粒子重组，贴合单卡动画",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "uiReroll"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ui.acquire",
+      "group": "界面",
+      "name": "升级与能力获得",
+      "variants": 4,
+      "duration": "0.6–1.2 秒",
+      "current": "替换 upgrade 的能力用途",
+      "source": {
+        "file": "main.js",
+        "line": 1926,
+        "anchor": "playLevelUpFx=function",
+        "verified": true
+      },
+      "trigger": "升级确认与能力领取分别触发",
+      "stop": "一轮只保留主反馈；开局领取不叠等级音",
+      "sound": "相同三音身份；升级/领取分开，避免与拾取和胜利共用",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "upgrade",
+        "uiAcquire"
+      ],
+      "availableClips": 7,
+      "listeningAccepted": false
+    },
+    {
+      "id": "pickup.health",
+      "group": "拾取",
+      "name": "血包",
+      "variants": 3,
+      "duration": "180–350 毫秒",
+      "current": "拆分 upgrade 复用",
+      "source": {
+        "file": "main.js",
+        "line": 566,
+        "anchor": "function updatePickups",
+        "verified": true
+      },
+      "trigger": "collectPickup 返回有效回血",
+      "stop": "满血未消耗不发声",
+      "sound": "柔软充盈、短亮点，清晰温和",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "pickupHealth"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "pickup.factor",
+      "group": "拾取",
+      "name": "狂暴因子",
+      "variants": 3,
+      "duration": "140–280 毫秒",
+      "current": "拆分 upgrade 复用",
+      "source": {
+        "file": "main.js",
+        "line": 566,
+        "anchor": "function updatePickups",
+        "verified": true
+      },
+      "trigger": "经验因子被实际消耗",
+      "stop": "同帧批量拾取合并",
+      "sound": "小颗粒吸收，短节奏上挑",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "pickupFactor"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "pickup.potion",
+      "group": "拾取",
+      "name": "狂暴药水启用与到期",
+      "variants": 3,
+      "duration": "启动 0.4–0.7 秒；结束 0.2 秒",
+      "current": "拆分并补到期",
+      "source": {
+        "file": "main.js",
+        "line": 566,
+        "anchor": "function updatePickups",
+        "verified": true
+      },
+      "trigger": "药水生效；增益计时归零",
+      "stop": "暂停冻结；死亡/结算停止",
+      "sound": "玻璃/液体进入体内，结束用弱收束，不能伪装成受伤",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "ui",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "pickupPotion",
+        "potionEnd"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "move.steps",
+      "group": "移动",
+      "name": "沥青、硬铺地、金属脚步",
+      "variants": 12,
+      "duration": "每步 90–200 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 525,
+        "anchor": "function move",
+        "verified": true
+      },
+      "trigger": "实际位移累积跨步；材质由地图区域标记",
+      "stop": "离地、停止、暂停不补步；远处人群按距离与预算筛选",
+      "sound": "三类材质各 4 个独立源；角色近景干声，不给整群人等响度",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "foley",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "stepRoad",
+        "stepStone",
+        "stepMetal"
+      ],
+      "availableClips": 12,
+      "listeningAccepted": false
+    },
+    {
+      "id": "move.jump",
+      "group": "移动",
+      "name": "起跳",
+      "variants": 3,
+      "duration": "120–220 毫秒",
+      "current": "替换 jump",
+      "source": {
+        "file": "main.js",
+        "line": 650,
+        "anchor": "music.effect('jump')",
+        "verified": true
+      },
+      "trigger": "起跳实际成功",
+      "stop": "单次；无效空格不响",
+      "sound": "短鞋底离地、衣料与轻呼气，少量漫画上挑",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "foley",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "jump"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "move.land",
+      "group": "移动",
+      "name": "落地",
+      "variants": 4,
+      "duration": "120–350 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 662,
+        "anchor": "const wasAirborne=player.y>0",
+        "verified": true
+      },
+      "trigger": "离地到着地的实际状态边沿",
+      "stop": "连续跳跃每次只触发一次",
+      "sound": "重量来自鞋底和低中频；强度依落速，不靠尖锐爆音",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "foley",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "land"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "move.roll",
+      "group": "移动",
+      "name": "闪避翻滚",
+      "variants": 4,
+      "duration": "0.25–0.5 秒",
+      "current": "替换 roll",
+      "source": {
+        "file": "main.js",
+        "line": 643,
+        "anchor": "music.effect('roll')",
+        "verified": true
+      },
+      "trigger": "短按 Shift 成功进入翻滚",
+      "stop": "被跳跃打断时淡掉持续衣料",
+      "sound": "衣料掠动、摩擦和轻重落点；长按奔跑不误触",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "foley",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "roll"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "player.hurt",
+      "group": "玩家",
+      "name": "受伤与防御反馈",
+      "variants": 4,
+      "duration": "120–300 毫秒",
+      "current": "替换 hurt 并拆保护层",
+      "source": {
+        "file": "main.js",
+        "line": 586,
+        "anchor": "function playerHurt",
+        "verified": true
+      },
+      "trigger": "实际扣血或防御判定成功",
+      "stop": "受伤冷却；一击一确认",
+      "sound": "低中频肉身冲击；皮糙肉厚用短硬壳反弹，避免每帧重播",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "hurt",
+        "hitArmor"
+      ],
+      "availableClips": 8,
+      "listeningAccepted": false
+    },
+    {
+      "id": "player.lowhp",
+      "group": "玩家",
+      "name": "低血量提示",
+      "variants": 1,
+      "duration": "短脉冲循环",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1770,
+        "anchor": "function hud",
+        "verified": true
+      },
+      "trigger": "进入低生命区间",
+      "stop": "回血、死亡、暂停、结算停止",
+      "sound": "稀疏低脉冲，按危险程度控制密度；不持续压住敌人预警",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "lowHp"
+      ],
+      "availableClips": 1,
+      "listeningAccepted": false
+    },
+    {
+      "id": "player.defeat",
+      "group": "玩家",
+      "name": "倒下动作",
+      "variants": 3,
+      "duration": "0.5–1 秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 674,
+        "anchor": "function finish",
+        "verified": true
+      },
+      "trigger": "生命归零首次确认",
+      "stop": "接失败音乐前只保留短身体尾音",
+      "sound": "衣料与身体落地，克制的非语言气息",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "defeatSfx"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "melee.light",
+      "group": "战斗",
+      "name": "徒手轻击挥动",
+      "variants": 4,
+      "duration": "160–280 毫秒",
+      "current": "拆分 infect",
+      "source": {
+        "file": "main.js",
+        "line": 599,
+        "anchor": "function meleeStrike",
+        "verified": true
+      },
+      "trigger": "有效轻击开始",
+      "stop": "命中另触发材质层；空挥不播命中",
+      "sound": "近景衣料和短拳风，利落有弹性",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "meleeLight"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "melee.heavy",
+      "group": "战斗",
+      "name": "徒手重击挥动",
+      "variants": 4,
+      "duration": "260–500 毫秒",
+      "current": "拆分 infect",
+      "source": {
+        "file": "main.js",
+        "line": 599,
+        "anchor": "function meleeStrike",
+        "verified": true
+      },
+      "trigger": "有效重击开始",
+      "stop": "命中同步另发，不将长冲击粘在挥动上",
+      "sound": "更厚的拳风、短蓄势；与轻击明显不同",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "meleeHeavy"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "impact.body",
+      "group": "战斗",
+      "name": "肉身命中",
+      "variants": 5,
+      "duration": "100–250 毫秒",
+      "current": "新增独立命中层",
+      "source": {
+        "file": "main.js",
+        "line": 585,
+        "anchor": "function applyHit",
+        "verified": true
+      },
+      "trigger": "命中结算 hit/killed/converted，按材质选择",
+      "stop": "对同一穿透/散弹命中去重",
+      "sound": "紧实橡胶/肉身主体，少量液态点缀，保持漫画感",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "impact",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "hitBody"
+      ],
+      "availableClips": 5,
+      "listeningAccepted": false
+    },
+    {
+      "id": "impact.armor",
+      "group": "战斗",
+      "name": "盾牌与装甲命中",
+      "variants": 4,
+      "duration": "100–300 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 584,
+        "anchor": "function facingFront",
+        "verified": true
+      },
+      "trigger": "盾面/坦克材质有效命中",
+      "stop": "近远距离衰减；不可感染机械不播感染成功音",
+      "sound": "短金属块体与拒绝反馈，区别于伤害成功",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "impact",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "hitArmor"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "syringe.fire",
+      "group": "感染",
+      "name": "感染针发射",
+      "variants": 4,
+      "duration": "100–230 毫秒",
+      "current": "拆分 shoot/infect",
+      "source": {
+        "file": "main.js",
+        "line": 612,
+        "anchor": "music.effect(empowered?",
+        "verified": true
+      },
+      "trigger": "普通注射器弹体真正发出",
+      "stop": "每发一次；无伤害普通针不能冒充枪伤",
+      "sound": "气阀、针管弹性和极短紫色液体脉冲",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "syringe"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "infection.hit",
+      "group": "感染",
+      "name": "感染针命中与寄生进入",
+      "variants": 4,
+      "duration": "100–260 毫秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 585,
+        "anchor": "function applyHit",
+        "verified": true
+      },
+      "trigger": "目标实际获得感染值",
+      "stop": "机械免疫不播；同一弹体同目标只响一次",
+      "sound": "小液滴入体，正向而非血腥，区别于枪弹命中",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "infectionHit",
+        "abilityParasite"
+      ],
+      "availableClips": 7,
+      "listeningAccepted": false
+    },
+    {
+      "id": "charge.progress",
+      "group": "感染",
+      "name": "三次有效命中充能",
+      "variants": 3,
+      "duration": "90–160 毫秒",
+      "current": "替换 chargeTick",
+      "source": {
+        "file": "main.js",
+        "line": 246,
+        "anchor": "function onPlayerProjectileHit",
+        "verified": true
+      },
+      "trigger": "recordPowerHit 返回成功后的 1/2/3 档",
+      "stop": "一发穿透/散弹不多计；最后一档给就绪音留位",
+      "sound": "同一音色三个清晰音高，不将源码传入的 2/4/6 误当六次充能",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "charge1",
+        "charge2",
+        "charge3"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "charge.ready",
+      "group": "感染",
+      "name": "强化就绪",
+      "variants": 2,
+      "duration": "0.3–0.5 秒",
+      "current": "替换 chargeReady",
+      "source": {
+        "file": "main.js",
+        "line": 252,
+        "anchor": "music.effect('chargeReady')",
+        "verified": true
+      },
+      "trigger": "第三次有效命中使强化可用",
+      "stop": "只在未就绪到就绪边沿播一次",
+      "sound": "短电荷锁定加液态吸附，不能靠高频持续鸣叫",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "chargeReady"
+      ],
+      "availableClips": 2,
+      "listeningAccepted": false
+    },
+    {
+      "id": "power.throw",
+      "group": "感染",
+      "name": "强化炮弹发射",
+      "variants": 4,
+      "duration": "0.25–0.5 秒",
+      "current": "替换 powerThrow",
+      "source": {
+        "file": "main.js",
+        "line": 612,
+        "anchor": "music.effect(empowered?",
+        "verified": true
+      },
+      "trigger": "真正消耗充能并生成强化炮弹",
+      "stop": "单发；飞行尾随弹体销毁而结束",
+      "sound": "厚气压、液体抽离与弹性低音，保留玩家紫色身份",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "power"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "power.bounce",
+      "group": "感染",
+      "name": "强化炮弹弹墙",
+      "variants": 4,
+      "duration": "100–220 毫秒",
+      "current": "替换 powerBounce",
+      "source": {
+        "file": "main.js",
+        "line": 278,
+        "anchor": "music.effect('powerBounce')",
+        "verified": true
+      },
+      "trigger": "实际撞墙反弹",
+      "stop": "接触冷却；不逐帧触发",
+      "sound": "弹性湿碰撞，短尾，区别于触地爆炸",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "powerBounce"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "power.impact",
+      "group": "感染",
+      "name": "强化炮弹触地扩散",
+      "variants": 4,
+      "duration": "0.5–1 秒",
+      "current": "替换 powerImpact 并拆薪火/机械单位爆炸",
+      "source": {
+        "file": "main.js",
+        "line": 261,
+        "anchor": "function releasePowerWave",
+        "verified": true
+      },
+      "trigger": "有效爆炸一次",
+      "stop": "一颗炮弹只引爆一次；场景退出清尾",
+      "sound": "湿润扩张、圆厚冲击和小粒子，避免大面积尖锐噪声",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "powerImpact"
+      ],
+      "availableClips": 10,
+      "listeningAccepted": false
+    },
+    {
+      "id": "infection.convert",
+      "group": "感染",
+      "name": "单体与群体觉醒",
+      "variants": 4,
+      "duration": "0.35–0.7 秒",
+      "current": "重做 convert 并统一重复入口",
+      "source": {
+        "file": "main.js",
+        "line": 585,
+        "anchor": "music.effect('convert')",
+        "verified": true
+      },
+      "trigger": "阵营首次转为 ally；批量转换由一处汇总",
+      "stop": "120–200 毫秒窗口合并人数；不逐人叠满主音",
+      "sound": "液体绽放加原创三音上升签名，群体增加宽度与颗粒，响度有上限",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "convert"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "legacy.pistol",
+      "group": "旧档武器",
+      "name": "手枪/枪警单发",
+      "variants": 4,
+      "duration": "0.15–0.45 秒",
+      "current": "旧档兼容与敌枪复用",
+      "source": {
+        "file": "rules.js",
+        "line": 145,
+        "anchor": "export const GUNS",
+        "verified": true
+      },
+      "trigger": "真实子弹发出",
+      "stop": "每发一源；远处敌枪限额",
+      "sound": "偏街机的干燥枪机与短爆声；4 个独立单发源",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "gunshot",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "gunPistol"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "legacy.shotgun",
+      "group": "旧档武器",
+      "name": "霰弹枪单发",
+      "variants": 4,
+      "duration": "0.25–0.6 秒",
+      "current": "旧档兼容",
+      "source": {
+        "file": "rules.js",
+        "line": 145,
+        "anchor": "export const GUNS",
+        "verified": true
+      },
+      "trigger": "一次射击实际产生多弹丸",
+      "stop": "同一扳机仅一声发射",
+      "sound": "宽厚短爆与机械细节；不是每颗弹丸一发枪声",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "gunshot",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "gunShotgun"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "legacy.rifle",
+      "group": "旧档武器",
+      "name": "自动步枪/大兵单发",
+      "variants": 4,
+      "duration": "0.12–0.35 秒",
+      "current": "旧档与敌军/友军复用",
+      "source": {
+        "file": "main.js",
+        "line": 1361,
+        "anchor": "function enemyFire",
+        "verified": true
+      },
+      "trigger": "每发真实开火",
+      "stop": "随机不连重；密集战优先近距离和面向玩家的威胁",
+      "sound": "中频机械身份明确，不预录整段扫射替代实际射速",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "gunshot",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "gunRifle"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "legacy.sniper",
+      "group": "旧档武器",
+      "name": "狙击枪单发",
+      "variants": 4,
+      "duration": "0.3–0.7 秒",
+      "current": "旧档兼容",
+      "source": {
+        "file": "rules.js",
+        "line": 145,
+        "anchor": "export const GUNS",
+        "verified": true
+      },
+      "trigger": "有效射击",
+      "stop": "单次与空间衰减",
+      "sound": "厚实而短，避免影院长尾盖住下一次威胁",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "gunshot",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "gunSniper"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "legacy.rpg",
+      "group": "旧档武器",
+      "name": "火箭筒发射与爆炸",
+      "variants": 4,
+      "duration": "发射 0.4 秒；爆炸 0.8 秒",
+      "current": "旧档兼容",
+      "source": {
+        "file": "main.js",
+        "line": 599,
+        "anchor": "function meleeStrike",
+        "verified": true
+      },
+      "trigger": "弹体生成/爆炸结算分别发声",
+      "stop": "飞行声跟随弹体；销毁取消",
+      "sound": "干气压发射与机械爆炸分段，区别于液态强化炮",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "gunshot",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "gunRpg",
+        "explosion"
+      ],
+      "availableClips": 8,
+      "listeningAccepted": false
+    },
+    {
+      "id": "weapons.handling",
+      "group": "旧档武器",
+      "name": "切枪、空仓与换弹",
+      "variants": 7,
+      "duration": "切枪/空仓 <0.25 秒；换弹总 1.15 秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 678,
+        "anchor": "function reloadGun",
+        "verified": true
+      },
+      "trigger": "有效切枪、空仓判定、开始换弹与装填完成",
+      "stop": "暂停冻结；中断取消未发生的插入/完成声",
+      "sound": "切换、干击、弹匣释放/插入/上膛分文件；按现有 1.15 秒计时同步，不宣称有精细换弹动画",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "foley",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "reload",
+        "switchWeapon",
+        "empty"
+      ],
+      "availableClips": 7,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ability.air",
+      "group": "能力",
+      "name": "空气传播与气雾形成",
+      "variants": 4,
+      "duration": "形成 0.4 秒；可选弱循环",
+      "current": "新增",
+      "source": {
+        "file": "rules.js",
+        "line": 52,
+        "anchor": "\"id\": \"air\"",
+        "verified": true
+      },
+      "trigger": "气雾区域实际建立/消失；非每 0.5 秒结算都发声",
+      "stop": "区域消失、离开听距、暂停停止",
+      "sound": "轻喷雾、微泡，主体轻且低密度；持续传播不蜂鸣",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "abilityAir"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ability.parasite",
+      "group": "能力",
+      "name": "深度寄生禁锢",
+      "variants": 3,
+      "duration": "0.25–0.5 秒",
+      "current": "新增",
+      "source": {
+        "file": "rules.js",
+        "line": 86,
+        "anchor": "\"name\": \"持续感染\"",
+        "verified": true
+      },
+      "trigger": "首次跨过目标 50% 阈值并实际禁锢",
+      "stop": "每目标一次；死亡或转化不残留持续音",
+      "sound": "有机绷紧与短扣合，保留柔软弹性",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "abilityParasite"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ability.bloodtide",
+      "group": "能力",
+      "name": "狂杀血潮",
+      "variants": 3,
+      "duration": "0.5–0.9 秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1958,
+        "anchor": "if(state.tideBurst&&state.tideBurst!==__comicSeenTide)",
+        "verified": true
+      },
+      "trigger": "第十次有效个人战果释放血潮",
+      "stop": "一次脉冲一次声音；远处友军不复制玩家确认",
+      "sound": "肉身低冲击加外扩拍点，区别于炮弹的气压发射",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "abilityBlood"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ability.evolve",
+      "group": "能力",
+      "name": "适应修复与进化狂潮",
+      "variants": 4,
+      "duration": "0.35–0.7 秒",
+      "current": "新增独立层",
+      "source": {
+        "file": "rules.js",
+        "line": 118,
+        "anchor": "\"id\": \"evolve\"",
+        "verified": true
+      },
+      "trigger": "适应修复实际回血/新单位实际进化",
+      "stop": "升级 UI 与修复层合并控制；不按增益每帧发声",
+      "sound": "温暖充盈和体型生长，节奏短，区别于血潮",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "abilityEvolve"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ability.command",
+      "group": "能力",
+      "name": "号令召集、解散与护卫出现",
+      "variants": 5,
+      "duration": "0.2–0.6 秒",
+      "current": "新增",
+      "source": {
+        "file": "rules.js",
+        "line": 1023,
+        "anchor": "export function guardWanted",
+        "verified": true
+      },
+      "trigger": "F 号令状态真正改变/护卫实际生成",
+      "stop": "连续无效指令不重播；护卫批量进入汇总",
+      "sound": "短口哨/非语言呼令和同伴答复；避免长台词占用注意力",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "abilityCommand",
+        "commandDismiss",
+        "guardSpawn"
+      ],
+      "availableClips": 5,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ability.kindling",
+      "group": "能力",
+      "name": "薪火加层、满层脉冲与消退",
+      "variants": 5,
+      "duration": "加层 0.15 秒；脉冲 0.6 秒",
+      "current": "拆分 powerImpact 并补状态",
+      "source": {
+        "file": "main.js",
+        "line": 579,
+        "anchor": "function flushKindlingPulses",
+        "verified": true
+      },
+      "trigger": "附近友军阵亡使层数变化；满层后实际脉冲",
+      "stop": "刷新时间但层数不变时不重复完整上升；归零弱收束",
+      "sound": "颗粒火种叠层，不像真实大火；脉冲带温暖低频，不复用炮击",
+      "spatial": "listener",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "kindlingGain",
+        "abilityKindling",
+        "kindlingEnd"
+      ],
+      "availableClips": 5,
+      "listeningAccepted": false
+    },
+    {
+      "id": "enemy.melee",
+      "group": "敌人与同伴",
+      "name": "棍、盾冲、大锤动作与预警",
+      "variants": 9,
+      "duration": "前摇按动作；冲击 <0.5 秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1565,
+        "anchor": "function tickShieldCharge",
+        "verified": true
+      },
+      "trigger": "敌人前摇/冲刺开始/命中；友军用同源较轻版本",
+      "stop": "被打断、死亡、转化立即停止原敌方循环",
+      "sound": "棍风、盾金属、锤低频三种身份；盾冲约 0.4 秒前摇有可辨认起音",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "meleeLight",
+        "meleeHeavy",
+        "enemyWindup",
+        "shieldDash",
+        "hitArmor"
+      ],
+      "availableClips": 17,
+      "listeningAccepted": false
+    },
+    {
+      "id": "enemy.spray",
+      "group": "敌人与同伴",
+      "name": "净化喷雾",
+      "variants": 4,
+      "duration": "启动、循环、停止",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1490,
+        "anchor": "function tickPurifier",
+        "verified": true
+      },
+      "trigger": "预警约 1 秒后进入喷雾，持续至少 2 秒",
+      "stop": "离开喷雾状态、死亡、转化、暂停停止",
+      "sound": "冷硬气阀和细气流；与玩家紫色液态区分，状态循环不按伤害 tick 重启",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "sprayWarning",
+        "sprayLoop"
+      ],
+      "availableClips": 5,
+      "listeningAccepted": false
+    },
+    {
+      "id": "enemy.grenade",
+      "group": "敌人与同伴",
+      "name": "手雷投掷、下落与爆炸",
+      "variants": 6,
+      "duration": "下落约 0.95 秒；爆炸 0.5 秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1270,
+        "anchor": "function lobBomb",
+        "verified": true
+      },
+      "trigger": "弹体生成/落点预警/落地结算",
+      "stop": "落地停止飞行层；转化不逆改已发弹体阵营",
+      "sound": "干燥机械脆击与短爆；落点提示有方向，区别于 Boss 黄色炮",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "grenadeThrow",
+        "grenadeFall",
+        "explosion"
+      ],
+      "availableClips": 7,
+      "listeningAccepted": false
+    },
+    {
+      "id": "enemy.tank",
+      "group": "敌人与同伴",
+      "name": "坦克履带、开炮、压撞与摧毁",
+      "variants": 7,
+      "duration": "循环 + 分段单次",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1533,
+        "anchor": "function rollTank",
+        "verified": true
+      },
+      "trigger": "坦克实际移动/炮弹发出/压撞有效/死亡",
+      "stop": "停止移动、离距、销毁、暂停清循环",
+      "sound": "厚金属与柴油感；每辆世界点声源，禁播感染成功音",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "tankLoop",
+        "gunRpg",
+        "tankRam",
+        "explosion"
+      ],
+      "availableClips": 11,
+      "listeningAccepted": false
+    },
+    {
+      "id": "enemy.plane",
+      "group": "敌人与同伴",
+      "name": "飞机盘旋、扫射预警、投弹与坠毁",
+      "variants": 9,
+      "duration": "循环 + 1.15 秒预警 + 单次",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1068,
+        "anchor": "function beginStrafeWarn",
+        "verified": true
+      },
+      "trigger": "飞机生成/转向扫射/投弹/坠毁状态边沿",
+      "stop": "离阶段或销毁完全清理；盘旋声持续低电平",
+      "sound": "头顶方向和移动感；扫射前警示领先实际 1.15 秒，不靠持续轰鸣遮挡地面",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "planeLoop",
+        "planeWarning",
+        "planeDive",
+        "gunRifle",
+        "grenadeFall",
+        "planeCrash",
+        "explosion"
+      ],
+      "availableClips": 15,
+      "listeningAccepted": false
+    },
+    {
+      "id": "boss.arrival",
+      "group": "Boss",
+      "name": "巨像入场与任务提示",
+      "variants": 2,
+      "duration": "入场 1.5–2.5 秒；任务 0.4 秒",
+      "current": "拆分 alertUp 复用",
+      "source": {
+        "file": "main.js",
+        "line": 210,
+        "anchor": "function showBossArrival",
+        "verified": true
+      },
+      "trigger": "实际宣告入场/后续任务横幅",
+      "stop": "入场只一次；任务不再重放完整入场重击",
+      "sound": "巨大玩具机械与滑稽蛙体共存，压迫中有怪诞性",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "bossArrival"
+      ],
+      "availableClips": 2,
+      "listeningAccepted": false
+    },
+    {
+      "id": "boss.throw",
+      "group": "Boss",
+      "name": "黄色炮弹出膛",
+      "variants": 4,
+      "duration": "0.3–0.6 秒",
+      "current": "替换 bossThrow",
+      "source": {
+        "file": "main.js",
+        "line": 1329,
+        "anchor": "function throwBossOrb",
+        "verified": true
+      },
+      "trigger": "炮弹实际生成",
+      "stop": "当前前摇常量为 0；不虚构 1 秒蓄力",
+      "sound": "低喉音/空腔机械喷吐，明显不同于紫色液弹",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "bossThrow"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "boss.warning",
+      "group": "Boss",
+      "name": "黄色炮弹飞行和落点危险",
+      "variants": 3,
+      "duration": "实际飞行 0.9–1.45 秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1356,
+        "anchor": "function updateBossOrb",
+        "verified": true
+      },
+      "trigger": "弹体在飞行且存在落点圈",
+      "stop": "爆炸、销毁、暂停停止；剩余时间决定密度",
+      "sound": "短音型逐渐收紧，方向/距离服务躲避，不能改动伤害与前摇",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "bossWarning"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "boss.impact",
+      "group": "Boss",
+      "name": "黄色炮弹爆炸",
+      "variants": 4,
+      "duration": "0.7–1.2 秒",
+      "current": "替换 bossImpact",
+      "source": {
+        "file": "main.js",
+        "line": 1349,
+        "anchor": "function detonateBossOrb",
+        "verified": true
+      },
+      "trigger": "detonated 首次置位",
+      "stop": "每弹一次；远处降电平与高频",
+      "sound": "巨型空腔冲击、砂石与短尾，低频受控，主炮不由 5 个尖振荡器叠响",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "bossImpact"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "boss.core",
+      "group": "Boss",
+      "name": "核心过热窗口",
+      "variants": 3,
+      "duration": "开始/弱持续/结束",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1356,
+        "anchor": "function updateBoss",
+        "verified": true
+      },
+      "trigger": "weak 从 0 到正值与重新归零",
+      "stop": "窗口约 2.2 秒；暂停冻结，死亡停止",
+      "sound": "阀门泄压与清晰可攻击提示，压在炮击预警下",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "bossCoreOpen",
+        "bossCore"
+      ],
+      "availableClips": 4,
+      "listeningAccepted": false
+    },
+    {
+      "id": "boss.phase",
+      "group": "Boss",
+      "name": "阶段转换",
+      "variants": 2,
+      "duration": "0.6–1 秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1356,
+        "anchor": "function updateBoss",
+        "verified": true
+      },
+      "trigger": "phase 实际改变",
+      "stop": "每阶段只一次；不在 HUD 每次绘制时触发",
+      "sound": "重机械扣合和主题短句；阶段优先改变配器密度而非不断提音量",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "bossPhase"
+      ],
+      "availableClips": 2,
+      "listeningAccepted": false
+    },
+    {
+      "id": "boss.death",
+      "group": "Boss",
+      "name": "巨像倒下",
+      "variants": 2,
+      "duration": "1.5–2.5 秒",
+      "current": "新增",
+      "source": {
+        "file": "main.js",
+        "line": 1356,
+        "anchor": "function updateBoss",
+        "verified": true
+      },
+      "trigger": "boss.dead 首次确认",
+      "stop": "先给坍塌主落点，再进入胜利音乐；不重复触发",
+      "sound": "玩具巨物卸力与机械松脱，不把 Boss 当真实恐怖怪兽",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "bossDeath"
+      ],
+      "availableClips": 2,
+      "listeningAccepted": false
+    },
+    {
+      "id": "world.break",
+      "group": "场景",
+      "name": "玻璃、砖石、金属设施破坏",
+      "variants": 12,
+      "duration": "0.2–0.8 秒",
+      "current": "新增并替换抽象 break",
+      "source": {
+        "file": "world.js",
+        "line": 48,
+        "anchor": "breakAt",
+        "verified": true
+      },
+      "trigger": "建筑/设施生命跨零或真实命中材质",
+      "stop": "同次爆炸聚合碎片；限制尾音密度",
+      "sound": "三类材质各 4 个独立源；按整栋/分块实际行为制作，不假设完整刚体物理",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "other",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "breakGlass",
+        "breakStone",
+        "breakMetal"
+      ],
+      "availableClips": 12,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ambience.river",
+      "group": "环境",
+      "name": "东京河畔底声",
+      "variants": 2,
+      "duration": "45–90 秒循环",
+      "current": "新增",
+      "source": {
+        "file": "maps.js",
+        "line": 1,
+        "anchor": "export const MAPS",
+        "verified": true
+      },
+      "trigger": "riverside 开始/继续",
+      "stop": "切图、暂停淡出、结算清理",
+      "sound": "低密度水面、远交通和风；底床宽，河面近水声另作点声源",
+      "spatial": "bed",
+      "kind": "sfx",
+      "category": "ambience",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "cityBed",
+        "riverBed",
+        "windBed"
+      ],
+      "availableClips": 3,
+      "listeningAccepted": false
+    },
+    {
+      "id": "ambience.sea",
+      "group": "环境",
+      "name": "海滨广场底声",
+      "variants": 2,
+      "duration": "45–90 秒循环",
+      "current": "新增",
+      "source": {
+        "file": "maps.js",
+        "line": 1,
+        "anchor": "export const MAPS",
+        "verified": true
+      },
+      "trigger": "tidewater 开始/继续",
+      "stop": "切图、暂停淡出、结算清理",
+      "sound": "海风、远浪与开阔广场，不能只是河畔循环换 EQ",
+      "spatial": "bed",
+      "kind": "sfx",
+      "category": "ambience",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "seaBed",
+        "windBed"
+      ],
+      "availableClips": 2,
+      "listeningAccepted": false
+    },
+    {
+      "id": "world.spots",
+      "group": "环境",
+      "name": "近水、桥梁与钟楼附近点声源",
+      "variants": 5,
+      "duration": "稀疏单次/低床",
+      "current": "新增；点位需后续标记",
+      "source": {
+        "file": "tidewater-world.js",
+        "line": 16,
+        "anchor": "export",
+        "verified": true
+      },
+      "trigger": "进入已核实的地标声区",
+      "stop": "离区衰减到零；钟声低频率且可停",
+      "sound": "河边水流、桥金属轻振、海边浪近层；钟声仅在选定钟楼点位作稀疏提示",
+      "spatial": "world",
+      "kind": "sfx",
+      "category": "ambience",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "riverBed",
+        "bridgeCreak",
+        "clockBell",
+        "worldMachinery"
+      ],
+      "availableClips": 5,
+      "listeningAccepted": false
+    },
+    {
+      "id": "voice.radio",
+      "group": "播报",
+      "name": "秩序方五级英语电台",
+      "variants": 5,
+      "duration": "每句目标 2.5–4.5 秒",
+      "current": "替换系统 speechSynthesis",
+      "source": {
+        "file": "rules.js",
+        "line": 579,
+        "anchor": "export const RADIO_BACKUP",
+        "verified": true
+      },
+      "trigger": "警戒首次跨入 2–6 阶段",
+      "stop": "暂停/结算取消；短队列按优先级淘汰过时台词",
+      "sound": "同一成年英语声线、克制权威、窄带电台；沿用现有 5 句文本，另补 UI 字幕与语音音量控制",
+      "spatial": "listener",
+      "kind": "voice",
+      "category": "voice",
+      "status": "implemented_trial",
+      "evidence": [
+        "sfx-cues.json",
+        "sfx-asset-audit.json",
+        "main.js",
+        "sfx-director.mjs"
+      ],
+      "familyKeys": [
+        "radio2",
+        "radio3",
+        "radio4",
+        "radio5",
+        "radio6"
+      ],
+      "availableClips": 5,
+      "listeningAccepted": false
+    }
+  ],
+  "listening": {
+    "humanAccepted": false,
+    "audioReviewerConfigured": false
+  },
+  "phases": [
+    "素材与内容验证",
+    "Wwise分组/随机/空间/循环",
+    "真实玩法触发与生命周期",
+    "全覆盖/密集实机/两个音乐循环/人类听审"
+  ],
+  "mixTarget": {
+    "wholeMixLufs": "-20 to -16 starting range; do not boost quiet scenes",
+    "truePeakDbtp": -1,
+    "denseHeadroomDb": 3,
+    "hierarchy": [
+      "玩家主要动作/危险预警",
+      "受击/转化/交互",
+      "友军与远处战斗",
+      "音乐/环境"
+    ]
+  },
+  "updatedAt": "2026-10-19T03:52:05.239Z",
+  "notes": [
+    "Current source families are trial integrations, not human-adopted sounds.",
+    "Glass routing is conditional on a destructible reporting glass/window/car/vending material; static windows are not made destructible by this audio change.",
+    "Footstep crowd emitters are intentionally distance/voice-budget limited; player footsteps and the two closest walking actors are implemented."
+  ]
+}

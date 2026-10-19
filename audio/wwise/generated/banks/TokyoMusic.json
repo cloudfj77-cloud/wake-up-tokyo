@@ -1,0 +1,249 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Web",
+  "BasePlatform": "Web",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "268141082",
+    "Type": "User",
+    "GUID": "{7F993E60-39D2-4827-A17C-C069301839A5}",
+    "Language": "SFX",
+    "Hash": "{45971944-7E95-B4E0-8030-A27AE34B991A}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\TokyoMusic",
+    "ShortName": "TokyoMusic",
+    "Path": "TokyoMusic.bnk",
+    "Media": [
+     {
+      "Id": "2611905",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoMusic\\menu.wav",
+      "Path": "Media/2611905.wem",
+      "CachePath": "8A/{8AFCC81C-F1F2-8C51-FDA4-0F66D23BD6CE}.wem",
+      "PrefetchSize": "29909",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "53097435",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoMusic\\street.wav",
+      "Path": "Media/53097435.wem",
+      "CachePath": "EC/{ECDA89D0-2FCD-BF75-675B-7B8022C8C6FD}.wem",
+      "PrefetchSize": "28866",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "659547489",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoMusic\\boss.wav",
+      "Path": "Media/659547489.wem",
+      "CachePath": "2B/{2B0B09B4-F1B6-866C-2369-881F12674EAE}.wem",
+      "PrefetchSize": "30019",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "663454604",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoMusic\\pressure.wav",
+      "Path": "Media/663454604.wem",
+      "CachePath": "21/{21637123-AAA4-8CEE-EB0C-4FC47579B79E}.wem",
+      "PrefetchSize": "31473",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "681023555",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoMusic\\victory.wav",
+      "CachePath": "B1/{B1353F89-3759-8BF1-99B9-329D81067995}.wem"
+     },
+     {
+      "Id": "798922006",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoMusic\\defeat.wav",
+      "CachePath": "C8/{C8326B94-EBF1-0472-B948-A18643F92589}.wem"
+     },
+     {
+      "Id": "879483395",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoMusic\\countdown.wav",
+      "Path": "Media/879483395.wem",
+      "CachePath": "A9/{A959A883-8BFA-BC0A-9506-1B97644763F1}.wem",
+      "PrefetchSize": "35361",
+      "ContainsPrefetch": "true"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3781935787",
+      "Name": "Music_Aftermath",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Aftermath",
+      "GUID": "{CC07DC02-8584-4FF0-AFCE-B555F4AF6FC8}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "2611905"
+       }
+      ]
+     },
+     {
+      "Id": "1090969866",
+      "Name": "Music_Boss",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Boss",
+      "GUID": "{2E8F7C6C-FA12-4DA0-BF56-D02884824BE6}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "659547489"
+       }
+      ]
+     },
+     {
+      "Id": "646355010",
+      "Name": "Music_Countdown",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Countdown",
+      "GUID": "{2F5F7E0D-D19B-4635-8533-F0801BB95CD9}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "879483395"
+       }
+      ]
+     },
+     {
+      "Id": "3125733004",
+      "Name": "Music_Defeat",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Defeat",
+      "GUID": "{55E15252-3C26-4228-BEAC-519176D34D2D}",
+      "DurationType": "OneShot",
+      "DurationMin": "8.4",
+      "DurationMax": "8.4",
+      "MediaRefs": [
+       {
+        "Id": "798922006"
+       }
+      ]
+     },
+     {
+      "Id": "1598298728",
+      "Name": "Music_Menu",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Menu",
+      "GUID": "{FDFA65EC-800C-4682-B133-C818AEB18F56}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "2611905"
+       }
+      ]
+     },
+     {
+      "Id": "2895066125",
+      "Name": "Music_Pause",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Pause",
+      "GUID": "{5DEABE6A-7D43-42DD-AE4B-D732D0F46F0F}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "1575781068",
+      "Name": "Music_Pressure",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Pressure",
+      "GUID": "{4005E751-FA1C-4029-A16B-F2887BF7ADC4}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "663454604"
+       }
+      ]
+     },
+     {
+      "Id": "2775610868",
+      "Name": "Music_Resume",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Resume",
+      "GUID": "{56ED6EBE-0737-4E61-9ABB-8171A3F0C6CD}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "3227181061",
+      "Name": "Music_Stop",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Stop",
+      "GUID": "{2A79C521-3ED4-412A-B162-F21155F12BDA}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "3514563608",
+      "Name": "Music_Street",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Street",
+      "GUID": "{B01F4F36-E865-49FE-ADDF-2160BC32B153}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "53097435"
+       }
+      ]
+     },
+     {
+      "Id": "2637400697",
+      "Name": "Music_Victory",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_Victory",
+      "GUID": "{FBE90713-8797-4FD5-9EAE-8CF469D96BCF}",
+      "DurationType": "OneShot",
+      "DurationMin": "8.8",
+      "DurationMax": "8.8",
+      "MediaRefs": [
+       {
+        "Id": "681023555"
+       }
+      ]
+     },
+     {
+      "Id": "2052127271",
+      "Name": "Music_VictoryAftermath",
+      "ObjectPath": "\\Events\\Default Work Unit\\Music_VictoryAftermath",
+      "GUID": "{99CF278D-6B6E-4ABE-82E4-3A270B5026A6}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "2611905"
+       },
+       {
+        "Id": "681023555"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "2017017160",
+      "Name": "Music_DuckDb",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Music_DuckDb",
+      "GUID": "{DAF16F4B-9B7E-4BEE-A251-E30013D183E2}"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{D38CAEDD-B5D6-2AB5-4E7D-1938E68E99B2}"
+ }
+}

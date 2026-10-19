@@ -1,0 +1,1341 @@
+{
+  "url": "http://127.0.0.1:5392/?audio=1&map=riverside",
+  "at": "2026-10-19T02:33:20.837Z",
+  "crossOriginIsolated": true,
+  "backend": "wwise",
+  "subjectiveReview": "pending",
+  "families": [
+    {
+      "key": "stepRoad",
+      "rms": 0.0011087617883117876,
+      "left": 0.0011087617883117876,
+      "right": 0.0011087617883117876,
+      "peak": 0.01390421949326992
+    },
+    {
+      "key": "stepStone",
+      "rms": 0.0009155091244122401,
+      "left": 0.0009155091244122401,
+      "right": 0.0009155091244122401,
+      "peak": 0.021480396389961243
+    },
+    {
+      "key": "jump",
+      "rms": 0.0025810777063656446,
+      "left": 0.0025810777063656446,
+      "right": 0.0025810777063656446,
+      "peak": 0.03263699635863304
+    },
+    {
+      "key": "land",
+      "rms": 0.0007050142280389562,
+      "left": 0.0007050142280389562,
+      "right": 0.0007050142280389562,
+      "peak": 0.009452908299863338
+    },
+    {
+      "key": "roll",
+      "rms": 0.0008627413295424078,
+      "left": 0.0008626629025840006,
+      "right": 0.0008628197493721097,
+      "peak": 0.01854667440056801
+    },
+    {
+      "key": "meleeLight",
+      "rms": 0.0035569495365107943,
+      "left": 0.0035569495365107943,
+      "right": 0.0035569495365107943,
+      "peak": 0.03138307109475136
+    },
+    {
+      "key": "meleeHeavy",
+      "rms": 0.007948774748605617,
+      "left": 0.007948774748605617,
+      "right": 0.007948774748605617,
+      "peak": 0.05813062936067581
+    },
+    {
+      "key": "hitBody",
+      "rms": 0.00330592512861877,
+      "left": 0.00330592512861877,
+      "right": 0.00330592512861877,
+      "peak": 0.025257542729377747
+    },
+    {
+      "key": "hitArmor",
+      "rms": 0.0033488716678628013,
+      "left": 0.0033488716678628013,
+      "right": 0.0033488716678628013,
+      "peak": 0.030878908932209015
+    },
+    {
+      "key": "hurt",
+      "rms": 0.01186910625743282,
+      "left": 0.01186910625743282,
+      "right": 0.01186910625743282,
+      "peak": 0.12734393775463104
+    },
+    {
+      "key": "defeatSfx",
+      "rms": 0.007895282968388194,
+      "left": 0.007895282968388194,
+      "right": 0.007895282968388194,
+      "peak": 0.03634160757064819
+    },
+    {
+      "key": "reload",
+      "rms": 0.0026485057491921387,
+      "left": 0.0026767783168644057,
+      "right": 0.002619928100038661,
+      "peak": 0.05809050425887108
+    },
+    {
+      "key": "switchWeapon",
+      "rms": 0.0025818727713853313,
+      "left": 0.0025818727713853313,
+      "right": 0.0025818727713853313,
+      "peak": 0.026706956326961517
+    },
+    {
+      "key": "empty",
+      "rms": 0.0017109208706088796,
+      "left": 0.0017109276280272477,
+      "right": 0.0017109141131638225,
+      "peak": 0.040763042867183685
+    },
+    {
+      "key": "uiFocus",
+      "rms": 0.00031898058738358265,
+      "left": 0.0003105862727331041,
+      "right": 0.00032715959017719264,
+      "peak": 0.012531282380223274
+    },
+    {
+      "key": "uiConfirm",
+      "rms": 0.001874533204764836,
+      "left": 0.0018745402186766322,
+      "right": 0.0018745261908267958,
+      "peak": 0.01839425042271614
+    },
+    {
+      "key": "uiBack",
+      "rms": 0.0017077283779148378,
+      "left": 0.0016664756130901663,
+      "right": 0.0017480078536571398,
+      "peak": 0.016437429934740067
+    },
+    {
+      "key": "uiOpen",
+      "rms": 0.0013482035565211689,
+      "left": 0.0013401476724338819,
+      "right": 0.0013562115895769014,
+      "peak": 0.01063658855855465
+    },
+    {
+      "key": "uiClose",
+      "rms": 0.0008188647420727892,
+      "left": 0.0008461328695310122,
+      "right": 0.0007906567515167919,
+      "peak": 0.015159361995756626
+    },
+    {
+      "key": "uiReroll",
+      "rms": 0.0009609501356075162,
+      "left": 0.0009609501356075162,
+      "right": 0.0009609501356075162,
+      "peak": 0.04717934504151344
+    },
+    {
+      "key": "upgrade",
+      "rms": 0.005165862534088752,
+      "left": 0.005348297198700042,
+      "right": 0.0049767447710909385,
+      "peak": 0.037093572318553925
+    },
+    {
+      "key": "pickupHealth",
+      "rms": 0.0024790572138087756,
+      "left": 0.0024790572138087756,
+      "right": 0.0024790572138087756,
+      "peak": 0.022656211629509926
+    },
+    {
+      "key": "pickupFactor",
+      "rms": 0.0019400970545029755,
+      "left": 0.0019400970545029755,
+      "right": 0.0019400970545029755,
+      "peak": 0.02528856322169304
+    },
+    {
+      "key": "pickupPotion",
+      "rms": 0.002251397995760483,
+      "left": 0.002251397995760483,
+      "right": 0.002251397995760483,
+      "peak": 0.02554945833981037
+    },
+    {
+      "key": "powerBounce",
+      "rms": 0.003847399457866078,
+      "left": 0.003847399457866078,
+      "right": 0.003847399457866078,
+      "peak": 0.043312132358551025
+    },
+    {
+      "key": "powerImpact",
+      "rms": 0.006518296051234548,
+      "left": 0.006518296051234548,
+      "right": 0.006518296051234548,
+      "peak": 0.07279116660356522
+    },
+    {
+      "key": "explosion",
+      "rms": 0.008345879592601912,
+      "left": 0.008345879592601912,
+      "right": 0.008345879592601912,
+      "peak": 0.038633402436971664
+    },
+    {
+      "key": "grenadeThrow",
+      "rms": 0.001184832705423556,
+      "left": 0.001184832705423556,
+      "right": 0.001184832705423556,
+      "peak": 0.03277420997619629
+    },
+    {
+      "key": "bossImpact",
+      "rms": 0.01074951554217166,
+      "left": 0.01074951554217166,
+      "right": 0.01074951554217166,
+      "peak": 0.041926056146621704
+    },
+    {
+      "key": "bossDeath",
+      "rms": 0.011955208039417306,
+      "left": 0.011955208039417306,
+      "right": 0.011955208039417306,
+      "peak": 0.04446733742952347
+    },
+    {
+      "key": "breakGlass",
+      "rms": 0.0024597729186306093,
+      "left": 0.0024597729186306093,
+      "right": 0.0024597729186306093,
+      "peak": 0.036702435463666916
+    },
+    {
+      "key": "breakStone",
+      "rms": 0.005970023943664859,
+      "left": 0.005970023943664859,
+      "right": 0.005970023943664859,
+      "peak": 0.026554055511951447
+    },
+    {
+      "key": "breakMetal",
+      "rms": 0.0016578117103762447,
+      "left": 0.0016578117103762447,
+      "right": 0.0016578117103762447,
+      "peak": 0.015306022949516773
+    },
+    {
+      "key": "tankLoop",
+      "rms": 0.002229660237164359,
+      "left": 0.002229660237164359,
+      "right": 0.002229660237164359,
+      "peak": 0.012468172237277031
+    },
+    {
+      "key": "sprayLoop",
+      "rms": 0.001773315686071197,
+      "left": 0.001773315686071197,
+      "right": 0.001773315686071197,
+      "peak": 0.013128718361258507
+    },
+    {
+      "key": "cityBed",
+      "rms": 0.0005558776487629588,
+      "left": 0.0005103824776734746,
+      "right": 0.0005979211045550708,
+      "peak": 0.0028992993757128716
+    },
+    {
+      "key": "riverBed",
+      "rms": 0.0005142396645625955,
+      "left": 0.0005142396645625955,
+      "right": 0.0005142396645625955,
+      "peak": 0.002712144050747156
+    },
+    {
+      "key": "seaBed",
+      "rms": 0.0002496880797505639,
+      "left": 0.0002242235688059689,
+      "right": 0.00027278575023443377,
+      "peak": 0.001769266091287136
+    },
+    {
+      "key": "police",
+      "rms": 0.000004251656412283749,
+      "left": 0.00000425154837746182,
+      "right": 0.000004251764444360578,
+      "peak": 0.000021391890186350793
+    },
+    {
+      "key": "windBed",
+      "rms": 0.00010359539064110265,
+      "left": 0.00010570810778098586,
+      "right": 0.00010143868036172787,
+      "peak": 0.0005732245044782758
+    },
+    {
+      "key": "syringe",
+      "rms": 0.0042078736544299096,
+      "left": 0.0042078736544299096,
+      "right": 0.0042078736544299096,
+      "peak": 0.09162686765193939
+    },
+    {
+      "key": "convert",
+      "rms": 0.009654065753833665,
+      "left": 0.00971328847058696,
+      "right": 0.00959447748685932,
+      "peak": 0.0674675852060318
+    },
+    {
+      "key": "power",
+      "rms": 0.012947247157137416,
+      "left": 0.012947247157137416,
+      "right": 0.012947247157137416,
+      "peak": 0.09782051295042038
+    },
+    {
+      "key": "bossThrow",
+      "rms": 0.00880442666659351,
+      "left": 0.00880442666659351,
+      "right": 0.00880442666659351,
+      "peak": 0.05753200501203537
+    },
+    {
+      "key": "stepMetal",
+      "rms": 0.0011854023495294357,
+      "left": 0.0011854023495294357,
+      "right": 0.0011854023495294357,
+      "peak": 0.012583964504301548
+    },
+    {
+      "key": "gunPistol",
+      "rms": 0.008488448378876353,
+      "left": 0.008488448378876353,
+      "right": 0.008488448378876353,
+      "peak": 0.08212321251630783
+    },
+    {
+      "key": "gunShotgun",
+      "rms": 0.005800101609669615,
+      "left": 0.005800101609669615,
+      "right": 0.005800101609669615,
+      "peak": 0.06507685780525208
+    },
+    {
+      "key": "gunRifle",
+      "rms": 0.011454368569157623,
+      "left": 0.011454368625345771,
+      "right": 0.011454368512969474,
+      "peak": 0.08770926296710968
+    },
+    {
+      "key": "gunSniper",
+      "rms": 0.006097727595086006,
+      "left": 0.006097727595086006,
+      "right": 0.006097727595086006,
+      "peak": 0.09479379653930664
+    },
+    {
+      "key": "gunRpg",
+      "rms": 0.010640946974771841,
+      "left": 0.010640946974771841,
+      "right": 0.010640946974771841,
+      "peak": 0.09014720469713211
+    },
+    {
+      "key": "infectionHit",
+      "rms": 0.002725023544229523,
+      "left": 0.002725023544229523,
+      "right": 0.002725023544229523,
+      "peak": 0.035108137875795364
+    },
+    {
+      "key": "abilityBlood",
+      "rms": 0.00794023201587243,
+      "left": 0.00794023201587243,
+      "right": 0.00794023201587243,
+      "peak": 0.051617711782455444
+    },
+    {
+      "key": "abilityEvolve",
+      "rms": 0.006400330555711039,
+      "left": 0.006547429961671593,
+      "right": 0.006249769863102311,
+      "peak": 0.05327355116605759
+    },
+    {
+      "key": "abilityAir",
+      "rms": 0.002478345445843134,
+      "left": 0.002478345445843134,
+      "right": 0.002478345445843134,
+      "peak": 0.02816629782319069
+    },
+    {
+      "key": "abilityParasite",
+      "rms": 0.003340673632282513,
+      "left": 0.003340673632282513,
+      "right": 0.003340673632282513,
+      "peak": 0.019620660692453384
+    },
+    {
+      "key": "charge1",
+      "rms": 0.0030969191298362295,
+      "left": 0.0030969191298362295,
+      "right": 0.0030969191298362295,
+      "peak": 0.03144904971122742
+    },
+    {
+      "key": "charge2",
+      "rms": 0.0031163311604757863,
+      "left": 0.0031163311604757863,
+      "right": 0.0031163311604757863,
+      "peak": 0.03154274448752403
+    },
+    {
+      "key": "charge3",
+      "rms": 0.0029549564800197946,
+      "left": 0.0029549564800197946,
+      "right": 0.0029549564800197946,
+      "peak": 0.031446423381567
+    },
+    {
+      "key": "lowHp",
+      "rms": 0.002233396039732462,
+      "left": 0.002233396039732462,
+      "right": 0.002233396039732462,
+      "peak": 0.015576987527310848
+    },
+    {
+      "key": "radio2",
+      "rms": 0.026156104762672088,
+      "left": 0.026156104762672088,
+      "right": 0.026156104762672088,
+      "peak": 0.12722289562225342
+    },
+    {
+      "key": "radio3",
+      "rms": 0.02411105199163032,
+      "left": 0.02411105199163032,
+      "right": 0.02411105199163032,
+      "peak": 0.1393100470304489
+    },
+    {
+      "key": "radio4",
+      "rms": 0.024642755395904232,
+      "left": 0.024642755395904232,
+      "right": 0.024642755395904232,
+      "peak": 0.11800243705511093
+    },
+    {
+      "key": "radio5",
+      "rms": 0.020679051325252464,
+      "left": 0.020679051325252464,
+      "right": 0.020679051325252464,
+      "peak": 0.1220398098230362
+    },
+    {
+      "key": "radio6",
+      "rms": 0.020747225978629897,
+      "left": 0.020747225978629897,
+      "right": 0.020747225978629897,
+      "peak": 0.11431299895048141
+    },
+    {
+      "key": "abilityKindling",
+      "rms": 0.005699970544372943,
+      "left": 0.005699970544372943,
+      "right": 0.005699970544372943,
+      "peak": 0.047449808567762375
+    },
+    {
+      "key": "chargeReady",
+      "rms": 0.0026856291293751596,
+      "left": 0.0028822714314062784,
+      "right": 0.0024734023200433763,
+      "peak": 0.08007923513650894
+    },
+    {
+      "key": "alertUp",
+      "rms": 0.0027310855676943233,
+      "left": 0.0025056836069814524,
+      "right": 0.0029392526971733597,
+      "peak": 0.01658582128584385
+    },
+    {
+      "key": "bossWarning",
+      "rms": 0.00521411165565319,
+      "left": 0.00521411165565319,
+      "right": 0.00521411165565319,
+      "peak": 0.03878147900104523
+    },
+    {
+      "key": "bossArrival",
+      "rms": 0.009460516486154605,
+      "left": 0.009460516486154605,
+      "right": 0.009460516486154605,
+      "peak": 0.04018949717283249
+    },
+    {
+      "key": "bossCore",
+      "rms": 0.006528931261561821,
+      "left": 0.006528931261561821,
+      "right": 0.006528931261561821,
+      "peak": 0.0432104654610157
+    },
+    {
+      "key": "bossPhase",
+      "rms": 0.0058505305897269475,
+      "left": 0.006141284746523769,
+      "right": 0.005544550299598333,
+      "peak": 0.03149332478642464
+    },
+    {
+      "key": "planeLoop",
+      "rms": 0.0022085874625421913,
+      "left": 0.0022085874625421913,
+      "right": 0.0022085874625421913,
+      "peak": 0.010418507270514965
+    },
+    {
+      "key": "sprayWarning",
+      "rms": 0.004974449398221582,
+      "left": 0.004974449398221582,
+      "right": 0.004974449398221582,
+      "peak": 0.04305211082100868
+    },
+    {
+      "key": "potionEnd",
+      "rms": 0.0018880908372434098,
+      "left": 0.0019020138325502166,
+      "right": 0.0018740644066180534,
+      "peak": 0.02430133894085884
+    },
+    {
+      "key": "abilityCommand",
+      "rms": 0.003614811455849315,
+      "left": 0.003614811455849315,
+      "right": 0.003614811455849315,
+      "peak": 0.026391632854938507
+    },
+    {
+      "key": "commandDismiss",
+      "rms": 0.003659136618003491,
+      "left": 0.003659136618003491,
+      "right": 0.003659136618003491,
+      "peak": 0.028257248923182487
+    },
+    {
+      "key": "guardSpawn",
+      "rms": 0.004280626726575344,
+      "left": 0.004280626726575344,
+      "right": 0.004280626726575344,
+      "peak": 0.026593778282403946
+    },
+    {
+      "key": "kindlingGain",
+      "rms": 0.002326141309074119,
+      "left": 0.002326141309074119,
+      "right": 0.002326141309074119,
+      "peak": 0.01622684672474861
+    },
+    {
+      "key": "kindlingEnd",
+      "rms": 0.000797338253093,
+      "left": 0.000797338253093,
+      "right": 0.000797338253093,
+      "peak": 0.005522775463759899
+    },
+    {
+      "key": "uiAcquire",
+      "rms": 0.0027978334020085267,
+      "left": 0.0027978334020085267,
+      "right": 0.0027978334020085267,
+      "peak": 0.016624700278043747
+    },
+    {
+      "key": "planeWarning",
+      "rms": 0.002669429574747753,
+      "left": 0.002669429574747753,
+      "right": 0.002669429574747753,
+      "peak": 0.014031997881829739
+    },
+    {
+      "key": "grenadeFall",
+      "rms": 0.0013871110188475543,
+      "left": 0.0013871110188475543,
+      "right": 0.0013871110188475543,
+      "peak": 0.00928857084363699
+    },
+    {
+      "key": "bossCoreOpen",
+      "rms": 0.0027962380199419703,
+      "left": 0.0027962380199419703,
+      "right": 0.0027962380199419703,
+      "peak": 0.021499058231711388
+    },
+    {
+      "key": "enemyWindup",
+      "rms": 0.0003444907296626838,
+      "left": 0.0003444907296626838,
+      "right": 0.0003444907296626838,
+      "peak": 0.0031366809271275997
+    },
+    {
+      "key": "shieldDash",
+      "rms": 0.0007234045554614279,
+      "left": 0.0007234045554614279,
+      "right": 0.0007234045554614279,
+      "peak": 0.006266532000154257
+    },
+    {
+      "key": "tankRam",
+      "rms": 0.0013812138741014792,
+      "left": 0.0013812138741014792,
+      "right": 0.0013812138741014792,
+      "peak": 0.007375199813395739
+    },
+    {
+      "key": "planeDive",
+      "rms": 0.0023444422173900014,
+      "left": 0.0023444422173900014,
+      "right": 0.0023444422173900014,
+      "peak": 0.015471276827156544
+    },
+    {
+      "key": "planeCrash",
+      "rms": 0.0021323093518084476,
+      "left": 0.0021323093518084476,
+      "right": 0.0021323093518084476,
+      "peak": 0.013320330530405045
+    },
+    {
+      "key": "bridgeCreak",
+      "rms": 0.00013881955201028645,
+      "left": 0.00013881955201028645,
+      "right": 0.00013881955201028645,
+      "peak": 0.000806004274636507
+    },
+    {
+      "key": "clockBell",
+      "rms": 0.0012838277584215688,
+      "left": 0.0012838277584215688,
+      "right": 0.0012838277584215688,
+      "peak": 0.0036904686130583286
+    },
+    {
+      "key": "worldMachinery",
+      "rms": 0.00014750778378337334,
+      "left": 0.00014750778378337334,
+      "right": 0.00014750778378337334,
+      "peak": 0.0005039270617999136
+    }
+  ],
+  "errors": [],
+  "left": {
+    "rms": 0.0019512861452814685,
+    "left": 0.0027595353307277703,
+    "right": 0,
+    "peak": 0.010081264190375805
+  },
+  "right": {
+    "rms": 0.0019009571664828388,
+    "left": 0,
+    "right": 0.0026883594063303604,
+    "peak": 0.009559606201946735
+  },
+  "near": {
+    "rms": 0.0027898795855054535,
+    "left": 0.0027898795855054535,
+    "right": 0.0027898795855054535,
+    "peak": 0.010201371274888515
+  },
+  "far": {
+    "rms": 0.00011497630871221241,
+    "left": 0.00011497630871221241,
+    "right": 0.00011497630871221241,
+    "peak": 0.00043420621659606695
+  },
+  "paused": {
+    "rms": 0,
+    "left": 0,
+    "right": 0,
+    "peak": 0
+  },
+  "resumed": {
+    "rms": 0.0026911375757669694,
+    "left": 0.0026911375757669694,
+    "right": 0.0026911375757669694,
+    "peak": 0.011510953307151794
+  },
+  "muted": {
+    "rms": 0,
+    "left": 0,
+    "right": 0,
+    "peak": 0
+  },
+  "dense": {
+    "seconds": 30,
+    "maxPeak": 0.2056473344564438,
+    "rms": 0.029005422834761815
+  },
+  "maximumVolumeMix": {
+    "seconds": 6,
+    "masterVolume": 1,
+    "speakersDisconnected": true,
+    "maxPeak": 0.2595946788787842,
+    "rms": 0.04836925123946833
+  },
+  "musicLoops": {
+    "scene": "street",
+    "requestedLoops": 2,
+    "seconds": 121.367069,
+    "minWindowRms": 0.007303507259857625,
+    "maxPeak": 0.0706983357667923
+  },
+  "stopSettleMs": 1500,
+  "stopped": {
+    "rms": 0,
+    "left": 0,
+    "right": 0,
+    "peak": 0
+  },
+  "runtime": {
+    "status": "ready",
+    "error": null,
+    "scene": null,
+    "posted": null,
+    "paused": false,
+    "muted": false,
+    "radio": false,
+    "playingId": 782,
+    "runtime": {
+      "backend": "wwise",
+      "disposed": false,
+      "loadedBanks": [
+        {
+          "name": "Init.bnk",
+          "id": 1355168291,
+          "bytes": 1014
+        },
+        {
+          "name": "TokyoMusic.bnk",
+          "id": 268141082,
+          "bytes": 5687088
+        },
+        {
+          "name": "TokyoSfx.bnk",
+          "id": 736008490,
+          "bytes": 5955265
+        }
+      ],
+      "objects": 2,
+      "heapBytes": 22478848,
+      "renderCount": 24127,
+      "maxRenderMs": 2.034999966621399,
+      "lastError": null
+    }
+  },
+  "sfx": {
+    "ready": true,
+    "paused": false,
+    "loops": [],
+    "radio": null,
+    "voiceQueue": 0,
+    "activeOneShots": 0,
+    "registeredPool": 0,
+    "posted": 672,
+    "dropped": 0,
+    "unknown": 0,
+    "history": [
+      {
+        "key": "gunPistol",
+        "playing": 765,
+        "position": {
+          "x": -3,
+          "y": 0,
+          "z": 5
+        },
+        "time": 206.17705500000716
+      },
+      {
+        "key": "gunPistol",
+        "playing": 766,
+        "position": {
+          "x": -1,
+          "y": 0,
+          "z": 6
+        },
+        "time": 206.17706000000237
+      },
+      {
+        "key": "gunPistol",
+        "playing": 767,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 7
+        },
+        "time": 206.17706000000237
+      },
+      {
+        "key": "gunPistol",
+        "playing": 768,
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": 8
+        },
+        "time": 206.17706999999285
+      },
+      {
+        "key": "gunPistol",
+        "playing": 769,
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 9
+        },
+        "time": 206.17706999999285
+      },
+      {
+        "key": "power",
+        "playing": 770,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "time": 206.1770799999833
+      },
+      {
+        "key": "convert",
+        "playing": 771,
+        "position": null,
+        "time": 206.17708500003815
+      },
+      {
+        "key": "gunPistol",
+        "playing": 772,
+        "position": {
+          "x": -5,
+          "y": 0,
+          "z": 4
+        },
+        "time": 206.4447350000143
+      },
+      {
+        "key": "gunPistol",
+        "playing": 773,
+        "position": {
+          "x": -3,
+          "y": 0,
+          "z": 5
+        },
+        "time": 206.44478500002623
+      },
+      {
+        "key": "gunPistol",
+        "playing": 774,
+        "position": {
+          "x": -1,
+          "y": 0,
+          "z": 6
+        },
+        "time": 206.44479500001668
+      },
+      {
+        "key": "gunPistol",
+        "playing": 775,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 7
+        },
+        "time": 206.44480000001192
+      },
+      {
+        "key": "gunPistol",
+        "playing": 776,
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": 8
+        },
+        "time": 206.44481000000238
+      },
+      {
+        "key": "gunPistol",
+        "playing": 777,
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 9
+        },
+        "time": 206.44481000000238
+      },
+      {
+        "key": "power",
+        "playing": 778,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "time": 206.44481499999762
+      },
+      {
+        "key": "convert",
+        "playing": 779,
+        "position": null,
+        "time": 206.44482499998807
+      }
+    ]
+  },
+  "ok": true,
+  "pageLoad": {
+    "assetsReadyMs": 6750.694999992847,
+    "jsHeapBytes": 764316424,
+    "resources": [
+      {
+        "url": "http://127.0.0.1:5392/assets/main-CaKlZ2CR.js",
+        "transferBytes": 118178,
+        "encodedBytes": 117878,
+        "decodedBytes": 608858,
+        "durationMs": 10.520000040531158
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/three.module-sn0n2_52.js",
+        "transferBytes": 181501,
+        "encodedBytes": 181201,
+        "decodedBytes": 704759,
+        "durationMs": 12.475000023841858
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/mixamo-DOvgaqW2.js",
+        "transferBytes": 17817,
+        "encodedBytes": 17517,
+        "decodedBytes": 51137,
+        "durationMs": 10.554999947547913
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/sfx-runtime-CiwUfHZV.js",
+        "transferBytes": 5453,
+        "encodedBytes": 5153,
+        "decodedBytes": 19756,
+        "durationMs": 13.264999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/world-DLgbkSVN.js",
+        "transferBytes": 6889,
+        "encodedBytes": 6589,
+        "decodedBytes": 6589,
+        "durationMs": 12.519999980926514
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/main-JEayNFaH.css",
+        "transferBytes": 18219,
+        "encodedBytes": 17919,
+        "decodedBytes": 72892,
+        "durationMs": 11.830000042915344
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/music-audition-DiqaESHA.js",
+        "transferBytes": 8133,
+        "encodedBytes": 7833,
+        "decodedBytes": 20419,
+        "durationMs": 3.149999976158142
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/shaders/outline-instance.frag",
+        "transferBytes": 16728,
+        "encodedBytes": 16428,
+        "decodedBytes": 83804,
+        "durationMs": 3.165000021457672
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/riverside-NkzkSgTe.glb",
+        "transferBytes": 1811347,
+        "encodedBytes": 1811047,
+        "decodedBytes": 3967764,
+        "durationMs": 478.91000002622604
+      },
+      {
+        "url": "http://127.0.0.1:5392/favicon.ico",
+        "transferBytes": 309,
+        "encodedBytes": 9,
+        "decodedBytes": 9,
+        "durationMs": 1.6949999928474426
+      },
+      {
+        "url": "http://127.0.0.1:5392/draco/draco_wasm_wrapper.js",
+        "transferBytes": 11967,
+        "encodedBytes": 11667,
+        "decodedBytes": 58456,
+        "durationMs": 3.300000011920929
+      },
+      {
+        "url": "http://127.0.0.1:5392/draco/draco_decoder.wasm",
+        "transferBytes": 63695,
+        "encodedBytes": 63395,
+        "decodedBytes": 192420,
+        "durationMs": 3.9700000286102295
+      },
+      {
+        "url": "http://127.0.0.1:5392/workers/thriller-idle.fbx",
+        "transferBytes": 726432,
+        "encodedBytes": 726132,
+        "decodedBytes": 1077696,
+        "durationMs": 22.014999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened/running-jump.fbx",
+        "transferBytes": 625673,
+        "encodedBytes": 625373,
+        "decodedBytes": 780784,
+        "durationMs": 20.400000035762787
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened-reader/running-jump.fbx",
+        "transferBytes": 670817,
+        "encodedBytes": 670517,
+        "decodedBytes": 872976,
+        "durationMs": 22.110000014305115
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/manifest.json",
+        "transferBytes": 848,
+        "encodedBytes": 548,
+        "decodedBytes": 548,
+        "durationMs": 3.4850000143051147
+      },
+      {
+        "url": "http://127.0.0.1:5392/police/shield/Police_Animated_v5.fbx",
+        "transferBytes": 12018441,
+        "encodedBytes": 12018141,
+        "decodedBytes": 16479004,
+        "durationMs": 516.7450000047684
+      },
+      {
+        "url": "http://127.0.0.1:5392/police/baton/Police_Baton_Anatomy.fbx",
+        "transferBytes": 11646956,
+        "encodedBytes": 11646656,
+        "decodedBytes": 13834764,
+        "durationMs": 436.2249999642372
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/guard-CQQhjIiF.glb",
+        "transferBytes": 3213110,
+        "encodedBytes": 3212810,
+        "decodedBytes": 31461380,
+        "durationMs": 1961.1599999666214
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/smoke-DoeVN4q0.webp",
+        "transferBytes": 162540,
+        "encodedBytes": 162240,
+        "decodedBytes": 162240,
+        "durationMs": 26.850000023841858
+      },
+      {
+        "url": "http://127.0.0.1:5392/workers/tex/base_color.png",
+        "transferBytes": 3819264,
+        "encodedBytes": 3818964,
+        "decodedBytes": 3818964,
+        "durationMs": 49.185000002384186
+      },
+      {
+        "url": "http://127.0.0.1:5392/workers/tex/normal.png",
+        "transferBytes": 1579874,
+        "encodedBytes": 1579574,
+        "decodedBytes": 1579574,
+        "durationMs": 12.024999976158142
+      },
+      {
+        "url": "http://127.0.0.1:5392/workers/tex/roughness.png",
+        "transferBytes": 1118930,
+        "encodedBytes": 1118630,
+        "decodedBytes": 1118630,
+        "durationMs": 7.685000002384186
+      },
+      {
+        "url": "http://127.0.0.1:5392/workers/tex/metallic.png",
+        "transferBytes": 1151753,
+        "encodedBytes": 1151453,
+        "decodedBytes": 1151453,
+        "durationMs": 21.97000002861023
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/idle.fbx",
+        "transferBytes": 791892,
+        "encodedBytes": 791592,
+        "decodedBytes": 1320352,
+        "durationMs": 21.12000000476837
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened/tex/base_color.png",
+        "transferBytes": 4080528,
+        "encodedBytes": 4080228,
+        "decodedBytes": 4080228,
+        "durationMs": 49.18000000715256
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened/tex/normal.png",
+        "transferBytes": 1985327,
+        "encodedBytes": 1985027,
+        "decodedBytes": 1985027,
+        "durationMs": 12.615000009536743
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened/tex/roughness.png",
+        "transferBytes": 1167469,
+        "encodedBytes": 1167169,
+        "decodedBytes": 1167169,
+        "durationMs": 10.3299999833107
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened/tex/metallic.png",
+        "transferBytes": 418121,
+        "encodedBytes": 417821,
+        "decodedBytes": 417821,
+        "durationMs": 14.900000035762787
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened-reader/tex/base_color.png",
+        "transferBytes": 3779923,
+        "encodedBytes": 3779623,
+        "decodedBytes": 3779623,
+        "durationMs": 66.24500000476837
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened-reader/tex/normal.png",
+        "transferBytes": 1700592,
+        "encodedBytes": 1700292,
+        "decodedBytes": 1700292,
+        "durationMs": 25.74500000476837
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened-reader/tex/roughness.png",
+        "transferBytes": 1341906,
+        "encodedBytes": 1341606,
+        "decodedBytes": 1341606,
+        "durationMs": 44.48499995470047
+      },
+      {
+        "url": "http://127.0.0.1:5392/awakened-reader/tex/metallic.png",
+        "transferBytes": 460785,
+        "encodedBytes": 460485,
+        "decodedBytes": 460485,
+        "durationMs": 44.719999969005585
+      },
+      {
+        "url": "http://127.0.0.1:5392/workers/sad-walk.fbx",
+        "transferBytes": 657847,
+        "encodedBytes": 657547,
+        "decodedBytes": 925696,
+        "durationMs": 27.365000009536743
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/tex/base_color.png",
+        "transferBytes": 4772544,
+        "encodedBytes": 4772244,
+        "decodedBytes": 4772244,
+        "durationMs": 67.2399999499321
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/tex/normal.png",
+        "transferBytes": 2177454,
+        "encodedBytes": 2177154,
+        "decodedBytes": 2177154,
+        "durationMs": 33.3400000333786
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/tex/roughness.png",
+        "transferBytes": 1031156,
+        "encodedBytes": 1030856,
+        "decodedBytes": 1030856,
+        "durationMs": 25.460000038146973
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/tex/metallic.png",
+        "transferBytes": 1218786,
+        "encodedBytes": 1218486,
+        "decodedBytes": 1218486,
+        "durationMs": 44.77499997615814
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/run.fbx",
+        "transferBytes": 651236,
+        "encodedBytes": 650936,
+        "decodedBytes": 945536,
+        "durationMs": 30.805000007152557
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/idle.fbx",
+        "transferBytes": 300,
+        "encodedBytes": 791592,
+        "decodedBytes": 1320352,
+        "durationMs": 7.9700000286102295
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/run.fbx",
+        "transferBytes": 300,
+        "encodedBytes": 650936,
+        "decodedBytes": 945536,
+        "durationMs": 15.435000002384186
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/jump.fbx",
+        "transferBytes": 709826,
+        "encodedBytes": 709526,
+        "decodedBytes": 1123424,
+        "durationMs": 14.1700000166893
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/toyAim.fbx",
+        "transferBytes": 734493,
+        "encodedBytes": 734193,
+        "decodedBytes": 1203776,
+        "durationMs": 15.814999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/toyRecoil.fbx",
+        "transferBytes": 654569,
+        "encodedBytes": 654269,
+        "decodedBytes": 953712,
+        "durationMs": 17.485000014305115
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/flurry.fbx",
+        "transferBytes": 716350,
+        "encodedBytes": 716050,
+        "decodedBytes": 1161760,
+        "durationMs": 23.349999964237213
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/roll.fbx",
+        "transferBytes": 708085,
+        "encodedBytes": 707785,
+        "decodedBytes": 1123056,
+        "durationMs": 26.365000009536743
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/fallRoll.fbx",
+        "transferBytes": 702217,
+        "encodedBytes": 701917,
+        "decodedBytes": 1101632,
+        "durationMs": 26.75
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/Strafing.fbx",
+        "transferBytes": 669476,
+        "encodedBytes": 669176,
+        "decodedBytes": 1005696,
+        "durationMs": 27.94999998807907
+      },
+      {
+        "url": "http://127.0.0.1:5392/mixamo/heavyPunch.fbx",
+        "transferBytes": 691369,
+        "encodedBytes": 691069,
+        "decodedBytes": 1077504,
+        "durationMs": 31.030000030994415
+      },
+      {
+        "url": "http://127.0.0.1:5392/police/tex/Color.jpg",
+        "transferBytes": 268731,
+        "encodedBytes": 268431,
+        "decodedBytes": 268431,
+        "durationMs": 4.639999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5392/police/tex/Normal.png",
+        "transferBytes": 1349281,
+        "encodedBytes": 1348981,
+        "decodedBytes": 1348981,
+        "durationMs": 8.199999988079071
+      },
+      {
+        "url": "http://127.0.0.1:5392/police/tex/tripo_model_roughness.JPEG",
+        "transferBytes": 338438,
+        "encodedBytes": 338138,
+        "decodedBytes": 338138,
+        "durationMs": 4.985000014305115
+      },
+      {
+        "url": "http://127.0.0.1:5392/police/tex/tripo_model_metallic.JPEG",
+        "transferBytes": 178546,
+        "encodedBytes": 178246,
+        "decodedBytes": 178246,
+        "durationMs": 4.330000042915344
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/index-CVBArzOc.js",
+        "transferBytes": 30149,
+        "encodedBytes": 29849,
+        "decodedBytes": 187835,
+        "durationMs": 5.360000014305115
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/wwise-runtime-cUuSU9qK.wasm",
+        "transferBytes": 583160,
+        "encodedBytes": 582860,
+        "decodedBytes": 1414972,
+        "durationMs": 10.534999966621399
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/TokyoMusic-CMf8gToB.bnk",
+        "transferBytes": 5687388,
+        "encodedBytes": 5687088,
+        "decodedBytes": 5687088,
+        "durationMs": 29.600000023841858
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/TokyoSfx-p4rluGho.bnk",
+        "transferBytes": 5955565,
+        "encodedBytes": 5955265,
+        "decodedBytes": 5955265,
+        "durationMs": 36.24500000476837
+      },
+      {
+        "url": "http://127.0.0.1:5392/favicon.ico",
+        "transferBytes": 309,
+        "encodedBytes": 9,
+        "decodedBytes": 9,
+        "durationMs": 1.4100000262260437
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/wwise-runtime-cUuSU9qK.wasm",
+        "transferBytes": 0,
+        "encodedBytes": 582860,
+        "decodedBytes": 1414972,
+        "durationMs": 6.925000011920929
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/TokyoMusic-CMf8gToB.bnk",
+        "transferBytes": 0,
+        "encodedBytes": 5687088,
+        "decodedBytes": 5687088,
+        "durationMs": 9.4549999833107
+      },
+      {
+        "url": "http://127.0.0.1:5392/assets/TokyoSfx-p4rluGho.bnk",
+        "transferBytes": 0,
+        "encodedBytes": 5955265,
+        "decodedBytes": 5955265,
+        "durationMs": 27.259999990463257
+      }
+    ]
+  }
+}

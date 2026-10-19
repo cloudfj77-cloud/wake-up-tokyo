@@ -3,6 +3,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
 import {block} from './world.js';
 import terrain from './assets/scenes/terrain.json' with {type:'json'};
+import pillarData from './assets/scenes/pillars.json' with {type:'json'};
 
 const BRIDGES=[{z:26.4,halfLength:14.35,railOffset:2.05},{z:-15.4,halfLength:14.35,railOffset:2.05}];
 export function bridgeDeckHeight(x,z){
@@ -148,5 +149,5 @@ export async function loadRiverside(scene){
  const entries=[[34,40],[-35,40],[-35,-57],[34,-57]].map(p=>{const q=nearest(...p,2);return[q.x,q.z];});
  function clear(a,b,r=.1){const d=Math.hypot(a.x-b.x,a.z-b.z),n=Math.ceil(d/.7);for(let i=1;i<n;i++)if(solid(a.x+(b.x-a.x)*i/n,a.z+(b.z-a.z)*i/n,r))return false;return true;}
  function breakAt(x,z,r,damage,emit,impactY){let count=0;for(const o of destructibles){if(o.dead)continue;const nx=T.MathUtils.clamp(x,o.x-o.w/2,o.x+o.w/2),nz=T.MathUtils.clamp(z,o.z-o.d/2,o.z+o.d/2);if(Math.hypot(x-nx,z-nz)>r)continue;o.hp-=damage;const tint=o.type==='tower'?0xe5a374:0xbab3a2,hitY=impactY??heightAt(nx,nz)+Math.min(1,o.h*.35);if(!carve(o,nx,hitY,nz,Math.min(r,.9),emit,tint))emit?.(nx,hitY,nz,tint,12);if(o.hp<=0){o.dead=true;o.g.visible=false;count++;emit?.(o.x,2,o.z,0xb5ae9f,35);}}return count;}
- return {root,obstacles,destructibles,buildings,towers,free,clear,breakAt,heightAt,solid,waypoint,nearest,spawn,bossSpawn,entries,spawnWeakenSites};
+ return {root,pillarData:pillarData.meshes,obstacles,destructibles,buildings,towers,free,clear,breakAt,heightAt,solid,waypoint,nearest,spawn,bossSpawn,entries,spawnWeakenSites};
 }

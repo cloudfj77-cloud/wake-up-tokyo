@@ -1,0 +1,177 @@
+{
+  "url": "http://127.0.0.1:5311/dist/?audio=1",
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+  "crossOriginIsolated": true,
+  "backend": "wwise",
+  "hearing": "pending user audition",
+  "scenes": [
+    {
+      "scene": "menu",
+      "playingId": 1,
+      "rms": 0.02970545772145572,
+      "peak": 0.14511936902999878,
+      "samples": 51200
+    },
+    {
+      "scene": "street",
+      "playingId": 2,
+      "rms": 0.03116194692647346,
+      "peak": 0.1225653886795044,
+      "samples": 51200
+    },
+    {
+      "scene": "pressure",
+      "playingId": 3,
+      "rms": 0.025929749625210653,
+      "peak": 0.11992383748292923,
+      "samples": 51200
+    },
+    {
+      "scene": "countdown",
+      "playingId": 4,
+      "rms": 0.006525542998377835,
+      "peak": 0.09993572533130646,
+      "samples": 51200
+    },
+    {
+      "scene": "boss",
+      "playingId": 5,
+      "rms": 0.0288315109914306,
+      "peak": 0.11459293961524963,
+      "samples": 51200
+    },
+    {
+      "scene": "victory",
+      "playingId": 6,
+      "rms": 0.027120848962569274,
+      "peak": 0.13488145172595978,
+      "samples": 51200
+    },
+    {
+      "scene": "defeat",
+      "playingId": 7,
+      "rms": 0.040363972464944886,
+      "peak": 0.11916978657245636,
+      "samples": 51200
+    },
+    {
+      "scene": "aftermath",
+      "playingId": 8,
+      "rms": 0.02697743370717899,
+      "peak": 0.13488145172595978,
+      "samples": 51200
+    }
+  ],
+  "errors": [],
+  "aftermathLoop": {
+    "rms": 0.018554661569108753,
+    "peak": 0.08562272787094116,
+    "samples": 51200
+  },
+  "cancelledDelayed": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "paused": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "resumed": {
+    "rms": 0.030035765701819053,
+    "peak": 0.1225653886795044,
+    "samples": 51200
+  },
+  "halfVolume": {
+    "rms": 0.01567832623578299,
+    "peak": 0.10225601494312286,
+    "samples": 51200
+  },
+  "muted": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "ducked": {
+    "rms": 0.012387013339987044,
+    "peak": 0.06282241642475128,
+    "samples": 51200
+  },
+  "stopped": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "beforeDispose": {
+    "status": "ready",
+    "error": null,
+    "scene": null,
+    "posted": null,
+    "paused": false,
+    "muted": false,
+    "radio": false,
+    "playingId": 15,
+    "runtime": {
+      "backend": "wwise",
+      "disposed": false,
+      "loadedBanks": [
+        {
+          "name": "Init.bnk",
+          "id": 1355168291,
+          "bytes": 767
+        },
+        {
+          "name": "TokyoMusic.bnk",
+          "id": 268141082,
+          "bytes": 5687088
+        }
+      ],
+      "objects": 1,
+      "heapBytes": 16777216,
+      "renderCount": 4268,
+      "maxRenderMs": 3.9500000178813934,
+      "lastError": null
+    }
+  },
+  "contextAfterDispose": "closed",
+  "restarted": {
+    "rms": 0.028196332321957736,
+    "peak": 0.1225653886795044,
+    "samples": 51200
+  },
+  "afterRestart": {
+    "status": "ready",
+    "error": null,
+    "scene": "street",
+    "posted": "street",
+    "paused": false,
+    "muted": false,
+    "radio": false,
+    "playingId": 1,
+    "runtime": {
+      "backend": "wwise",
+      "disposed": false,
+      "loadedBanks": [
+        {
+          "name": "Init.bnk",
+          "id": 1355168291,
+          "bytes": 767
+        },
+        {
+          "name": "TokyoMusic.bnk",
+          "id": 268141082,
+          "bytes": 5687088
+        }
+      ],
+      "objects": 1,
+      "heapBytes": 16777216,
+      "renderCount": 186,
+      "maxRenderMs": 1.6200000047683716,
+      "lastError": null
+    }
+  },
+  "ok": true,
+  "bankGeneration": "generation.json",
+  "scope": "standalone actual game, production assets served under /dist/"
+}

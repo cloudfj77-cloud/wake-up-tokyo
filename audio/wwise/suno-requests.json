@@ -1,0 +1,74 @@
+[
+  {
+    "id": "menu",
+    "title": "Wake Up Tokyo｜M01 标题｜街头反抗电台",
+    "duration": "0:40",
+    "prompt": "Instrumental title-screen variation of the reference street-funk theme, 96 BPM, D minor pentatonic. Retain its recognizable rising hook and elastic bass personality, loosen the groove into a cheeky late-afternoon Tokyo pirate-radio ident. Muted wah guitar, rounded electric bass, dry lazy breakbeat, tiny turntable flicks and short analog-key replies. Eight bars introduce half the hook with rests; eight bars answer on bass and guitar; return to a light open turnaround. Forty seconds of coherent music, inviting and mischievous, no long buildup, no victory finale or fade-out. Keep the melodic gaps and small-scale comic-book character. Pure instrumental, no singing, speech, chants or vocal samples.",
+    "status": "submitted",
+    "reference": "dce3ca38-cc21-46e9-a6dd-d553c3c700c6",
+    "links": [
+      "https://suno.com/song/9846ac67-79cb-44b3-85ec-5fa313710062",
+      "https://suno.com/song/c69f91da-64df-4520-b7ff-2d43bb8091bb"
+    ]
+  },
+  {
+    "id": "pressure",
+    "title": "Wake Up Tokyo｜M03 封锁｜城市开始收紧",
+    "duration": "1:15",
+    "prompt": "Instrumental high-pressure street-funk variation of the reference game theme, 128 BPM, D minor pentatonic. Keep the hook contour and elastic syncopated bass identity. The city moves from playful rebellion into a police lockdown. Dry broken drums grow more insistent; clipped muted guitar, metallic percussion accents, dark rounded synth replies. Eight-bar phrases alternate active hook and open bass/drum response; a sparse bridge releases pressure before the returning theme. Seventy-five seconds, stable tempo and controlled intensity, no giant drop, no orchestral climax. Leave clear spaces for enemy warnings and radio dialogue; restrained cymbals and short tails. Finish on a loop-friendly turnaround, no fade-out. Pure instrumental.",
+    "status": "submitted",
+    "links": [
+      "https://suno.com/song/b955c208-f098-443e-b983-31775404f3fa",
+      "https://suno.com/song/b3e6e3cf-0c3e-4240-bae3-b99e2c66006b"
+    ],
+    "reference": "dce3ca38-cc21-46e9-a6dd-d553c3c700c6"
+  },
+  {
+    "id": "countdown",
+    "title": "Wake Up Tokyo｜M04 镇压倒计时｜最后两分钟",
+    "duration": "1:00",
+    "prompt": "Instrumental countdown variation of the reference street-rebellion theme, 128 BPM, D minor pentatonic, sixty seconds. Preserve the recognizable hook fragment, bass tone and dry breakbeat identity. A cold mechanical clock pulse and syncopated low synth tighten the groove while the melodic phrases become shorter, with empty beats between answers. The last two minutes before a giant arrives; urgent, stubborn and clever rather than terrified. Clear eight-bar sections with one sparse turnaround and a return to the opening groove. No continuous alarm, ticking sound effect, spoken countdown or siren baked into the music. Rounded punch, restrained treble, lots of room for gameplay. No tempo ramp, epic orchestra, huge drop, final cadence or fade-out. Pure instrumental.",
+    "status": "submitted",
+    "links": [
+      "https://suno.com/song/8b049ade-4ff7-4d58-a27a-8360021504f0",
+      "https://suno.com/song/cafb160b-ce37-42a2-a762-60a57865097c"
+    ],
+    "reference": "dce3ca38-cc21-46e9-a6dd-d553c3c700c6"
+  },
+  {
+    "id": "boss",
+    "title": "Wake Up Tokyo｜M05 巨像｜奶蛙龙镇压",
+    "duration": "1:30",
+    "prompt": "Instrumental boss-battle variation of the reference Tokyo street-funk theme, 128 BPM, D minor pentatonic, ninety seconds. Keep the rising hook and elastic bass recognizable. Add chunky syncopated electric-guitar stabs, tighter broken drums, dark analog bass replies and short mechanical percussion. A huge absurd yellow frog-shaped suppression machine faces a purple rebellious crowd. Weight and comic swagger, not horror. Eight-bar hook statement, bass/guitar response with melodic rests, sparse half-time-feel bridge at the same tempo, varied energetic return and open loop turnaround. Heavy moments stay brief, cymbals restrained, rounded transients, clear gaps for cannon warnings. No vocals, speech, choir, epic orchestra, nonstop distorted lead, festival drop, final victory cadence or fade-out.",
+    "status": "submitted",
+    "links": [
+      "https://suno.com/song/166caf62-b7f5-4a8a-b88c-aa25a5be8c40",
+      "https://suno.com/song/478ba83d-df74-49ac-bd6b-e64769c38bd8"
+    ],
+    "reference": "dce3ca38-cc21-46e9-a6dd-d553c3c700c6"
+  },
+  {
+    "id": "victory",
+    "title": "Wake Up Tokyo｜M06 胜利｜全城醒过来",
+    "duration": "0:10",
+    "prompt": "Pure instrumental game victory stinger, a complete eight-second phrase with two seconds of release. Transform the reference street-funk rising hook into a bright earned smile, retaining its electric-bass and muted-guitar identity. At 0-1 second a short drum pickup; at 1-4 seconds the original hook lands clearly on warm electric keys and a light brass-like analog synth; at 4-6 seconds a small major-sixth chord and bass answer; by eight seconds the phrase is fully resolved. Short dry tail only until ten seconds. Cheeky city liberation, modest and warm, not a grand stadium celebration. No looping groove after the cadence, no vocals, spoken slogan, crowd cheer, orchestra or long fade.",
+    "status": "submitted",
+    "links": [
+      "https://suno.com/song/15ee556a-3f2d-42d7-a641-9f92f845b68c",
+      "https://suno.com/song/0001d1df-5feb-408f-a027-356a31ce102e"
+    ],
+    "reference": "dce3ca38-cc21-46e9-a6dd-d553c3c700c6"
+  },
+  {
+    "id": "defeat",
+    "title": "Wake Up Tokyo｜M07 失败｜反抗还没结束",
+    "duration": "0:10",
+    "prompt": "Pure instrumental game defeat stinger, one complete six-second phrase with a short release ending before ten seconds. Use a small descending answer to the reference street-funk hook, the same rounded electric-bass and muted-guitar colors. A dry beat drops out at the opening; two low warm electric-key notes answer after a pause, then an unresolved open fifth with a small suspended color gently settles by six seconds. Quiet determined acceptance: the rebellion can try again. No comedy failure horn, no mocking slide, no funeral strings, horror, vocals, speech, full song or continuing groove. Sparse notes, clean ending, intimate rather than tragic.",
+    "status": "submitted",
+    "links": [
+      "https://suno.com/song/98441156-d63b-449f-94e6-bb1c2bc95e13",
+      "https://suno.com/song/1afa3dd8-a249-4d3b-b8c3-e1bf914df8d9"
+    ],
+    "reference": "dce3ca38-cc21-46e9-a6dd-d553c3c700c6"
+  }
+]

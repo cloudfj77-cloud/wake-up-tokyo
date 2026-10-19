@@ -1,0 +1,165 @@
+{
+  "url": "http://127.0.0.1:5218/?audio=1&test=audio",
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+  "crossOriginIsolated": true,
+  "backend": "wwise",
+  "hearing": "pending user audition",
+  "scenes": [
+    {
+      "scene": "menu",
+      "playingId": 1,
+      "rms": 0.08420197254733049,
+      "peak": 0.41045886278152466,
+      "samples": 51200
+    },
+    {
+      "scene": "street",
+      "playingId": 2,
+      "rms": 0.08542333330405873,
+      "peak": 0.34666669368743896,
+      "samples": 51200
+    },
+    {
+      "scene": "pressure",
+      "playingId": 3,
+      "rms": 0.0745515303151675,
+      "peak": 0.33919528126716614,
+      "samples": 51200
+    },
+    {
+      "scene": "countdown",
+      "playingId": 4,
+      "rms": 0.018127242583168682,
+      "peak": 0.28266048431396484,
+      "samples": 51200
+    },
+    {
+      "scene": "boss",
+      "playingId": 5,
+      "rms": 0.08240395598434112,
+      "peak": 0.31035879254341125,
+      "samples": 51200
+    },
+    {
+      "scene": "victory",
+      "playingId": 6,
+      "rms": 0.07573852809852773,
+      "peak": 0.3815017342567444,
+      "samples": 51200
+    },
+    {
+      "scene": "defeat",
+      "playingId": 7,
+      "rms": 0.1134610416674408,
+      "peak": 0.3370625376701355,
+      "samples": 51200
+    },
+    {
+      "scene": "aftermath",
+      "playingId": 8,
+      "rms": 0.07639538888401783,
+      "peak": 0.3815017342567444,
+      "samples": 51200
+    }
+  ],
+  "errors": [],
+  "paused": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "resumed": {
+    "rms": 0.08194979928102396,
+    "peak": 0.34666669368743896,
+    "samples": 51200
+  },
+  "halfVolume": {
+    "rms": 0.044330152966272955,
+    "peak": 0.2895049452781677,
+    "samples": 51200
+  },
+  "muted": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "ducked": {
+    "rms": 0.03620171276214577,
+    "peak": 0.18253682553768158,
+    "samples": 51200
+  },
+  "stopped": {
+    "rms": 0,
+    "peak": 0,
+    "samples": 51200
+  },
+  "beforeDispose": {
+    "status": "ready",
+    "error": null,
+    "scene": null,
+    "posted": null,
+    "paused": false,
+    "muted": false,
+    "radio": false,
+    "playingId": 12,
+    "runtime": {
+      "backend": "wwise",
+      "disposed": false,
+      "loadedBanks": [
+        {
+          "name": "Init.bnk",
+          "id": 1355168291,
+          "bytes": 783
+        },
+        {
+          "name": "TokyoMusic.bnk",
+          "id": 268141082,
+          "bytes": 5687088
+        }
+      ],
+      "objects": 1,
+      "heapBytes": 16777216,
+      "renderCount": 2444,
+      "maxRenderMs": 3.949999988079071,
+      "lastError": null
+    }
+  },
+  "contextAfterDispose": "closed",
+  "restarted": {
+    "rms": 0.07871470526410551,
+    "peak": 0.34666669368743896,
+    "samples": 51200
+  },
+  "afterRestart": {
+    "status": "ready",
+    "error": null,
+    "scene": "street",
+    "posted": "street",
+    "paused": false,
+    "muted": false,
+    "radio": false,
+    "playingId": 1,
+    "runtime": {
+      "backend": "wwise",
+      "disposed": false,
+      "loadedBanks": [
+        {
+          "name": "Init.bnk",
+          "id": 1355168291,
+          "bytes": 783
+        },
+        {
+          "name": "TokyoMusic.bnk",
+          "id": 268141082,
+          "bytes": 5687088
+        }
+      ],
+      "objects": 1,
+      "heapBytes": 16777216,
+      "renderCount": 179,
+      "maxRenderMs": 1.5,
+      "lastError": null
+    }
+  },
+  "ok": true
+}

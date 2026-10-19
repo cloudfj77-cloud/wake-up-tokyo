@@ -13,3 +13,12 @@ assets/mixamo-source/
 dist-single/
 release/
 .workbuddy/
+
+# Wwise 缓存、作者本机界面设置与重复的中间 WAV。正式源位于 Originals。
+wwise/sources/
+wwise/**/.cache/
+wwise/**/GeneratedSoundBanks/
+wwise/**/*.wsettings
+wwise/**/*.validationcache
+wwise/**/*.prof
+wwise/**/*.akd

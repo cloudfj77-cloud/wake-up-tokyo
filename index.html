@@ -1,9 +1,10 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>__GAME_TITLE__ · __GAME_RELEASE__</title><meta name="description" content="第三人称越肩体素感染肉鸽 · 唤醒东京街区"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/ui.css"></head><body>
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>__GAME_TITLE__ · __GAME_RELEASE__</title><meta name="description" content="第三人称越肩体素感染肉鸽 · 唤醒东京街区"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/ui.css"><link rel="stylesheet" href="/ui-theme.css"></head><body>
 <canvas id="game"></canvas><div id="worldLabels"></div>
 <div id="hud" hidden>
  <div id="alertVignette" aria-hidden="true" hidden></div>
- <section class="playerPanel panel"><div class="eyebrow"><span class="purpleDot"></span> 零号母体 <span id="hpText">100 / 100</span></div><div class="bar hp"><i id="hpBar"></i></div><div class="bar stamina"><i id="staminaBar"></i></div><div id="abilitySlots"></div><small id="potionStatus" hidden></small><small id="kindlingStatus" hidden></small><div class="counters"><span>存活队伍 <b id="team">0</b></span><span>累计感染 <b id="total">0</b></span></div></section>
- <section class="alertPanel panel"><div class="eyebrow">城市警戒 <span id="clock">00:00</span></div><div class="alertReading"><b id="alertValue">0</b><span id="alertName">尚未警觉</span></div><div id="alertLevels" aria-hidden="true"><b>I</b><b>II</b><b>III</b><b>IV</b><b>V</b></div><p id="reinforcement">下一级 · 10</p></section>
+ <section class="playerPanel panel"><div class="eyebrow"><span class="purpleDot"></span> 零号母体 <span id="hpText">100 / 100</span></div><div class="bar hp"><i id="hpTrail" aria-hidden="true"></i><i id="hpBar"></i></div><span id="playerHit" aria-hidden="true"></span><div class="bar stamina"><i id="staminaBar"></i></div><small id="potionStatus" hidden></small><small id="kindlingStatus" hidden></small><div class="counters"><span>存活队伍 <b id="team">0</b></span><span>累计感染 <b id="total">0</b></span></div></section>
+ <section class="alertPanel panel"><div class="eyebrow">城市警戒 <span>THREAT</span></div><div class="alertReading"><b id="alertValue">0</b><span id="alertName">尚未警觉</span></div><div id="alertLevels" aria-hidden="true"><b>I</b><b>II</b><b>III</b><b>IV</b><b>V</b></div><p id="reinforcement">下一级 · 10</p></section>
+ <div id="runTimer" aria-label="存活时间"><span id="clock">00:00</span></div><nav id="abilityRack" aria-label="已获得能力"><div id="abilitySlots"></div></nav>
  <section id="cityMap" class="mapPanel panel" aria-label="小地图"><div class="eyebrow"><span id="mapName">東京 / RIVERSIDE</span> <span>N ↑</span></div><button id="mapClose" hidden aria-label="关闭城市地图">关闭 · Tab / Esc</button><canvas id="map" width="400" height="320"></canvas><div class="mapLegend"><span><i class="ally"></i>同伴</span><span><i class="enemy"></i>敌军</span><span><i class="site"></i>削弱设施</span></div></section>
  <div id="infectionFeedback"></div><aside id="infectionFeed" aria-live="polite"></aside><div id="runCountdown" hidden><small>镇压倒计时</small><b>02:00</b></div><div id="missionComplete"></div><div id="policeAlert" role="status" aria-live="assertive"></div><button id="endAftermath" hidden>结束本局</button><section id="bossHud" class="panel" hidden><div class="eyebrow">终局 · 秩序巨像 <span id="bossValue">6000 / 6000</span></div><div class="bar"><i id="bossHp"></i></div><small id="bossPhase"></small><p id="bossWarning"></p></section><div id="crosshair" aria-label="瞄准点"><svg id="chargeRings" viewBox="0 0 100 100" aria-hidden="true" hidden><g class="chargeTrack"><circle cx="50" cy="50" r="21"/><circle cx="50" cy="50" r="30"/><circle cx="50" cy="50" r="39"/></g><g class="chargeFill"><circle cx="50" cy="50" r="21" pathLength="1"/><circle cx="50" cy="50" r="30" pathLength="1"/><circle cx="50" cy="50" r="39" pathLength="1"/></g></svg><span class="aimRing"></span><i class="aimDot"></i><span class="hitMark" aria-hidden="true">×</span><small id="chargeStatus" hidden></small></div><div id="targetHint"></div><div id="reloadIndicator">换弹中 <b></b><i></i></div><div id="toast"></div><div id="hurtVignette"></div>
  <nav class="hudTools" aria-label="游戏操作"><button id="controlHelp" title="查看操作说明">? 操作</button><button id="sound" aria-label="切换游戏音乐">♫ 音乐 开</button></nav>
@@ -13,9 +14,10 @@
 </div>
 <div id="menu">
  <div class="menuShade"></div><div class="menuGrid"></div><div class="menuNoise"></div>
- <header class="gameLogo" aria-label="Wake up 都给我醒过来！"><span>Wake up</span><strong>都给我醒过来<span>！</span></strong><small>紫色感染 · 觉醒基因</small><p>唤醒全东京的人，重塑这座城市。</p></header>
+ <svg class="menuGraffiti" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="sprayDots" width="13" height="13" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.7" fill="currentColor"/></pattern></defs><path class="sprayCloud" d="M-30 18 510 0 400 260 0 330Z" fill="url(#sprayDots)"/><g class="sprayRed" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke-width="12" d="m1115 75 46 20-31 39 59-13-5 49 32-40 43 21-23-44 34-26-51 1-13-45-17 44Z"/><path stroke-width="5" d="m1090 73-26-12m61-23-9-24m154 133 21 20m-80 2 4 24"/><path stroke-width="9" d="m-25 745 206-32-120 39 212-20"/></g><g class="sprayWhite" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="m1028 236 82-29-25 27 63-8m-97 18 54-9"/><path d="m1284 728 19-18 14 22-21-4 8-20"/></g><g class="sprayPurple" fill="currentColor"><circle cx="1350" cy="782" r="10"/><circle cx="1328" cy="765" r="4"/><circle cx="1375" cy="748" r="6"/><circle cx="1324" cy="804" r="3"/><path d="m1362 774 11 61-6 17-4-5Z"/></g></svg>
+ <header class="gameLogo" aria-label="Wake up 都给我醒过来！"><span>Wake up</span><strong>都给我醒过来<span>！</span></strong></header>
  <main class="menuContent mainMenuNav">
-  <label class="mapChoice" for="mapSelect"><span>觉醒区域</span><select id="mapSelect"><option value="riverside">东京河畔</option><option value="tidewater">海滨钟楼广场 · 新地图</option></select></label>
+  <label class="mapChoice" for="mapSelect"><span>地图</span><select id="mapSelect"><option value="tidewater">海滨钟楼广场</option><option value="riverside">东京河畔</option></select></label>
   <button id="start" class="primary" disabled><span>东京街区载入中…</span><i>↵</i></button>
   <button id="continue" hidden></button>
   <button id="settings">选项设置</button>
@@ -25,11 +27,8 @@
  <aside class="menuIntel">
   <div class="intelHeader"><span>觉醒进度</span><strong id="menuProgress">0.0%</strong></div>
   <dl><div><dt>已感染人数</dt><dd id="menuInfected">0</dd></div><div><dt>已唤醒人数</dt><dd id="menuAwakened">0</dd></div><div><dt>觉醒区域</dt><dd id="regionName">河畔区</dd></div></dl>
-  <section class="genePreview"><h2>觉醒基因</h2><div><i class="active">☣</i><i>◇</i><i>◇</i><i>◇</i></div></section>
-  <div class="bioMark">☣</div>
   <div class="menuMap" aria-label="东京河畔街区简图"><span class="mapRoad roadA"></span><span class="mapRoad roadB"></span><span class="mapRoad roadC"></span><i></i><b>N</b></div>
  </aside>
- <div class="infectionNotice"><b>☣</b><p><strong>警告：紫色感染扩散中</strong><span>接触者觉醒的可能性：高</span></p></div>
  <div class="menuFooter"><span>切换　<kbd>Tab</kbd></span><span>选择　<kbd>↵</kbd></span><b>WAKE UP TOKYO / __GAME_RELEASE__</b></div>
 </div>
 

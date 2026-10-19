@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile,access} from 'node:fs/promises';
 import {FBXLoader} from 'three/addons/loaders/FBXLoader.js';
 import {VectorKeyframeTrack,AnimationClip} from 'three';
-import {stripRootMotion,clipToSkeleton} from './mixamo.js';
+import {stripRootMotion,clipToSkeleton,loadTextureSet} from './mixamo.js';
 const publicFile=path=>new URL('./public/'+path,import.meta.url);
 test('all shipped character FBX files contain skinned meshes and animation',async()=>{
  const manifest=JSON.parse(await readFile(publicFile('mixamo/manifest.json'),'utf8'));
@@ -23,4 +23,18 @@ test('root-motion cleanup preserves jump height and prunes absent bones',()=>{
  const clip=new AnimationClip('roll',1,[new VectorKeyframeTrack('mixamorigHips.position',[0,1],[1,2,3,4,5,6]),new VectorKeyframeTrack('Missing.position',[0,1],[0,0,0,1,1,1])]);
  stripRootMotion(clip);clipToSkeleton(clip,new Set(['mixamorigHips']));
  assert.equal(clip.tracks.length,1);assert.deepEqual([...clip.tracks[0].values],[1,2,3,1,5,3]);
+});
+
+test('real jump asset skips anticipation and removes duplicated vertical root travel',async()=>{
+ const {prepareJumpClip,jumpClipTime}=await import('./mixamo.js');
+ const {readFile}=await import('node:fs/promises');const {FBXLoader}=await import('three/addons/loaders/FBXLoader.js');
+ const b=await readFile(new URL('./public/mixamo/jump.fbx',import.meta.url));
+ const clip=new FBXLoader().parse(b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength),'').animations[0];
+ prepareJumpClip(clip);const w=clip.userData.jumpWindow;
+ assert.ok(w.start>.6&&w.start<.9);assert.ok(w.apex>.9&&w.apex<1.2);assert.ok(w.end>w.apex&&w.end<1.5);
+ assert.equal(jumpClipTime(clip,0),w.start);assert.equal(jumpClipTime(clip,.5),w.apex);assert.equal(jumpClipTime(clip,1),w.end);
+ const t=clip.tracks.find(t=>/hips.position$/i.test(t.name));assert.ok(Array.from(t.times,(_,i)=>t.values[i*3+1]).every(y=>y===t.values[1]));
+});
+test('shared police texture URLs load once and reuse GPU texture objects',async()=>{
+ let requests=0;const loader={loadAsync:async()=>{requests++;return {};}};const [a,b]=await Promise.all([loadTextureSet({normalMap:'shared.png'},'/texture-cache-test/',loader),loadTextureSet({normalMap:'shared.png'},'/texture-cache-test/',loader)]);assert.equal(requests,1);assert.equal(a.normalMap,b.normalMap);assert.equal(a.normalMap.flipY,true);
 });

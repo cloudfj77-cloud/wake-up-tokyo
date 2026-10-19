@@ -10,7 +10,7 @@ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
 function section(start,end){return source.slice(source.indexOf(start),source.indexOf(end,source.indexOf(start))).replaceAll('import.meta.env.DEV','false');}
 function context(extra={}){
  const elements=new Map();
- const ctx=vm.createContext({...rules,state:rules.makeState(),mode:'playing',assets:{},units:[],player:{x:0,z:0},yaw:0,pitch:0,cameraDistance:3,attackCd:0,breakCd:0,rushCd:0,reinforceTimer:0,fodderTimer:10,reinforceDirection:0,totalReinforcements:0,alerted:true,reinforceAnnounced:false,spawnQueue:rules.makeSpawnQueue(),boss:{active:false,root:{}},world:{towers:[],destructibles:[],bossSpawn:{x:30,z:0},spawnWeakenSites(){}},toast(){},bossVictoryHold:0,policeAlertTimer:0,music:{pause(){},setBed(){},stopBed(){}},document:{body:{classList:{toggle(){}}}},$:id=>{if(!elements.has(id))elements.set(id,{classList:{remove(){}}});return elements.get(id);},formatTime:t=>String(t),localStorage:{setItem(_key,value){ctx.saved=JSON.parse(value);},removeItem(){}},SAVE_KEY:'test',SAVE_VERSION:10,showDialog:html=>{ctx.dialog=html;},...extra});
+ const ctx=vm.createContext({...rules,state:rules.makeState(),mode:'playing',assets:{},units:[],player:{x:0,z:0},yaw:0,pitch:0,cameraDistance:3,attackCd:0,breakCd:0,rushCd:0,reinforceTimer:0,fodderTimer:10,reinforceDirection:0,totalReinforcements:0,alerted:true,reinforceAnnounced:false,spawnQueue:rules.makeSpawnQueue(),boss:{active:false,root:{}},world:{towers:[],destructibles:[],bossSpawn:{x:30,z:0},spawnWeakenSites(){}},toast(){},bossVictoryHold:0,policeAlertTimer:0,music:{pause(){},update(){},duck(){},stopBed(){}},document:{body:{classList:{toggle(){}}}},$:id=>{if(!elements.has(id))elements.set(id,{classList:{remove(){}}});return elements.get(id);},formatTime:t=>String(t),localStorage:{setItem(_key,value){ctx.saved=JSON.parse(value);},removeItem(){}},SAVE_KEY:'test',SAVE_VERSION:10,showDialog:html=>{ctx.dialog=html;},...extra});
  return ctx;
 }
 test('resuming the checkpoint written at Boss entry summons the Boss again',()=>{
@@ -119,7 +119,7 @@ for(const [type,corpse] of [[0,false],[0,true],[1,true]])test(`evolve 3 synchron
 test('army entry circles a plane and drops a bomb that only hurts the player side',()=>{
  const spoken=[],added=[];
  const ctx=context({
-  tracers:[],player:{x:3,z:4},music:{muted:false},
+  tracers:[],player:{x:3,z:4},music:{muted:false,duck(){},effect(){},sfx:{emit(){}},speak(stage,text){spoken.push(text);},hush(){}},
   STRIKE:{enemy:{bomb:0xff3344,glow:0xff8899,bullet:0xff2b2b,spark:0xff4d4d},ally:{}},
   scene:{add(o){added.push(o);},remove(){}},
   world:{heightAt:()=>0,nearest:(x,z)=>({x,z})},
@@ -129,7 +129,7 @@ test('army entry circles a plane and drops a bomb that only hurts the player sid
   speechSynthesis:{getVoices:()=>[{lang:'en-US',name:'Alex'}],speak(u){spoken.push(u.text);u.onend?.();},cancel(){},resume(){},speaking:false,pending:false},
   SpeechSynthesisUtterance:class{constructor(text){this.text=text;}}
  });
- vm.runInContext(section('let radioQueue','function spawnReinforcement('),ctx);
+ vm.runInContext(section('let airWing=null','function spawnReinforcement('),ctx);
  vm.runInContext('callBackup(3);callBackup(1);beginAirstrike()',ctx);
  assert.match(spoken[0],/lockdown/i);
  assert.equal(spoken.length,1);

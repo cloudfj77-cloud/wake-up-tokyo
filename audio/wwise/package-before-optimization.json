@@ -1,0 +1,311 @@
+{
+  "at": "2026-10-19T02:15:46.549853+00:00",
+  "bytes": 232149889,
+  "fileCount": 76,
+  "files": [
+    {
+      "file": "version.json",
+      "bytes": 108
+    },
+    {
+      "file": "fbx-viewer.html",
+      "bytes": 4880
+    },
+    {
+      "file": "index.html",
+      "bytes": 6616
+    },
+    {
+      "file": "awakened-reader/running-jump.fbx",
+      "bytes": 872976
+    },
+    {
+      "file": "awakened-reader/tex/metallic.png",
+      "bytes": 460485
+    },
+    {
+      "file": "awakened-reader/tex/base_color.png",
+      "bytes": 3779623
+    },
+    {
+      "file": "awakened-reader/tex/normal.png",
+      "bytes": 1700292
+    },
+    {
+      "file": "awakened-reader/tex/roughness.png",
+      "bytes": 1341606
+    },
+    {
+      "file": "music/epic-boss-battle.mp3",
+      "bytes": 6811056
+    },
+    {
+      "file": "music/evil-incoming.mp3",
+      "bytes": 6988194
+    },
+    {
+      "file": "music/circuit.mp3",
+      "bytes": 7210908
+    },
+    {
+      "file": "music/funky-energy-loop.mp3",
+      "bytes": 8102178
+    },
+    {
+      "file": "draco/draco_decoder.js",
+      "bytes": 512465
+    },
+    {
+      "file": "draco/draco_decoder.wasm",
+      "bytes": 192420
+    },
+    {
+      "file": "draco/draco_wasm_wrapper.js",
+      "bytes": 58456
+    },
+    {
+      "file": "mixamo/jump.fbx",
+      "bytes": 1123424
+    },
+    {
+      "file": "mixamo/idle.fbx",
+      "bytes": 1320352
+    },
+    {
+      "file": "mixamo/toyRecoil.fbx",
+      "bytes": 953712
+    },
+    {
+      "file": "mixamo/zombie.fbx",
+      "bytes": 1023728
+    },
+    {
+      "file": "mixamo/roll.fbx",
+      "bytes": 1123056
+    },
+    {
+      "file": "mixamo/fallRoll.fbx",
+      "bytes": 1101632
+    },
+    {
+      "file": "mixamo/heavyPunch.fbx",
+      "bytes": 1077504
+    },
+    {
+      "file": "mixamo/run.fbx",
+      "bytes": 945536
+    },
+    {
+      "file": "mixamo/manifest.json",
+      "bytes": 548
+    },
+    {
+      "file": "mixamo/Strafing.fbx",
+      "bytes": 1005696
+    },
+    {
+      "file": "mixamo/toyAim.fbx",
+      "bytes": 1203776
+    },
+    {
+      "file": "mixamo/flurry.fbx",
+      "bytes": 1161760
+    },
+    {
+      "file": "mixamo/player.fbx",
+      "bytes": 1005696
+    },
+    {
+      "file": "mixamo/tex/metallic.png",
+      "bytes": 1218486
+    },
+    {
+      "file": "mixamo/tex/base_color.png",
+      "bytes": 4772244
+    },
+    {
+      "file": "mixamo/tex/normal.png",
+      "bytes": 2177154
+    },
+    {
+      "file": "mixamo/tex/roughness.png",
+      "bytes": 1030856
+    },
+    {
+      "file": "workers/thriller-idle.fbx",
+      "bytes": 1077696
+    },
+    {
+      "file": "workers/sad-walk.fbx",
+      "bytes": 925696
+    },
+    {
+      "file": "workers/tex/metallic.png",
+      "bytes": 1151453
+    },
+    {
+      "file": "workers/tex/base_color.png",
+      "bytes": 3818964
+    },
+    {
+      "file": "workers/tex/normal.png",
+      "bytes": 1579574
+    },
+    {
+      "file": "workers/tex/roughness.png",
+      "bytes": 1118630
+    },
+    {
+      "file": "third-party/inkwave-LICENSE.txt",
+      "bytes": 1069
+    },
+    {
+      "file": "third-party/TitanOne-OFL.txt",
+      "bytes": 4417
+    },
+    {
+      "file": "third-party/Rubik-OFL.txt",
+      "bytes": 4383
+    },
+    {
+      "file": "assets/wwise-runtime-cUuSU9qK.wasm",
+      "bytes": 1414972
+    },
+    {
+      "file": "assets/worker-man-gYwrji6B.glb",
+      "bytes": 9096368
+    },
+    {
+      "file": "assets/three.module-sn0n2_52.js",
+      "bytes": 704759
+    },
+    {
+      "file": "assets/index-B8Shtdq7.js",
+      "bytes": 186849
+    },
+    {
+      "file": "assets/viewer-CIUu5zoT.js",
+      "bytes": 28391
+    },
+    {
+      "file": "assets/asset-8-0V_ixqQm.bin",
+      "bytes": 35324
+    },
+    {
+      "file": "assets/tidewater-package-H_Wn6mml.js",
+      "bytes": 744740
+    },
+    {
+      "file": "assets/TokyoMusic-CMf8gToB.bnk",
+      "bytes": 5687088
+    },
+    {
+      "file": "assets/riverside-NkzkSgTe.glb",
+      "bytes": 3967764
+    },
+    {
+      "file": "assets/smoke-DoeVN4q0.webp",
+      "bytes": 162240
+    },
+    {
+      "file": "assets/character-ChFJwT3p.glb",
+      "bytes": 7590864
+    },
+    {
+      "file": "assets/world-DLgbkSVN.js",
+      "bytes": 6589
+    },
+    {
+      "file": "assets/music-audition-Dsf-XXnB.js",
+      "bytes": 11256
+    },
+    {
+      "file": "assets/main-JEayNFaH.css",
+      "bytes": 72892
+    },
+    {
+      "file": "assets/sfx-runtime-ChqNrBeG.js",
+      "bytes": 16594
+    },
+    {
+      "file": "assets/mixamo-DVwdmCoy.js",
+      "bytes": 50919
+    },
+    {
+      "file": "assets/awakened-Dp2ZlTP5.glb",
+      "bytes": 28906536
+    },
+    {
+      "file": "assets/asset-9-7BvNCKt4.png",
+      "bytes": 187683
+    },
+    {
+      "file": "assets/asset-7-CPku0rjU.bin",
+      "bytes": 10732
+    },
+    {
+      "file": "assets/player-BOdywx9y.glb",
+      "bytes": 23389408
+    },
+    {
+      "file": "assets/TokyoSfx-DJY5T59J.bnk",
+      "bytes": 6879491
+    },
+    {
+      "file": "assets/guard-CQQhjIiF.glb",
+      "bytes": 31461380
+    },
+    {
+      "file": "assets/main-Cvhm1NoX.js",
+      "bytes": 605348
+    },
+    {
+      "file": "assets/shaders/outline-instance.frag",
+      "bytes": 83804
+    },
+    {
+      "file": "awakened/running-jump.fbx",
+      "bytes": 780784
+    },
+    {
+      "file": "awakened/tex/metallic.png",
+      "bytes": 417821
+    },
+    {
+      "file": "awakened/tex/base_color.png",
+      "bytes": 4080228
+    },
+    {
+      "file": "awakened/tex/normal.png",
+      "bytes": 1985027
+    },
+    {
+      "file": "awakened/tex/roughness.png",
+      "bytes": 1167169
+    },
+    {
+      "file": "police/shield/Police_Animated_v5.fbx",
+      "bytes": 16479004
+    },
+    {
+      "file": "police/tex/tripo_model_metallic.JPEG",
+      "bytes": 178246
+    },
+    {
+      "file": "police/tex/Color.jpg",
+      "bytes": 268431
+    },
+    {
+      "file": "police/tex/Normal.png",
+      "bytes": 1348981
+    },
+    {
+      "file": "police/tex/tripo_model_roughness.JPEG",
+      "bytes": 338138
+    },
+    {
+      "file": "police/baton/Police_Baton_Anatomy.fbx",
+      "bytes": 13834764
+    }
+  ]
+}

@@ -43,18 +43,44 @@ export function clipToSkeleton(clip, boneNames) {
 function renameClip(clip, name) {
   const copy = clip.clone();
   copy.name = name;
+  if(name==='jump')prepareJumpClip(copy);
   return stripRootMotion(copy);
+}
+
+// 从骨盆高度找出真正离地、最高点和落地，跳过 FBX 自带的原地下蹲前摇。
+export function prepareJumpClip(clip){
+ const track=clip.tracks.find(t=>/hips\.position$/i.test(t.name));
+ if(!track)return clip;
+ const y=Array.from(track.times,(_,i)=>track.values[i*3+1]),base=y[0];
+ let peak=0;for(let i=1;i<y.length;i++)if(y[i]>y[peak])peak=i;
+ if(y[peak]-base<.02)return clip;
+ let start=peak,end=peak;
+ while(start>0&&y[start-1]>base)start--;
+ while(end<y.length-1&&y[end]>base)end++;
+ clip.userData={...clip.userData,jumpWindow:{start:track.times[start],apex:track.times[peak],end:track.times[end]}};
+ // 身体升降由跳跃物理统一驱动，避免骨骼里烘焙的位移再次叠加。
+ for(let i=0;i<y.length;i++)track.values[i*3+1]=base;
+ return clip;
+}
+
+export function jumpClipTime(clip,phase){
+ const {start,apex,end}=clip.userData?.jumpWindow||{start:0,apex:clip.duration*.5,end:clip.duration};
+ const p=THREE.MathUtils.clamp(phase,0,1);
+ return p<=.5?THREE.MathUtils.lerp(start,apex,p*2):THREE.MathUtils.lerp(apex,end,(p-.5)*2);
 }
 
 // 颜色贴图要按 sRGB 解码，法线 / 粗糙度 / 金属度是数据贴图，必须保持线性，否则材质会发灰或发黏。
 const SRGB_SLOTS = new Set(['map', 'emissiveMap']);
+const texturePromises = new Map();
 
 // 按清单载入整套 PBR 贴图。单张贴图缺失时只丢掉那一槽，不让整个角色加载失败。
-export async function loadTextureSet(textures, base = BASE) {
-  const loader = new THREE.TextureLoader();
+export async function loadTextureSet(textures, base = BASE, loader = new THREE.TextureLoader()) {
   const results = await Promise.all(Object.entries(textures).map(async ([slot, file]) => {
     try {
-      const texture = await loader.loadAsync(base + file);
+      const cacheKey=(SRGB_SLOTS.has(slot)?'srgb:':'linear:')+base+file;
+      let pending=texturePromises.get(cacheKey);
+      if(!pending){pending=loader.loadAsync(base+file).catch(error=>{texturePromises.delete(cacheKey);throw error;});texturePromises.set(cacheKey,pending);}
+      const texture = await pending;
       // 别被「FBX 的 UV 原点在左上」这句话带偏：实测这套贴图按 three 默认（flipY=true）才连贯，
       // 相邻面采样色差 8.9；反过来设成 false 会跳到 19.7，画面就是碎的。改这个前先量一遍。
       texture.flipY = true;
@@ -81,11 +107,18 @@ export function applyCharacterTextures(model, maps) {
     // 3ds Max 导出的 FBX 自带正确法线（含硬边），重算反而会把硬边抹平，所以只在缺失时才算。
     if (!node.geometry?.attributes.normal) node.geometry?.computeVertexNormals();
     node.material = new THREE.MeshStandardMaterial({
-      ...maps,
-      // 这两个基础值是贴图的乘数，必须给满 1，否则贴图会被乘成 0 而看不出效果。
-      roughness: 1,
-      metalness: 1,
-      normalScale: new THREE.Vector2(1, 1),
+      // 只挂颜色与法线：AIGC 出的 roughness/metallic 图常把表面烘得很光滑，套上去就是一层油光。
+      map: maps.map ?? null,
+      normalMap: maps.normalMap ?? null,
+      // 人物是皮肤和布料，粗糙度固定、金属度归零，不要反光发亮。
+      roughness: 0.8,
+      metalness: 0,
+      // 暗面兜底。自发光必须用颜色贴图本身当 emissiveMap —— 直接用白光 emissive
+      // 等于往画面里掺白，人物会发白掉色，饱和度全丢。
+      emissive: new THREE.Color(0xffffff),
+      emissiveMap: maps.map ?? null,
+      emissiveIntensity: 0.2,
+      normalScale: new THREE.Vector2(0.8, 0.8),
     });
   });
   return meshCount;
@@ -110,16 +143,14 @@ export async function loadMixamoCharacter() {
   const own = model.animations[0];
   if (own) animations.push(renameClip(own, manifest.modelClip || own.name || 'idle'));
 
-  for (const [name, file] of Object.entries(manifest.clips || {})) {
-    // 同一个文件已被当作模型载入时，直接复用已解析的动画，避免重复下载。
-    if (file === manifest.model) {
-      if (own) animations.push(renameClip(own, name));
-      continue;
-    }
-    const animated = await loader.loadAsync(BASE + file);
-    const source = animated.animations[0];
-    if (source) animations.push(renameClip(source, name));
-  }
+  const animatedFiles = new Map([[manifest.model, Promise.resolve(model)]]);
+  const namedClips = await Promise.all(Object.entries(manifest.clips || {}).map(async ([name, file]) => {
+    let pending=animatedFiles.get(file);
+    if(!pending){pending=loader.loadAsync(BASE+file);animatedFiles.set(file,pending);}
+    const source=(await pending).animations[0];
+    return source?renameClip(source,name):null;
+  }));
+  animations.push(...namedClips.filter(Boolean));
 
   if (!animations.length) throw new Error('mixamo 资源中没有任何动画');
   return { scene: model, animations };

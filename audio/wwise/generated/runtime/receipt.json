@@ -1,0 +1,23 @@
+{
+  "sdkVersion": "2025.1.10.9233",
+  "compiler": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.38 (9eff02bc816c50ab0e3b70a3bd5b72a8dc2893a2)",
+  "bridgeHash": "a93f4dfd42f514e837d6bce8ad836c924aef6386ec10afe7f32f3693973c8985",
+  "streaming": "HTTP Range + Wwise deferred IO; 2MiB pool",
+  "files": [
+    {
+      "file": "wwise-runtime.mjs",
+      "sha256": "821aaea0a8fcaba41d2f74348247e413d97e9884fd2e4f6b83e2dd87604f67ff",
+      "bytes": 328623
+    },
+    {
+      "file": "wwise-runtime.wasm",
+      "sha256": "420ef72ec9ff943aad72640d4b7dad9ed0eaa23cd89c23cb0c14997c7a4ed016",
+      "bytes": 1434722
+    },
+    {
+      "file": "WwiseAudioWorklet.processor.js",
+      "sha256": "c2d62606b40530ce8281777a05dcb04bb22eaff1547ed77ce9f37fecb74a0cff",
+      "bytes": 3526
+    }
+  ]
+}

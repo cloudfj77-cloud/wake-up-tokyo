@@ -1,0 +1,7 @@
+# SoundBank/runtime receipts verify exact bytes on every checkout.
+audio/wwise/generated/** -text -whitespace linguist-generated=true
+wwise/** -text -whitespace
+*.wav binary
+*.wem binary
+*.bnk binary
+*.wasm binary
