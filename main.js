@@ -9,7 +9,7 @@ import * as T from 'three';
 import {createBoss,hitBoss as baseHitBoss,animateBoss,canBossBombTarget} from './boss.js';
 import {createFirearms} from './guns.js';
 import {createSyringe} from './syringe.js';
-import {loadCharacterAssets,createCharacterVisual,setCharacterKind,playCharacterAttack,playCharacterJump,updateCharacterVisual,characterHeight,PROFESSIONS,acquireCharacterVisual,releaseCharacterVisual,warmCharacterPool} from './characters.js';
+import {loadCharacterAssets,createCharacterVisual,setCharacterKind,playCharacterAttack,playCharacterJump,updateCharacterVisual,characterHeight,setCharacterHeight,PROFESSIONS,acquireCharacterVisual,releaseCharacterVisual,warmCharacterPool,visualPoolKey} from './characters.js';
 import {OutlineFilter,createFilterBlitter} from './outline-filter.js';
 import {ToonFilter} from './toon-filter.js';
 import {block} from './world.js';
@@ -20,7 +20,7 @@ const mapConfig=selectedMap(location.search);
 const $=id=>document.getElementById(id),canvas=$('game');
 const pointerLock=createPointerLock(canvas,(message,seconds)=>toast(message,seconds));
 // 点开始、继续、关地图或选完卡时锁住鼠标，画面跟着鼠标转。选卡和暂停会先放开。
-function captureView(){if(showDebug)return;void pointerLock.request({quiet:true});}
+function captureView(){if(showDebug||window.__propUi)return;void pointerLock.request({quiet:true});}
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const music=new Soundtrack();let mode='loading',state=makeState(),units=[],player={x:0,z:-7,y:0,vy:0,crouch:false,roll:0,rollX:0,rollZ:1},world,assets;let hurtTimer=0,lastHp=null;
 const PLAYER_HEIGHT=characterHeight('player'),STANDING_CHEST=PLAYER_HEIGHT*.72,CROUCH_CHEST=PLAYER_HEIGHT*.45,ROLL_DURATION=.72,ACTION_BUFFER=.18,JUMP_SPEED=7,GRAVITY=18;
@@ -61,6 +61,8 @@ vecQuery('shadowtint');vecQuery('shadowshift');
 const satQuery=parseFloat(new URLSearchParams(location.search).get('sat'));if(Number.isFinite(satQuery))toonFilter.saturation=satQuery;
 const conQuery=parseFloat(new URLSearchParams(location.search).get('con'));if(Number.isFinite(conQuery))toonFilter.contrast=conQuery;
 const hiQuery=parseFloat(new URLSearchParams(location.search).get('hi'));if(Number.isFinite(hiQuery))toonFilter.hi=hiQuery;
+// ?copheight=1.5 调变异警察的身高（现实米数，默认 1.55；普通警察是 1.75）
+const copHeightQuery=parseFloat(new URLSearchParams(location.search).get('copheight'));if(Number.isFinite(copHeightQuery))setCharacterHeight('infectedCop',copHeightQuery);
 // ?bright=1.25 整体明度倍率（1 = 不动）
 const brightQuery=parseFloat(new URLSearchParams(location.search).get('bright'));if(Number.isFinite(brightQuery))toonFilter.exposure=brightQuery;
 toonFilter.init().then(()=>{if(toonFilter.enabled){console.log('[toon] 厚涂三渲二已启用 · 明暗档数',toonFilter.levels);toast('厚涂三渲二已启用',2.6);}}).catch(error=>{console.warn('[toon] 未启用厚涂三渲二：',error.message);toonFilter.enabled=false;});
@@ -415,18 +417,117 @@ function syncTankShell(v,u){
  if(v.root)v.root.visible=false;
 }
 function actorVisual(u){
- // 转化后的士兵留着原来的兵种模型，名字才对得上是巡警还是大兵。市民才换成觉醒外形。
- // 持盾特警（type 3）和持棍巡警（type 1）有专属模型，其余秩序单位共用警卫模型。
+ // 感染前：持盾特警（type 3）/持棍巡警（type 1）用各自专属模型，武器和动作都在模型里，不加配件。
+ // 感染后：换成变异形态，并把对应的盾牌/棍子配件挂到手上（见 attachCopProp）。
  const copKind=t=>t===3?'shieldCop':t===1?'batonCop':null;
- const kind=u.kind==='ally'?(u.type>0?(copKind(u.type)||'guard'):'ally'):u.type===0?'human':(copKind(u.type)||'guard');
+ // 玩家护卫（u.guard）是「号令召集」来的警察，虽然也是 converted，但不走感染变身那一套，
+ // 保持兵种原样 —— 否则开局就会冒出一个变异形态的警察。
+ const copInfected=t=>(t===1||t===3)&&!!assets?.infectedCop;
+ const kind=u.kind==='ally'?(u.type>0?((!u.guard&&copInfected(u.type))?'infectedCop':(copKind(u.type)||'guard')):'ally'):u.type===0?'human':(copKind(u.type)||'guard');
  const v=acquireCharacterVisual(assets,kind,u.profession);
  if(u.kind==='ally')setCharacterKind(v,'ally');
  v.holder.position.set(u.x,world.heightAt(u.x,u.z),u.z);
  v.holder.rotation.y=u.facingYaw??Math.random()*6.28; u.facingYaw=v.holder.rotation.y;
  if(typeof syncTankShell==='function')syncTankShell(v,u);
+ attachCopProp(v,u);
  if(!v.holder.parent)scene.add(v.holder);
  visuals.set(u.id,{v,oldKind:u.kind});
  return v;
+}
+// 盾牌挂左前臂、棍子挂右手。配件是独立 OBJ，位置旋转还带不到模型里，所以留可调参数。
+// 配件只给感染后的警察拿。变异形态是 Mixamo 骨骼（mixamorig*），
+// 感染前的模型是另一套命名，两组名字都列出来，找到哪个挂哪个。
+const PROP_XFORM={
+ // 盾牌同理：OBJ 高 1 个单位，不缩放就和人一样高。默认值同样来自面板实测：
+ // shieldpos=-0.1,0.195,0.02 · shieldscale=0.48
+ // faceForward：盾牌必须定向 —— 盾面朝人物正前方、盾牌竖立，这样它才垂直于横在胸前的小臂。
+ // 盾牌 OBJ 的法线在局部 +X、高度在 +Y，所以把这两根轴分别对齐到「前方」和「上方」。
+ shield:{bones:['mixamorigLeftForeArm','forearmL','handL'],pos:propVec('shieldpos',[-.1,.195,.02]),rot:propVec('shieldrot',[0,0,0]),scale:propNum('shieldscale',.48),faceForward:true},
+ // 配件的 OBJ 是按 1 个单位导出的，和人物身高差不多长，直接挂上去棍子会有整个人那么高。
+ // 所以默认缩到 0.45（约到人腿中部），可用 ?batonscale= 微调。
+ // gripEnd：棍子的 OBJ 原点在几何中心（y 范围 -0.5~0.5），按中心挂会有一半穿进手臂、
+ // 一半露在外面，柄端不在手心。所以要沿长度方向再挪半个长度，且这个量跟随缩放。
+ // angle = 棍子相对前臂的倾角（1.2217 弧度 = 70 度）。方向不写死欧拉角：
+ // 手骨骼的局部轴和人物朝向并不是同一套，写死 X 轴旋转会歪到身体侧面去，
+ // 所以按「人物正前方」这个向量实时算朝向（见 attachCopProp 的 aimForward）。
+ // grip 是「柄端相对棍子中心的偏移量」占长度的比例，越小插进掌心越深。
+ // 下面这组默认值是用 ?propui=1 面板对着画面调出来的：
+ // batonpos=0.085,0.065,0.135 · batonangle=2.1 · batongrip=0.25 · batonscale=0.45
+ baton:{bones:['mixamorigRightHand','handR'],pos:propVec('batonpos',[.085,.065,.135]),grip:propNum('batongrip',.25),angle:propNum('batonangle',2.1),rot:propVec('batonrot',[0,0,0]),scale:propNum('batonscale',.45),gripEnd:true,aimForward:true},
+};
+// 回归测试用 vm 沙箱跑这段代码，里面没有 location / URLSearchParams，所以要守卫。
+function propQuery(key){return (typeof location!=='undefined'&&typeof URLSearchParams!=='undefined')?new URLSearchParams(location.search||'').get(key):null;}
+function propVec(key,fallback){const raw=propQuery(key);if(!raw)return fallback;const a=raw.split(',').map(Number);return a.length===3&&a.every(Number.isFinite)?a:fallback;}
+function propNum(key,fallback){const raw=propQuery(key);if(raw==null)return fallback;const n=Number(raw);return Number.isFinite(n)?n:fallback;}
+function attachCopProp(v,u){
+ const props=assets?.props;
+ // 只有感染变异模型加配件；护卫和原警察模型已经自带武器。
+ const eligible=props&&v.modelKind==='infectedCop'&&!u.guard&&(u.converted||u.kind==='ally');
+ const propType=eligible?(u.type===3?'shield':u.type===1?'baton':null):null;
+ if(!propType){detachCopProp(v);return;}
+ if(v.userData?.propType===propType&&v.userData.propMesh)return;
+ // 两种感染警察共用模型池，换兵种时必须换掉上次的武器。
+ detachCopProp(v);
+ const spec=PROP_XFORM[propType];
+ if(!v.userData)v.userData={};
+ let bone=null;
+ for(const name of spec.bones){
+  v.root.traverse(n=>{if(!bone&&n.isBone&&n.name===name)bone=n;});
+  if(bone)break;
+ }
+ if(!bone)return;
+ const mesh=props[propType].clone(true);
+ // 长条配件（棍子）要把柄端落在手心：沿自身长度方向（局部 +Y，也就是手指方向）
+ // 平移半个长度，长度 = 1 个单位 × 缩放。偏移必须跟着倾角一起旋转，
+ // 否则棍子一倾斜，柄端就绕着手腕转出去了。
+ mesh.scale.setScalar(spec.scale);
+ if(spec.aimForward){
+  // 让棍子朝人物正前方斜：取手臂方向（骨骼局部 +Y）与人物前方（模型局部 +Z），
+  // 绕这两者的叉积轴把棍子转 angle 度，倾斜方向就锁定在正前方而不是身体侧面。
+  v.holder.updateMatrixWorld(true);
+  const qBone=bone.getWorldQuaternion(new T.Quaternion());
+  // 手臂方向不能取骨骼的局部 +Y：Mixamo 骨骼各自绑姿旋转不同，+Y 未必指向手指，
+  // 取出来会偏到手臂外侧去。用「父骨骼 → 本骨骼」的世界位移，才是手腕指向手指的真实方向。
+  const handPos=new T.Vector3();bone.getWorldPosition(handPos);
+  const parentPos=new T.Vector3();(bone.parent||bone).getWorldPosition(parentPos);
+  const armWorld=handPos.sub(parentPos);
+  if(armWorld.lengthSq()<1e-8)armWorld.set(0,1,0);
+  armWorld.normalize();
+  const frontWorld=new T.Vector3(0,0,1).applyQuaternion(v.root.getWorldQuaternion(new T.Quaternion()));
+  const axis=new T.Vector3().crossVectors(armWorld,frontWorld);
+  if(axis.lengthSq()<1e-8)axis.set(1,0,0);
+  axis.normalize();
+  const targetLocal=armWorld.clone().applyAxisAngle(axis,spec.angle).applyQuaternion(qBone.clone().invert()).normalize();
+  mesh.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),targetLocal);
+ }else if(spec.faceForward){
+  // 把盾牌的法线（局部 +X）对齐人物正前方、高度（局部 +Y）对齐上方，盾牌就竖着朝前，
+  // 与横在胸前的小臂成 90 度。方向都在骨骼局部空间里算，人物转到哪都成立。
+  v.holder.updateMatrixWorld(true);
+  const qBone=bone.getWorldQuaternion(new T.Quaternion());
+  const qInv=qBone.clone().invert();
+  const qRoot=v.root.getWorldQuaternion(new T.Quaternion());
+  const forward=new T.Vector3(0,0,1).applyQuaternion(qRoot).applyQuaternion(qInv).normalize();
+  const up=new T.Vector3(0,1,0).applyQuaternion(qRoot).applyQuaternion(qInv).normalize();
+  const side=new T.Vector3().crossVectors(forward,up).normalize();
+  up.crossVectors(side,forward).normalize();
+  mesh.quaternion.setFromRotationMatrix(new T.Matrix4().makeBasis(forward,up,side));
+ }else mesh.rotation.set(...spec.rot);
+ // 柄端落在手心：沿棍子自身长度方向（局部 +Y）平移半个长度，偏移必须按最终朝向旋转。
+ const half=spec.gripEnd?(spec.grip??.5)*spec.scale:0;
+ let ox=0,oy=0,oz=0;
+ if(half){const dir=new T.Vector3(0,half,0).applyQuaternion(mesh.quaternion);ox=dir.x;oy=dir.y;oz=dir.z;}
+ mesh.position.set(spec.pos[0]+ox,spec.pos[1]+oy,spec.pos[2]+oz);
+ bone.add(mesh);v.userData.prop=bone.name;v.userData.propMesh=mesh;v.userData.propType=propType;
+}
+// 调参面板用：把配件摘下来按新参数重挂，所有在场的角色一起更新。
+function detachCopProp(v){
+ if(!v.userData)return;
+ if(v.userData.propMesh){v.userData.propMesh.removeFromParent();v.userData.propMesh=null;}
+ v.userData.prop=null;v.userData.propType=null;
+}
+function refreshCopProps(){
+ for(const entry of visuals.values())detachCopProp(entry.v);
+ for(const u of units){const entry=visuals.get(u.id);if(entry&&typeof attachCopProp==='function')attachCopProp(entry.v,u);}
 }
 function acquireUnitRecord(type,x,z,city=false,profession=0){
  const id=nextActorId++;totalReinforcements++;
@@ -690,7 +791,8 @@ function weaponSelect(index){
 const keys={};const SHIFT_HOLD_MS=180;keys.shiftStartedAt=null;
 function shiftHeld(){return keys.shiftStartedAt!==null&&(keys.ShiftLeft||keys.ShiftRight)&&performance.now()-keys.shiftStartedAt>=SHIFT_HOLD_MS;}
 addEventListener('keydown',e=>{const typing=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(!typing&&(e.code==='F3'||(mode==='playing'&&['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Tab'].includes(e.code))))e.preventDefault();if(e.code==='F3'){e.preventDefault();toggleDebug();return;}if(typing)return;keys[e.code]=true;if(e.repeat)return;if(e.code==='Escape'||e.code==='KeyP'){togglePause();return;}if(mode==='map'&&e.code==='Tab'){e.preventDefault();toggleMap();return;}if(mode!=='playing')return;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&keys.shiftStartedAt===null)keys.shiftStartedAt=performance.now();if(e.code==='KeyJ')primary();if(e.code==='KeyK')heavy();if(e.code==='Digit1')weaponSelect(-1);else if(/^Digit[2-9]$/.test(e.code)){const slot=weaponSlots(state)[Number(e.code.slice(5))-2];if(slot)weaponSelect(slot.weapon);}if(e.code==='Space')requestJump();if(e.code==='KeyC'&&player.roll<=0&&!(player.knock>0))player.crouch=!player.crouch;if(e.code==='KeyF'&&state.abilities.command){if(squadIds.size){squadIds.clear();toast('群落已解散 · 自主行动');}else{const cap=state.abilities.command?Math.max(6,guardWanted(state).count):6;units.filter(u=>u.converted&&!u.dead&&distance(player,u)<22).sort((a,b)=>distance(player,a)-distance(player,b)).slice(0,cap).forEach(u=>squadIds.add(u.id));toast((state.abilities.command?'号令召集 ':'已召集 ')+squadIds.size+' 名同伴');}}if(e.code==='KeyR')reloadGun();if(e.code==='Tab')toggleMap();});addEventListener('keyup',e=>{keys[e.code]=false;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&!keys.ShiftLeft&&!keys.ShiftRight){const started=keys.shiftStartedAt;keys.shiftStartedAt=null;state.sprinting=false;if(mode==='playing'&&started!==null&&performance.now()-started<SHIFT_HOLD_MS)requestRoll();}});
-canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('pointerdown',e=>{if(mode!=='playing')return;if(e.button===0){mouseHeld=true;primary();if(!showDebug&&!pointerLock.locked())void pointerLock.request();}else if(e.button===2){if(pointerLock.locked())heavy();else{dragging=true;lastMouse={x:e.clientX,y:e.clientY};}}});addEventListener('pointerup',()=>{mouseHeld=false;dragging=false;});addEventListener('pointermove',e=>{if(mode!=='playing')return;let dx=0,dy=0;if(pointerLock.locked()){dx=e.movementX;dy=e.movementY;}else if(dragging&&lastMouse){dx=e.clientX-lastMouse.x;dy=e.clientY-lastMouse.y;lastMouse={x:e.clientX,y:e.clientY};}yaw-=dx*.0025*settings.sensitivity;pitch=T.MathUtils.clamp(pitch+dy*.0022*settings.sensitivity,PITCH_UP,maxLookDown());});canvas.addEventListener('wheel',e=>{e.preventDefault();if(mode!=='playing'||switchTime||!e.deltaY)return;const slots=[-1,...weaponSlots(state).map(s=>s.weapon)];const index=slots.indexOf(state.weapon);weaponSelect(slots[(index+(e.deltaY>0?1:-1)+slots.length)%slots.length]);},{passive:false});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('pointerdown',e=>{if(mode!=='playing')return;// 开着配件调参面板时不抢鼠标：指针一旦锁定，面板就没法拖了。此时用右键拖动转视角。
+if(e.button===0){mouseHeld=true;primary();if(!showDebug&&!window.__propUi&&!pointerLock.locked())void pointerLock.request();}else if(e.button===2){if(pointerLock.locked())heavy();else{dragging=true;lastMouse={x:e.clientX,y:e.clientY};}}});addEventListener('pointerup',()=>{mouseHeld=false;dragging=false;});addEventListener('pointermove',e=>{if(mode!=='playing')return;let dx=0,dy=0;if(pointerLock.locked()){dx=e.movementX;dy=e.movementY;}else if(dragging&&lastMouse){dx=e.clientX-lastMouse.x;dy=e.clientY-lastMouse.y;lastMouse={x:e.clientX,y:e.clientY};}yaw-=dx*.0025*settings.sensitivity;pitch=T.MathUtils.clamp(pitch+dy*.0022*settings.sensitivity,PITCH_UP,maxLookDown());});canvas.addEventListener('wheel',e=>{e.preventDefault();if(mode!=='playing'||switchTime||!e.deltaY)return;const slots=[-1,...weaponSlots(state).map(s=>s.weapon)];const index=slots.indexOf(state.weapon);weaponSelect(slots[(index+(e.deltaY>0?1:-1)+slots.length)%slots.length]);},{passive:false});
 function toggleMap(){
  if(mode!=='playing'&&mode!=='map')return;
  const open=mode==='playing';mode=open?'map':'playing';clearInput();
@@ -1654,17 +1756,27 @@ function syncActorPresence(){
  for(const item of ranked){if(keep.has(item.u.id)){if(!visuals.get(item.u.id)&&created<2&&actorInFront(item.u,item.d)){actorVisual(item.u);created++;}}else dropActorVisual(item.u);}
 }
 function updateVisuals(dt){syncActorPresence();for(const {v} of visuals.values())v.marker.visible=false;for(const u of units){const entry=visuals.get(u.id);if(!entry)continue;const {v}=entry;if(typeof syncTankShell==='function')syncTankShell(v,u);if(v.model){v.fitScale??=v.model.scale.x;v.model.scale.setScalar(v.fitScale*(u.surge>0?1.3:1));}const d=distance(player,u);v.holder.visible=d<actorViewLimit(u)&&actorInFront(u,d);v.holder.position.set(u.x,world.heightAt(u.x,u.z)+(u.knock>0?Math.sin((1-Math.min(1,u.knock))*Math.PI)*1.15:0),u.z);if(u.converted&&!u.dead&&!v.aura)v.aura=makeAura(v.holder,u.type===0?AURA_COLORS.worker:AURA_COLORS.guard);if(v.aura){if(u.dead){removeAura(v.aura);v.aura=null;}else v.aura.g.visible=v.holder.visible&&distance(player,u)<34;}if(u.dead){v.holder.visible=false;continue;}if(entry.oldKind!==u.kind){if(u.kind==='ally'){const yaw=v.holder.rotation.y;
- // 按转化后的类型选择外观。市民换觉醒外形，士兵留着原来的模型；模型不对就换，对了就站直。
- const modelKind=u.type===0?'ally':'guard';
- if(v.poolKey!==modelKind){
+ // 按转化后的类型选择外观：市民换觉醒外形；警察换成变异形态（感染前的模型不带配件）；
+ // 其余军人留着原来的模型。这里必须和 actorVisual 的兵种判断一致，否则转化时换不出模型。
+ // 同上：护卫不换变异形态。
+ const modelKind=u.type===0?'ally':(u.type===1||u.type===3)&&!u.guard&&assets?.infectedCop?'infectedCop':'guard';
+ // 兵种模型（batonCop / shieldCop / infectedCop）和通用警卫共用同一个模型池，
+ // 光比对池键分不出「棍警」和「变异形态」（都是 guard 池），必须再比对兵种名。
+ // 换完在 entry 上记一笔，否则下一帧 v.kind 被改成 ally 后又会被判成要换，反复重建。
+ // 回归测试只注入部分函数，所以这里做 typeof 守卫并给出等价的本地实现。
+ const poolOf=typeof visualPoolKey==='function'?visualPoolKey:(k=>k==='human'||k==='ally'?k:'guard');
+ const needSwap=(entry.modelKind??null)!==modelKind;
+ if(needSwap&&(poolOf(modelKind)!==v.poolKey||v.kind!==modelKind)){
   if(v.aura){removeAura(v.aura);v.aura=null;}
   if(typeof stripTankShell==='function')stripTankShell(v);
   releaseCharacterVisual(v);
   const nv=acquireCharacterVisual(assets,modelKind,u.profession);
   setCharacterKind(nv,'ally');
+  // 感染后的警察要拿上盾牌/棍子（回归测试只注入部分函数，所以加 typeof 守卫）。
+  if(typeof attachCopProp==='function')attachCopProp(nv,u);
   nv.holder.position.set(u.x,world.heightAt(u.x,u.z),u.z);
   nv.holder.rotation.set(0,yaw,0);scene.add(nv.holder);entry.v=nv;
- }else{setCharacterKind(v,'ally');v.holder.rotation.set(0,yaw,0);v.attackTime=0;v.holdingGun=false;}entry.oldKind=u.kind;burst(u.x,1,u.z,0xba77ed,12);continue;}if(u.kind==='corpse'){if(!ENEMIES[u.type]?.tank){v.holder.rotation.x=Math.PI/2;v.holder.rotation.z=0;}v.attackTime=0;v.holdingGun=false;v.holder.position.y=world.heightAt(u.x,u.z)+.3;}entry.oldKind=u.kind;}if(u.kind==='corpse'){if(!ENEMIES[u.type]?.tank){v.holder.rotation.x=Math.PI/2;v.holder.rotation.z=0;}v.attackTime=0;v.holdingGun=false;if(v.current){v.mixer?.stopAllAction();v.current=null;}v.holder.position.y=world.heightAt(u.x,u.z)+.3;v.holder.visible=distance(player,u)<45;}}
+ }else{setCharacterKind(v,'ally');v.holder.rotation.set(0,yaw,0);v.attackTime=0;v.holdingGun=false;}entry.modelKind=modelKind;entry.oldKind=u.kind;burst(u.x,1,u.z,0xba77ed,12);continue;}if(u.kind==='corpse'){if(!ENEMIES[u.type]?.tank){v.holder.rotation.x=Math.PI/2;v.holder.rotation.z=0;}v.attackTime=0;v.holdingGun=false;v.holder.position.y=world.heightAt(u.x,u.z)+.3;}entry.oldKind=u.kind;}if(u.kind==='corpse'){if(!ENEMIES[u.type]?.tank){v.holder.rotation.x=Math.PI/2;v.holder.rotation.z=0;}v.attackTime=0;v.holdingGun=false;if(v.current){v.mixer?.stopAllAction();v.current=null;}v.holder.position.y=world.heightAt(u.x,u.z)+.3;v.holder.visible=distance(player,u)<45;}}
 for(const a of auraVisuals.values())a.visible=false;if(state.abilities.air)aura('mother',player.x,player.z,[0,5,10,15][state.abilities.air],0xb377e7);for(const u of units){if(u.dead||u.kind==='corpse')continue;if(u.aiming&&!isRangedEnemy(ENEMIES[u.type])&&!ENEMIES[u.type].spray&&!ENEMIES[u.type].charge&&distance(player,u)<22)aura('melee'+u.id,u.x,u.z,ENEMIES[u.type].range+.2,u.kind==='ally'?STRIKE.ally.telegraph:STRIKE.enemy.telegraph);else if(u.type===4&&distance(player,u)<32)aura(u.id,u.x,u.z,ENEMIES[4].aura||8,u.converted?0xb377e7:0x69bce8);if(u.sprayPhase&&ENEMIES[u.type]?.spray)showSprayWarning(u,ENEMIES[u.type]);if(u.chargePhase&&ENEMIES[u.type]?.charge&&typeof showChargeWarning==='function')showChargeWarning(u,ENEMIES[u.type]);}
 const spraying=new Set(),charging=new Set();for(const u of units){if(u.dead)continue;if(u.sprayPhase)spraying.add(u.id);if(u.chargePhase)charging.add(u.id);}
 for(const [id] of (typeof sprayMarkers==='undefined'?[]:sprayMarkers))if(!spraying.has(id))disposeActorWarning(sprayMarkers,id);
@@ -1891,11 +2003,14 @@ function frame(now){requestAnimationFrame(frame);let cameraUpdated=false;const r
  playerVisual.model.position.y=player.roll>0?Math.sin(rollProgress*Math.PI)*.28:player.crouch?-.33:0;
  const body=characterHeight('player')/(assets.player?.height||PLAYER_HEIGHT)*(state.abilities.frenzy>=3?1.35:state.abilities.frenzy>=2?1.15:1);playerVisual.model.scale.set(body,body*(player.crouch?.7:1),body);playerVisual.holdingGun=state.weapon>=0||holdingLauncher();playerVisual.airborne=player.y>0||player.vy>0;playerVisual.jumpPhase=playerVisual.airborne?T.MathUtils.clamp((JUMP_SPEED-player.vy)/(2*JUMP_SPEED),0,1):null;updateCharacterVisual(playerVisual,moving,dt,0,false);
  const gun=activeGun();for(const [id,mesh] of Object.entries(firearms.map))mesh.visible=!!(gun&&gun.id===id&&player.roll<=0);syringe.g.visible=holdingLauncher()&&player.roll<=0&&mode==='playing';if(holdingLauncher())syringe.liquid.scale.y=.3*(.55+.45*Math.max(.2,1-(state.abilities.launcher>=3?(state.powerCharge||0)/POWER_HITS:0)));weaponPivot.position.set(player.x-Math.cos(yaw)*.5,world.heightAt(player.x,player.z)+player.y+(player.crouch?CROUCH_CHEST:STANDING_CHEST),player.z+Math.sin(yaw)*.5);weaponPivot.rotation.set(switchTime>0?Math.sin(switchTime/.4*Math.PI)*1.1:reloadTime>0?.5:0,yaw+.38,0);
- const aim=holdingLauncher()?launcherSpec(state):gun;target=acquire(aim?aim.range:3.2);if(mouseHeld||keys.KeyJ)primary();ensureGuards();const before=state.infected;stepSimulation(state,units,player,dt,mode);if(!state.aftermath){const clock=tickRunClock(state,dt);if(clock.started){publishWeakenTasks(state);world.spawnWeakenSites();syncWeakenTasks();flashPoliceAlert('<strong>镇</strong><small>警戒 500</small><b>秩序方开始倒计时</b><em>从 2:00 开始。三座削弱设施现在出现，可做可不做。</em>','upgrade',3.6);}for(const mark of clock.warnings)toast(`镇压倒计时剩余 ${mark} 秒`,2.4);}if(state.infected>before){toast(`感染扩散 · ${state.infected-before} 人觉醒`,1.5);state.maxChain=Math.max(state.maxChain,state.infected-before);}runAI(dt);updateEffects(dt);flushKindlingPulses();updatePickups(dt);
+// 配件调参面板的「静止」开关：整个跳过 AI（不是传 dt=0，那样会让 AI 内部计时停在半路、
+// 恢复后接不回去）；动画推进量在后面的 updateVisuals 处给 0。
+const frozen=typeof window!=='undefined'&&!!window.__propFreeze;
+ const aim=holdingLauncher()?launcherSpec(state):gun;target=acquire(aim?aim.range:3.2);if(mouseHeld||keys.KeyJ)primary();ensureGuards();const before=state.infected;stepSimulation(state,units,player,dt,mode);if(!state.aftermath){const clock=tickRunClock(state,dt);if(clock.started){publishWeakenTasks(state);world.spawnWeakenSites();syncWeakenTasks();flashPoliceAlert('<strong>镇</strong><small>警戒 500</small><b>秩序方开始倒计时</b><em>从 2:00 开始。三座削弱设施现在出现，可做可不做。</em>','upgrade',3.6);}for(const mark of clock.warnings)toast(`镇压倒计时剩余 ${mark} 秒`,2.4);}if(state.infected>before){toast(`感染扩散 · ${state.infected-before} 人觉醒`,1.5);state.maxChain=Math.max(state.maxChain,state.infected-before);}if(!frozen)runAI(dt);updateEffects(dt);flushKindlingPulses();updatePickups(dt);
  state.towers=world.towers.filter(o=>o.dead).length;state.destroyed=world.destructibles.filter(o=>o.dead&&o.type!=='tower').length;updateMissions();updateBoss(dt);const next=threat(state);if(next>state.alert){state.alert=next;state.peakAlert=Math.max(state.peakAlert,next);alarmSurge=3.2;if(!boss.active){toast(`警戒升级 · ${ALERT_NAMES[next]}`,2.4);music.effect('alertUp');callBackup(next);}}
  combatUI.observe(units,state,player,boss);
  recycleSpentActors();cullFarTroops();
- updateCamera(dt);cameraUpdated=true;updateVisuals(dt);updateHitReactions(dt);
+ updateCamera(dt);cameraUpdated=true;updateVisuals(frozen?0:dt);updateHitReactions(frozen?0:dt);
  updateReinforcements(dt);updateAirstrike(dt);combatUI.observe(units,state,player,boss);
  if(state.infected>conversionCount){conversionTimer=1.1;$('infectionFeedback').innerHTML=`<span>☣</span><b>觉醒成功 ×${state.infected-conversionCount}</b><small>加入反抗群落</small>`;conversionCount=state.infected;music.effect('convert');}bossVictoryHold=Math.max(0,bossVictoryHold-dt);const result=outcome(state);if(result==='won'&&bossVictoryHold>0){}else if(result)finish(result);else if(!boss.active&&state.pending&&state.time-state.lastPick>=upgradeAutoGap(state))chooseUpgrade();saveTimer+=dt;if(saveTimer>5){saveRun();saveTimer=0;}if(lastHp!==null&&state.hp<lastHp)hurtTimer=.6;lastHp=state.hp;
  }else if(mode==='levelup'||mode==='upgrade'){
@@ -2080,6 +2195,16 @@ window.gameFXSnapshot=()=>({edition:'comic-ability-v6',syringeAim:'crosshair',..
 
 requestAnimationFrame(frame);
 try{assets=await loadCharacterAssets();playerVisual=createCharacterVisual(assets,'player',1);scene.add(playerVisual.holder);playerVisual.holder.position.set(player.x,world.heightAt(player.x,player.z),player.z);playerVisual.holder.rotation.y=Math.PI;initUnits();scatterPickups();await warmBattleVisuals();if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='boss'){state.infected=40;state.highestEnemy=5;state.mission=4;state.pending=0;state.weapon=0;state.abilities.guns=3;state.bossCountdown=0;player.z=-15;units.forEach(u=>{u.dead=true;const visual=visuals.get(u.id)?.v;if(visual)visual.holder.visible=false;});}if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='melee'){state.pending=0;alerted=true;units.forEach(u=>{u.dead=true;const visual=visuals.get(u.id)?.v;if(visual)visual.holder.visible=false;});const p=world.nearest(player.x,player.z+1.15,1);const cop=makeUnit(900,1,p.x,p.z,false,0);cop.attackCd=0;units.push(cop);actorVisual(cop);}
+// ?test=infected 把「已感染」的警察摆在眼前，看变异形态（只在 DEV 生效）。
+// test 支持逗号组合：?test=infected,infectedshield,guncop 一次摆一排（只在 DEV 生效）。
+const devTestList=(new URLSearchParams(location.search).get('test')||'').split(',');
+const devTest=name=>devTestList.includes(name);
+if(import.meta.env.DEV&&devTest('infected')){state.pending=0;const ip=world.nearest(player.x,player.z+2.2,1);const ally=makeUnit(902,1,ip.x,ip.z,false,0);ally.converted=true;ally.kind='ally';ally.guard=false;ally.infection=ENEMIES[1].threshold;units.push(ally);actorVisual(ally);}
+// ?test=infectedshield 已感染的持盾特警（拿盾牌，用来调盾牌配件）
+// ?test=guncop 未感染的持枪巡警（看它的模型和动作）
+// 可以组合：?test=infected,infectedshield,guncop 一次摆一排横向对比（只在 DEV 生效）。
+if(import.meta.env.DEV&&devTest('infectedshield')){state.pending=0;const sp=world.nearest(player.x-1.6,player.z+2.6,1);const ally=makeUnit(903,3,sp.x,sp.z,false,0);ally.converted=true;ally.kind='ally';ally.guard=false;ally.infection=ENEMIES[3].threshold;units.push(ally);actorVisual(ally);}
+if(import.meta.env.DEV&&devTest('guncop')){state.pending=0;const gp=world.nearest(player.x+1.6,player.z+2.6,1);const gun=makeUnit(904,2,gp.x,gp.z,false,0);gun.attackCd=999;units.push(gun);actorVisual(gun);}
 // ?test=shield 把持盾特警摆在眼前，方便直接看新模型（只在 DEV 生效）。
 if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='shield'){state.pending=0;const sp=world.nearest(player.x,player.z+2.4,1);const shield=makeUnit(901,3,sp.x,sp.z,false,0);shield.attackCd=999;units.push(shield);actorVisual(shield);}if(import.meta.env.DEV&&new URLSearchParams(location.search).get('test')==='launcher'){state.pending=0;state.abilities.launcher=3;state.weapon=LAUNCHER_SLOT;state.powerCharge=POWER_HITS;}if(import.meta.env.DEV&&debugQuery.get('test')==='abilities'){state.pending=1;for(const a of ABILITIES)state.abilities[a.id]=Math.min(2,Math.max(0,Number(debugQuery.get('abilityLevel')||0)));}if(import.meta.env.DEV&&debugQuery.get('test')==='comic'){state.pending=0;state.hp=state.maxHp=500;for(const id of ['air','frenzy','dot','evolve','tough','haste','command','launcher'])state.abilities[id]=3;state.weapon=LAUNCHER_SLOT;state.powerCharge=POWER_HITS;}if(import.meta.env.DEV&&['hud','charge'].includes(debugQuery.get('test'))){
  state.pending=0;state.hp=state.maxHp=500;state.abilities.launcher=3;state.abilities.guns=3;
@@ -2132,3 +2257,101 @@ catch(error){console.error(error);$('loading').closest('.menuStatus').hidden=fal
 window.gameSnapshot=()=>({mode,...state,team:teamCount(units),position:{...player},units:units.map(u=>({id:u.id,kind:u.kind,type:u.type,x:u.x,z:u.z,hp:u.hp,infection:u.infection,corpseTime:u.corpseTime})),pickups:pickups.map(p=>({x:p.x,z:p.z,type:p.type})),characterModel:!!assets,sceneName:mapConfig.name,mapId:mapConfig.id,buildings:world.buildings.length,spawn:world.spawn,renderCalls:renderer.info.render.calls,camera:{x:camera.position.x,y:camera.position.y,z:camera.position.z},spawnQueued:spawnQueue.jobs.length});
 window.gameTune=()=>spawnPlan(state,units,Math.random,player);
 window.TUNE=TUNE;
+
+// 配件调参面板：?propui=1 打开。拖滑杆实时看效果，调好点「复制数值」把参数发回来即可。
+(function buildPropPanel(){
+ if(new URLSearchParams(location.search).get('propui')!=='1')return;
+ window.__propUi=true;   // 告诉输入处理别锁鼠标，否则面板没法拖
+ const P=PROP_XFORM;
+ const fields=[
+  {label:'棍子 X（左右，往中轴为负）',get:()=>P.baton.pos[0],set:v=>P.baton.pos[0]=v,min:-1.5,max:1.5,step:.005},
+  {label:'棍子 Y（上下）',get:()=>P.baton.pos[1],set:v=>P.baton.pos[1]=v,min:-1.5,max:1.5,step:.005},
+  {label:'棍子 Z（前后）',get:()=>P.baton.pos[2],set:v=>P.baton.pos[2]=v,min:-1.5,max:1.5,step:.005},
+  {label:'棍子 倾角（弧度）',get:()=>P.baton.angle,set:v=>P.baton.angle=v,min:0,max:3.1416,step:.01},
+  {label:'棍子 长度',get:()=>P.baton.scale,set:v=>P.baton.scale=v,min:.1,max:1.5,step:.01},
+  {label:'握持深度（越小插越深）',get:()=>P.baton.grip,set:v=>P.baton.grip=v,min:.2,max:.6,step:.005},
+  {label:'盾牌 X',get:()=>P.shield.pos[0],set:v=>P.shield.pos[0]=v,min:-1.5,max:1.5,step:.005},
+  {label:'盾牌 Y',get:()=>P.shield.pos[1],set:v=>P.shield.pos[1]=v,min:-1.5,max:1.5,step:.005},
+  {label:'盾牌 Z',get:()=>P.shield.pos[2],set:v=>P.shield.pos[2]=v,min:-1.5,max:1.5,step:.005},
+  {label:'盾牌 大小',get:()=>P.shield.scale,set:v=>P.shield.scale=v,min:.1,max:1.5,step:.01},
+ ];
+ const box=document.createElement('div');
+ box.id='propPanel';
+ box.style.cssText='position:fixed;left:8px;bottom:8px;z-index:60;background:#141414f2;color:#fff;padding:12px;font:12px/1.5 ui-monospace,Menlo,monospace;border:2px solid #ffd21e;max-width:360px;max-height:82vh;overflow:auto';
+ const title=document.createElement('div');
+ title.textContent='配件调参 · 可拖动 · 右键拖动转视角';
+ title.style.cssText='color:#ffd21e;font-weight:800;margin-bottom:8px;cursor:move;user-select:none;display:flex;justify-content:space-between;gap:8px';
+ const collapse=document.createElement('span');
+ collapse.textContent='收起';
+ collapse.style.cssText='cursor:pointer;color:#fff';
+ const body=document.createElement('div');
+ title.appendChild(collapse);
+ box.appendChild(title);box.appendChild(body);
+ collapse.onclick=()=>{const hidden=body.style.display==='none';body.style.display=hidden?'':'none';collapse.textContent=hidden?'收起':'展开';};
+ // 标题栏拖动：面板挡住画面时可以挪开
+ let dragging=false,offX=0,offY=0;
+ title.addEventListener('mousedown',e=>{if(e.target===collapse)return;dragging=true;const r=box.getBoundingClientRect();offX=e.clientX-r.left;offY=e.clientY-r.top;box.style.left='0px';box.style.bottom='auto';box.style.top=r.top+'px';e.preventDefault();});
+ addEventListener('mousemove',e=>{if(!dragging)return;box.style.left=(e.clientX-offX)+'px';box.style.top=(e.clientY-offY)+'px';});
+ addEventListener('mouseup',()=>{dragging=false;});
+ const values=[];
+ for(const f of fields){
+  const row=document.createElement('div');
+  row.style.cssText='margin-bottom:8px';
+  const label=document.createElement('div');
+  const num=document.createElement('input');
+  num.type='number';num.step=f.step;num.value=f.get().toFixed(3);
+  num.style.cssText='width:70px;background:#1f1f1f;color:#fff;border:1px solid #555;margin-left:6px';
+  const range=document.createElement('input');
+  range.type='range';range.min=f.min;range.max=f.max;range.step=f.step;range.value=f.get();
+  range.style.cssText='width:100%';
+  const apply=value=>{f.set(value);num.value=value.toFixed(3);refreshCopProps();updatePropText();};
+  range.oninput=()=>apply(Number(range.value));
+  num.oninput=()=>apply(Number(num.value));
+  label.textContent=f.label;label.appendChild(num);
+  row.appendChild(label);row.appendChild(range);
+  body.appendChild(row);
+  values.push({label:f.label,get:f.get});
+ }
+ const text=document.createElement('textarea');
+ text.readOnly=true;text.rows=4;
+ text.style.cssText='width:100%;background:#0d0d0d;color:#9fe;font:11px ui-monospace,monospace;border:1px solid #555';
+ body.appendChild(text);
+ function updatePropText(){
+  const p=new URLSearchParams();
+  p.set('batonscale',P.baton.scale.toFixed(3));
+  p.set('batonangle',P.baton.angle.toFixed(3));
+  p.set('batongrip',P.baton.grip.toFixed(3));
+  p.set('batonpos',P.baton.pos.map(v=>v.toFixed(3)).join(','));
+  p.set('shieldscale',P.shield.scale.toFixed(3));
+  p.set('shieldpos',P.shield.pos.map(v=>v.toFixed(3)).join(','));
+  text.value='?'+p.toString();
+ }
+ const freeze=document.createElement('button');
+ freeze.textContent='⏸ 静止';
+ freeze.style.cssText='margin-top:6px;padding:6px 12px;background:#35d0e8;color:#141414;font-weight:800;border:0';
+ freeze.onclick=()=>{
+  window.__propFreeze=!window.__propFreeze;
+  freeze.textContent=window.__propFreeze?'▶ 继续':'⏸ 静止';
+  // 两种情况都要清一遍动画状态：
+  // 静止时清，是为了摆回站立姿势（比停在半空中某个姿势好观察）；
+  // 恢复时也必须清 —— 否则 attackTime / current 还停在静止那一刻，
+  // 状态机认为「还在播放某个动作」，人物就再也切不回走路和攻击了。
+  for(const entry of visuals.values()){
+   const v=entry.v;if(!v.mixer)continue;
+   v.attackTime=0;v.current=null;v.holdingGun=false;
+   v.mixer.stopAllAction();
+   const idle=v.actions&&v.actions.idle;
+   if(idle){idle.reset().play();v.current='idle';}
+   v.mixer.update(0);
+  }
+ };
+ body.appendChild(freeze);
+ const copy=document.createElement('button');
+ copy.textContent='复制数值';
+ copy.style.cssText='margin-top:6px;padding:6px 12px;background:#ffd21e;color:#141414;font-weight:800;border:0';
+ copy.onclick=async()=>{try{await navigator.clipboard.writeText(text.value);copy.textContent='已复制 ✓';}catch{copy.textContent='请手动复制';}setTimeout(()=>copy.textContent='复制数值',1600);};
+ body.appendChild(copy);
+ document.body.appendChild(box);
+ updatePropText();
+ console.log('[propui] 配件调参面板已开启');
+})();

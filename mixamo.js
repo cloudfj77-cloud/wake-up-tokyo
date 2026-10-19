@@ -104,11 +104,18 @@ export function applyCharacterTextures(model, maps) {
     // 3ds Max 导出的 FBX 自带正确法线（含硬边），重算反而会把硬边抹平，所以只在缺失时才算。
     if (!node.geometry?.attributes.normal) node.geometry?.computeVertexNormals();
     node.material = new THREE.MeshStandardMaterial({
-      ...maps,
-      // 这两个基础值是贴图的乘数，必须给满 1，否则贴图会被乘成 0 而看不出效果。
-      roughness: 1,
-      metalness: 1,
-      normalScale: new THREE.Vector2(1, 1),
+      // 只挂颜色与法线：AIGC 出的 roughness/metallic 图常把表面烘得很光滑，套上去就是一层油光。
+      map: maps.map ?? null,
+      normalMap: maps.normalMap ?? null,
+      // 人物是皮肤和布料，粗糙度固定、金属度归零，不要反光发亮。
+      roughness: 0.8,
+      metalness: 0,
+      // 暗面兜底。自发光必须用颜色贴图本身当 emissiveMap —— 直接用白光 emissive
+      // 等于往画面里掺白，人物会发白掉色，饱和度全丢。
+      emissive: new THREE.Color(0xffffff),
+      emissiveMap: maps.map ?? null,
+      emissiveIntensity: 0.2,
+      normalScale: new THREE.Vector2(0.8, 0.8),
     });
   });
   return meshCount;
