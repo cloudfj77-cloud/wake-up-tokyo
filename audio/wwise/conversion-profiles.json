@@ -1,0 +1,87 @@
+{
+  "at": "2026-10-19T02:43:10.889Z",
+  "profiles": {
+    "Tokyo_Music_Q4": {
+      "name": "Tokyo_Music_Q4",
+      "quality": 4,
+      "rate": 0,
+      "channels": 4,
+      "id": "{4AA8996B-6E7F-4D5F-A55E-6451CE43FF59}"
+    },
+    "Tokyo_SFX_Q4": {
+      "name": "Tokyo_SFX_Q4",
+      "quality": 4,
+      "rate": 0,
+      "channels": 4,
+      "id": "{AA6A9A5E-FFB3-4F4A-B613-EB5797E8CC8E}"
+    },
+    "Tokyo_Environment_Q3_32k": {
+      "name": "Tokyo_Environment_Q3_32k",
+      "quality": 3,
+      "rate": 32000,
+      "channels": 4,
+      "id": "{051A7687-5B12-4DD0-B261-74F15CB1885A}"
+    },
+    "Tokyo_Radio_Q3_24k": {
+      "name": "Tokyo_Radio_Q3_24k",
+      "quality": 3,
+      "rate": 24000,
+      "channels": 0,
+      "id": "{4B56DBF0-2B0C-4D90-9A81-01376EA0D6D4}"
+    }
+  },
+  "streamed": [
+    {
+      "sound": "{874E1888-F3D8-4D10-8855-89A76B764D6A}",
+      "key": "Street",
+      "kind": "music"
+    },
+    {
+      "sound": "{DC26C379-BA1E-4856-B74E-0F4F411E730E}",
+      "key": "Menu",
+      "kind": "music"
+    },
+    {
+      "sound": "{F3677982-BE97-4878-8DDE-BBAE6CE33634}",
+      "key": "Pressure",
+      "kind": "music"
+    },
+    {
+      "sound": "{13385563-F9A0-48E2-B9DD-9F63AB0D4BB2}",
+      "key": "Countdown",
+      "kind": "music"
+    },
+    {
+      "sound": "{C00FD396-12C9-4FFE-85F7-342ADFEB98C6}",
+      "key": "Boss",
+      "kind": "music"
+    },
+    {
+      "sound": "{59248AE6-07CC-47A3-85A4-588B46D27965}",
+      "key": "Aftermath",
+      "kind": "music"
+    },
+    {
+      "sound": "{E11C9B5E-1827-405A-A027-25534F3704CB}",
+      "key": "cityBed",
+      "kind": "environment"
+    },
+    {
+      "sound": "{D933F2F5-51E3-43AF-AC92-78DA6D3D5153}",
+      "key": "riverBed",
+      "kind": "environment"
+    },
+    {
+      "sound": "{6BD18AC6-36E5-42EA-BF83-27AD25D17EA2}",
+      "key": "seaBed",
+      "kind": "environment"
+    },
+    {
+      "sound": "{535845C2-4939-4829-A35A-27174CE6DA74}",
+      "key": "windBed",
+      "kind": "environment"
+    }
+  ],
+  "preFetchMs": 2000,
+  "subjectiveReview": "pending"
+}

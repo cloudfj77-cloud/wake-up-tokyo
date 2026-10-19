@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
+import {resolveCharacterAssets} from './character-loading.mjs';
 import { loadMixamoCharacter } from './mixamo.js';
 import { loadWorkerAsset } from './worker.js';
 import { loadAwakenedAssets } from './awakened.js';
@@ -67,45 +68,15 @@ const CHARACTER_MODEL_FILES = {
 };
 
 export async function loadCharacterAssets() {
-  // 打工人优先用 public/workers/ 下的 FBX 资源；拿到之后就不再下载原来的体素打工人模型。
-  const worker = await loadWorkerAsset().then(prepareCharacterAsset).catch(error => {
-    console.warn('[characters] 未启用打工人模型：', error.message);
-    return null;
+  const optional=(load,label)=>async()=>{try{return prepareCharacterAsset(await load());}catch(error){console.warn('[characters] 未启用'+label+'：',error.message);return null;}};
+  return resolveCharacterAssets({
+    worker:optional(loadWorkerAsset,'打工人模型'),
+    player:optional(loadMixamoCharacter,'Mixamo 主角'),
+    shieldCop:optional(loadShieldCopAsset,'持盾特警模型'),
+    batonCop:optional(loadBatonCopAsset,'持棍巡警模型'),
+    awakened:async()=>{try{return (await loadAwakenedAssets()).map(prepareCharacterAsset);}catch(error){console.warn('[characters] 未启用觉醒形态：',error.message);return []; }},
+    fallback:async key=>prepareCharacterAsset(await new GLTFLoader().loadAsync(CHARACTER_MODEL_FILES[key])),
   });
-  // 觉醒形态：画家与读者两套外观，替代原来的 awakened.glb，感染时随机取一个。
-  let awakenedVariants = [];
-  try {
-    awakenedVariants = (await loadAwakenedAssets()).map(prepareCharacterAsset);
-  } catch (error) {
-    console.warn('[characters] 未启用觉醒形态：', error.message);
-  }
-  const files = Object.entries(CHARACTER_MODEL_FILES)
-    .filter(([key]) => !(worker && (key === 'humanMale' || key === 'humanFemale')) && !(awakenedVariants.length && key === 'ally'));
-  const entries = await Promise.all(files.map(async ([key, file]) => {
-    const gltf = await new GLTFLoader().loadAsync(file);
-    return [key, prepareCharacterAsset(gltf)];
-  }));
-  const assets = Object.fromEntries(entries);
-  if (worker) { assets.humanMale = worker; assets.humanFemale = worker; }
-  if (awakenedVariants.length) { assets.ally = awakenedVariants[0]; assets.allyVariants = awakenedVariants; }
-  // 若 public/mixamo/manifest.json 存在，主人公改用 Mixamo 角色与动作；否则沿用体素主角。
-  const mixamo = await loadMixamoCharacter().then(prepareCharacterAsset).catch(error => {
-    console.warn('[characters] 未启用 Mixamo 主角：', error.message);
-    return null;
-  });
-  if (mixamo) assets.player = mixamo;
-  // 持盾特警 / 持棍巡警：public/police/ 下的专属 FBX，拿不到就继续用通用警卫模型。
-  const shieldCop = await loadShieldCopAsset().then(prepareCharacterAsset).catch(error => {
-    console.warn('[characters] 未启用持盾特警模型：', error.message);
-    return null;
-  });
-  if (shieldCop) assets.shieldCop = shieldCop;
-  const batonCop = await loadBatonCopAsset().then(prepareCharacterAsset).catch(error => {
-    console.warn('[characters] 未启用持棍巡警模型：', error.message);
-    return null;
-  });
-  if (batonCop) assets.batonCop = batonCop;
-  return assets;
 }
 
 // 单个资产（旧写法）直接透传；资产集按主人公、觉醒者、警卫和打工人选择专属模型。

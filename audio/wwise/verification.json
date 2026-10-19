@@ -1,0 +1,116 @@
+{
+  "at": "2026-10-19T03:52:05.302Z",
+  "ok": true,
+  "diskOnly": true,
+  "sdkVersion": "2025.1.10.9233",
+  "mediaByBank": {
+    "Init.bnk": 0,
+    "TokyoMusic.bnk": 7,
+    "TokyoSfx.bnk": 193
+  },
+  "totalMedia": 200,
+  "streamedMedia": 9,
+  "files": [
+    {
+      "file": "audio/wwise/generated/banks/Init.bnk",
+      "bytes": 1014,
+      "sha256": "4425584acdb4ea7707476ba6f99dcab7a10720047e3405fea670621894d1aae3"
+    },
+    {
+      "file": "audio/wwise/generated/banks/Init.json",
+      "bytes": 3285,
+      "sha256": "4f0ff7ebfb58b7b57fe60ebad583963cb4187b4f88dc421c005f7a4460ea62c0"
+    },
+    {
+      "file": "audio/wwise/generated/banks/TokyoMusic.bnk",
+      "bytes": 409050,
+      "sha256": "bf9466df143fd5afb14fba37d14b440ef02a333fd5f8c728fd510f95b6c73c64"
+    },
+    {
+      "file": "audio/wwise/generated/banks/TokyoMusic.json",
+      "bytes": 6696,
+      "sha256": "14ff1ba0a506c1b4fb64ccdbc2199ff812db14786e7ea64b46f4c59eeade770d"
+    },
+    {
+      "file": "audio/wwise/generated/banks/TokyoSfx.bnk",
+      "bytes": 2582801,
+      "sha256": "4ff371d7845739fa022f63fa11a5b918dcc93e1ea851533118c131eb61629474"
+    },
+    {
+      "file": "audio/wwise/generated/banks/TokyoSfx.json",
+      "bytes": 89385,
+      "sha256": "1929e47a2f3195156471f80820f89b8bb0aabf517efffa519f9795ce1c489cfd"
+    },
+    {
+      "file": "audio/wwise/generated/banks/ProjectInfo.json",
+      "bytes": 642,
+      "sha256": "e30347681083895601b3cda48c15b8410e5cd8a736bf0fa9a46282fc8a491a59"
+    },
+    {
+      "file": "audio/wwise/generated/banks/PluginInfo.json",
+      "bytes": 323,
+      "sha256": "b1960b50008485ed75347fdaf6162f5730d0897bf8379431c78e2d8d7f7384ca"
+    },
+    {
+      "file": "audio/wwise/generated/runtime/wwise-runtime.mjs",
+      "bytes": 328623,
+      "sha256": "821aaea0a8fcaba41d2f74348247e413d97e9884fd2e4f6b83e2dd87604f67ff"
+    },
+    {
+      "file": "audio/wwise/generated/runtime/wwise-runtime.wasm",
+      "bytes": 1434722,
+      "sha256": "420ef72ec9ff943aad72640d4b7dad9ed0eaa23cd89c23cb0c14997c7a4ed016"
+    },
+    {
+      "file": "audio/wwise/generated/runtime/WwiseAudioWorklet.processor.js",
+      "bytes": 3526,
+      "sha256": "c2d62606b40530ce8281777a05dcb04bb22eaff1547ed77ce9f37fecb74a0cff"
+    },
+    {
+      "file": "audio/wwise/generated/media/2611905.wem",
+      "bytes": 540047,
+      "sha256": "28648c2ff41dfd8296ef0b2640ebbb7aee95c524522df389f148fe22a18c9e01"
+    },
+    {
+      "file": "audio/wwise/generated/media/53097435.wem",
+      "bytes": 1452212,
+      "sha256": "779798266eccb4a8674870d7508317ad2f0289b096e6d64d4914a3461322089c"
+    },
+    {
+      "file": "audio/wwise/generated/media/659547489.wem",
+      "bytes": 1315747,
+      "sha256": "2640103ea21ee1a898f10ffc566c24d79ba7a3b182d9adb88eb117320e2c708d"
+    },
+    {
+      "file": "audio/wwise/generated/media/663454604.wem",
+      "bytes": 1129734,
+      "sha256": "00f9151ecc1968c52c89bcd04a163183e11a2d39f1bc9659913d9fc3be324db5"
+    },
+    {
+      "file": "audio/wwise/generated/media/879483395.wem",
+      "bytes": 995943,
+      "sha256": "4c1ab44b78c3fe124bd10b55c0591ae1e9aeedf2c6e8b83d47479a165ca44628"
+    },
+    {
+      "file": "audio/wwise/generated/media/768236506.wem",
+      "bytes": 885930,
+      "sha256": "dc4cea009844701443ea12809956122841347edec99f89fd15f1ab70fb26e0d3"
+    },
+    {
+      "file": "audio/wwise/generated/media/876169649.wem",
+      "bytes": 1023971,
+      "sha256": "7ce5ade9735a77a4eff853c132dc46038d7d155d182f5000c4da9681eba30097"
+    },
+    {
+      "file": "audio/wwise/generated/media/919615173.wem",
+      "bytes": 845023,
+      "sha256": "4cea776885966c0d861637826db450a92cd49f618e94acd6ceabf6d389fc7ea8"
+    },
+    {
+      "file": "audio/wwise/generated/media/941732260.wem",
+      "bytes": 379880,
+      "sha256": "17fbf490c9fdae795bb7d9cc59c186bb8bbb6811fe9d8ec804d7645c27689912"
+    }
+  ],
+  "totalAudioBytes": 11561352
+}

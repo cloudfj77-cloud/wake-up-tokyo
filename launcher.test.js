@@ -24,14 +24,18 @@ for(const layout of ['repository','forgeax','distributed'])test(`Mac launcher se
   const launcher=join(dir,'launch-mac.command');assert.ok((await stat(launcher)).mode&0o111,'double-click entry must be executable');
   await writeFile(join(game,'index.html'),'<title>Wake launch check</title>');
   const port=await freePort();
-  child=spawn(launcher,[],{env:{...process.env,WAKE_PORT:String(port),WAKE_NO_OPEN:'1'},stdio:'ignore'});
+  child=spawn(launcher,[],{env:{...process.env,WAKE_PORT:String(port),WAKE_NO_OPEN:'1'},stdio:['ignore','pipe','pipe']});
+  let startup='';child.stdout.on('data',chunk=>startup+=chunk);child.stderr.on('data',chunk=>startup+=chunk);
   const exited=once(child,'exit');
   let response;
-  for(let i=0;i<60;i++){
-   assert.equal(child.exitCode,null,'launcher must keep serving instead of exiting');
+  const deadline=Date.now()+10000; // Cold Node startup can exceed 3s while FBX tests run in parallel.
+  while(Date.now()<deadline){
+   assert.equal(child.exitCode,null,'launcher must keep serving instead of exiting: '+startup);
    try{response=await fetch(`http://127.0.0.1:${port}/`);break;}catch{await new Promise(resolve=>setTimeout(resolve,50));}
   }
-  assert.ok(response,'server must start');assert.equal(response.status,200);
+  assert.ok(response,'server must start: '+startup);assert.equal(response.status,200);
+  assert.equal(response.headers.get('cross-origin-opener-policy'),'same-origin');
+  assert.equal(response.headers.get('cross-origin-embedder-policy'),'require-corp');
   assert.match(await response.text(),/Wake launch check/);
   child.kill();await exited;child=null;
  }finally{child?.kill();await rm(root,{recursive:true,force:true});}

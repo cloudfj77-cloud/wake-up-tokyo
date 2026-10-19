@@ -1,0 +1,211 @@
+{
+  "sdkVersion": "2025.1.10.9233",
+  "bankVersion": 172,
+  "mediaCount": 200,
+  "streams": [
+    {
+      "id": "2611905",
+      "file": "2611905.wem",
+      "bytes": 540047,
+      "sha256": "28648c2ff41dfd8296ef0b2640ebbb7aee95c524522df389f148fe22a18c9e01"
+    },
+    {
+      "id": "53097435",
+      "file": "53097435.wem",
+      "bytes": 1452212,
+      "sha256": "779798266eccb4a8674870d7508317ad2f0289b096e6d64d4914a3461322089c"
+    },
+    {
+      "id": "659547489",
+      "file": "659547489.wem",
+      "bytes": 1315747,
+      "sha256": "2640103ea21ee1a898f10ffc566c24d79ba7a3b182d9adb88eb117320e2c708d"
+    },
+    {
+      "id": "663454604",
+      "file": "663454604.wem",
+      "bytes": 1129734,
+      "sha256": "00f9151ecc1968c52c89bcd04a163183e11a2d39f1bc9659913d9fc3be324db5"
+    },
+    {
+      "id": "879483395",
+      "file": "879483395.wem",
+      "bytes": 995943,
+      "sha256": "4c1ab44b78c3fe124bd10b55c0591ae1e9aeedf2c6e8b83d47479a165ca44628"
+    },
+    {
+      "id": "768236506",
+      "file": "768236506.wem",
+      "bytes": 885930,
+      "sha256": "dc4cea009844701443ea12809956122841347edec99f89fd15f1ab70fb26e0d3"
+    },
+    {
+      "id": "876169649",
+      "file": "876169649.wem",
+      "bytes": 1023971,
+      "sha256": "7ce5ade9735a77a4eff853c132dc46038d7d155d182f5000c4da9681eba30097"
+    },
+    {
+      "id": "919615173",
+      "file": "919615173.wem",
+      "bytes": 845023,
+      "sha256": "4cea776885966c0d861637826db450a92cd49f618e94acd6ceabf6d389fc7ea8"
+    },
+    {
+      "id": "941732260",
+      "file": "941732260.wem",
+      "bytes": 379880,
+      "sha256": "17fbf490c9fdae795bb7d9cc59c186bb8bbb6811fe9d8ec804d7645c27689912"
+    }
+  ],
+  "events": [
+    "Music_Aftermath",
+    "Music_Boss",
+    "Music_Countdown",
+    "Music_Defeat",
+    "Music_Menu",
+    "Music_Pause",
+    "Music_Pressure",
+    "Music_Resume",
+    "Music_Stop",
+    "Music_Street",
+    "Music_Victory",
+    "Music_VictoryAftermath",
+    "SFX_Pause",
+    "SFX_Resume",
+    "SFX_Stop",
+    "SFX_abilityAir",
+    "SFX_abilityBlood",
+    "SFX_abilityCommand",
+    "SFX_abilityEvolve",
+    "SFX_abilityKindling",
+    "SFX_abilityParasite",
+    "SFX_alertUp",
+    "SFX_bossArrival",
+    "SFX_bossCore",
+    "SFX_bossCoreOpen",
+    "SFX_bossDeath",
+    "SFX_bossImpact",
+    "SFX_bossPhase",
+    "SFX_bossThrow",
+    "SFX_bossWarning",
+    "SFX_breakGlass",
+    "SFX_breakMetal",
+    "SFX_breakStone",
+    "SFX_bridgeCreak",
+    "SFX_charge1",
+    "SFX_charge2",
+    "SFX_charge3",
+    "SFX_chargeReady",
+    "SFX_cityBed",
+    "SFX_clockBell",
+    "SFX_commandDismiss",
+    "SFX_convert",
+    "SFX_defeatSfx",
+    "SFX_empty",
+    "SFX_enemyWindup",
+    "SFX_explosion",
+    "SFX_grenadeFall",
+    "SFX_grenadeThrow",
+    "SFX_guardSpawn",
+    "SFX_gunPistol",
+    "SFX_gunRifle",
+    "SFX_gunRpg",
+    "SFX_gunShotgun",
+    "SFX_gunSniper",
+    "SFX_hitArmor",
+    "SFX_hitBody",
+    "SFX_hurt",
+    "SFX_infectionHit",
+    "SFX_jump",
+    "SFX_kindlingEnd",
+    "SFX_kindlingGain",
+    "SFX_land",
+    "SFX_lowHp",
+    "SFX_meleeHeavy",
+    "SFX_meleeLight",
+    "SFX_pickupFactor",
+    "SFX_pickupHealth",
+    "SFX_pickupPotion",
+    "SFX_planeCrash",
+    "SFX_planeDive",
+    "SFX_planeLoop",
+    "SFX_planeWarning",
+    "SFX_police",
+    "SFX_potionEnd",
+    "SFX_power",
+    "SFX_powerBounce",
+    "SFX_powerImpact",
+    "SFX_radio2",
+    "SFX_radio3",
+    "SFX_radio4",
+    "SFX_radio5",
+    "SFX_radio6",
+    "SFX_reload",
+    "SFX_riverBed",
+    "SFX_roll",
+    "SFX_seaBed",
+    "SFX_shieldDash",
+    "SFX_sprayLoop",
+    "SFX_sprayWarning",
+    "SFX_stepMetal",
+    "SFX_stepRoad",
+    "SFX_stepStone",
+    "SFX_switchWeapon",
+    "SFX_syringe",
+    "SFX_tankLoop",
+    "SFX_tankRam",
+    "SFX_uiAcquire",
+    "SFX_uiBack",
+    "SFX_uiClose",
+    "SFX_uiConfirm",
+    "SFX_uiFocus",
+    "SFX_uiOpen",
+    "SFX_uiReroll",
+    "SFX_upgrade",
+    "SFX_windBed",
+    "SFX_worldMachinery"
+  ],
+  "files": [
+    {
+      "file": "Init.bnk",
+      "sha256": "4425584acdb4ea7707476ba6f99dcab7a10720047e3405fea670621894d1aae3",
+      "bytes": 1014
+    },
+    {
+      "file": "Init.json",
+      "sha256": "4f0ff7ebfb58b7b57fe60ebad583963cb4187b4f88dc421c005f7a4460ea62c0",
+      "bytes": 3285
+    },
+    {
+      "file": "TokyoMusic.bnk",
+      "sha256": "bf9466df143fd5afb14fba37d14b440ef02a333fd5f8c728fd510f95b6c73c64",
+      "bytes": 409050
+    },
+    {
+      "file": "TokyoMusic.json",
+      "sha256": "14ff1ba0a506c1b4fb64ccdbc2199ff812db14786e7ea64b46f4c59eeade770d",
+      "bytes": 6696
+    },
+    {
+      "file": "TokyoSfx.bnk",
+      "sha256": "4ff371d7845739fa022f63fa11a5b918dcc93e1ea851533118c131eb61629474",
+      "bytes": 2582801
+    },
+    {
+      "file": "TokyoSfx.json",
+      "sha256": "1929e47a2f3195156471f80820f89b8bb0aabf517efffa519f9795ce1c489cfd",
+      "bytes": 89385
+    },
+    {
+      "file": "ProjectInfo.json",
+      "sha256": "e30347681083895601b3cda48c15b8410e5cd8a736bf0fa9a46282fc8a491a59",
+      "bytes": 642
+    },
+    {
+      "file": "PluginInfo.json",
+      "sha256": "b1960b50008485ed75347fdaf6162f5730d0897bf8379431c78e2d8d7f7384ca",
+      "bytes": 323
+    }
+  ]
+}

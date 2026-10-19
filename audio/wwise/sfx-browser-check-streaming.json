@@ -1,0 +1,2096 @@
+{
+  "url": "http://127.0.0.1:5395/?audio=1&map=riverside",
+  "at": "2026-10-19T02:48:01.458Z",
+  "crossOriginIsolated": true,
+  "backend": "wwise",
+  "subjectiveReview": "pending",
+  "families": [
+    {
+      "key": "stepRoad",
+      "rms": 0.0011237015768641497,
+      "left": 0.0011237015768641497,
+      "right": 0.0011237015768641497,
+      "peak": 0.012231790460646152
+    },
+    {
+      "key": "stepStone",
+      "rms": 0.0009564992078927446,
+      "left": 0.0009564992078927446,
+      "right": 0.0009564992078927446,
+      "peak": 0.02666359208524227
+    },
+    {
+      "key": "jump",
+      "rms": 0.0024833876600422224,
+      "left": 0.0024833876600422224,
+      "right": 0.0024833876600422224,
+      "peak": 0.03087305650115013
+    },
+    {
+      "key": "land",
+      "rms": 0.000636147452216846,
+      "left": 0.000636147452216846,
+      "right": 0.000636147452216846,
+      "peak": 0.011371576227247715
+    },
+    {
+      "key": "roll",
+      "rms": 0.0008219645819203511,
+      "left": 0.0008219645819203511,
+      "right": 0.0008219645819203511,
+      "peak": 0.019305000081658363
+    },
+    {
+      "key": "meleeLight",
+      "rms": 0.004253053018133311,
+      "left": 0.004253053018133311,
+      "right": 0.004253053018133311,
+      "peak": 0.0649934783577919
+    },
+    {
+      "key": "meleeHeavy",
+      "rms": 0.007174895072469555,
+      "left": 0.007174895072469555,
+      "right": 0.007174895072469555,
+      "peak": 0.05609423667192459
+    },
+    {
+      "key": "hitBody",
+      "rms": 0.003185567313415998,
+      "left": 0.003185567313415998,
+      "right": 0.003185567313415998,
+      "peak": 0.02484186366200447
+    },
+    {
+      "key": "hitArmor",
+      "rms": 0.003266615399927062,
+      "left": 0.003266615399927062,
+      "right": 0.003266615399927062,
+      "peak": 0.03139588236808777
+    },
+    {
+      "key": "hurt",
+      "rms": 0.012483139164798191,
+      "left": 0.012483139164798191,
+      "right": 0.012483139164798191,
+      "peak": 0.13203242421150208
+    },
+    {
+      "key": "defeatSfx",
+      "rms": 0.008048158997198305,
+      "left": 0.008048158997198305,
+      "right": 0.008048158997198305,
+      "peak": 0.03750099986791611
+    },
+    {
+      "key": "reload",
+      "rms": 0.0023911226959397653,
+      "left": 0.002423729363779033,
+      "right": 0.002358065195288669,
+      "peak": 0.03728659451007843
+    },
+    {
+      "key": "switchWeapon",
+      "rms": 0.0023867143049588102,
+      "left": 0.0023867143049588102,
+      "right": 0.0023867143049588102,
+      "peak": 0.03660545498132706
+    },
+    {
+      "key": "empty",
+      "rms": 0.001684947955061193,
+      "left": 0.001684956014803576,
+      "right": 0.0016849398952802567,
+      "peak": 0.03561587259173393
+    },
+    {
+      "key": "uiFocus",
+      "rms": 0.0003096390166125853,
+      "left": 0.0003117150286708031,
+      "right": 0.0003075489914117393,
+      "peak": 0.020540975034236908
+    },
+    {
+      "key": "uiConfirm",
+      "rms": 0.0016469822818907824,
+      "left": 0.0016469822761006941,
+      "right": 0.0016469822876808704,
+      "peak": 0.02017933502793312
+    },
+    {
+      "key": "uiBack",
+      "rms": 0.0015638235886433996,
+      "left": 0.001544007119123144,
+      "right": 0.0015833920704904675,
+      "peak": 0.014838897623121738
+    },
+    {
+      "key": "uiOpen",
+      "rms": 0.0013733082699197599,
+      "left": 0.0013586476114593646,
+      "right": 0.0013878140640358747,
+      "peak": 0.010520389303565025
+    },
+    {
+      "key": "uiClose",
+      "rms": 0.0009580407939878589,
+      "left": 0.0009580406127013646,
+      "right": 0.0009580409752743189,
+      "peak": 0.016045931726694107
+    },
+    {
+      "key": "uiReroll",
+      "rms": 0.0011810876350279512,
+      "left": 0.0011810876350279512,
+      "right": 0.0011810876350279512,
+      "peak": 0.04759141802787781
+    },
+    {
+      "key": "upgrade",
+      "rms": 0.006958590963441245,
+      "left": 0.006958590963441245,
+      "right": 0.006958590963441245,
+      "peak": 0.019846774637699127
+    },
+    {
+      "key": "pickupHealth",
+      "rms": 0.0025234328387239687,
+      "left": 0.0025234328387239687,
+      "right": 0.0025234328387239687,
+      "peak": 0.023626748472452164
+    },
+    {
+      "key": "pickupFactor",
+      "rms": 0.002241133218667902,
+      "left": 0.002241133218667902,
+      "right": 0.002241133218667902,
+      "peak": 0.026070378720760345
+    },
+    {
+      "key": "pickupPotion",
+      "rms": 0.0022306043707748346,
+      "left": 0.0022306043707748346,
+      "right": 0.0022306043707748346,
+      "peak": 0.025384802371263504
+    },
+    {
+      "key": "powerBounce",
+      "rms": 0.004141067229420406,
+      "left": 0.004141067229420406,
+      "right": 0.004141067229420406,
+      "peak": 0.028081687167286873
+    },
+    {
+      "key": "powerImpact",
+      "rms": 0.00727208958032523,
+      "left": 0.00727208958032523,
+      "right": 0.00727208958032523,
+      "peak": 0.06994010508060455
+    },
+    {
+      "key": "explosion",
+      "rms": 0.007837117678121473,
+      "left": 0.007837117678121473,
+      "right": 0.007837117678121473,
+      "peak": 0.02054833434522152
+    },
+    {
+      "key": "grenadeThrow",
+      "rms": 0.001108521570270794,
+      "left": 0.001108521570270794,
+      "right": 0.001108521570270794,
+      "peak": 0.0311584435403347
+    },
+    {
+      "key": "bossImpact",
+      "rms": 0.010228706390762737,
+      "left": 0.010228706390762737,
+      "right": 0.010228706390762737,
+      "peak": 0.03956292197108269
+    },
+    {
+      "key": "bossDeath",
+      "rms": 0.011974248308808345,
+      "left": 0.011974248308808345,
+      "right": 0.011974248308808345,
+      "peak": 0.04448249936103821
+    },
+    {
+      "key": "breakGlass",
+      "rms": 0.002410111580028149,
+      "left": 0.002410111580028149,
+      "right": 0.002410111580028149,
+      "peak": 0.036441486328840256
+    },
+    {
+      "key": "breakStone",
+      "rms": 0.0058854952538142675,
+      "left": 0.0058854952538142675,
+      "right": 0.0058854952538142675,
+      "peak": 0.026325251907110214
+    },
+    {
+      "key": "breakMetal",
+      "rms": 0.0017908211546199973,
+      "left": 0.0017908211546199973,
+      "right": 0.0017908211546199973,
+      "peak": 0.016565116122364998
+    },
+    {
+      "key": "tankLoop",
+      "rms": 0.0022171718868354263,
+      "left": 0.0022171718868354263,
+      "right": 0.0022171718868354263,
+      "peak": 0.012468172237277031
+    },
+    {
+      "key": "sprayLoop",
+      "rms": 0.001832431559452729,
+      "left": 0.001832431559452729,
+      "right": 0.001832431559452729,
+      "peak": 0.013128718361258507
+    },
+    {
+      "key": "cityBed",
+      "rms": 0.0005636929043339762,
+      "left": 0.0005168662330184477,
+      "right": 0.0006069173567778944,
+      "peak": 0.002768897218629718
+    },
+    {
+      "key": "riverBed",
+      "rms": 0.0005560726722390636,
+      "left": 0.0005540130302370159,
+      "right": 0.0005581247136167554,
+      "peak": 0.011323768645524979
+    },
+    {
+      "key": "seaBed",
+      "rms": 0.00024287793331645481,
+      "left": 0.00021925283484081656,
+      "right": 0.0002644004073340474,
+      "peak": 0.0016482439823448658
+    },
+    {
+      "key": "police",
+      "rms": 0.0000042164910056103614,
+      "left": 0.0000042164910056103614,
+      "right": 0.0000042164910056103614,
+      "peak": 0.000020934934582328424
+    },
+    {
+      "key": "windBed",
+      "rms": 0.00010437512620568946,
+      "left": 0.00010631726543305174,
+      "right": 0.00010239615721180765,
+      "peak": 0.0005480736726894975
+    },
+    {
+      "key": "syringe",
+      "rms": 0.004796004777398271,
+      "left": 0.00479600374148962,
+      "right": 0.004796005813306698,
+      "peak": 0.09300938248634338
+    },
+    {
+      "key": "convert",
+      "rms": 0.011219166338179975,
+      "left": 0.012543385398900016,
+      "right": 0.009716113903313568,
+      "peak": 0.11752050369977951
+    },
+    {
+      "key": "power",
+      "rms": 0.015274295036453053,
+      "left": 0.015274295036453053,
+      "right": 0.015274295036453053,
+      "peak": 0.13078884780406952
+    },
+    {
+      "key": "bossThrow",
+      "rms": 0.009352680798552391,
+      "left": 0.009352680798552391,
+      "right": 0.009352680798552391,
+      "peak": 0.06412430852651596
+    },
+    {
+      "key": "stepMetal",
+      "rms": 0.0011468001004635775,
+      "left": 0.0011468001004635775,
+      "right": 0.0011468001004635775,
+      "peak": 0.009011722169816494
+    },
+    {
+      "key": "gunPistol",
+      "rms": 0.008299197150242495,
+      "left": 0.008299197150242495,
+      "right": 0.008299197150242495,
+      "peak": 0.07832424342632294
+    },
+    {
+      "key": "gunShotgun",
+      "rms": 0.006655117016971607,
+      "left": 0.006655117016971607,
+      "right": 0.006655117016971607,
+      "peak": 0.07013033330440521
+    },
+    {
+      "key": "gunRifle",
+      "rms": 0.008266238931613159,
+      "left": 0.008266238931613159,
+      "right": 0.008266238931613159,
+      "peak": 0.0786670371890068
+    },
+    {
+      "key": "gunSniper",
+      "rms": 0.005777501472076585,
+      "left": 0.005777501472076585,
+      "right": 0.005777501472076585,
+      "peak": 0.0789368599653244
+    },
+    {
+      "key": "gunRpg",
+      "rms": 0.013143096981558735,
+      "left": 0.013143096981558735,
+      "right": 0.013143096981558735,
+      "peak": 0.08040425181388855
+    },
+    {
+      "key": "infectionHit",
+      "rms": 0.002725859456689277,
+      "left": 0.0027258594058114146,
+      "right": 0.002725859507567138,
+      "peak": 0.03432494029402733
+    },
+    {
+      "key": "abilityBlood",
+      "rms": 0.00412429827473639,
+      "left": 0.00412429827473639,
+      "right": 0.00412429827473639,
+      "peak": 0.030158597975969315
+    },
+    {
+      "key": "abilityEvolve",
+      "rms": 0.011930453382085548,
+      "left": 0.013154030041892023,
+      "right": 0.010566121779595152,
+      "peak": 0.07463591545820236
+    },
+    {
+      "key": "abilityAir",
+      "rms": 0.0026886850670611753,
+      "left": 0.0026886850670611753,
+      "right": 0.0026886850670611753,
+      "peak": 0.030747253447771072
+    },
+    {
+      "key": "abilityParasite",
+      "rms": 0.003668421919905514,
+      "left": 0.003668421919905514,
+      "right": 0.003668421919905514,
+      "peak": 0.019542114809155464
+    },
+    {
+      "key": "charge1",
+      "rms": 0.0028227557952821237,
+      "left": 0.0028227557952821237,
+      "right": 0.0028227557952821237,
+      "peak": 0.029577819630503654
+    },
+    {
+      "key": "charge2",
+      "rms": 0.0027900644726699692,
+      "left": 0.0027900644726699692,
+      "right": 0.0027900644726699692,
+      "peak": 0.02936321683228016
+    },
+    {
+      "key": "charge3",
+      "rms": 0.0031293555069633206,
+      "left": 0.0031293555069633206,
+      "right": 0.0031293555069633206,
+      "peak": 0.032048098742961884
+    },
+    {
+      "key": "lowHp",
+      "rms": 0.0023909758611902615,
+      "left": 0.0023909758611902615,
+      "right": 0.0023909758611902615,
+      "peak": 0.016867127269506454
+    },
+    {
+      "key": "radio2",
+      "rms": 0.021679394276974177,
+      "left": 0.021679394276974177,
+      "right": 0.021679394276974177,
+      "peak": 0.10876987129449844
+    },
+    {
+      "key": "radio3",
+      "rms": 0.022163882013340276,
+      "left": 0.022163882013340276,
+      "right": 0.022163882013340276,
+      "peak": 0.13774026930332184
+    },
+    {
+      "key": "radio4",
+      "rms": 0.023659563502903675,
+      "left": 0.023659563502903675,
+      "right": 0.023659563502903675,
+      "peak": 0.12359852343797684
+    },
+    {
+      "key": "radio5",
+      "rms": 0.020652780902117914,
+      "left": 0.020652780902117914,
+      "right": 0.020652780902117914,
+      "peak": 0.11981680244207382
+    },
+    {
+      "key": "radio6",
+      "rms": 0.021060173937087583,
+      "left": 0.021060173937087583,
+      "right": 0.021060173937087583,
+      "peak": 0.11302269995212555
+    },
+    {
+      "key": "abilityKindling",
+      "rms": 0.006042566313300771,
+      "left": 0.006042566313300771,
+      "right": 0.006042566313300771,
+      "peak": 0.051878929138183594
+    },
+    {
+      "key": "chargeReady",
+      "rms": 0.0030041866301698306,
+      "left": 0.0032122158860000893,
+      "right": 0.0027806372865785624,
+      "peak": 0.0883563905954361
+    },
+    {
+      "key": "alertUp",
+      "rms": 0.0027382429668503885,
+      "left": 0.0025375437507793286,
+      "right": 0.002925204403779677,
+      "peak": 0.016316790133714676
+    },
+    {
+      "key": "bossWarning",
+      "rms": 0.005617061109385457,
+      "left": 0.005617061109385457,
+      "right": 0.005617061109385457,
+      "peak": 0.044491223990917206
+    },
+    {
+      "key": "bossArrival",
+      "rms": 0.009049878260169557,
+      "left": 0.009049878260169557,
+      "right": 0.009049878260169557,
+      "peak": 0.037905581295490265
+    },
+    {
+      "key": "bossCore",
+      "rms": 0.0063702766686324274,
+      "left": 0.0063702766686324274,
+      "right": 0.0063702766686324274,
+      "peak": 0.043961938470602036
+    },
+    {
+      "key": "bossPhase",
+      "rms": 0.0059729262203042695,
+      "left": 0.006292890810595371,
+      "right": 0.005634822136706785,
+      "peak": 0.03285970911383629
+    },
+    {
+      "key": "planeLoop",
+      "rms": 0.0022414331251239786,
+      "left": 0.0022414331251239786,
+      "right": 0.0022414331251239786,
+      "peak": 0.010418507270514965
+    },
+    {
+      "key": "sprayWarning",
+      "rms": 0.005044922317986897,
+      "left": 0.005044922317986897,
+      "right": 0.005044922317986897,
+      "peak": 0.04454728215932846
+    },
+    {
+      "key": "potionEnd",
+      "rms": 0.0020240792956709324,
+      "left": 0.0020398087283558636,
+      "right": 0.0020082266660042913,
+      "peak": 0.02632663957774639
+    },
+    {
+      "key": "abilityCommand",
+      "rms": 0.0035105794621734902,
+      "left": 0.0035105794621734902,
+      "right": 0.0035105794621734902,
+      "peak": 0.02580001950263977
+    },
+    {
+      "key": "commandDismiss",
+      "rms": 0.003725330955729244,
+      "left": 0.003725330955729244,
+      "right": 0.003725330955729244,
+      "peak": 0.029087914153933525
+    },
+    {
+      "key": "guardSpawn",
+      "rms": 0.004007112480119191,
+      "left": 0.004007112643057644,
+      "right": 0.0040071123171807315,
+      "peak": 0.02491983398795128
+    },
+    {
+      "key": "kindlingGain",
+      "rms": 0.0025584054211786967,
+      "left": 0.0025584054211786967,
+      "right": 0.0025584054211786967,
+      "peak": 0.017441796138882637
+    },
+    {
+      "key": "kindlingEnd",
+      "rms": 0.0007811266185983686,
+      "left": 0.0007811266185983686,
+      "right": 0.0007811266185983686,
+      "peak": 0.005347060970962048
+    },
+    {
+      "key": "uiAcquire",
+      "rms": 0.00301054765174279,
+      "left": 0.00301054765174279,
+      "right": 0.00301054765174279,
+      "peak": 0.017836159095168114
+    },
+    {
+      "key": "planeWarning",
+      "rms": 0.0027218850451328318,
+      "left": 0.0027218850451328318,
+      "right": 0.0027218850451328318,
+      "peak": 0.01374746859073639
+    },
+    {
+      "key": "grenadeFall",
+      "rms": 0.0013169870949004256,
+      "left": 0.0013169870949004256,
+      "right": 0.0013169870949004256,
+      "peak": 0.008652952499687672
+    },
+    {
+      "key": "bossCoreOpen",
+      "rms": 0.0029038860905807283,
+      "left": 0.0029038860905807283,
+      "right": 0.0029038860905807283,
+      "peak": 0.021872011944651604
+    },
+    {
+      "key": "enemyWindup",
+      "rms": 0.0003294026190641922,
+      "left": 0.0003294026190641922,
+      "right": 0.0003294026190641922,
+      "peak": 0.003104050876572728
+    },
+    {
+      "key": "shieldDash",
+      "rms": 0.0007489596142319643,
+      "left": 0.0007489596142319643,
+      "right": 0.0007489596142319643,
+      "peak": 0.006306379567831755
+    },
+    {
+      "key": "tankRam",
+      "rms": 0.0013275616077859482,
+      "left": 0.0013275616077859482,
+      "right": 0.0013275616077859482,
+      "peak": 0.006990821100771427
+    },
+    {
+      "key": "planeDive",
+      "rms": 0.0023009214181433195,
+      "left": 0.0023009214181433195,
+      "right": 0.0023009214181433195,
+      "peak": 0.01556249801069498
+    },
+    {
+      "key": "planeCrash",
+      "rms": 0.002344387465372164,
+      "left": 0.002344387465372164,
+      "right": 0.002344387465372164,
+      "peak": 0.01465599238872528
+    },
+    {
+      "key": "bridgeCreak",
+      "rms": 0.0001485458520231011,
+      "left": 0.0001485458520231011,
+      "right": 0.0001485458520231011,
+      "peak": 0.0008629669900983572
+    },
+    {
+      "key": "clockBell",
+      "rms": 0.0013640047540209193,
+      "left": 0.0013640047540209193,
+      "right": 0.0013640047540209193,
+      "peak": 0.003984897863119841
+    },
+    {
+      "key": "worldMachinery",
+      "rms": 0.0001489707318597607,
+      "left": 0.0001489707318597607,
+      "right": 0.0001489707318597607,
+      "peak": 0.0005020108656026423
+    }
+  ],
+  "errors": [],
+  "left": {
+    "rms": 0.0019356342163805366,
+    "left": 0.002737400160598773,
+    "right": 0,
+    "peak": 0.010081264190375805
+  },
+  "right": {
+    "rms": 0.0019032279549245487,
+    "left": 0,
+    "right": 0.0026915707861419067,
+    "peak": 0.009559606201946735
+  },
+  "near": {
+    "rms": 0.002788985912537029,
+    "left": 0.002788985912537029,
+    "right": 0.002788985912537029,
+    "peak": 0.010201371274888515
+  },
+  "far": {
+    "rms": 0.00011554010459086408,
+    "left": 0.00011554010459086408,
+    "right": 0.00011554010459086408,
+    "peak": 0.00043420621659606695
+  },
+  "paused": {
+    "rms": 0,
+    "left": 0,
+    "right": 0,
+    "peak": 0
+  },
+  "resumed": {
+    "rms": 0.002641586816501983,
+    "left": 0.002641586816501983,
+    "right": 0.002641586816501983,
+    "peak": 0.009661009535193443
+  },
+  "muted": {
+    "rms": 0,
+    "left": 0,
+    "right": 0,
+    "peak": 0
+  },
+  "dense": {
+    "seconds": 30,
+    "maxPeak": 0.2106761932373047,
+    "rms": 0.028890141778653785
+  },
+  "maximumVolumeMix": {
+    "seconds": 6,
+    "masterVolume": 1,
+    "speakersDisconnected": true,
+    "maxPeak": 0.2731335163116455,
+    "rms": 0.0492125121736254
+  },
+  "musicLoops": {
+    "scene": "street",
+    "requestedLoops": 2,
+    "seconds": 121.367069,
+    "minWindowRms": 0.007080606953507494,
+    "maxPeak": 0.0706983357667923
+  },
+  "stopSettleMs": 1500,
+  "stopped": {
+    "rms": 0,
+    "left": 0,
+    "right": 0,
+    "peak": 0
+  },
+  "runtime": {
+    "status": "ready",
+    "error": null,
+    "scene": null,
+    "posted": null,
+    "paused": false,
+    "muted": false,
+    "radio": false,
+    "playingId": 782,
+    "runtime": {
+      "backend": "wwise",
+      "disposed": false,
+      "loadedBanks": [
+        {
+          "name": "Init.bnk",
+          "id": 1355168291,
+          "bytes": 1014
+        },
+        {
+          "name": "TokyoMusic.bnk",
+          "id": 268141082,
+          "bytes": 409050
+        },
+        {
+          "name": "TokyoSfx.bnk",
+          "id": 736008490,
+          "bytes": 2582801
+        }
+      ],
+      "objects": 2,
+      "heapBytes": 16777216,
+      "streaming": {
+        "mode": "wwise-http-range",
+        "mediaCount": 9,
+        "poolBytes": 2097152,
+        "completedReads": 79,
+        "bytesRead": 2581501,
+        "pendingReads": 0,
+        "openFiles": 0,
+        "nativePending": 0,
+        "peakInFlight": 2,
+        "errors": [],
+        "recentReads": [
+          {
+            "id": 659547489,
+            "offset": 554307,
+            "bytes": 32768
+          },
+          {
+            "id": 768236506,
+            "offset": 553821,
+            "bytes": 32768
+          },
+          {
+            "id": 659547489,
+            "offset": 587075,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 28866,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 61634,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 94402,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 127170,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 159938,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 192706,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 225474,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 258242,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 291010,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 323778,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 356546,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 389314,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 422082,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 454850,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 487618,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 520386,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 553154,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 585922,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 618690,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 651458,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 684226,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 716994,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 749762,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 782530,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 815298,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 848066,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 880834,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 913602,
+            "bytes": 32768
+          },
+          {
+            "id": 53097435,
+            "offset": 946370,
+            "bytes": 32768
+          }
+        ]
+      },
+      "renderCount": 24604,
+      "maxRenderMs": 1.8549999594688416,
+      "lastError": null
+    }
+  },
+  "sfx": {
+    "ready": true,
+    "paused": false,
+    "loops": [],
+    "radio": null,
+    "voiceQueue": 0,
+    "activeOneShots": 0,
+    "registeredPool": 0,
+    "posted": 672,
+    "dropped": 0,
+    "unknown": 0,
+    "history": [
+      {
+        "key": "gunPistol",
+        "playing": 765,
+        "position": {
+          "x": -3,
+          "y": 0,
+          "z": 5
+        },
+        "time": 186.42631499999763
+      },
+      {
+        "key": "gunPistol",
+        "playing": 766,
+        "position": {
+          "x": -1,
+          "y": 0,
+          "z": 6
+        },
+        "time": 186.42632499998808
+      },
+      {
+        "key": "gunPistol",
+        "playing": 767,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 7
+        },
+        "time": 186.42632999998332
+      },
+      {
+        "key": "gunPistol",
+        "playing": 768,
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": 8
+        },
+        "time": 186.42632999998332
+      },
+      {
+        "key": "gunPistol",
+        "playing": 769,
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 9
+        },
+        "time": 186.42633499997854
+      },
+      {
+        "key": "power",
+        "playing": 770,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "time": 186.42633999997378
+      },
+      {
+        "key": "convert",
+        "playing": 771,
+        "position": null,
+        "time": 186.42633999997378
+      },
+      {
+        "key": "gunPistol",
+        "playing": 772,
+        "position": {
+          "x": -5,
+          "y": 0,
+          "z": 4
+        },
+        "time": 186.68028499996663
+      },
+      {
+        "key": "gunPistol",
+        "playing": 773,
+        "position": {
+          "x": -3,
+          "y": 0,
+          "z": 5
+        },
+        "time": 186.680375
+      },
+      {
+        "key": "gunPistol",
+        "playing": 774,
+        "position": {
+          "x": -1,
+          "y": 0,
+          "z": 6
+        },
+        "time": 186.68037999999524
+      },
+      {
+        "key": "gunPistol",
+        "playing": 775,
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 7
+        },
+        "time": 186.68037999999524
+      },
+      {
+        "key": "gunPistol",
+        "playing": 776,
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": 8
+        },
+        "time": 186.6803899999857
+      },
+      {
+        "key": "gunPistol",
+        "playing": 777,
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 9
+        },
+        "time": 186.68039499998093
+      },
+      {
+        "key": "power",
+        "playing": 778,
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 2
+        },
+        "time": 186.68039999997615
+      },
+      {
+        "key": "convert",
+        "playing": 779,
+        "position": null,
+        "time": 186.6804049999714
+      }
+    ]
+  },
+  "ok": true,
+  "pageLoad": {
+    "assetsReadyMs": 6774.870000004768,
+    "jsHeapBytes": 808079432,
+    "resources": [
+      {
+        "url": "http://127.0.0.1:5395/assets/main-CjdZc9xu.js",
+        "transferBytes": 118177,
+        "encodedBytes": 117877,
+        "decodedBytes": 608858,
+        "durationMs": 16.84500002861023
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/three.module-sn0n2_52.js",
+        "transferBytes": 181501,
+        "encodedBytes": 181201,
+        "decodedBytes": 704759,
+        "durationMs": 21.814999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/mixamo-DOvgaqW2.js",
+        "transferBytes": 17817,
+        "encodedBytes": 17517,
+        "decodedBytes": 51137,
+        "durationMs": 17.639999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/sfx-runtime-BfRN9Dzi.js",
+        "transferBytes": 5454,
+        "encodedBytes": 5154,
+        "decodedBytes": 19756,
+        "durationMs": 21.225000023841858
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/world-DLgbkSVN.js",
+        "transferBytes": 6889,
+        "encodedBytes": 6589,
+        "decodedBytes": 6589,
+        "durationMs": 22.160000026226044
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/main-JEayNFaH.css",
+        "transferBytes": 18219,
+        "encodedBytes": 17919,
+        "decodedBytes": 72892,
+        "durationMs": 19.314999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/music-audition--45S9k9J.js",
+        "transferBytes": 8268,
+        "encodedBytes": 7968,
+        "decodedBytes": 20631,
+        "durationMs": 3.225000023841858
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/shaders/outline-instance.frag",
+        "transferBytes": 16728,
+        "encodedBytes": 16428,
+        "decodedBytes": 83804,
+        "durationMs": 3.634999990463257
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/riverside-NkzkSgTe.glb",
+        "transferBytes": 1811347,
+        "encodedBytes": 1811047,
+        "decodedBytes": 3967764,
+        "durationMs": 80.23500001430511
+      },
+      {
+        "url": "http://127.0.0.1:5395/favicon.ico",
+        "transferBytes": 309,
+        "encodedBytes": 9,
+        "decodedBytes": 9,
+        "durationMs": 2.10999995470047
+      },
+      {
+        "url": "http://127.0.0.1:5395/draco/draco_wasm_wrapper.js",
+        "transferBytes": 11967,
+        "encodedBytes": 11667,
+        "decodedBytes": 58456,
+        "durationMs": 3.6449999809265137
+      },
+      {
+        "url": "http://127.0.0.1:5395/draco/draco_decoder.wasm",
+        "transferBytes": 63695,
+        "encodedBytes": 63395,
+        "decodedBytes": 192420,
+        "durationMs": 4.1549999713897705
+      },
+      {
+        "url": "http://127.0.0.1:5395/workers/thriller-idle.fbx",
+        "transferBytes": 726432,
+        "encodedBytes": 726132,
+        "decodedBytes": 1077696,
+        "durationMs": 24.689999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened/running-jump.fbx",
+        "transferBytes": 625673,
+        "encodedBytes": 625373,
+        "decodedBytes": 780784,
+        "durationMs": 20.435000002384186
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened-reader/running-jump.fbx",
+        "transferBytes": 670817,
+        "encodedBytes": 670517,
+        "decodedBytes": 872976,
+        "durationMs": 24.819999992847443
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/manifest.json",
+        "transferBytes": 848,
+        "encodedBytes": 548,
+        "decodedBytes": 548,
+        "durationMs": 4.699999988079071
+      },
+      {
+        "url": "http://127.0.0.1:5395/police/shield/Police_Animated_v5.fbx",
+        "transferBytes": 12018441,
+        "encodedBytes": 12018141,
+        "decodedBytes": 16479004,
+        "durationMs": 537.0950000286102
+      },
+      {
+        "url": "http://127.0.0.1:5395/police/baton/Police_Baton_Anatomy.fbx",
+        "transferBytes": 11646956,
+        "encodedBytes": 11646656,
+        "decodedBytes": 13834764,
+        "durationMs": 527.8000000119209
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/guard-CQQhjIiF.glb",
+        "transferBytes": 3213110,
+        "encodedBytes": 3212810,
+        "decodedBytes": 31461380,
+        "durationMs": 1237.695000052452
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/smoke-DoeVN4q0.webp",
+        "transferBytes": 162540,
+        "encodedBytes": 162240,
+        "decodedBytes": 162240,
+        "durationMs": 29.50499999523163
+      },
+      {
+        "url": "http://127.0.0.1:5395/workers/tex/base_color.png",
+        "transferBytes": 3819264,
+        "encodedBytes": 3818964,
+        "decodedBytes": 3818964,
+        "durationMs": 51.52499997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/workers/tex/normal.png",
+        "transferBytes": 1579874,
+        "encodedBytes": 1579574,
+        "decodedBytes": 1579574,
+        "durationMs": 17.48499995470047
+      },
+      {
+        "url": "http://127.0.0.1:5395/workers/tex/roughness.png",
+        "transferBytes": 1118930,
+        "encodedBytes": 1118630,
+        "decodedBytes": 1118630,
+        "durationMs": 14.355000019073486
+      },
+      {
+        "url": "http://127.0.0.1:5395/workers/tex/metallic.png",
+        "transferBytes": 1151753,
+        "encodedBytes": 1151453,
+        "decodedBytes": 1151453,
+        "durationMs": 25.459999978542328
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened-reader/tex/base_color.png",
+        "transferBytes": 3779923,
+        "encodedBytes": 3779623,
+        "decodedBytes": 3779623,
+        "durationMs": 47.0100000500679
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened-reader/tex/normal.png",
+        "transferBytes": 1700592,
+        "encodedBytes": 1700292,
+        "decodedBytes": 1700292,
+        "durationMs": 13.509999990463257
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened-reader/tex/roughness.png",
+        "transferBytes": 1341906,
+        "encodedBytes": 1341606,
+        "decodedBytes": 1341606,
+        "durationMs": 27.30000001192093
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened-reader/tex/metallic.png",
+        "transferBytes": 460785,
+        "encodedBytes": 460485,
+        "decodedBytes": 460485,
+        "durationMs": 24.57499998807907
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened/tex/base_color.png",
+        "transferBytes": 4080528,
+        "encodedBytes": 4080228,
+        "decodedBytes": 4080228,
+        "durationMs": 72.13999998569489
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened/tex/normal.png",
+        "transferBytes": 1985327,
+        "encodedBytes": 1985027,
+        "decodedBytes": 1985027,
+        "durationMs": 32.860000014305115
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened/tex/roughness.png",
+        "transferBytes": 1167469,
+        "encodedBytes": 1167169,
+        "decodedBytes": 1167169,
+        "durationMs": 74.44499999284744
+      },
+      {
+        "url": "http://127.0.0.1:5395/awakened/tex/metallic.png",
+        "transferBytes": 418121,
+        "encodedBytes": 417821,
+        "decodedBytes": 417821,
+        "durationMs": 70.3850000500679
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/idle.fbx",
+        "transferBytes": 791892,
+        "encodedBytes": 791592,
+        "decodedBytes": 1320352,
+        "durationMs": 34.705000042915344
+      },
+      {
+        "url": "http://127.0.0.1:5395/workers/sad-walk.fbx",
+        "transferBytes": 657847,
+        "encodedBytes": 657547,
+        "decodedBytes": 925696,
+        "durationMs": 39.389999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/run.fbx",
+        "transferBytes": 651236,
+        "encodedBytes": 650936,
+        "decodedBytes": 945536,
+        "durationMs": 39.87999999523163
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/tex/base_color.png",
+        "transferBytes": 4772544,
+        "encodedBytes": 4772244,
+        "decodedBytes": 4772244,
+        "durationMs": 71.34999996423721
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/tex/normal.png",
+        "transferBytes": 2177454,
+        "encodedBytes": 2177154,
+        "decodedBytes": 2177154,
+        "durationMs": 33.84500002861023
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/tex/roughness.png",
+        "transferBytes": 1031156,
+        "encodedBytes": 1030856,
+        "decodedBytes": 1030856,
+        "durationMs": 18.185000002384186
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/tex/metallic.png",
+        "transferBytes": 1218786,
+        "encodedBytes": 1218486,
+        "decodedBytes": 1218486,
+        "durationMs": 37.37000000476837
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/idle.fbx",
+        "transferBytes": 300,
+        "encodedBytes": 791592,
+        "decodedBytes": 1320352,
+        "durationMs": 7.629999995231628
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/run.fbx",
+        "transferBytes": 300,
+        "encodedBytes": 650936,
+        "decodedBytes": 945536,
+        "durationMs": 36.814999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/jump.fbx",
+        "transferBytes": 709826,
+        "encodedBytes": 709526,
+        "decodedBytes": 1123424,
+        "durationMs": 24.009999990463257
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/toyAim.fbx",
+        "transferBytes": 734493,
+        "encodedBytes": 734193,
+        "decodedBytes": 1203776,
+        "durationMs": 24.92500001192093
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/toyRecoil.fbx",
+        "transferBytes": 654569,
+        "encodedBytes": 654269,
+        "decodedBytes": 953712,
+        "durationMs": 25.389999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/flurry.fbx",
+        "transferBytes": 716350,
+        "encodedBytes": 716050,
+        "decodedBytes": 1161760,
+        "durationMs": 25.780000030994415
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/roll.fbx",
+        "transferBytes": 708085,
+        "encodedBytes": 707785,
+        "decodedBytes": 1123056,
+        "durationMs": 30.639999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/fallRoll.fbx",
+        "transferBytes": 702217,
+        "encodedBytes": 701917,
+        "decodedBytes": 1101632,
+        "durationMs": 43.05000001192093
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/Strafing.fbx",
+        "transferBytes": 669476,
+        "encodedBytes": 669176,
+        "decodedBytes": 1005696,
+        "durationMs": 44.669999957084656
+      },
+      {
+        "url": "http://127.0.0.1:5395/mixamo/heavyPunch.fbx",
+        "transferBytes": 691369,
+        "encodedBytes": 691069,
+        "decodedBytes": 1077504,
+        "durationMs": 46.780000030994415
+      },
+      {
+        "url": "http://127.0.0.1:5395/police/tex/Color.jpg",
+        "transferBytes": 268731,
+        "encodedBytes": 268431,
+        "decodedBytes": 268431,
+        "durationMs": 5.629999995231628
+      },
+      {
+        "url": "http://127.0.0.1:5395/police/tex/Normal.png",
+        "transferBytes": 1349281,
+        "encodedBytes": 1348981,
+        "decodedBytes": 1348981,
+        "durationMs": 10.305000007152557
+      },
+      {
+        "url": "http://127.0.0.1:5395/police/tex/tripo_model_roughness.JPEG",
+        "transferBytes": 338438,
+        "encodedBytes": 338138,
+        "decodedBytes": 338138,
+        "durationMs": 6.464999973773956
+      },
+      {
+        "url": "http://127.0.0.1:5395/police/tex/tripo_model_metallic.JPEG",
+        "transferBytes": 178546,
+        "encodedBytes": 178246,
+        "decodedBytes": 178246,
+        "durationMs": 6.159999966621399
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/index-2fxgKpH0.js",
+        "transferBytes": 31961,
+        "encodedBytes": 31661,
+        "decodedBytes": 195075,
+        "durationMs": 4.855000019073486
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/wwise-runtime-5Pa8JkJb.wasm",
+        "transferBytes": 590708,
+        "encodedBytes": 590408,
+        "decodedBytes": 1433602,
+        "durationMs": 15.905000030994415
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/TokyoMusic-DL81hqv3.bnk",
+        "transferBytes": 409350,
+        "encodedBytes": 409050,
+        "decodedBytes": 409050,
+        "durationMs": 4.800000011920929
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/TokyoSfx-OSY7Q-7I.bnk",
+        "transferBytes": 2583101,
+        "encodedBytes": 2582801,
+        "decodedBytes": 2582801,
+        "durationMs": 16.689999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/2611905-SjZ5W-A6.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.889999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5395/favicon.ico",
+        "transferBytes": 309,
+        "encodedBytes": 9,
+        "decodedBytes": 9,
+        "durationMs": 1.9450000524520874
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/2611905-SjZ5W-A6.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.939999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/2611905-SjZ5W-A6.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.7850000262260437
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/2611905-SjZ5W-A6.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.009999990463257
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/wwise-runtime-5Pa8JkJb.wasm",
+        "transferBytes": 0,
+        "encodedBytes": 590408,
+        "decodedBytes": 1433602,
+        "durationMs": 7.285000026226044
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/TokyoMusic-DL81hqv3.bnk",
+        "transferBytes": 0,
+        "encodedBytes": 409050,
+        "decodedBytes": 409050,
+        "durationMs": 1.7200000286102295
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/TokyoSfx-OSY7Q-7I.bnk",
+        "transferBytes": 0,
+        "encodedBytes": 2582801,
+        "decodedBytes": 2582801,
+        "durationMs": 5.615000009536743
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/919615173-BG9S-W-2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.1450000405311584
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/876169649-D9pCCpD9.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.9449999928474426
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/876169649-D9pCCpD9.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 5.224999964237213
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.6200000047683716
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.284999966621399
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.120000004768372
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.6549999713897705
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.355000019073486
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.400000035762787
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.2800000309944153
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.4950000047683716
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.8799999952316284
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.5799999833106995
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.3799999952316284
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.2899999618530273
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.2699999809265137
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.0550000071525574
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.1050000190734863
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 7.560000002384186
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.9649999737739563
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.4549999833106995
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.290000021457672
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.5899999737739563
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.314999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.9700000286102295
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.225000023841858
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.959999978542328
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.290000021457672
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.800000011920929
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.2300000190734863
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.7450000047683716
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.074999988079071
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.774999976158142
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.01500004529953
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.1549999713897705
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.7149999737739563
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.7300000190734863
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 25897,
+        "encodedBytes": 25597,
+        "decodedBytes": 25597,
+        "durationMs": 2.134999990463257
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/941732260-CjGD9_W2.wem",
+        "transferBytes": 7223,
+        "encodedBytes": 6923,
+        "decodedBytes": 32768,
+        "durationMs": 3.7549999952316284
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.85999995470047
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.8100000023841858
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.334999978542328
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.014999985694885
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.5899999737739563
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.4700000286102295
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.1549999713897705
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.4649999737739563
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.790000021457672
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/768236506-BfjIGuOx.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.394999980926514
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/659547489-Dz1_AxM3.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.150000035762787
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.740000009536743
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.6200000047683716
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.314999997615814
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.3700000047683716
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.075000047683716
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.034999966621399
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 5.030000030994415
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.1800000071525574
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.324999988079071
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.7100000381469727
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 3.0199999809265137
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.6449999809265137
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.575000047683716
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.599999964237213
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.174999952316284
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.6600000262260437
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.3450000286102295
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.0850000381469727
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.634999990463257
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.774999976158142
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.10999995470047
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.9300000071525574
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.100000023841858
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 1.7649999856948853
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.524999976158142
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.150000035762787
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 7.715000033378601
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 2.8899999856948853
+      },
+      {
+        "url": "http://127.0.0.1:5395/assets/53097435-B6vHsCah.wem",
+        "transferBytes": 33068,
+        "encodedBytes": 32768,
+        "decodedBytes": 32768,
+        "durationMs": 4.399999976158142
+      }
+    ]
+  }
+}

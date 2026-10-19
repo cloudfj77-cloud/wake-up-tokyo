@@ -1,0 +1,1973 @@
+{
+  "at": "2026-10-19T03:52:05.241Z",
+  "families": 91,
+  "clips": 245,
+  "requirements": 57,
+  "allSourceCountsMet": true,
+  "problems": [],
+  "assetHashesVerified": true,
+  "subjectiveReview": "pending",
+  "humanAccepted": false,
+  "assets": [
+    {
+      "key": "stepRoad",
+      "assetId": "tokyo-lib-steproad-1",
+      "packRevision": 3,
+      "sha256": "f54221f12c77328083b4d9605736e4736e34a1aa44de33f6a7ea120bff0f190d",
+      "seconds": 0.24625,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepRoad",
+      "assetId": "tokyo-lib-steproad-2",
+      "packRevision": 2,
+      "sha256": "9335421c38a983ac09f0c2388563c8dc2d901363f061ccbce316da3323f778d2",
+      "seconds": 0.2515625,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepRoad",
+      "assetId": "tokyo-lib-steproad-3",
+      "packRevision": 2,
+      "sha256": "2f7b98faff326bac1a4299aa2d50af802c9b38d592c5b827232c6bb566f7e71e",
+      "seconds": 0.3625,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepRoad",
+      "assetId": "tokyo-lib-steproad-4",
+      "packRevision": 2,
+      "sha256": "0f5af2dbd2e34198b056ad3d19c3812ac231ea397a406ef9c6e40604a5f7075a",
+      "seconds": 0.23958333333333334,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepStone",
+      "assetId": "tokyo-lib-stepstone-1",
+      "packRevision": 3,
+      "sha256": "e96f304e50f5fe6ebe481cbd7f3728127a5932d58ea6632a505f7e3b49936a6b",
+      "seconds": 0.1971875,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepStone",
+      "assetId": "tokyo-lib-stepstone-2",
+      "packRevision": 2,
+      "sha256": "285c1f374b65b7975a29b76625fccc96869759d6fe4cf977fe1345fa264c9927",
+      "seconds": 0.1989375,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepStone",
+      "assetId": "tokyo-lib-stepstone-3",
+      "packRevision": 2,
+      "sha256": "1e6f3876036b5053d1ec398b3fe79c8f68e8e028ba0d751d786514f262db52fc",
+      "seconds": 0.26316666666666666,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepStone",
+      "assetId": "tokyo-lib-stepstone-4",
+      "packRevision": 2,
+      "sha256": "abc98a1f3cbaa1897d5641a6722b47b1abb89291ebc58ca7130b2d5c83d47326",
+      "seconds": 0.23758333333333334,
+      "review": "unreviewed"
+    },
+    {
+      "key": "jump",
+      "assetId": "tokyo-lib-jump-1",
+      "packRevision": 3,
+      "sha256": "0062cb580cfc6dfc67b7f803a64f058f1807e79a4b9bb19f1616cd7a861ef020",
+      "seconds": 0.15416666666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "jump",
+      "assetId": "tokyo-lib-jump-2",
+      "packRevision": 2,
+      "sha256": "663b755d5eef1ea51d3804aaec0a844f27019e88f7efd95db5ab4c9572f4f39e",
+      "seconds": 0.147625,
+      "review": "unreviewed"
+    },
+    {
+      "key": "jump",
+      "assetId": "tokyo-lib-jump-3",
+      "packRevision": 2,
+      "sha256": "406303cf8ee3269c63070baaa3b7159aff6eeb704e0642c53e93aec6044987f3",
+      "seconds": 0.12508333333333332,
+      "review": "unreviewed"
+    },
+    {
+      "key": "land",
+      "assetId": "tokyo-lib-land-1",
+      "packRevision": 3,
+      "sha256": "803cb43687c8f7f538652b8a6ecb017d2ff22125e32384a5eea1cbdc25f38118",
+      "seconds": 0.43477083333333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "land",
+      "assetId": "tokyo-lib-land-2",
+      "packRevision": 3,
+      "sha256": "da1ff96c71b0486d8afecde25ce6094a16d39547251c7464b0084f4d2098b507",
+      "seconds": 0.5335625,
+      "review": "unreviewed"
+    },
+    {
+      "key": "land",
+      "assetId": "tokyo-lib-land-3",
+      "packRevision": 3,
+      "sha256": "11b2136ec9eb0df7db6f5c739492d334e581135d50a3bf069035cadb9192de4c",
+      "seconds": 0.4734583333333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "land",
+      "assetId": "tokyo-lib-land-4",
+      "packRevision": 3,
+      "sha256": "f29415887ad8e74d097709c484156d784bad9e3d9dd9524445ee283ece675a0b",
+      "seconds": 0.44716666666666666,
+      "review": "unreviewed"
+    },
+    {
+      "key": "roll",
+      "assetId": "tokyo-lib-roll-1",
+      "packRevision": 4,
+      "sha256": "3401a42d4e799e4f69de82f51c71ec3b99b35ce5ad4b29dade381f485e9cb139",
+      "seconds": 0.5,
+      "review": "unreviewed"
+    },
+    {
+      "key": "roll",
+      "assetId": "tokyo-lib-roll-2",
+      "packRevision": 3,
+      "sha256": "5a9054b09a086fcef1f1b14354570f18653a86bf517388f16029a82012e39667",
+      "seconds": 0.5,
+      "review": "unreviewed"
+    },
+    {
+      "key": "roll",
+      "assetId": "tokyo-lib-roll-3",
+      "packRevision": 4,
+      "sha256": "01bc6ddffe48a0ea27ab6d7cafd2737107e84b902f80e0bd7c048f113b7f788a",
+      "seconds": 0.5,
+      "review": "unreviewed"
+    },
+    {
+      "key": "roll",
+      "assetId": "tokyo-library-detail-roll-1",
+      "packRevision": 2,
+      "sha256": "ce907ed931e3c4ecb2976010fea3f1ae49bcd72cb7af0dac1b90872bd8a1239c",
+      "seconds": 0.5,
+      "review": "unreviewed"
+    },
+    {
+      "key": "meleeLight",
+      "assetId": "tokyo-lib-meleelight-1",
+      "packRevision": 3,
+      "sha256": "67b96d34edc2674299963edba2d55b6f961ce3bc615468259f7bdd5e02aa70d5",
+      "seconds": 0.29904166666666665,
+      "review": "unreviewed"
+    },
+    {
+      "key": "meleeLight",
+      "assetId": "tokyo-lib-meleelight-2",
+      "packRevision": 2,
+      "sha256": "63327a0ec8af27ff4b26e1946f63e173284b2af222cfaf47d0c2add7540008fa",
+      "seconds": 0.2971875,
+      "review": "unreviewed"
+    },
+    {
+      "key": "meleeLight",
+      "assetId": "tokyo-lib-meleelight-3",
+      "packRevision": 2,
+      "sha256": "203e4f7751ee14e48d87d901ef137ed9728987c0ffc3668b45c47691bfe459ed",
+      "seconds": 0.2804583333333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "meleeLight",
+      "assetId": "tokyo-library-detail-meleelight-1",
+      "packRevision": 2,
+      "sha256": "025b877a3bccbb1ac528ac0d05e9d700e7d44074fc17676f33644bd57fdf95ea",
+      "seconds": 0.28,
+      "review": "unreviewed"
+    },
+    {
+      "key": "meleeHeavy",
+      "assetId": "tokyo-lib-meleeheavy-1",
+      "packRevision": 4,
+      "sha256": "ae67dc3ef7f458a49bcd546e70596e057307afefb414b50b612dbb382451062c",
+      "seconds": 0.5386458333333334,
+      "review": "unreviewed"
+    },
+    {
+      "key": "meleeHeavy",
+      "assetId": "tokyo-lib-meleeheavy-2",
+      "packRevision": 3,
+      "sha256": "1f0b99d228104d1f921690051cba20ef1127ec13b434c6d96dea33dedf6aca8d",
+      "seconds": 0.5377916666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "meleeHeavy",
+      "assetId": "tokyo-lib-meleeheavy-3",
+      "packRevision": 3,
+      "sha256": "6fe395cc96897198c0a85e8cf6b9d517c0b12d317f50c8fc185a11269e819c7c",
+      "seconds": 0.5660833333333334,
+      "review": "unreviewed"
+    },
+    {
+      "key": "meleeHeavy",
+      "assetId": "tokyo-library-detail-meleeheavy-1",
+      "packRevision": 2,
+      "sha256": "7b1001103207c8d60da9a430e30b099914f3dc1623235d9ae35a18a616c5964e",
+      "seconds": 0.48,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitBody",
+      "assetId": "tokyo-lib-hitbody-1",
+      "packRevision": 4,
+      "sha256": "ba984797077e9c81a1f9975cea95e5432ef8e914c79ccebeb3cf1178836e43b7",
+      "seconds": 0.5452291666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitBody",
+      "assetId": "tokyo-lib-hitbody-2",
+      "packRevision": 3,
+      "sha256": "608aa8bdb2a0e5a1d3ea75d80449d466d5ebfe8b71f89e965bc1a751b7ee819b",
+      "seconds": 0.7126666666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitBody",
+      "assetId": "tokyo-lib-hitbody-3",
+      "packRevision": 3,
+      "sha256": "d9fe1851417695782b5d1acd35215e9a3cd0efe8950f6e3af2801b0b2de15138",
+      "seconds": 0.7802916666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitBody",
+      "assetId": "tokyo-library-detail-hitbody-1",
+      "packRevision": 2,
+      "sha256": "1a59422338828d9143370ef7ad48b326c7867dbbf9ec5442d758810a0f8eb09a",
+      "seconds": 0.28,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitBody",
+      "assetId": "tokyo-library-detail-hitbody-2",
+      "packRevision": 2,
+      "sha256": "6bf027b200802ffd21e2875b110ecb5669bc2834755d98dc12265b879e2f13d5",
+      "seconds": 0.28,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitArmor",
+      "assetId": "tokyo-lib-hitarmor-1",
+      "packRevision": 2,
+      "sha256": "1656374ab84437c7ba2b095352b801ac695ca584282d72f4841c7e02140f288b",
+      "seconds": 0.4390625,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitArmor",
+      "assetId": "tokyo-lib-hitarmor-2",
+      "packRevision": 2,
+      "sha256": "af39684ea52495a2d05b1112ab1a3a3e7a495bd69aff7870e67b41df4c527860",
+      "seconds": 0.4212916666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitArmor",
+      "assetId": "tokyo-lib-hitarmor-3",
+      "packRevision": 2,
+      "sha256": "5074ec7e524bb6d4a9c125534a8b10bd51561b601e305ce4f0be631542a2afd3",
+      "seconds": 0.43916666666666665,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hitArmor",
+      "assetId": "tokyo-library-detail-hitarmor-1",
+      "packRevision": 2,
+      "sha256": "407df10ea3da52bb8a5fdbb77d8a34bde81e4389cb96328637db5682df27b075",
+      "seconds": 0.35,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hurt",
+      "assetId": "tokyo-lib-hurt-1",
+      "packRevision": 2,
+      "sha256": "99befa6a2ba7f06fed25572fd073736a9b8053205ff92241fec6d0f692ccb5f1",
+      "seconds": 0.18839583333333335,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hurt",
+      "assetId": "tokyo-lib-hurt-2",
+      "packRevision": 2,
+      "sha256": "6a570bbb1053376cc43541281ab8927f7567f92c2ca69a3288152d8d81d64cda",
+      "seconds": 0.2704375,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hurt",
+      "assetId": "tokyo-lib-hurt-3",
+      "packRevision": 2,
+      "sha256": "2c9d4cec4d345434d42d9e45f575f593bc3c9044055cd9e1e2bb69f4279eccd8",
+      "seconds": 0.15197916666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "hurt",
+      "assetId": "tokyo-library-detail-hurt-1",
+      "packRevision": 2,
+      "sha256": "b6077ace75501c151c3a38595926291d672ef7e0b89817b47d84ac9d97eb1528",
+      "seconds": 0.4,
+      "review": "unreviewed"
+    },
+    {
+      "key": "defeatSfx",
+      "assetId": "tokyo-lib-defeatsfx-1",
+      "packRevision": 2,
+      "sha256": "8fa33a0f195a316addf1adfbcd465a42a7f90cfa32eb00cce2cd0b9f7cc3136c",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "defeatSfx",
+      "assetId": "tokyo-lib-defeatsfx-2",
+      "packRevision": 2,
+      "sha256": "3b5a6e44c8e44a6bebbea0dddbe1e4947d88e53d95dfc7011862faab4bb8eaf6",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "defeatSfx",
+      "assetId": "tokyo-lib-defeatsfx-3",
+      "packRevision": 2,
+      "sha256": "4937db79b38968dd7be1309b4c2e7164f59959fa9c8f2179d4ea2d34a5f8d8b4",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "reload",
+      "assetId": "tokyo-lib-reload-1",
+      "packRevision": 2,
+      "sha256": "8d75827cf0da1241c781ef568ac5fcbe2269dbecb06b733f9c62604a8269d03c",
+      "seconds": 0.5819166666666666,
+      "review": "unreviewed"
+    },
+    {
+      "key": "reload",
+      "assetId": "tokyo-lib-reload-2",
+      "packRevision": 2,
+      "sha256": "38c1ea50e5bbdca33ba672f8969962f2798dd52407ffe81e52116431a8356b7c",
+      "seconds": 0.4303125,
+      "review": "unreviewed"
+    },
+    {
+      "key": "reload",
+      "assetId": "tokyo-lib-reload-3",
+      "packRevision": 2,
+      "sha256": "9cd1fa583095dcc46097ecf71ffbd43baccf1649fdb7bea0be4965b517478e13",
+      "seconds": 0.6526458333333334,
+      "review": "unreviewed"
+    },
+    {
+      "key": "switchWeapon",
+      "assetId": "tokyo-lib-switchweapon-1",
+      "packRevision": 2,
+      "sha256": "de7dc27632eec3515459509d1cdac01d2c00027b3cbb83267ecd080c59e63f77",
+      "seconds": 0.5161458333333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "switchWeapon",
+      "assetId": "tokyo-lib-switchweapon-2",
+      "packRevision": 2,
+      "sha256": "0ffba37856ee8cac44ce5ce8bf072f6e64b344efa05a889ef40667bf53a5b22b",
+      "seconds": 0.8075833333333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "switchWeapon",
+      "assetId": "tokyo-lib-switchweapon-3",
+      "packRevision": 2,
+      "sha256": "556fffa850ddf0f4b883c02413866591c8fb356ad7e0dbb5ed96fe8820e4f456",
+      "seconds": 0.6164791666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "empty",
+      "assetId": "tokyo-lib-empty-1",
+      "packRevision": 2,
+      "sha256": "f613f10a70d203e800e11f94cdaa8a018eaf0561ccf2b2ee9bf78867348417e3",
+      "seconds": 0.2594375,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiFocus",
+      "assetId": "tokyo-lib-uifocus-1",
+      "packRevision": 3,
+      "sha256": "30f3cbe88159d92167a51003d7af88b8bd75b27aa31d5241ba3acaa63d7641ec",
+      "seconds": 0.09,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiFocus",
+      "assetId": "tokyo-lib-uifocus-2",
+      "packRevision": 3,
+      "sha256": "ce330490593cadfb2a82b7f33dca394d5c2273eb0bb5c21890bffbc760bc9055",
+      "seconds": 0.09,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiFocus",
+      "assetId": "tokyo-lib-uifocus-3",
+      "packRevision": 3,
+      "sha256": "e13efdf9fdbfd3add274e4452b6998229bb1b3695bad96bb56aded7e6b4c0c51",
+      "seconds": 0.17,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiConfirm",
+      "assetId": "tokyo-lib-uiconfirm-1",
+      "packRevision": 3,
+      "sha256": "c3d255a0bf06b2c4fb9de9ddd2c52b57446b806a5783384cc41b37b59d5e2756",
+      "seconds": 0.33,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiConfirm",
+      "assetId": "tokyo-lib-uiconfirm-2",
+      "packRevision": 3,
+      "sha256": "d7ac043c7a22edd57269434ac2d1ea73fd61a13651024d231f85bf14e5f253cf",
+      "seconds": 0.18,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiConfirm",
+      "assetId": "tokyo-lib-uiconfirm-3",
+      "packRevision": 3,
+      "sha256": "0a8df64f545a99aae846e982a4b5477b0c18f61cf33d237b1e47d6ee50741802",
+      "seconds": 0.24,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiBack",
+      "assetId": "tokyo-lib-uiback-1",
+      "packRevision": 3,
+      "sha256": "bd570f41a713ba506a297fdce3eb250aef9ec1a69e373d1284ef838dceb5baf3",
+      "seconds": 0.31,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiBack",
+      "assetId": "tokyo-lib-uiback-2",
+      "packRevision": 3,
+      "sha256": "770dd6fc249a0ae60d483043e42b4c186d6f43fd15f94bbceccc8cfba6f47d42",
+      "seconds": 0.16,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiBack",
+      "assetId": "tokyo-lib-uiback-3",
+      "packRevision": 3,
+      "sha256": "aa4a531f8fc39766c4b7389859dc330c2600a21e524057fc10bfcaa8adaa68dc",
+      "seconds": 0.16,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiOpen",
+      "assetId": "tokyo-lib-uiopen-1",
+      "packRevision": 3,
+      "sha256": "c8dc46adbb6f2643c57324fcc6e230e693e6cfcdb143e4254b5823f364e25b3a",
+      "seconds": 0.31,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiOpen",
+      "assetId": "tokyo-lib-uiopen-2",
+      "packRevision": 3,
+      "sha256": "f08a36e52f38db1a32af00787d4e1ca6c801a2f056c2943316d12b07fdc3f8f0",
+      "seconds": 0.25,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiOpen",
+      "assetId": "tokyo-lib-uiopen-3",
+      "packRevision": 3,
+      "sha256": "695ca135102bf333ba6484d188fc6c0a65860c99bb72cfe3dcf40198cea60222",
+      "seconds": 0.46,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiClose",
+      "assetId": "tokyo-lib-uiclose-1",
+      "packRevision": 3,
+      "sha256": "5d55bf031f31afbcadae20f7428673bbc07439d635a18feaf59417512d0729a0",
+      "seconds": 0.39,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiClose",
+      "assetId": "tokyo-lib-uiclose-2",
+      "packRevision": 3,
+      "sha256": "544ce4116ea35e13ecb5bae052292aac248c3f0fb6b86afc753507c0e1426c66",
+      "seconds": 0.35,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiClose",
+      "assetId": "tokyo-lib-uiclose-3",
+      "packRevision": 3,
+      "sha256": "5ae613a6e10e99405c702213f2b0e49c4a3900a573095ae6e4d037b86de299c8",
+      "seconds": 0.25,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiReroll",
+      "assetId": "tokyo-lib-uireroll-1",
+      "packRevision": 2,
+      "sha256": "8637e5f05787e28c6d8877deee40a9166b162f410347845892923920b099f468",
+      "seconds": 0.07291666666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiReroll",
+      "assetId": "tokyo-lib-uireroll-2",
+      "packRevision": 2,
+      "sha256": "c106372f31229a0548ba796fa8fd47b6aa78b7b7dd2a09e4985591f972ec661a",
+      "seconds": 0.09297916666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiReroll",
+      "assetId": "tokyo-lib-uireroll-3",
+      "packRevision": 2,
+      "sha256": "0f06b041fb982212abe573697aadf9881962df9ab05d52b7832a99556ddb92c0",
+      "seconds": 0.31152083333333336,
+      "review": "unreviewed"
+    },
+    {
+      "key": "upgrade",
+      "assetId": "tokyo-lib-upgrade-1",
+      "packRevision": 2,
+      "sha256": "a37cd9da94504f97509a985a2b06138a1a349498a3e2db228ada3def75f62243",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "upgrade",
+      "assetId": "tokyo-library-detail-upgrade-1",
+      "packRevision": 2,
+      "sha256": "2a5670f65f29d4aa9d80e19decff8dc8f5d87fa6eee8a3ed7af9f362298ae9c5",
+      "seconds": 1.1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "upgrade",
+      "assetId": "tokyo-library-detail-upgrade-2",
+      "packRevision": 2,
+      "sha256": "2af5c326ba6aa1a3a66c9787db240168734e96fd76cf7f6ddd63a590c903069a",
+      "seconds": 1.1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "upgrade",
+      "assetId": "tokyo-library-detail-upgrade-3",
+      "packRevision": 2,
+      "sha256": "b128958f5adaeec63c804c7182fd9334301fdaf66efcb369c4872d7e72d9c0eb",
+      "seconds": 1.1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupHealth",
+      "assetId": "tokyo-lib-pickuphealth-1",
+      "packRevision": 2,
+      "sha256": "422c54f73a70db3fffe67d1700565243c3abb8c3bbf8963349efa70bd11ac851",
+      "seconds": 0.42604166666666665,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupHealth",
+      "assetId": "tokyo-library-detail-pickuphealth-1",
+      "packRevision": 2,
+      "sha256": "b6b09f62bab7f9881aac115893a429c02a1ea8ff28f941905ef1fe81a1350624",
+      "seconds": 0.35,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupHealth",
+      "assetId": "tokyo-library-detail-pickuphealth-2",
+      "packRevision": 2,
+      "sha256": "c0d91bc32973559c93a16e73ef481736913e0c9e8c6bb9c8795459cfd0b609e2",
+      "seconds": 0.35,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupFactor",
+      "assetId": "tokyo-lib-pickupfactor-1",
+      "packRevision": 2,
+      "sha256": "a2850b7dfb8293fd6a0fbd1ab816cc376c7495b60dbd807cdc0613c76a8c0b86",
+      "seconds": 0.9098125,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupFactor",
+      "assetId": "tokyo-library-detail-pickupfactor-1",
+      "packRevision": 2,
+      "sha256": "a90398e65f9cab8aafbc3025f8b66f810ccab69e61106627795f5e6437cfd4a1",
+      "seconds": 0.28,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupFactor",
+      "assetId": "tokyo-library-detail-pickupfactor-2",
+      "packRevision": 2,
+      "sha256": "8e6d96a5093fc25a74f7b0de3576c7e91e5c4c2ab34350ac7ce16dd52ce7a0d9",
+      "seconds": 0.28,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupPotion",
+      "assetId": "tokyo-lib-pickuppotion-1",
+      "packRevision": 2,
+      "sha256": "500736c95e651dfc276e049651e97306f82907ed3343c3f13cda2b7047597308",
+      "seconds": 0.4006875,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupPotion",
+      "assetId": "tokyo-library-detail-pickuppotion-1",
+      "packRevision": 2,
+      "sha256": "7cab412e5b6f2dc791d00e83c7e36f84a1504313dd0ccf7e9482dc9af8ecf423",
+      "seconds": 0.6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "pickupPotion",
+      "assetId": "tokyo-library-detail-pickuppotion-2",
+      "packRevision": 2,
+      "sha256": "c26deb2fa48761a58c9b38faa9b4f11911872c40ca22113010d350bbdb83c547",
+      "seconds": 0.6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerBounce",
+      "assetId": "tokyo-lib-powerbounce-1",
+      "packRevision": 2,
+      "sha256": "d2c6452cf664405ed9b7b19ce438b8fb7d41d5e05420595bd9e3444f78fa1809",
+      "seconds": 0.12814583333333332,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerBounce",
+      "assetId": "tokyo-lib-powerbounce-2",
+      "packRevision": 2,
+      "sha256": "87d14b43bc3897e814e8f5dd5fc2a94a3006d10ac86f7469e9a6ae565712a8e2",
+      "seconds": 0.14245833333333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerBounce",
+      "assetId": "tokyo-lib-powerbounce-3",
+      "packRevision": 2,
+      "sha256": "b48c26794acae0eaed991864e054e8e10c54d9eb08ba30c865d957cbef7606cd",
+      "seconds": 0.3738125,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerBounce",
+      "assetId": "tokyo-library-detail-powerbounce-1",
+      "packRevision": 2,
+      "sha256": "ec589be72d500f9dd9e0529cdd1f4a3a9b33365390e7098b01ca523a2ac0eba6",
+      "seconds": 0.3,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-1",
+      "packRevision": 2,
+      "sha256": "a11257b70a5ec869dd1fa0d9150270cf9f937e3279b1222de7ade45d5a435e31",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-2",
+      "packRevision": 2,
+      "sha256": "674f3a37913b963660252937b243823d44fe266bdccf0489fae8e5d53f0ee76d",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-3",
+      "packRevision": 2,
+      "sha256": "d6a7dc72febdaefc7d273092131e301c4694458eef83dcd0f1654669b7684c75",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-4",
+      "packRevision": 2,
+      "sha256": "92cc0b4915faf7e2971e94a37322b710e0bac04c93fe1c7b78fa02dc20669084",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-5",
+      "packRevision": 2,
+      "sha256": "50bc4aa04c6b025c94942030b6841005950de4ca61bd32299995290d317c96c7",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-6",
+      "packRevision": 2,
+      "sha256": "613ea9df40ce217e2b456b5b30fde16f75e1b68c592a09f48707f28cf1478134",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-7",
+      "packRevision": 2,
+      "sha256": "d4fe10e8baf9e9956db7bac85c90f906e942da038cd5750f3dd8755fca1d1664",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-8",
+      "packRevision": 2,
+      "sha256": "340fdc6c65248d7abcfbac9688cd40f3db7402de2f6cf524efda0962475b8d21",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-9",
+      "packRevision": 2,
+      "sha256": "96932c661db2f585825e770efe01bb196183e60400043e5780e92711db700e25",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "powerImpact",
+      "assetId": "tokyo-lib-powerimpact-10",
+      "packRevision": 2,
+      "sha256": "2f5f42b097b1b01f7012442fc334013264995ede43f4ae23c91f62dd80ddb39e",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "explosion",
+      "assetId": "tokyo-lib-explosion-1",
+      "packRevision": 2,
+      "sha256": "72a349d81548e2cd1ff59318ef0d4667e6dacc6bec62bbe1471bee20982bbca6",
+      "seconds": 1.9,
+      "review": "unreviewed"
+    },
+    {
+      "key": "explosion",
+      "assetId": "tokyo-lib-explosion-2",
+      "packRevision": 2,
+      "sha256": "e62f81c9ae984a6210e1b08509f5b812ce618edb350a45fc936c67d11e254e97",
+      "seconds": 1.9,
+      "review": "unreviewed"
+    },
+    {
+      "key": "explosion",
+      "assetId": "tokyo-lib-explosion-3",
+      "packRevision": 2,
+      "sha256": "8194666fb03921f02908134f2d123a03182c7588b8add419455a251e0a08679b",
+      "seconds": 1.9,
+      "review": "unreviewed"
+    },
+    {
+      "key": "explosion",
+      "assetId": "tokyo-library-detail-explosion-1",
+      "packRevision": 2,
+      "sha256": "8f22403526c9fe3ab15e542a5f04660c049b5bb68fc84963614edef04e674998",
+      "seconds": 1.5,
+      "review": "unreviewed"
+    },
+    {
+      "key": "grenadeThrow",
+      "assetId": "tokyo-lib-grenadethrow-1",
+      "packRevision": 2,
+      "sha256": "585486308ce9a82e9b452e2f66d18ee6cd77477991fbb7535444cbec4213a4b7",
+      "seconds": 0.45260416666666664,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossImpact",
+      "assetId": "tokyo-lib-bossimpact-1",
+      "packRevision": 2,
+      "sha256": "ca9932bffdc68e4d84ca8c35fa9d617bdc840d25a272af13744220d828f4f32d",
+      "seconds": 2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossImpact",
+      "assetId": "tokyo-library-detail-bossimpact-1",
+      "packRevision": 2,
+      "sha256": "6ac94ac54d1239915c92144e6afb9f38037d29df1571ae703da4e515ca1635ad",
+      "seconds": 2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossImpact",
+      "assetId": "tokyo-library-detail-bossimpact-2",
+      "packRevision": 2,
+      "sha256": "97f2bb42769c6cf045ecd00524087edbf24783d51ff6306106fd07b71c4ef225",
+      "seconds": 2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossImpact",
+      "assetId": "tokyo-library-detail-bossimpact-3",
+      "packRevision": 2,
+      "sha256": "96dcfaec40e0276d5feae5569b67c9fc976076885eaeed15fec61d1a30b35cb6",
+      "seconds": 2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossDeath",
+      "assetId": "tokyo-lib-bossdeath-1",
+      "packRevision": 2,
+      "sha256": "9c7a2cd751b3af011cae65222522d3df80c81330518ea1ce952ecfe7f6d67540",
+      "seconds": 3.4680833333333334,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossDeath",
+      "assetId": "tokyo-library-detail-bossdeath-1",
+      "packRevision": 3,
+      "sha256": "a7ed3ffa6d6642c2f6cfddb0fd8e2e8a908b69f26c8fb3890d90428db055d310",
+      "seconds": 2.5,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakGlass",
+      "assetId": "tokyo-lib-breakglass-1",
+      "packRevision": 2,
+      "sha256": "e8880ffda21434cbbeddb6b3df8d7bb1b2b681e55f2e26546708b197dea02c7c",
+      "seconds": 0.9845,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakGlass",
+      "assetId": "tokyo-lib-breakglass-2",
+      "packRevision": 2,
+      "sha256": "96fdea858c680e9a7d7c8709f7c12ff64c300cc305e33f27e6ac7ec05be1df25",
+      "seconds": 1.80575,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakGlass",
+      "assetId": "tokyo-lib-breakglass-3",
+      "packRevision": 2,
+      "sha256": "4030e7a488763e8ad84b7ca6274b648a2cc932a261962974833d3ff6c7529047",
+      "seconds": 0.5557291666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakGlass",
+      "assetId": "tokyo-lib-breakglass-4",
+      "packRevision": 2,
+      "sha256": "811571a3f8b13759cb8de0a1bfc1406c7532499b61d6996dfcd4a84addbd8448",
+      "seconds": 1.0753541666666666,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakStone",
+      "assetId": "tokyo-lib-breakstone-1",
+      "packRevision": 2,
+      "sha256": "d7f9526122efd53b7bd658ee97c062bea5161f61ea97dc83b8963e8a2d66d52b",
+      "seconds": 2.1649375,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakStone",
+      "assetId": "tokyo-lib-breakstone-2",
+      "packRevision": 2,
+      "sha256": "57030bb28145ef43cee8996b1c11cc7ec40f04f260facef57264394ae7f35e14",
+      "seconds": 1.5668541666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakStone",
+      "assetId": "tokyo-lib-breakstone-3",
+      "packRevision": 2,
+      "sha256": "b2b5fb604912add64a069c50d317e06527f5989bb8c03475dd0dfe41e4592bae",
+      "seconds": 1.3412291666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakStone",
+      "assetId": "tokyo-library-detail-breakstone-1",
+      "packRevision": 2,
+      "sha256": "84600eebf3f793f409a6342b74016d459711083005c64fe82dc6f0cd088f0549",
+      "seconds": 0.8,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakMetal",
+      "assetId": "tokyo-lib-breakmetal-1",
+      "packRevision": 2,
+      "sha256": "b3f61d6d8f0b38f50dc18b733bdab2fc2507425d2c7cd3e316f3aac4da81d73b",
+      "seconds": 1.7619791666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakMetal",
+      "assetId": "tokyo-library-detail-breakmetal-1",
+      "packRevision": 3,
+      "sha256": "e1c7332cdc7536bb6a40627fdced0e8bc033f25ad46bb125a601f0b84f5d25af",
+      "seconds": 0.6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakMetal",
+      "assetId": "tokyo-library-detail-breakmetal-2",
+      "packRevision": 2,
+      "sha256": "5f25c3a58e1f2d9cbcd691989c77a5d62b917d62db99d56914340c95927f80ad",
+      "seconds": 0.6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "breakMetal",
+      "assetId": "tokyo-library-detail-breakmetal-3",
+      "packRevision": 2,
+      "sha256": "f7e8b59840330926c503539c6ab7a0f5473b69595889d7db9045a4e486f6da48",
+      "seconds": 0.6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "tankLoop",
+      "assetId": "tokyo-lib-tankloop-1",
+      "packRevision": 2,
+      "sha256": "f17d9cc8671b1040d9052cd149e7a29a1494b38d32616f894d829d355f861386",
+      "seconds": 5.935270833333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "sprayLoop",
+      "assetId": "tokyo-lib-sprayloop-1",
+      "packRevision": 2,
+      "sha256": "1452b3214e50a71456ba0edbb172cb0c5f8c0c5277f4b70500c2d7ffa723b1a7",
+      "seconds": 3.3248333333333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "sprayLoop",
+      "assetId": "tokyo-lib-sprayloop-2",
+      "packRevision": 2,
+      "sha256": "21b1db5a407fb749b9884457bd07568c2820ac6c5d99077beb7864302823cc35",
+      "seconds": 3.186125,
+      "review": "unreviewed"
+    },
+    {
+      "key": "sprayLoop",
+      "assetId": "tokyo-lib-sprayloop-3",
+      "packRevision": 2,
+      "sha256": "5991f2838d459056c13c27996750d0fdc7452a385fefdbafd107e77e31593675",
+      "seconds": 3.018875,
+      "review": "unreviewed"
+    },
+    {
+      "key": "cityBed",
+      "assetId": "tokyo-lib-citybed-1",
+      "packRevision": 2,
+      "sha256": "35df9d5577f3bf80710ac95ff03f9654f874682d187b95c7efc3aa9e57376799",
+      "seconds": 64,
+      "review": "unreviewed"
+    },
+    {
+      "key": "riverBed",
+      "assetId": "tokyo-lib-riverbed-1",
+      "packRevision": 2,
+      "sha256": "5fe05606f04991733ebaa0afb4d1b5bb34959ffc30b25c8b6a7e4f4c58b3c024",
+      "seconds": 60,
+      "review": "unreviewed"
+    },
+    {
+      "key": "seaBed",
+      "assetId": "tokyo-lib-seabed-1",
+      "packRevision": 2,
+      "sha256": "bc1659afec00e02e7c83fea0f70e7ce3d78e841e296720c22ec1e43d22a1f2f5",
+      "seconds": 60,
+      "review": "unreviewed"
+    },
+    {
+      "key": "police",
+      "assetId": "tokyo-lib-police-1",
+      "packRevision": 2,
+      "sha256": "93cc572798fcbac6c1d505618ba6f4bfcae08b21a986d08f6f95c608c925a3ec",
+      "seconds": 19.130657596371883,
+      "review": "unreviewed"
+    },
+    {
+      "key": "police",
+      "assetId": "tokyo-lib-police-2",
+      "packRevision": 2,
+      "sha256": "87433cc20361871d7a9a0bd2a9da7842ce467de57cb83c44218f6a457aa82a4e",
+      "seconds": 28.82199546485261,
+      "review": "unreviewed"
+    },
+    {
+      "key": "police",
+      "assetId": "tokyo-lib-police-3",
+      "packRevision": 2,
+      "sha256": "9b0b8455b8a1a71862170ddcd5c1e7670f2ecff011a1ff09de00d873cab4a1b8",
+      "seconds": 17.183990929705214,
+      "review": "unreviewed"
+    },
+    {
+      "key": "windBed",
+      "assetId": "tokyo-lib-windbed-1",
+      "packRevision": 2,
+      "sha256": "436ecd7b602cdc8ca32152c567a9762f15f55344a7550b2d7e16b234075c84a8",
+      "seconds": 30.037333333333333,
+      "review": "unreviewed"
+    },
+    {
+      "key": "syringe",
+      "assetId": "tokyo-syringe-01",
+      "packRevision": 2,
+      "sha256": "3b677f20be8d0b12b6cafbdec8338be73603906f0824e568013d83c622f69857",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "syringe",
+      "assetId": "tokyo-syringe-02",
+      "packRevision": 3,
+      "sha256": "b5f1deb70bf5dd669da6d0c0030ecb454da9c75780a7851648f77b971fd6128b",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "syringe",
+      "assetId": "tokyo-syringe-03",
+      "packRevision": 3,
+      "sha256": "171b8d55dd99c3cf2d5924cc64e19e7cb17d6e302c840af1eb6366f6d50ede8d",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "syringe",
+      "assetId": "tokyo-syringe-04",
+      "packRevision": 3,
+      "sha256": "b7d19d6278b9eae96e7fde84ec76a88edc87930c3939fc13655a0961f2d529d6",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "convert",
+      "assetId": "tokyo-convert-pilot-a",
+      "packRevision": 2,
+      "sha256": "535888e4531916a76af2bc83d5cada3427683a4ccd91df72759e03a17b864704",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "convert",
+      "assetId": "tokyo-convert-01",
+      "packRevision": 2,
+      "sha256": "7cbd5cd9a8b232b112148a44d753fc5790e4536e072cb8a7d132bc4c4ddc4c71",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "convert",
+      "assetId": "tokyo-convert-02",
+      "packRevision": 2,
+      "sha256": "b5624781dfa63fcd7413b53af68c9490371b3b4ee2c3e861c607940afc2b3186",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "convert",
+      "assetId": "tokyo-convert-03",
+      "packRevision": 2,
+      "sha256": "c8fb22f79de13c51abe15b100b5d1f6452d181446d4c08d00fc1d9c8e7547681",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "power",
+      "assetId": "tokyo-power-01",
+      "packRevision": 2,
+      "sha256": "6e4003c91a30e586d5c39b76697c5df3c61ed297447a107fec4d9e6dec4c10e8",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "power",
+      "assetId": "tokyo-power-02",
+      "packRevision": 2,
+      "sha256": "5a0cbb6b4745fa1815fbf36acb35365f8701e9b6885fcf61caa05ad0f25df805",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "power",
+      "assetId": "tokyo-power-03",
+      "packRevision": 2,
+      "sha256": "eededf0907ea71dfb6aec03a7a998d8ae206d2612d81421ceab8b009fe67a95a",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "power",
+      "assetId": "tokyo-power-04",
+      "packRevision": 2,
+      "sha256": "8a5a85b68b355d360e3295e9b7fb30ccea7a179c0521b371e004d89978639f9c",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossThrow",
+      "assetId": "tokyo-bossthrow-01",
+      "packRevision": 2,
+      "sha256": "af2d49241a44b624a12a59e71020fdf6391f807d26a9dba80e99e55a2d1b1227",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossThrow",
+      "assetId": "tokyo-bossthrow-02",
+      "packRevision": 3,
+      "sha256": "22d416b3c1bc775c43dfbccad4cace744953a10993f7307952a7648f12233481",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossThrow",
+      "assetId": "tokyo-bossthrow-03",
+      "packRevision": 3,
+      "sha256": "c5d964ed421327d434cb5b4e53fe09fd7fb904b2a7ccd6b544e6ba1236bd54e2",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossThrow",
+      "assetId": "tokyo-bossthrow-04",
+      "packRevision": 3,
+      "sha256": "4f3c2ddeb22b4a8a562d784fbfbe4e5562603d1960b4b0638d15fc9c0ae3e5cf",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepMetal",
+      "assetId": "tokyo-stepmetal-01",
+      "packRevision": 3,
+      "sha256": "1e7a4c6783505beac99071da2aaf4eb318897cae475f9f485436a0c759bad8a5",
+      "seconds": 0.22,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepMetal",
+      "assetId": "tokyo-stepmetal-02",
+      "packRevision": 3,
+      "sha256": "f88017b759e1064046fa229fe602cbded3326c9578bdbea9b372747e79bcee9c",
+      "seconds": 0.22,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepMetal",
+      "assetId": "tokyo-stepmetal-03",
+      "packRevision": 3,
+      "sha256": "3fb12e40c8bc86207a43055116aff035fe3e730da97412debc312b6be5876e10",
+      "seconds": 0.22,
+      "review": "unreviewed"
+    },
+    {
+      "key": "stepMetal",
+      "assetId": "tokyo-stepmetal-04",
+      "packRevision": 3,
+      "sha256": "95f2be87090cd65a96dc46769a000da1975d79d97e75f4f3a36a9a5db799715a",
+      "seconds": 0.22,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunPistol",
+      "assetId": "tokyo-c2-gunpistol-4",
+      "packRevision": 3,
+      "sha256": "d811f49bfa483fc2c883f8a7aaad3f7bfe40bcdee9a048303c3365853decaba9",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunPistol",
+      "assetId": "tokyo-c2-gunpistol-1",
+      "packRevision": 2,
+      "sha256": "c18c3bf29f71910bf679c6272d9d037bdff8a5d9d06e264211bef438050791c8",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunPistol",
+      "assetId": "tokyo-c2-gunpistol-2",
+      "packRevision": 2,
+      "sha256": "027572b4c341e84576409093dad3639d159b5201a13e36445e9c33362016a8e5",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunPistol",
+      "assetId": "tokyo-c2-gunpistol-3",
+      "packRevision": 3,
+      "sha256": "adfc8e62bb2763a39ee1974b260469719be1f993512d5509da17843e34f39b59",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunShotgun",
+      "assetId": "tokyo-c2-gunshotgun-1",
+      "packRevision": 5,
+      "sha256": "e748e73c80115762c52c33a0a36c6ec8c5c10952aff7c5e5f3d225b660cda063",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunShotgun",
+      "assetId": "tokyo-c2-gunshotgun-3",
+      "packRevision": 3,
+      "sha256": "4c4d91cc2939e19f9bd7eea45b5ac719566bcf1b51f77e06921f642bcda0bb25",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunShotgun",
+      "assetId": "tokyo-c2-gunshotgun-4",
+      "packRevision": 2,
+      "sha256": "5ea6e24c0b2899a33b4870467a101dae4f943e1a11e96413c9d097b7e7787b36",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunShotgun",
+      "assetId": "tokyo-c2-gunshotgun-2",
+      "packRevision": 3,
+      "sha256": "5bb14ec38ec227b1f5c8d39d8f33b3bedfb449529a027f5bf39c836539791995",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunRifle",
+      "assetId": "tokyo-c2-gunrifle-1",
+      "packRevision": 3,
+      "sha256": "1907e654de6c8c9567f686aa4180c54a7da603edae7d69b43c7eeb767011c12e",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunRifle",
+      "assetId": "tokyo-c2-gunrifle-2",
+      "packRevision": 2,
+      "sha256": "c5b07afdbd3c8abedb027a3b5dc1ec8858cb182488249451824a7fe984e12199",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunRifle",
+      "assetId": "tokyo-c2-gunrifle-3",
+      "packRevision": 2,
+      "sha256": "95587d6a1e60b333385ac0f5bd6fb1af7856808e67c50947c1b11ba533a8bb8f",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunRifle",
+      "assetId": "tokyo-c2-gunrifle-4",
+      "packRevision": 2,
+      "sha256": "34ee7452370e1a95d506ce67427b5dfdc5ce604523cee7985d1145c134dfead2",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunSniper",
+      "assetId": "tokyo-c2-gunsniper-1",
+      "packRevision": 3,
+      "sha256": "e868a0309a6bd1593190d291a63e55ca40397db894bff2e5f24020745d0f3c8c",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunSniper",
+      "assetId": "tokyo-c2-gunsniper-2",
+      "packRevision": 3,
+      "sha256": "b035456af2815b99e340231c7f027f38fe6daac95265389d886bc36244305ca9",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunSniper",
+      "assetId": "tokyo-c2-gunsniper-3",
+      "packRevision": 3,
+      "sha256": "12c1bb6f50a76fd5e51e2fbb474ffd209e163f7a14e6555de58cc763ec9343d0",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunSniper",
+      "assetId": "tokyo-c2-gunsniper-4",
+      "packRevision": 2,
+      "sha256": "7512e5afe442ae246121e46a4f7b8d584653ec5c91bcbb844e3a6e53ef6659b8",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunRpg",
+      "assetId": "tokyo-c2-gunrpg-1",
+      "packRevision": 3,
+      "sha256": "bad01ce6dbc577420571151bc07e2252562e0f167983df0d7ebf3b01e6cfbfaf",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunRpg",
+      "assetId": "tokyo-c2-gunrpg-2",
+      "packRevision": 2,
+      "sha256": "e4144b9635db6640f6d7ea127f3cdfed1173858f6d502c922e28b5967be71706",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunRpg",
+      "assetId": "tokyo-c2-gunrpg-3",
+      "packRevision": 2,
+      "sha256": "5a8b50a87d5fceb2205f4f2a413a74366270807dab26e10e9c10942c360a3f67",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "gunRpg",
+      "assetId": "tokyo-c2-gunrpg-4",
+      "packRevision": 2,
+      "sha256": "59785fe25aebf3520c594cf31f1b10c38714737790ff450c6b966b28a1b0c4e5",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "infectionHit",
+      "assetId": "tokyo-c2-infectionhit-1",
+      "packRevision": 4,
+      "sha256": "80eb8c05e094cc033f5143832fb1b9c8633b929dbfd6caf7b8aa4617e0d84ce8",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "infectionHit",
+      "assetId": "tokyo-c2-infectionhit-2",
+      "packRevision": 3,
+      "sha256": "e9c67c9671a04c489cb8d6dcc94762ab52ff608d9f99b56c7740f90ac87dd1ba",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "infectionHit",
+      "assetId": "tokyo-c2-infectionhit-3",
+      "packRevision": 3,
+      "sha256": "22fedf824e6065ff4af2cb7f8fa4933aaf0d067278a8b48fdaf9a808de3a2ca9",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "infectionHit",
+      "assetId": "tokyo-c2-infectionhit-4",
+      "packRevision": 2,
+      "sha256": "057de8e49f28f9128102ca800bb7605249cf09b80712fb8f47b68dcc187d4b4f",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityBlood",
+      "assetId": "tokyo-c2-abilityblood-2",
+      "packRevision": 3,
+      "sha256": "bb8f3505cf52bb39d8d1f0abc6d323079aae5bd3234df2ef68d731686a041610",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityBlood",
+      "assetId": "tokyo-c2-abilityblood-3",
+      "packRevision": 2,
+      "sha256": "d05143dab672a847d790a29a7a8c767aebf698a9da2170730411b52b7e69c741",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityBlood",
+      "assetId": "tokyo-library-detail-abilityblood-1",
+      "packRevision": 2,
+      "sha256": "04004f0b33b468d4b502903a47da9c922a7c07829cd864c806dfd39b3214a39a",
+      "seconds": 0.8,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityEvolve",
+      "assetId": "tokyo-c2-abilityevolve-1",
+      "packRevision": 3,
+      "sha256": "3aa6c17ec7fb6a84de53cd9d4150bb73af73834d2f510250b0e8054fc0c3315b",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityEvolve",
+      "assetId": "tokyo-c2-abilityevolve-2",
+      "packRevision": 2,
+      "sha256": "7a26a38725958f784c0189766ece16e64c5677716944063a24559b6fedc5036a",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityEvolve",
+      "assetId": "tokyo-c2-abilityevolve-3",
+      "packRevision": 2,
+      "sha256": "069c0d92a8394b6ffdda47b6d19123d60a1549da49040be683bfbc5ea8a5e1b8",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityEvolve",
+      "assetId": "tokyo-c2-abilityevolve-4",
+      "packRevision": 2,
+      "sha256": "2d16d2b343cdd1575e8d40dafbc606f1e47b217f4df4ae9e4fff7f2db3579559",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityAir",
+      "assetId": "tokyo-c2-abilityair-1",
+      "packRevision": 3,
+      "sha256": "79a7dd25bce8587c095e1c8bd554686f0d1a89f5c42af430e88fe0357a82b7b9",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityAir",
+      "assetId": "tokyo-c2-abilityair-2",
+      "packRevision": 2,
+      "sha256": "822fb594b9ab169de4990d11f0fb3405bb32e1aa7de6890c9fd3180f01779691",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityAir",
+      "assetId": "tokyo-c2-abilityair-3",
+      "packRevision": 2,
+      "sha256": "099734fc17ecf00ed7cbca4e75bf6909f9bb9b3793cae3530d81749afff3f4a1",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityAir",
+      "assetId": "tokyo-c2-abilityair-4",
+      "packRevision": 2,
+      "sha256": "4ea323fec5005e03285bd11503f2c1e1872d4102995a9d891fc2af2f91294b12",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityParasite",
+      "assetId": "tokyo-c2-abilityparasite-1",
+      "packRevision": 2,
+      "sha256": "2d7287b7182e4fc4703f9696fd9930ba48a52f727a73cd0f967b0d60e0771c49",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityParasite",
+      "assetId": "tokyo-library-detail-abilityparasite-1",
+      "packRevision": 2,
+      "sha256": "0dec94215249298f10e4d8803af2a289855ef41f7491545752b78380b6ad9649",
+      "seconds": 0.5,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityParasite",
+      "assetId": "tokyo-library-detail-abilityparasite-2",
+      "packRevision": 2,
+      "sha256": "87f52cbf2e0868694fdf799c9fa0c91d7d5c2638293e30d667e8576b4cefba6e",
+      "seconds": 0.5,
+      "review": "unreviewed"
+    },
+    {
+      "key": "charge1",
+      "assetId": "tokyo-authored-charge1",
+      "packRevision": 2,
+      "sha256": "4d887251e73b7de621b56e10435b5e3217551d9ab0d470ec0982f0e5bf338c37",
+      "seconds": 0.19,
+      "review": "unreviewed"
+    },
+    {
+      "key": "charge2",
+      "assetId": "tokyo-authored-charge2",
+      "packRevision": 2,
+      "sha256": "59b9ac45fd66507e0aa5fb320ec5df80bf96d09fb24208eabb077b8288400fe4",
+      "seconds": 0.19,
+      "review": "unreviewed"
+    },
+    {
+      "key": "charge3",
+      "assetId": "tokyo-authored-charge3",
+      "packRevision": 2,
+      "sha256": "7d9ff5d0496df622065e16abfb130c5bb392756ce581677d64a5ce1abffccbee",
+      "seconds": 0.23,
+      "review": "unreviewed"
+    },
+    {
+      "key": "lowHp",
+      "assetId": "tokyo-authored-lowhp",
+      "packRevision": 2,
+      "sha256": "e961a50586e226e53b9ea40611f01e4b6afe5009912e260090f5d146b5253188",
+      "seconds": 0.42,
+      "review": "unreviewed"
+    },
+    {
+      "key": "radio2",
+      "assetId": "tokyo-radio-2",
+      "packRevision": 2,
+      "sha256": "f5211c5a8657b0b909c912c2a3c7a2fa3ed805018b9ffe13247dccbba25385df",
+      "seconds": 4.108583333333334,
+      "review": "unreviewed"
+    },
+    {
+      "key": "radio3",
+      "assetId": "tokyo-radio-3",
+      "packRevision": 2,
+      "sha256": "8591d4162ad35120e7bb94470fe273e2b87c48413e97b9a7bab87a0cd78e1b7a",
+      "seconds": 3.8386875,
+      "review": "unreviewed"
+    },
+    {
+      "key": "radio4",
+      "assetId": "tokyo-radio-4",
+      "packRevision": 2,
+      "sha256": "53ddf9159ba64ef0adee6f98fff82e0828964481d3b88eb279f267cd2ae8c747",
+      "seconds": 3.910791666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "radio5",
+      "assetId": "tokyo-radio-5",
+      "packRevision": 2,
+      "sha256": "f8930484dcd148f5d81765980b768939c70f802fee87ddf40e48a40211bd1e0d",
+      "seconds": 3.5248541666666666,
+      "review": "unreviewed"
+    },
+    {
+      "key": "radio6",
+      "assetId": "tokyo-radio-6",
+      "packRevision": 2,
+      "sha256": "882aed55c3985339d3797fcb722a5e083fb9894756e1dcbd787c9eae4df2ebb6",
+      "seconds": 4.230791666666667,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityKindling",
+      "assetId": "tokyo-c2-abilitykindling-2",
+      "packRevision": 3,
+      "sha256": "8977a3af64f4092c2f4ba79ca614a6a32f11fdc5900db0a3c12ddf8903cee75a",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityKindling",
+      "assetId": "tokyo-c2-abilitykindling-3",
+      "packRevision": 2,
+      "sha256": "a3b9e4007bef23060e7be0bb2a164102e9206409bd2be986ab74a37fe5ffd6d1",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityKindling",
+      "assetId": "tokyo-library-detail-abilitykindling-1",
+      "packRevision": 2,
+      "sha256": "a22993d69e6707233efdf2eef903b918b95bf214b7466e25bb4f10f1e706ac47",
+      "seconds": 0.7,
+      "review": "unreviewed"
+    },
+    {
+      "key": "chargeReady",
+      "assetId": "tokyo-c2-chargeready-1",
+      "packRevision": 3,
+      "sha256": "37e4cef824b040e73af0c81126611538ccd59430775225b5c6471e5a23567981",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "chargeReady",
+      "assetId": "tokyo-c2-chargeready-2",
+      "packRevision": 2,
+      "sha256": "295c59ffa346553cbbfd0177f0adc5b5d8c7e149e8edee71bb0e669d54c5b1a1",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "alertUp",
+      "assetId": "tokyo-c2-alertup-1",
+      "packRevision": 3,
+      "sha256": "aa64cef25930237f153fb8353c8ef798063220d6ec4d554b582e78fbede085e7",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "alertUp",
+      "assetId": "tokyo-c2-alertup-2",
+      "packRevision": 2,
+      "sha256": "e8c2c0327f67557bf3036ff6417812c65bdcd2c4d24c12346f8f82c30d2c45ff",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossWarning",
+      "assetId": "tokyo-c2-bosswarning-1",
+      "packRevision": 3,
+      "sha256": "801a07d8f279e9c04d58c367c217dee0545036a4a1aaf1e3f907ec4b0baf1beb",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossWarning",
+      "assetId": "tokyo-c2-bosswarning-2",
+      "packRevision": 2,
+      "sha256": "af7a8abec3e76b43f11c6d9ee215fd038087abc540f474ee42ad516c2de77a8e",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossWarning",
+      "assetId": "tokyo-c2-bosswarning-3",
+      "packRevision": 2,
+      "sha256": "83e48b343a0ff34c2fc620a408c6032458c0b872abe0f475fe2894a5e0434163",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossArrival",
+      "assetId": "tokyo-c2-bossarrival-1",
+      "packRevision": 3,
+      "sha256": "98686b90b1c6e5ce90de790e8ff7261b03eec22ea54cbaf8c32e3f9b2b952d8e",
+      "seconds": 2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossArrival",
+      "assetId": "tokyo-c2-bossarrival-2",
+      "packRevision": 2,
+      "sha256": "2dbc604732c04e961cc56f36cabf796e5b278479fe07447af9ac6bbd63f350ed",
+      "seconds": 2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossCore",
+      "assetId": "tokyo-c2-bosscore-1",
+      "packRevision": 3,
+      "sha256": "63b475255c0396ce626be84b2a5ab3112b4ba5629e3ee8f8ffb0e750f67767e3",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossCore",
+      "assetId": "tokyo-c2-bosscore-2",
+      "packRevision": 2,
+      "sha256": "a085671ad3f96ccbf43a0962f98399864142270fd21d3a6f49f1ec407818fca7",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossCore",
+      "assetId": "tokyo-c2-bosscore-3",
+      "packRevision": 2,
+      "sha256": "dbacbdf7e5609bd8979d1127ca2253843be5d388b0f7b5c3e69eb0ad7d0df04c",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossPhase",
+      "assetId": "tokyo-c2-bossphase-1",
+      "packRevision": 3,
+      "sha256": "8e41062d641524c3ecac26c74be065aea33aa76880a6ae7ec2f83a46f8dff7a2",
+      "seconds": 2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossPhase",
+      "assetId": "tokyo-c2-bossphase-2",
+      "packRevision": 2,
+      "sha256": "fa3048db2beb4332028360839894c0386bf560d428679763b647121993dc80ec",
+      "seconds": 2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "planeLoop",
+      "assetId": "tokyo-c2-planeloop-1",
+      "packRevision": 2,
+      "sha256": "d8d387056989465ebade5893ebcfbb2c7e60f43088c6bbdbddec334722de9942",
+      "seconds": 6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "sprayWarning",
+      "assetId": "tokyo-c2-spraywarning-1",
+      "packRevision": 3,
+      "sha256": "b0ac6daad81256e295435a0843b43fd14d2d47474fc13ea232cf188131971be7",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "sprayWarning",
+      "assetId": "tokyo-c2-spraywarning-2",
+      "packRevision": 2,
+      "sha256": "f1e5eb15b5cd0b240403bd14fd77cc2834fd2bc796b247dd0ff386b8b12117b3",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "potionEnd",
+      "assetId": "tokyo-c2-potionend-1",
+      "packRevision": 2,
+      "sha256": "81a34078ce7cb362df8c61081ae847d858310a33696a983e70eb945dabc1f607",
+      "seconds": 1,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityCommand",
+      "assetId": "tokyo-command-designed-1",
+      "packRevision": 2,
+      "sha256": "02ac93d350ec553dc7744b0ed3763fe1aa47b84203dac8bc8cec951d2332907d",
+      "seconds": 0.48,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityCommand",
+      "assetId": "tokyo-command-designed-2",
+      "packRevision": 2,
+      "sha256": "d28fb041aceda24b4c8df242a8b281b4340ac851ca8ba4bd6d00fe8bcad15b02",
+      "seconds": 0.48,
+      "review": "unreviewed"
+    },
+    {
+      "key": "abilityCommand",
+      "assetId": "tokyo-command-designed-3",
+      "packRevision": 2,
+      "sha256": "7c8d6fc390fdef469789eab20dda950c4c389549a9b065fe51a82c7c23c176ad",
+      "seconds": 0.48,
+      "review": "unreviewed"
+    },
+    {
+      "key": "commandDismiss",
+      "assetId": "tokyo-command-designed-4",
+      "packRevision": 2,
+      "sha256": "e93478419c78671bca65a231c9620ec67ffeebc2ec8e9c5454e9850ee4e523f0",
+      "seconds": 0.48,
+      "review": "unreviewed"
+    },
+    {
+      "key": "guardSpawn",
+      "assetId": "tokyo-command-designed-5",
+      "packRevision": 2,
+      "sha256": "84bf478d36b349a5d3500da4ac8b78a3c1fd1ec6ec89ad6d729508fc12a5a40f",
+      "seconds": 0.48,
+      "review": "unreviewed"
+    },
+    {
+      "key": "kindlingGain",
+      "assetId": "tokyo-functional-kindlinggain-1",
+      "packRevision": 2,
+      "sha256": "81de054999ec61364fd8594b45628cc8aaa3138dc9fe88b4ccbf055c22342286",
+      "seconds": 0.35,
+      "review": "unreviewed"
+    },
+    {
+      "key": "kindlingEnd",
+      "assetId": "tokyo-functional-kindlingend-1",
+      "packRevision": 2,
+      "sha256": "c0c4fce42c9c16fa08b8da7d7db58c5c2c88f91b653cac60082980a17b8ded92",
+      "seconds": 0.4,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiAcquire",
+      "assetId": "tokyo-functional-uiacquire-1",
+      "packRevision": 2,
+      "sha256": "832f72e09c75e7c486e528f602a4dfa759336ffc75a2a9281e6cc2157937ee4c",
+      "seconds": 0.6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiAcquire",
+      "assetId": "tokyo-functional-uiacquire-2",
+      "packRevision": 2,
+      "sha256": "a6a4e10a31fa994d56d693e2211f695b676077fe57aa424d64a2fe027589ae29",
+      "seconds": 0.6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "uiAcquire",
+      "assetId": "tokyo-functional-uiacquire-3",
+      "packRevision": 2,
+      "sha256": "145775144c80c102b6b1319baf2c991ae37ee0bae1777dc0236c84503d4a5c31",
+      "seconds": 0.6,
+      "review": "unreviewed"
+    },
+    {
+      "key": "planeWarning",
+      "assetId": "tokyo-functional-planewarning-1",
+      "packRevision": 2,
+      "sha256": "dde7f461215409bf3175183176db56360484ecb5f957d4beeeaeff7acfd28a5b",
+      "seconds": 0.55,
+      "review": "unreviewed"
+    },
+    {
+      "key": "planeWarning",
+      "assetId": "tokyo-functional-planewarning-2",
+      "packRevision": 2,
+      "sha256": "d1136c972919eb4ac3630788ba8266b452f1d8e542538a009ad7d28739408773",
+      "seconds": 0.55,
+      "review": "unreviewed"
+    },
+    {
+      "key": "grenadeFall",
+      "assetId": "tokyo-functional-grenadefall-1",
+      "packRevision": 2,
+      "sha256": "8c2f7270fa6b25b5308704c8e0ed14aececff49f8519b9e330206ae55e321037",
+      "seconds": 0.65,
+      "review": "unreviewed"
+    },
+    {
+      "key": "grenadeFall",
+      "assetId": "tokyo-functional-grenadefall-2",
+      "packRevision": 2,
+      "sha256": "8e2e246003e99a1693d67fd9e44b3d8196c2e53a5517752d670bb4ddbb7f8853",
+      "seconds": 0.65,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bossCoreOpen",
+      "assetId": "tokyo-functional-bosscoreopen-1",
+      "packRevision": 2,
+      "sha256": "cae534bfe5ae9dc9ec35a786283898d21bddac3f235fc714a308e0c238e5edda",
+      "seconds": 0.7,
+      "review": "unreviewed"
+    },
+    {
+      "key": "enemyWindup",
+      "assetId": "tokyo-functional-enemywindup-1",
+      "packRevision": 2,
+      "sha256": "463b27dc3cf9fe14c7f58b9289c551fe9264f21af57d79bf55552ef01afc7202",
+      "seconds": 0.35,
+      "review": "unreviewed"
+    },
+    {
+      "key": "enemyWindup",
+      "assetId": "tokyo-functional-enemywindup-2",
+      "packRevision": 2,
+      "sha256": "3411690fbcce0cec43992048e8ea53c7499276c636d745e937bbe8d203550ca9",
+      "seconds": 0.35,
+      "review": "unreviewed"
+    },
+    {
+      "key": "enemyWindup",
+      "assetId": "tokyo-functional-enemywindup-3",
+      "packRevision": 2,
+      "sha256": "8eeb7a9c96201cc85b972d84988583f981184ce9ea169c5b87e81a3c66064a1a",
+      "seconds": 0.35,
+      "review": "unreviewed"
+    },
+    {
+      "key": "shieldDash",
+      "assetId": "tokyo-functional-shielddash-1",
+      "packRevision": 2,
+      "sha256": "cac38cab448ce89a578f0a2207b1521eea2d1b982450541373702c77f47df4b8",
+      "seconds": 0.4,
+      "review": "unreviewed"
+    },
+    {
+      "key": "shieldDash",
+      "assetId": "tokyo-functional-shielddash-2",
+      "packRevision": 2,
+      "sha256": "28358097c57793e1457d5fbc0e232209996d670d3f065c1194b01101504afdee",
+      "seconds": 0.4,
+      "review": "unreviewed"
+    },
+    {
+      "key": "tankRam",
+      "assetId": "tokyo-functional-tankram-1",
+      "packRevision": 2,
+      "sha256": "90ed836ad39f04407eef4b5f601118dbc99d84a9f04c99674a9378e4a9ebe25c",
+      "seconds": 0.65,
+      "review": "unreviewed"
+    },
+    {
+      "key": "tankRam",
+      "assetId": "tokyo-functional-tankram-2",
+      "packRevision": 2,
+      "sha256": "14b0b5586dd76bed62b9ec056ed9f0c364d89d4feeaf401abee457130fccd6fa",
+      "seconds": 0.65,
+      "review": "unreviewed"
+    },
+    {
+      "key": "planeDive",
+      "assetId": "tokyo-functional-planedive-1",
+      "packRevision": 2,
+      "sha256": "4842d10589dd67d981b1a9f411925d5762106ea2513ef1386f92a91cd29bed05",
+      "seconds": 2.8,
+      "review": "unreviewed"
+    },
+    {
+      "key": "planeCrash",
+      "assetId": "tokyo-functional-planecrash-1",
+      "packRevision": 2,
+      "sha256": "a86a754697b0fa77a3440d1a0a22b92d02f52f2bd502ee89d99d13329dfa7051",
+      "seconds": 2.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bridgeCreak",
+      "assetId": "tokyo-functional-bridgecreak-1",
+      "packRevision": 2,
+      "sha256": "d51a49cf64e5eb413e591ed0010dee8ea7ef02e8938e6eb0a3edaa4148224258",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "bridgeCreak",
+      "assetId": "tokyo-functional-bridgecreak-2",
+      "packRevision": 2,
+      "sha256": "17dc3f3fbc1b785d66be4e3927a0b0ca995ebe14f919f3c0dd2ab31a2fdd0e8a",
+      "seconds": 1.2,
+      "review": "unreviewed"
+    },
+    {
+      "key": "clockBell",
+      "assetId": "tokyo-functional-clockbell-1",
+      "packRevision": 2,
+      "sha256": "a47b0f300726e9d2c6ad434a7b0fdb22b3ff5b5af7a0221637eb003509b1150d",
+      "seconds": 3,
+      "review": "unreviewed"
+    },
+    {
+      "key": "worldMachinery",
+      "assetId": "tokyo-functional-worldmachinery-1",
+      "packRevision": 2,
+      "sha256": "f3f3b1b1e9473592f0a7991a4d4372e116af28cb2c293f11036a0e24c8dc27e1",
+      "seconds": 6,
+      "review": "unreviewed"
+    }
+  ]
+}

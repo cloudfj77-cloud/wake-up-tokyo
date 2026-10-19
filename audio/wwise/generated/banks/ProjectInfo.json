@@ -1,0 +1,29 @@
+{
+ "ProjectInfo": {
+  "Project": {
+   "Name": "WakeUpTokyo",
+   "GUID": "{E5D4C90C-5E88-452C-9CA0-19EC782CEC8F}",
+   "Generator": "2025.1.10.9233"
+  },
+  "CacheRoot": "../../.cache",
+  "Platforms": [
+   {
+    "Name": "Web",
+    "GUID": "{24DFC2DF-C376-4062-944C-5346F1A17E52}",
+    "BasePlatform": "Web",
+    "BasePlatformGUID": "{639AD233-23F2-4C0F-9127-79F44C15E1DA}",
+    "Path": "."
+   }
+  ],
+  "Languages": [
+   {
+    "Name": "English(US)",
+    "Id": "684519430",
+    "GUID": "{CF121B02-2BAF-47EF-939E-11A4A0BE7992}",
+    "Default": "true",
+    "UseAsStandIn": "true"
+   }
+  ],
+  "FileHash": "{7A1DB5EF-D2B8-58EA-FAB5-B2EC01A06AD6}"
+ }
+}
