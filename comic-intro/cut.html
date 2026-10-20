@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>手动切格 · 钢笔工具</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #17141c; color: #f4f0e6; min-height: 100vh;
+    font: 13px/1.6 "PingFang SC", "Microsoft YaHei", sans-serif;
+    display: flex; flex-direction: column; align-items: center; padding: 16px;
+  }
+  h1 { font-size: 15px; letter-spacing: 4px; font-weight: 600; margin-bottom: 10px; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin-bottom: 12px; }
+  button, select {
+    background: #292332; color: #f4f0e6; border: 1px solid #4a4458; border-radius: 6px;
+    padding: 6px 12px; cursor: pointer; font-size: 12px; letter-spacing: 1px;
+  }
+  button:hover { background: #3a3446; }
+  button.primary { background: #ffd065; color: #292332; border-color: #a87f1e; font-weight: 700; }
+  button.danger { background: #7a2b3a; border-color: #a03a4d; }
+  label { display: flex; align-items: center; gap: 6px; font-size: 12px; opacity: .85; }
+  input[type=range] { width: 110px; }
+  .wrap { position: relative; line-height: 0; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  canvas { display: block; cursor: crosshair; background: #fff; max-width: 100%; height: auto; }
+  .hint { margin-top: 12px; font-size: 12px; opacity: .6; text-align: center; max-width: 900px; }
+  kbd { background: #292332; border: 1px solid #4a4458; border-radius: 4px; padding: 1px 6px; font-size: 11px; }
+  .status { margin-top: 8px; font-size: 12px; color: #d7ff59; min-height: 18px; }
+  .thumbs { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; max-width: 1100px; }
+  .thumb { position: relative; background: repeating-conic-gradient(#2a2633 0% 25%, #211d29 0% 50%) 0/14px 14px; }
+  .thumb img { display: block; max-height: 130px; }
+  .thumb span {
+    position: absolute; left: 2px; top: 2px; background: #292332; color: #ffd065;
+    font-size: 11px; padding: 0 5px; border-radius: 3px;
+  }
+  /* 预览动画用的舞台，和 index.html 保持一致 */
+  .stage {
+    position: relative; width: min(96vw, 1000px); aspect-ratio: 1080 / 905; margin-top: 14px;
+    background: #f2eee4; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.5); display: none;
+  }
+  .stage.on { display: block; }
+  .piece { position: absolute; opacity: 0; }
+  @keyframes panelIn {
+    0%   { opacity: 0; transform: scale(1.07) rotate(-.7deg) translateY(8px); filter: brightness(2.4) saturate(.35); }
+    38%  { opacity: 1; filter: brightness(1.55) saturate(.7); }
+    70%  { filter: brightness(.94) saturate(1.08); }
+    100% { opacity: 1; transform: none; filter: none; }
+  }
+</style>
+</head>
+<body>
+  <h1>手动切格 · 钢笔工具</h1>
+
+  <div class="toolbar">
+    <button id="cut" class="primary">✂ 按线切格</button>
+    <button id="play">▶ 预览动画</button>
+    <button id="undo">↶ 撤销上一条</button>
+    <button id="clear" class="danger">清空</button>
+    <button id="auto">载入自动检测线</button>
+    <label>页 <select id="page"></select></label>
+    <button id="save" class="primary">⭳ 下载 panels.zip</button>
+    <label>线宽 <input type="range" id="thick" min="2" max="26" value="7" /><span id="thickVal">7</span>px</label>
+    <label><input type="checkbox" id="snap" checked /> 端点吸附</label>
+  </div>
+
+  <div class="wrap"><canvas id="cv"></canvas></div>
+  <div class="status" id="status"></div>
+  <div class="thumbs" id="thumbs"></div>
+  <div class="stage" id="stage"></div>
+
+  <p class="hint">
+    单击放锚点，<b>按住拖动</b>拉出曲线（Photoshop 钢笔的手感）；一条线画完按
+    <kbd>Enter</kbd> 或 <kbd>双击</kbd> 结束，<kbd>Esc</kbd> 取消当前这条，<kbd>Ctrl/⌘+Z</kbd> 撤销。<br />
+    线要<b>画穿</b>整页（两端都超出画面）才切得开；线宽就是切完后格子之间的缝隙。
+    切完点「按线切格」，再「预览动画」看效果，满意就下载 <code>panels.zip</code>，
+    解压覆盖 <code>comic-intro/panels/</code> 并把里面的 <code>panels.js</code> 放到 <code>comic-intro/</code>。
+  </p>
+
+<script>
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d', { willReadFrequently: true });
+const statusEl = document.getElementById('status');
+function say(t) { statusEl.textContent = t; }
+window.__dbg = () => ({ cuts: cuts.length, nodes: cuts.map(c => c.nodes.length), regions: regions ? regions.length : 0, slices: slices.length });
+const stage = document.getElementById('stage');
+let img = null, scale = 1;
+let cuts = [];          // 已完成的线：{nodes:[{x,y,cx,cy}], closed:bool}
+let cur = null;         // 正在画的线
+let regions = null;     // 切出来的格子
+let slices = [];        // 切好的切片 {url,x,y,w,h,cx,cy}
+
+/* ---------- 页面清单 ---------- */
+const DEFAULT_PAGES = [
+  { id: 'page1', src: './act1-the-loop.png', label: '第 1 页 · ACT 1' },
+  { id: 'page2', src: './act2.png', label: '第 2 页' },
+];
+const pageSel = document.getElementById('page');
+let PAGES = DEFAULT_PAGES, pageId = DEFAULT_PAGES[0].id, autoCuts = [];
+
+function applyPage(id) {
+  pageId = id;
+  cuts = []; cur = null; regions = null; slices = []; stage.classList.remove('on');
+  document.getElementById('thumbs').innerHTML = '';
+  autoCuts = [];
+  const page = PAGES.find(p => p.id === id) || PAGES[0];
+  const im = new Image();
+  im.onload = () => {
+    img = im;
+    cv.width = im.naturalWidth; cv.height = im.naturalHeight;
+    draw();
+    fetch('./' + page.id + '-cuts.json').then(r => r.ok ? r.json() : null).then(d => {
+      if (d && d.cuts && d.cuts.length) {
+        autoCuts = d.cuts.map(c => ({ nodes: [{ x: c.p0[0], y: c.p0[1] }, { x: c.p1[0], y: c.p1[1] }], closed: false }));
+        say('已就绪：自动检测到 ' + autoCuts.length + ' 条线，点「载入自动检测线」可在它的基础上改');
+      } else say('本页没有自动检测线，直接画：线要画穿整页才切得开');
+    }).catch(() => {});
+  };
+  im.src = page.src;
+}
+
+fetch('./pages.json').then(r => r.ok ? r.json() : null).then(d => {
+  if (d && d.pages && d.pages.length) PAGES = d.pages;
+  pageSel.innerHTML = PAGES.map(p => `<option value="${p.id}">${p.label || p.id}</option>`).join('');
+  pageSel.value = PAGES[0].id;
+  applyPage(PAGES[0].id);
+}).catch(() => {
+  pageSel.innerHTML = PAGES.map(p => `<option value="${p.id}">${p.label || p.id}</option>`).join('');
+  applyPage(PAGES[0].id);
+});
+pageSel.onchange = () => applyPage(pageSel.value);
+
+function pos(e) {
+  const r = cv.getBoundingClientRect();
+  return { x: (e.clientX - r.left) / r.width * cv.width, y: (e.clientY - r.top) / r.height * cv.height };
+}
+function snap(p) {
+  if (!document.getElementById('snap').checked) return p;
+  const R = 12;
+  for (const c of cuts) for (const n of c.nodes)
+    if (Math.hypot(n.x - p.x, n.y - p.y) < R) return { x: n.x, y: n.y };
+  if (cur && cur.nodes.length)
+    for (const n of cur.nodes)
+      if (Math.hypot(n.x - p.x, n.y - p.y) < R) return { x: n.x, y: n.y };
+  return p;
+}
+
+/* ---------- 画路径 ---------- */
+function tracePath(c, g, extend = 0) {
+  const n = c.nodes;
+  if (!n.length) return;
+  const p = n.slice();
+  // 栅格化时把开放路径两端向外延长，省得用户非要把线精确画到画布边缘
+  if (extend && !c.closed && n.length >= 2) {
+    const a = n[0], b = n[1];
+    const la = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+    p[0] = { x: a.x + (a.x - b.x) / la * extend, y: a.y + (a.y - b.y) / la * extend, cx: a.cx, cy: a.cy };
+    const q = n[n.length - 1], r = n[n.length - 2];
+    const lq = Math.hypot(q.x - r.x, q.y - r.y) || 1;
+    p[p.length - 1] = { x: q.x + (q.x - r.x) / lq * extend, y: q.y + (q.y - r.y) / lq * extend };
+  }
+  g.beginPath();
+  g.moveTo(p[0].x, p[0].y);
+  for (let i = 1; i < p.length; i++) {
+    const prev = p[i - 1];
+    if (prev.cx != null) g.quadraticCurveTo(prev.cx, prev.cy, p[i].x, p[i].y);
+    else g.lineTo(p[i].x, p[i].y);
+  }
+  if (c.closed && p.length > 2) g.closePath();
+}
+
+function draw() {
+  if (!img) return;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.drawImage(img, 0, 0);
+  const t = +document.getElementById('thick').value;
+
+  // 已切出的格子：淡色填充 + 编号
+  if (regions) {
+    for (let i = 0; i < regions.length; i++) {
+      ctx.save();
+      ctx.fillStyle = `hsla(${(i * 57) % 360},85%,60%,0.16)`;
+      ctx.fill(regions[i].path);
+      ctx.restore();
+    }
+  }
+  // 线
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (const c of cuts) {
+    ctx.strokeStyle = 'rgba(255,77,109,.95)';
+    ctx.lineWidth = t; tracePath(c, ctx); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,.9)';
+    ctx.lineWidth = Math.max(1, t / 3); tracePath(c, ctx); ctx.stroke();
+    for (const n of c.nodes) {
+      ctx.fillStyle = '#ff4d6d'; ctx.fillRect(n.x - 3, n.y - 3, 6, 6);
+    }
+  }
+  if (cur) {
+    ctx.strokeStyle = '#ffd065'; ctx.lineWidth = t;
+    tracePath(cur, ctx); ctx.stroke();
+    const last = cur.nodes[cur.nodes.length - 1];
+    if (last && mouse.pos) {           // 橡皮筋
+      ctx.strokeStyle = 'rgba(255,208,101,.6)'; ctx.lineWidth = Math.max(1, t / 3);
+      ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(mouse.pos.x, mouse.pos.y); ctx.stroke();
+    }
+    for (const n of cur.nodes) {
+      ctx.fillStyle = '#ffd065'; ctx.fillRect(n.x - 3, n.y - 3, 6, 6);
+    }
+  }
+}
+
+const mouse = { pos: null, down: false, dragCtl: null };
+
+cv.addEventListener('mousedown', e => {
+  if (!img) return;
+  const p = snap(pos(e));
+  mouse.down = true;
+  if (!cur) {
+    cur = { nodes: [{ x: p.x, y: p.y, cx: null, cy: null }], closed: false };
+  } else {
+    const first = cur.nodes[0];
+    if (Math.hypot(first.x - p.x, first.y - p.y) < 12 && cur.nodes.length > 2) {
+      cur.closed = true; cuts.push(cur); cur = null; draw(); return;
+    }
+    cur.nodes.push({ x: p.x, y: p.y, cx: null, cy: null });
+  }
+  mouse.dragCtl = null;
+  draw();
+});
+cv.addEventListener('mousemove', e => {
+  mouse.pos = pos(e);
+  if (mouse.down && cur && cur.nodes.length >= 2) {
+    const prev = cur.nodes[cur.nodes.length - 2];
+    prev.cx = mouse.pos.x; prev.cy = mouse.pos.y;   // 拖动 -> 曲线控制点
+  }
+  draw();
+});
+window.addEventListener('mouseup', () => { mouse.down = false; });
+cv.addEventListener('dblclick', () => finish());
+window.addEventListener('keydown', e => {
+  if (e.key === 'Enter') finish();
+  else if (e.key === 'Escape') { cur = null; draw(); }
+  else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { cuts.pop(); cur = null; draw(); }
+});
+function finish() {
+  if (cur && cur.nodes.length >= 2) cuts.push(cur);
+  cur = null; regions = null; slices = []; stage.classList.remove('on');
+  draw();
+}
+
+/* ---------- 按线切格 ---------- */
+document.getElementById('cut').onclick = () => {
+  if (!img) return;
+  finish();
+  if (!cuts.length) { say('先画几条线：线要画穿整页才切得开'); return; }
+  const t = +document.getElementById('thick').value;
+  const W = cv.width, H = cv.height;
+
+  // 1) 把线栅格化成掩膜
+  const mc = document.createElement('canvas'); mc.width = W; mc.height = H;
+  const mg = mc.getContext('2d', { willReadFrequently: true });
+  mg.fillStyle = '#000'; mg.fillRect(0, 0, W, H);
+  mg.strokeStyle = '#fff'; mg.lineWidth = t; mg.lineCap = 'round'; mg.lineJoin = 'round';
+  for (const c of cuts) { tracePath(c, mg, 120); mg.stroke(); }
+  const md = mg.getImageData(0, 0, W, H).data;
+  const isCut = new Uint8Array(W * H);
+  window.__last = { nodes: cuts.map(c => c.nodes.map(n => [Math.round(n.x), Math.round(n.y)])), thick: t };
+  for (let i = 0, p = 0; i < W * H; i++, p += 4) isCut[i] = md[p] > 100 ? 1 : 0;
+
+  // 2) 连通域 = 每一格
+  const seen = new Uint8Array(W * H);
+  const box = [];
+  const stack = new Int32Array(W * H);
+  for (let s = 0; s < W * H; s++) {
+    if (seen[s] || isCut[s]) continue;
+    let sp = 0; stack[sp++] = s; seen[s] = 1;
+    const cells = [];
+    let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
+    while (sp > 0) {
+      const c = stack[--sp];
+      const cx = c % W, cy = (c / W) | 0;
+      cells.push(c);
+      if (cx < x0) x0 = cx; if (cx > x1) x1 = cx;
+      if (cy < y0) y0 = cy; if (cy > y1) y1 = cy;
+      const nb = [c - 1, c + 1, c - W, c + W];
+      for (let k = 0; k < 4; k++) {
+        const n = nb[k];
+        if (n < 0 || n >= W * H) continue;
+        if (k < 2 && Math.abs((n % W) - cx) !== 1) continue;   // 不跨行
+        if (!seen[n] && !isCut[n]) { seen[n] = 1; stack[sp++] = n; }
+      }
+    }
+    const area = cells.length;
+    if (area < 0.004 * W * H || (x1 - x0) < 40 || (y1 - y0) < 40) continue;
+    box.push({ cells, x0, y0, x1, y1, area });
+  }
+  window.__last.cutPixels = isCut.reduce((a, b) => a + b, 0);
+  window.__last.boxes = box.map(b => [b.x0, b.y0, b.x1, b.y1, b.area]);
+  box.sort((a, b) => (a.y0 - b.y0) || (a.x0 - b.x0));
+
+  // 3) 每格裁出带 alpha 的 PNG
+  const src = ctx.getImageData(0, 0, W, H).data;
+  slices = [];
+  const thumbs = document.getElementById('thumbs');
+  thumbs.innerHTML = '';
+  regions = [];
+  const pathFor = cells => {
+    const p = new Path2D();
+    for (const c of cells) p.rect(c % W, (c / W) | 0, 1, 1);
+    return p;
+  };
+  for (let i = 0; i < box.length; i++) {
+    const b = box[i];
+    const w = b.x1 - b.x0 + 1, h = b.y1 - b.y0 + 1;
+    const oc = document.createElement('canvas'); oc.width = w; oc.height = h;
+    const og = oc.getContext('2d');
+    const out = og.createImageData(w, h);
+    for (const c of b.cells) {
+      const x = c % W, y = (c / W) | 0;
+      const dx = x - b.x0, dy = y - b.y0;
+      const sp4 = (y * W + x) * 4, dp4 = (dy * w + dx) * 4;
+      out.data[dp4] = src[sp4]; out.data[dp4 + 1] = src[sp4 + 1];
+      out.data[dp4 + 2] = src[sp4 + 2]; out.data[dp4 + 3] = 255;
+    }
+    og.putImageData(out, 0, 0);
+    const url = oc.toDataURL('image/png');
+    slices.push({
+      url, name: String(i + 1).padStart(2, '0') + '-panel.png',
+      x: b.x0 / W * 100, y: b.y0 / H * 100, w: w / W * 100, h: h / H * 100,
+      cx: (b.x0 + w / 2) / W * 100, cy: (b.y0 + h / 2) / H * 100
+    });
+    regions.push({ path: pathFor(b.cells) });
+    const d = document.createElement('div'); d.className = 'thumb';
+    d.innerHTML = '<span>' + (i + 1) + '</span><img src="' + url + '">';
+    thumbs.appendChild(d);
+  }
+  say('切出 ' + slices.length + ' 格（按阅读顺序编号）。点「预览动画」看效果，或继续画线再切一次。');
+  draw();
+};
+
+/* ---------- 预览动画 ---------- */
+document.getElementById('play').onclick = () => {
+  if (!slices.length) { say('先点「按线切格」'); return; }
+  stage.innerHTML = '';
+  stage.classList.add('on');
+  slices.forEach((s, i) => {
+    const el = document.createElement('img');
+    el.className = 'piece'; el.src = s.url;
+    el.style.left = s.x + '%'; el.style.top = s.y + '%';
+    el.style.width = s.w + '%'; el.style.height = s.h + '%';
+    el.style.opacity = 0;
+    stage.appendChild(el);
+    setTimeout(() => {
+      el.style.animation = 'panelIn .58s cubic-bezier(.2,1.22,.3,1) forwards';
+    }, 350 + i * 820);
+  });
+  stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+
+/* ---------- 工具栏 ---------- */
+document.getElementById('undo').onclick = () => { cuts.pop(); cur = null; regions = null; draw(); };
+document.getElementById('clear').onclick = () => {
+  cuts = []; cur = null; regions = null; slices = []; stage.classList.remove('on');
+  document.getElementById('thumbs').innerHTML = ''; draw(); say('已清空');
+};
+document.getElementById('auto').onclick = () => {
+  if (!autoCuts.length) { say('没找到 cuts.json，请先跑 slice-panels.py'); return; }
+  cuts = autoCuts.map(c => ({ nodes: c.nodes.map(n => ({ ...n })), closed: c.closed }));
+  regions = null; draw(); say('已载入 ' + cuts.length + ' 条自动检测线，可拖动重画或删除后自己画');
+};
+document.getElementById('thick').oninput = e => {
+  document.getElementById('thickVal').textContent = e.target.value; draw();
+};
+
+/* ---------- 导出 zip（store 模式，自己实现的极简 zip） ---------- */
+const CRC = (() => {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
+    t[n] = c >>> 0;
+  }
+  return buf => {
+    let c = 0xFFFFFFFF;
+    for (let i = 0; i < buf.length; i++) c = t[(c ^ buf[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  };
+})();
+
+function zip(files) {   // files: [{name, data:Uint8Array}]
+  const enc = new TextEncoder();
+  const parts = [], central = [];
+  let offset = 0;
+  const now = new Date();
+  const dosTime = ((now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() / 2)) & 0xFFFF;
+  const dosDate = (((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate()) & 0xFFFF;
+  for (const f of files) {
+    const name = enc.encode(f.name), crc = CRC(f.data);
+    const local = new Uint8Array(30 + name.length);
+    const dv = new DataView(local.buffer);
+    dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0, true);
+    dv.setUint16(8, 0, true); dv.setUint16(10, dosTime, true); dv.setUint16(12, dosDate, true);
+    dv.setUint32(14, crc, true); dv.setUint32(18, f.data.length, true); dv.setUint32(22, f.data.length, true);
+    dv.setUint16(26, name.length, true); dv.setUint16(28, 0, true);
+    local.set(name, 30);
+    parts.push(local, f.data);
+
+    const cen = new Uint8Array(46 + name.length);
+    const cv2 = new DataView(cen.buffer);
+    cv2.setUint32(0, 0x02014b50, true); cv2.setUint16(4, 20, true); cv2.setUint16(6, 20, true);
+    cv2.setUint16(8, 0, true); cv2.setUint16(10, 0, true); cv2.setUint16(12, dosTime, true);
+    cv2.setUint16(14, dosDate, true); cv2.setUint32(16, crc, true);
+    cv2.setUint32(20, f.data.length, true); cv2.setUint32(24, f.data.length, true);
+    cv2.setUint16(28, name.length, true); cv2.setUint16(30, 0, true); cv2.setUint16(32, 0, true);
+    cv2.setUint16(34, 0, true); cv2.setUint16(36, 0, true); cv2.setUint32(38, 0, true);
+    cv2.setUint32(42, offset, true);
+    cen.set(name, 46);
+    central.push(cen);
+    offset += local.length + f.data.length;
+  }
+  const cenSize = central.reduce((a, b) => a + b.length, 0);
+  const end = new Uint8Array(22);
+  const ev = new DataView(end.buffer);
+  ev.setUint32(0, 0x06054b50, true); ev.setUint16(8, files.length, true);
+  ev.setUint16(10, files.length, true); ev.setUint32(12, cenSize, true);
+  ev.setUint32(16, offset, true); ev.setUint16(20, 0, true);
+  return new Blob([...parts, ...central, end], { type: 'application/zip' });
+}
+
+function dataUrlToBytes(url) {
+  const b = atob(url.split(',')[1]);
+  const out = new Uint8Array(b.length);
+  for (let i = 0; i < b.length; i++) out[i] = b.charCodeAt(i);
+  return out;
+}
+
+document.getElementById('save').onclick = () => {
+  if (!slices.length) { say('先点「按线切格」'); return; }
+  const page = PAGES.find(p => p.id === pageId) || { id: pageId, src: '' };
+  const files = [];
+  const meta = {
+    source: page.src, width: cv.width, height: cv.height,
+    pieces: slices.map(s => ({
+      src: pageId + '/panels/' + s.name,
+      x: +s.x.toFixed(3), y: +s.y.toFixed(3), w: +s.w.toFixed(3), h: +s.h.toFixed(3),
+      cx: +s.cx.toFixed(3), cy: +s.cy.toFixed(3)
+    }))
+  };
+  files.push({ name: pageId + '.json', data: new TextEncoder().encode(JSON.stringify(meta, null, 2) + '\n') });
+  for (const s of slices) files.push({ name: pageId + '/panels/' + s.name, data: dataUrlToBytes(s.url) });
+  const url = URL.createObjectURL(zip(files));
+  const a = document.createElement('a');
+  a.href = url; a.download = 'panels-' + pageId + '.zip'; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  say('已导出 panels-' + pageId + '.zip（' + slices.length + ' 格 + ' + pageId + '.json）。'
+    + '解压到 wake-up-tokyo/public/comic/ 下即可，游戏会按 page1 → page2 连播。');
+};
+</script>
+</body>
+</html>

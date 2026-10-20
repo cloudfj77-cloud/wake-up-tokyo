@@ -1,0 +1,18 @@
+{
+  "source": "act3.png",
+  "width": 1450,
+  "height": 1085,
+  "note": "整页不切，一格铺满",
+  "hold": 2.6,
+  "pieces": [
+    {
+      "src": "page3/panels/01-panel.webp",
+      "x": 0,
+      "y": 0,
+      "w": 100,
+      "h": 100,
+      "cx": 50,
+      "cy": 50
+    }
+  ]
+}

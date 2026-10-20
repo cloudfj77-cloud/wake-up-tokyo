@@ -1,0 +1,19 @@
+{
+  "pages": [
+    {
+      "id": "page1",
+      "src": "./act1-the-loop.png",
+      "label": "第 1 页 · ACT 1"
+    },
+    {
+      "id": "page2",
+      "src": "./act2.png",
+      "label": "第 2 页"
+    },
+    {
+      "id": "page3",
+      "src": "./act3.png",
+      "label": "第 3 页（整页不切）"
+    }
+  ]
+}

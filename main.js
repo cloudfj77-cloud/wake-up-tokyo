@@ -4,6 +4,7 @@ import {HIT_RESPONSE,flashCharacter,stepHitStop} from './hit-response.js';
 import {createCombatUI} from './combat-ui.js';
 import {selectedMap} from './maps.js';
 import {createComicAbilityFX,resolveComicAim,launchComicBallistic,stepComicBallistic,stepComicNeedle,createFleshProgressHUD} from './comic-fx.js';
+import {playComicIntro} from './comic-intro.js';
 import {createPointerLock} from './pointer-lock.js';
 import * as T from 'three';
 import {createBoss,hitBoss as baseHitBoss,animateBoss,canBossBombTarget} from './boss.js';
@@ -389,7 +390,7 @@ function actorInFront(u,d){
 }
 async function warmBattleVisuals(){
  let prepared=0;
- for(const [kind,count]of [['guard',48],['shieldCop',12],['batonCop',12],['ally',24]])for(let n=1;n<=count;n++){
+ for(const [kind,count]of [['guard',48],['shieldCop',12],['batonCop',12],['gunCop',8],['ally',24]])for(let n=1;n<=count;n++){
   warmCharacterPool(assets,kind,n);
   $('loading').textContent=`准备战斗角色 ${++prepared} / ${VISUAL_BUDGET+24}`;
   await new Promise(resolve=>requestAnimationFrame(resolve));
@@ -428,7 +429,7 @@ function syncTankShell(v,u){
 function actorVisual(u){
  // 感染前：持盾特警（type 3）/持棍巡警（type 1）用各自专属模型，武器和动作都在模型里，不加配件。
  // 感染后：换成变异形态，并把对应的盾牌/棍子配件挂到手上（见 attachCopProp）。
- const copKind=t=>t===3?'shieldCop':t===1?'batonCop':null;
+ const copKind=t=>t===3?'shieldCop':t===1?'batonCop':GUN_TYPES(t)?'gunCop':null;
  // 玩家护卫（u.guard）是「号令召集」来的警察，虽然也是 converted，但不走感染变身那一套，
  // 保持兵种原样 —— 否则开局就会冒出一个变异形态的警察。
  const copInfected=t=>(t===1||t===3)&&!!assets?.infectedCop;
@@ -463,16 +464,24 @@ const PROP_XFORM={
  // 下面这组默认值是用 ?propui=1 面板对着画面调出来的：
  // batonpos=0.085,0.065,0.135 · batonangle=2.1 · batongrip=0.25 · batonscale=0.45
  baton:{bones:['mixamorigRightHand','handR'],pos:propVec('batonpos',[.085,.065,.135]),grip:propNum('batongrip',.25),angle:propNum('batonangle',2.1),rot:propVec('batonrot',[0,0,0]),scale:propNum('batonscale',.45),gripEnd:true,aimForward:true},
+ // 持枪警察（type 2 持枪巡警 / type 6 持枪特警）手里的黑枪：同样是柄端落在掌心、
+ // 沿人物正前方抬起来，angle 比棍子小一些，看起来像端着枪而不是把枪甩出去。
+ // 可用 ?gunpos= / ?gunangle= / ?gungrip= / ?gunscale= 现场微调。
+ gun:{bones:['mixamorigRightHand','handR'],pos:propVec('gunpos',[.055,.02,.075]),grip:propNum('gungrip',.18),angle:propNum('gunangle',1.45),rot:propVec('gunrot',[0,0,0]),scale:propNum('gunscale',.26),gripEnd:true,aimForward:true},
 };
+// 持枪警察暂时借用持盾特警的模型（等专属模型到位再换），武器是手上的黑枪。
+const GUN_TYPES=t=>t===2||t===6;
 // 回归测试用 vm 沙箱跑这段代码，里面没有 location / URLSearchParams，所以要守卫。
 function propQuery(key){return (typeof location!=='undefined'&&typeof URLSearchParams!=='undefined')?new URLSearchParams(location.search||'').get(key):null;}
 function propVec(key,fallback){const raw=propQuery(key);if(!raw)return fallback;const a=raw.split(',').map(Number);return a.length===3&&a.every(Number.isFinite)?a:fallback;}
 function propNum(key,fallback){const raw=propQuery(key);if(raw==null)return fallback;const n=Number(raw);return Number.isFinite(n)?n:fallback;}
 function attachCopProp(v,u){
  const props=assets?.props;
- // 只有感染变异模型加配件；护卫和原警察模型已经自带武器。
- const eligible=props&&v.modelKind==='infectedCop'&&!u.guard&&(u.converted||u.kind==='ally');
- const propType=eligible?(u.type===3?'shield':u.type===1?'baton':null):null;
+ // 感染变异模型要加配件；持枪警察用的是借用来的持盾模型，模型里没有枪，所以也挂一把。
+ // 护卫和带自带武器的原警察模型不加。
+ const gunCop=GUN_TYPES(u.type);
+ const eligible=props&&!u.guard&&(gunCop||(v.modelKind==='infectedCop'&&(u.converted||u.kind==='ally')));
+ const propType=eligible?(gunCop?'gun':u.type===3?'shield':u.type===1?'baton':null):null;
  if(!propType){detachCopProp(v);return;}
  if(v.userData?.propType===propType&&v.userData.propMesh)return;
  // 两种感染警察共用模型池，换兵种时必须换掉上次的武器。
@@ -953,7 +962,8 @@ function restore(saved){state=saved.state;state.sprinting=false;state.sprintExha
  const actorIds=new Set();for(const u of units){if(!Number.isSafeInteger(u.id)||actorIds.has(u.id))u.id=nextActorId++;actorIds.add(u.id);}
  for(const id of sprayMarkers.keys())disposeActorWarning(sprayMarkers,id);for(const id of chargeMarkers.keys())disposeActorWarning(chargeMarkers,id);
  player=saved.player;player.roll=0;player.vy=0;player.knock=0;yaw=saved.yaw;pitch=saved.pitch;cameraDistance=T.MathUtils.clamp(saved.cameraDistance??2.7,1.9,4.5);attackCd=saved.attackCd;breakCd=saved.breakCd;rushCd=saved.rushCd;reinforceTimer=saved.reinforceTimer;reinforceDirection=saved.reinforceDirection;totalReinforcements=saved.totalReinforcements;alerted=saved.alerted;state.weaponOrder??=[];if(state.bossCountdown!=null||state.weakenTasks)world.spawnWeakenSites();spawnQueue.jobs.length=0;spawnQueue.wait=0;recentSpawnPoints.length=0;for(const a of visuals.values()){if(a.v.aura){removeAura(a.v.aura);a.v.aura=null;}releaseCharacterVisual(a.v);}visuals.clear();saved.objects.forEach((o,i)=>{const w=world.destructibles[i];w.hp=o.hp;w.dead=o.dead;w.g.visible=!o.dead;if(w.instances){const d=new T.Object3D();d.scale.setScalar(0);d.updateMatrix();for(const ix of o.removed){w.removed.add(ix);w.instances.setMatrixAt(ix,d.matrix);}w.instances.instanceMatrix.needsUpdate=true;}});}
-async function start(continuing=false){if(!assets)return;if(continuing){const s=loadSaved();if(s)restore(s);}else if(state.time>0){location.reload();return;}conversionCount=state.infected;await music.start();playerVisual.holder.rotation.y=yaw;$('menu').hidden=true;$('hud').hidden=false;mode='playing';combatUI.baseline(units,state,player,boss);if(state.pending)chooseUpgrade();else toast('WASD 移动 · 短按 Shift 闪避 / 长按奔跑 · 左键轻击 · 右键重击 · 空格跳跃',4);}
+async function start(continuing=false){if(!assets)return;if(continuing){const s=loadSaved();if(s)restore(s);}else if(state.time>0){location.reload();return;}conversionCount=state.infected;// 新开一局先放开场分镜；点任意处或按 Esc / 空格跳过，读档继续不重播。
+ if(!continuing)await playComicIntro(document,{pages:['./comic/page1.json','./comic/page2.json','./comic/page3.json']});await music.start();playerVisual.holder.rotation.y=yaw;$('menu').hidden=true;$('hud').hidden=false;mode='playing';combatUI.baseline(units,state,player,boss);if(state.pending)chooseUpgrade();else toast('WASD 移动 · 短按 Shift 闪避 / 长按奔跑 · 左键轻击 · 右键重击 · 空格跳跃',4);}
 $('start').onclick=()=>{captureView();void start();};$('continue').onclick=()=>{captureView();void start(true);};
 // 暂停和地图保留音乐位置；选卡降低音乐音量。
 function togglePause(){if(mode==='map'){toggleMap();return;}if(mode==='playing'){mode='paused';music.pause();music.effect('uiOpen');saveRun();showDialog(`<div class="eyebrow">SIMULATION PAUSED</div><h2>东京，暂时静止。</h2><p>街区进度自动保存；Boss 战从进场前存档重试。所有战斗计时已暂停。</p><div class="controlTable">进入游戏后鼠标隐藏并转向，Esc 暂停后显示鼠标；未锁定时可右键拖动<br>左键 / J 轻击 · 右键 / K 重击 · 空格跳跃 · 短按 Shift 闪避 / 长按奔跑 · C 蹲伏<br>1 徒手 · 2 起按点出顺序切换枪械和注射器 · R 装填 · F 号令召集 / 解散 · Tab 地图<br>两下轻击即可叫醒打工人；持盾特警正面伤害减半。<br>空气传播 Lv2 可转化尸体；敌方净化士兵在 10 米内每 0.5 秒清除 2 点感染，多人不叠加。喷雾会先亮出扇形预警约 1 秒，再至少喷 2 秒。敌方攻击是红色警示，我方攻击是紫色。掷弹兵每秒投一枚空中炸弹，落地前地面会亮圈，2 米内 50 点伤害。持盾特警会短蓄力后向前冲，撞上会打伤并把玩家和我方单位击飞 1 秒。警戒升到新阶段时，秩序方会用英语呼叫增援，屏幕会同步显示中文字幕。军事介入和 Boss 战时，头顶会有一架飞机盘旋投弹，也会俯冲扫射。扫射前地面先亮出弹道。这架飞机有血，主角的强化炮弹打中会把它击落，飞机接着坠毁。军事介入还会派出坦克，消耗权重 40，炮弹落地前地面会亮圈。坦克开过时，敌方步兵会被挤开，玩家和我方部队会被撞飞并扣 60 点血。闪避的无敌时间里撞不上。坦克没有感染值，也不会被击飞、定身或减速。</div><button class="action" id="resume">继续觉醒 ↗</button><button class="action secondary" id="pauseSettings">设置</button><button class="action secondary" id="endRun">结束并复盘</button>`);$('resume').onclick=togglePause;$('pauseSettings').onclick=()=>settingsDialog('paused');$('endRun').onclick=()=>finish('ended');}else if(mode==='paused'){hideDialog();mode='playing';music.resume();music.effect('uiClose');captureView();}}
@@ -1756,7 +1766,7 @@ function updateVisuals(dt){syncActorPresence();for(const {v} of visuals.values()
  // 按转化后的类型选择外观：市民换觉醒外形；警察换成变异形态（感染前的模型不带配件）；
  // 其余军人留着原来的模型。这里必须和 actorVisual 的兵种判断一致，否则转化时换不出模型。
  // 同上：护卫不换变异形态。
- const modelKind=u.type===0?'ally':(u.type===1||u.type===3)&&!u.guard&&assets?.infectedCop?'infectedCop':'guard';
+ const modelKind=u.type===0?'ally':(u.type===2||u.type===6)?'gunCop':(u.type===1||u.type===3)&&!u.guard&&assets?.infectedCop?'infectedCop':'guard';
  // 兵种模型（batonCop / shieldCop / infectedCop）和通用警卫共用同一个模型池，
  // 光比对池键分不出「棍警」和「变异形态」（都是 guard 池），必须再比对兵种名。
  // 换完在 entry 上记一笔，否则下一帧 v.kind 被改成 ally 后又会被判成要换，反复重建。
@@ -2271,6 +2281,12 @@ window.TUNE=TUNE;
   {label:'盾牌 Y',get:()=>P.shield.pos[1],set:v=>P.shield.pos[1]=v,min:-1.5,max:1.5,step:.005},
   {label:'盾牌 Z',get:()=>P.shield.pos[2],set:v=>P.shield.pos[2]=v,min:-1.5,max:1.5,step:.005},
   {label:'盾牌 大小',get:()=>P.shield.scale,set:v=>P.shield.scale=v,min:.1,max:1.5,step:.01},
+  {label:'枪 X（左右）',get:()=>P.gun.pos[0],set:v=>P.gun.pos[0]=v,min:-1.5,max:1.5,step:.005},
+  {label:'枪 Y（上下）',get:()=>P.gun.pos[1],set:v=>P.gun.pos[1]=v,min:-1.5,max:1.5,step:.005},
+  {label:'枪 Z（前后）',get:()=>P.gun.pos[2],set:v=>P.gun.pos[2]=v,min:-1.5,max:1.5,step:.005},
+  {label:'枪 倾角（弧度，越小越平端）',get:()=>P.gun.angle,set:v=>P.gun.angle=v,min:0,max:3.1416,step:.01},
+  {label:'枪 长度',get:()=>P.gun.scale,set:v=>P.gun.scale=v,min:.05,max:1,step:.01},
+  {label:'枪 握持深度（越小插越深）',get:()=>P.gun.grip,set:v=>P.gun.grip=v,min:.05,max:.6,step:.005},
  ];
  const box=document.createElement('div');
  box.id='propPanel';
