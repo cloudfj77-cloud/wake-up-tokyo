@@ -172,9 +172,46 @@ async function loadProp(name) {
   return object;
 }
 
+/* 持枪警察手里那把黑枪：程序化生成，不依赖外部资产。
+   和盾牌/棍子同一套约定 —— 长度方向是局部 +Y，整体约 1 个单位长，
+   挂载时由 PROP_XFORM.gun 的 scale / grip / angle 决定最终大小和握持角度。
+   形状按手枪来：套筒 + 枪管 + 握把 + 弹匣 + 扳机护圈 + 准星，枪身是哑光黑。 */
+export function makeGunProp() {
+  const gun = new THREE.Group();
+  gun.name = 'gun';
+  const steel = new THREE.MeshStandardMaterial({ color: 0x17191d, roughness: .42, metalness: .62 });
+  const grip = new THREE.MeshStandardMaterial({ color: 0x0c0d10, roughness: .68, metalness: .22 });
+  const sight = new THREE.MeshStandardMaterial({ color: 0x2a2d33, roughness: .35, metalness: .5 });
+  const part = (geometry, material, position, rotation) => {
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(...position);
+    if (rotation) mesh.rotation.set(...rotation);
+    mesh.castShadow = true;
+    gun.add(mesh);
+    return mesh;
+  };
+  // 机匣 / 套筒
+  part(new THREE.BoxGeometry(.086, .5, .062), steel, [0, .2, 0]);
+  // 枪管（圆柱默认沿 +Y，正好就是长度方向）
+  part(new THREE.CylinderGeometry(.027, .027, .34, 12), steel, [0, .62, 0]);
+  // 枪口稍粗一点，看着像真枪口
+  part(new THREE.CylinderGeometry(.034, .034, .05, 12), sight, [0, .78, 0]);
+  // 握把：向后下倾斜，柄端朝 -Y 落在手心
+  part(new THREE.BoxGeometry(.072, .19, .058), grip, [0, -.12, -.012], [.28, 0, 0]);
+  // 弹匣
+  part(new THREE.BoxGeometry(.062, .13, .05), grip, [0, -.04, -.028], [.12, 0, 0]);
+  // 扳机护圈
+  part(new THREE.BoxGeometry(.058, .05, .07), grip, [0, .04, -.008]);
+  // 准星
+  part(new THREE.BoxGeometry(.028, .045, .028), sight, [0, .43, .048]);
+  // 套筒后端的击锤
+  part(new THREE.BoxGeometry(.05, .05, .05), steel, [0, -.02, .012]);
+  return gun;
+}
+
 export async function loadPoliceProps() {
   const [shield, baton] = await Promise.all([loadProp('shield'), loadProp('baton')]);
-  return { shield, baton };
+  return { shield, baton, gun: makeGunProp() };
 }
 
 export function loadShieldCopAsset() {

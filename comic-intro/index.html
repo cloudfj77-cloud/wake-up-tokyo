@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACT 1-2 · 分镜逐格登场</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    background: #17141c radial-gradient(120% 90% at 50% 0%, #241f2e, #17141c 70%);
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif; overflow: hidden;
+  }
+
+  .stage {
+    position: relative; height: 100vh; height: 100dvh; width: auto; max-width: 100vw;
+    aspect-ratio: 1080 / 905; background: #f2eee4;
+    box-shadow: 0 30px 80px rgba(0,0,0,.55); overflow: hidden;
+    transition: opacity .32s ease;
+  }
+  .stage.turning { opacity: 0; }
+
+  .piece { position: absolute; opacity: 0; will-change: transform, opacity, filter; }
+  @keyframes panelIn {
+    0%   { opacity: 0; transform: scale(1.07) rotate(-.7deg) translateY(8px); filter: brightness(2.4) saturate(.35); }
+    38%  { opacity: 1; filter: brightness(1.55) saturate(.7); }
+    70%  { filter: brightness(.94) saturate(1.08); }
+    100% { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes baseIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+
+  .speedlines {
+    position: absolute; inset: -20%; z-index: 30; pointer-events: none; opacity: 0;
+    background: repeating-conic-gradient(from 0deg at 50% 50%,
+      transparent 0deg 3.2deg, rgba(41,35,50,.15) 3.2deg 3.6deg);
+    mask-image: radial-gradient(circle, transparent 30%, #000 75%);
+    -webkit-mask-image: radial-gradient(circle, transparent 30%, #000 75%);
+  }
+  @keyframes linesFlash {
+    0% { opacity: 0; transform: scale(.7) rotate(-6deg); }
+    25% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.25) rotate(4deg); }
+  }
+
+  .halftone {
+    position: absolute; inset: 0; z-index: 45; pointer-events: none; opacity: .09;
+    background-image: radial-gradient(#292332 22%, transparent 24%);
+    background-size: 5px 5px; mix-blend-mode: multiply;
+  }
+  .vignette { position: absolute; inset: 0; z-index: 46; pointer-events: none; box-shadow: inset 0 0 90px rgba(30,24,40,.22); }
+  .ref { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity .25s; }
+  .stage.proof .ref { opacity: .28; }
+  .stage.proof .piece { outline: 2px dashed #ff4d6d; outline-offset: -2px; }
+
+  .bar { position: absolute; right: 12px; bottom: 10px; z-index: 61; display: flex; gap: 8px; }
+  .bar button {
+    padding: 7px 14px; border: 2px solid #292332; border-radius: 999px; background: #ffd065;
+    color: #292332; font-weight: 700; font-size: 12px; letter-spacing: 2px; cursor: pointer;
+    box-shadow: 0 3px 0 #292332; opacity: 0; pointer-events: none; transition: opacity .3s;
+  }
+  .bar button.show { opacity: 1; pointer-events: auto; }
+  .bar button:active { transform: translateY(2px); box-shadow: 0 1px 0 #292332; }
+  .tip { position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+         color: #f4f0e6; opacity: .45; font-size: 12px; letter-spacing: 5px; z-index: 1; }
+</style>
+</head>
+<body>
+  <div class="tip">PANEL BY PANEL · ACT 1 → ACT 2</div>
+
+  <div class="stage" id="stage">
+    <img class="ref" id="ref" src="./act1-the-loop.png" alt="" />
+    <div class="speedlines" id="speedlines"></div>
+    <div class="halftone"></div>
+    <div class="vignette"></div>
+    <div class="bar">
+      <button id="replay">↻ REPLAY</button>
+      <button id="proof">校对</button>
+    </div>
+  </div>
+
+<script type="module">
+import {comicIntroSequence,measureComicFill,comicIntroTimeline} from '../comic-intro.js';
+
+const ASSET_BASE = '../public/comic/';
+const PAGE_FILES = ['page1.json', 'page2.json'];
+const stage = document.getElementById('stage');
+const ref = document.getElementById('ref');
+const speedlines = document.getElementById('speedlines');
+const replayBtn = document.getElementById('replay');
+const proofBtn = document.getElementById('proof');
+
+let pages = [], timers = [], running = false, soundOn = false, actx = null;
+
+function audio() { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); return actx; }
+function pop(heavy = false) {
+  const ctx = audio(), t = ctx.currentTime;
+  const src = ctx.createBufferSource();
+  const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * .18), ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 2.2);
+  src.buffer = buf;
+  const bp = ctx.createBiquadFilter(); bp.type = 'bandpass';
+  bp.frequency.value = heavy ? 700 : 1400; bp.Q.value = .8;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(heavy ? .5 : .36, t);
+  g.gain.exponentialRampToValueAtTime(.001, t + .18);
+  src.connect(bp).connect(g).connect(ctx.destination); src.start(t);
+  const osc = ctx.createOscillator(); osc.type = 'sine';
+  osc.frequency.setValueAtTime(heavy ? 128 : 190, t);
+  osc.frequency.exponentialRampToValueAtTime(45, t + .16);
+  const og = ctx.createGain();
+  og.gain.setValueAtTime(.38, t);
+  og.gain.exponentialRampToValueAtTime(.001, t + .17);
+  osc.connect(og).connect(ctx.destination); osc.start(t); osc.stop(t + .2);
+}
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+async function loadPages() {
+  const out = [];
+  for (const file of PAGE_FILES) {
+    const data = await fetch(ASSET_BASE + file).then(r => r.ok ? r.json() : null).catch(() => null);
+    if (data && Array.isArray(data.pieces) && data.pieces.length) {
+      out.push({ data, src: (data.source || '').replace('./', './') });
+    }
+  }
+  return out;
+}
+
+async function playPage(page, index) {
+  const data = page.data;
+  stage.querySelectorAll('.piece, .clip').forEach(el => el.remove());
+  stage.style.aspectRatio = `${data.width || 1080} / ${data.height || 905}`;
+  ref.src = index === 0 ? './act1-the-loop.png' : './act2.png';
+
+  const { base, panels } = comicIntroSequence(await measureComicFill(data.pieces, ASSET_BASE));
+  const { steps, total } = comicIntroTimeline(panels);   // 大格留久一点，小格快过
+  const mount = (p, z) => {
+    const img = document.createElement('img');
+    img.className = 'piece';
+    img.src = ASSET_BASE + String(p.src).replace(/^\.?\//, '');
+    img.style.left = p.x + '%'; img.style.top = p.y + '%';
+    img.style.width = p.w + '%'; img.style.height = p.h + '%';
+    img.style.zIndex = String(z);
+    stage.insertBefore(img, speedlines);
+    return img;
+  };
+  base.forEach((p, i) => { p.el = mount(p, 10 + i); p.el.style.animation = 'baseIn .45s ease-out forwards'; });
+  panels.forEach((p, i) => { p.el = mount(p, 10 + base.length + i); });
+
+  // 覆盖在格子上的动图，跟着对应那一格出现
+  for (const clip of (Array.isArray(data.clips) ? data.clips : [])) {
+    const box = document.createElement('div');
+    box.className = 'piece clip';
+    box.style.left = clip.x + '%'; box.style.top = clip.y + '%';
+    box.style.width = clip.w + '%'; box.style.height = clip.h + '%';
+    box.style.zIndex = String(30 + (clip.z || 0));
+    box.style.overflow = 'hidden';
+    const v = document.createElement('video');
+    v.src = ASSET_BASE + String(clip.src).replace(/^\.?\//, '');
+    v.muted = true; v.loop = clip.loop !== false; v.playsInline = true;
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+    v.style.objectFit = clip.fit || (clip.crop ? 'fill' : 'cover');
+    const c = clip.crop;
+    if (c && c.w > 0 && c.h > 0) {
+      v.style.width = (100 / c.w) + '%';
+      v.style.height = (100 / c.h) + '%';
+      v.style.left = (-(c.x || 0) / c.w * 100) + '%';
+      v.style.top = (-(c.y || 0) / c.h * 100) + '%';
+    } else {
+      v.style.width = '100%'; v.style.height = '100%';
+      v.style.left = '0px'; v.style.top = '0px';
+    }
+    const poly = Array.isArray(clip.poly) && clip.poly.length >= 3 ? clip.poly : null;
+    if (poly) box.style.clipPath = 'polygon(' + poly.map(q => q[0] + '% ' + q[1] + '%').join(', ') + ')';
+    box.appendChild(v);
+    stage.insertBefore(box, speedlines);
+    const at = steps[Math.min(clip.panel || 0, steps.length - 1)];
+    timers.push(setTimeout(() => {
+      v.style.animation = `panelIn ${at ? at.duration : .58}s cubic-bezier(.2,1.22,.3,1) forwards`;
+      const played = v.play();
+      if (played && played.catch) played.catch(() => {});
+    }, ((at ? at.delay : 0) + (clip.delay || 0)) * 1000));
+  }
+
+  if (index > 0) { stage.classList.add('turning'); await wait(40); stage.classList.remove('turning'); }
+  panels.forEach((p, i) => {
+    const step = steps[i];
+    timers.push(setTimeout(() => {
+      p.el.style.animation = `panelIn ${step.duration}s cubic-bezier(.2,1.22,.3,1) forwards`;
+      speedlines.style.animation = 'none';
+      void speedlines.offsetWidth;
+      speedlines.style.animation = 'linesFlash .55s ease-out forwards';
+      if (soundOn) { try { pop(step.size > .8); } catch (e) {} }
+    }, step.delay * 1000));
+  });
+  await wait((total + .4) * 1000);
+}
+
+async function play() {
+  if (running) return;
+  running = true;
+  timers.forEach(clearTimeout); timers = [];
+  replayBtn.classList.remove('show');
+  for (let i = 0; i < pages.length; i++) {
+    await playPage(pages[i], i);
+    if (i < pages.length - 1) {
+      stage.classList.add('turning');
+      await wait(340);
+      if (i + 1 < pages.length) await wait(0);
+    }
+  }
+  replayBtn.classList.add('show');
+  running = false;
+}
+
+proofBtn.classList.add('show');
+replayBtn.addEventListener('click', play);
+proofBtn.addEventListener('click', () => stage.classList.toggle('proof'));
+window.addEventListener('pointerdown', () => { if (!soundOn) { try { audio().resume(); soundOn = true; } catch (e) {} } });
+
+pages = await loadPages();
+play();
+setInterval(() => { if (!document.hidden && !running) play(); }, 1500);
+</script>
+</body>
+</html>

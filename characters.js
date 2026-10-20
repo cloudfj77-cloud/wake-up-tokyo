@@ -26,7 +26,7 @@ const CLIP_ALIASES = {
 };
 
 // 脚下光环色。持盾/持棍两套警察模型和警卫同阵营但兵种不同，给两个可分辨的颜色。
-const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee, shieldCop: 0x2f6fbf, batonCop: 0x8fbf6a, infectedCop: 0xb478f1 };
+const accents = { player: 0xbf78ff, ally: 0xb46afa, human: 0xbca77c, guard: 0x76b9ee, shieldCop: 0x2f6fbf, batonCop: 0x8fbf6a, gunCop: 0x4f8fa8, infectedCop: 0xb478f1 };
 
 // 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
 // 例如现实中 1.82 米的主角，在游戏画面里应约为 1 个单位，才能和汽车比例一致。
@@ -51,7 +51,7 @@ export function characterHeight(kind, variant = 0) {
   if (kind === 'player') return CHARACTER_HEIGHTS.player;
   if (kind === 'infectedCop') return CHARACTER_HEIGHTS.infectedCop;
   // 两套警察模型和警卫一样是成年男性身高，共用同一档。
-  if (kind === 'guard' || kind === 'shieldCop' || kind === 'batonCop' || kind === 'infectedCop') return CHARACTER_HEIGHTS.guard;
+  if (kind === 'guard' || kind === 'shieldCop' || kind === 'batonCop' || kind === 'gunCop' || kind === 'infectedCop') return CHARACTER_HEIGHTS.guard;
   return CHARACTER_HEIGHTS.humanBase + variant * CHARACTER_HEIGHTS.humanVariantStep;
 }
 
@@ -105,8 +105,10 @@ function selectCharacterAsset(assets, kind) {
   // 两套警察模型优先于通用警卫：兵种有了专属外观，才分得清拿盾的还是拿棍的。
   if (kind === 'infectedCop' && assets.infectedCop) return assets.infectedCop;
   if (kind === 'shieldCop' && assets.shieldCop) return assets.shieldCop;
+  // 持枪警察先用持盾特警的模型顶着，拿到专属模型后只要加一个 gunCop 资产即可。
+  if (kind === 'gunCop' && (assets.gunCop || assets.shieldCop)) return assets.gunCop ?? assets.shieldCop;
   if (kind === 'batonCop' && assets.batonCop) return assets.batonCop;
-  if (['guard', 'shieldCop', 'batonCop'].includes(kind) && assets.guard) return assets.guard;
+  if (['guard', 'shieldCop', 'batonCop', 'gunCop'].includes(kind) && assets.guard) return assets.guard;
   if (assets.humanMale && assets.humanFemale) return Math.random() < .5 ? assets.humanMale : assets.humanFemale;
   if (assets.ally) return assets.ally;
   return assets.player ?? Object.values(assets)[0];
@@ -127,7 +129,7 @@ export function createCharacterVisual(assets, kind, variant = 0) {
   model.add(root);
   const holder = new THREE.Group();
   holder.add(model);
-  const materials = new Map(),ownsMaterials=!['guard','shieldCop','batonCop'].includes(kind);
+  const materials = new Map(),ownsMaterials=!['guard','shieldCop','batonCop','gunCop'].includes(kind);
   const meshes = [],skeletons=[];
   root.traverse(node => {
     if (!node.isMesh) return;

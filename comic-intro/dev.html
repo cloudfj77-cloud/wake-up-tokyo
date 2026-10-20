@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>动图对位 · 开发者调整页</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #17141c; color: #f4f0e6; font: 13px/1.6 "PingFang SC", "Microsoft YaHei", sans-serif;
+         display: flex; flex-direction: column; align-items: center; padding: 14px; min-height: 100vh; }
+  h1 { font-size: 15px; letter-spacing: 3px; font-weight: 600; margin-bottom: 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; margin-bottom: 10px; }
+  button, select, input {
+    background: #292332; color: #f4f0e6; border: 1px solid #4a4458; border-radius: 6px;
+    padding: 5px 10px; font-size: 12px; cursor: pointer;
+  }
+  button.primary { background: #ffd065; color: #292332; font-weight: 700; border-color: #a87f1e; }
+  input[type=number] { width: 76px; cursor: text; }
+  label { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; opacity: .85; }
+  .stage { position: relative; height: min(60dvh, calc(96vw * 905 / 1080)); width: auto; max-width: 100vw;
+           aspect-ratio: 1080 / 905; background: #f2eee4;
+           overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  .stage img.piece { position: absolute; }
+  .stage img.piece.ref { opacity: .18; }
+  .handle { position: absolute; border: 2px dashed #ffd065; box-sizing: border-box; }
+  .handle .knob { position: absolute; right: 0; bottom: 0; width: 24px; height: 24px; border-radius: 4px;
+                  background: #ffd065; border: 3px solid #292332; cursor: nwse-resize; z-index: 5; }
+  .handle .knob::after { content: ""; position: absolute; inset: 6px; border-right: 2px solid #292332;
+                         border-bottom: 2px solid #292332; }
+  .handle video { position: absolute; display: block; pointer-events: none; }
+  .outline { position: absolute; outline: 1px dashed rgba(255,77,109,.8); outline-offset: -1px; pointer-events: none; }
+  .tip { font-size: 12px; opacity: .6; text-align: center; max-width: 900px; margin-top: 10px; }
+</style>
+</head>
+<body>
+  <h1>动图对位 · 开发者调整页</h1>
+
+  <div class="row">
+    <label>页 <select id="page"></select></label>
+    <label>动图 <select id="clipSel"></select></label>
+    <label>对齐到 <select id="snapTo"></select></label>
+    <button id="playBtn">⏯ 播放 / 暂停</button>
+    <button id="resetBtn">↺ 复位</button>
+  </div>
+
+  <div class="row">
+    <label>x <input type="number" id="x" step="0.01"></label>
+    <label>y <input type="number" id="y" step="0.01"></label>
+    <label>宽 <input type="number" id="w" step="0.01"></label>
+    <label>高 <input type="number" id="h" step="0.01"></label>
+    <label>缩放 <input type="range" id="zoom" min="20" max="220" value="100" style="width:130px"><span id="zoomVal">100%</span></label>
+    <label>铺法 <select id="fit"><option value="cover">cover 裁切铺满</option><option value="contain">contain 完整显示</option><option value="fill">fill 拉伸</option></select></label>
+    <label>z <input type="number" id="z" step="1" style="width:56px"></label>
+  </div>
+
+  <div class="row">
+    <label>裁切区 x <input type="number" id="cx" step="0.001" min="0" max="1"></label>
+    <label>y <input type="number" id="cy" step="0.001" min="0" max="1"></label>
+    <label>宽 <input type="number" id="cw" step="0.001" min="0" max="1"></label>
+    <label>高 <input type="number" id="ch" step="0.001" min="0" max="1"></label>
+    <button id="autoCrop">🔍 自动识别内容区</button>
+    <button id="autoPoly">🔲 自动识别斜边轮廓</button>
+    <label>轮廓 <input id="poly" size="40" placeholder="[[x,y]...] 百分比"></label>
+    <span style="opacity:.6">（视频是整页画布时，只取有内容的那块）</span>
+  </div>
+
+  <div class="row">
+    <label>动图不透明度 <input type="range" id="op" min="20" max="100" value="100" style="width:120px"><span id="opVal">100%</span></label>
+    <label>时间轴 <input type="range" id="seek" min="0" max="100" value="0" style="width:180px"><span id="seekVal">0.00s</span></label>
+    <label>微调步长 <select id="step"><option value="0.02">0.02%</option><option value="0.1" selected>0.1%</option><option value="0.5">0.5%</option><option value="2">2%</option></select></label>
+    <label><input type="checkbox" id="showPieces" checked> 显示格子</label>
+    <label><input type="checkbox" id="showRef"> 显示原图</label>
+  </div>
+
+  <div class="row">
+    <label>出场顺序 <span style="opacity:.6">（↑↓ 调整，07 这类页边剩料是底图，不参与）</span></label>
+  </div>
+  <div class="row" id="orderBox" style="flex-direction:column;align-items:stretch;max-width:720px"></div>
+
+  <div class="row">
+    <button id="previewBtn">▶ 试播这一页</button>
+    <button id="copyBtn">复制 JSON 片段</button>
+    <button id="saveBtn" class="primary">⭳ 下载 page JSON</button>
+    <span id="msg" style="font-size:12px;color:#d7ff59"></span>
+  </div>
+
+  <div class="stage" id="stage">
+    <img class="piece ref" id="ref" alt="" />
+    <div class="handle" id="handle"><video id="video" muted loop playsinline></video><div class="knob"></div></div>
+  </div>
+
+  <p class="tip">
+    直接拖动黄框移动、拖右下角方块缩放；也可以改上面的数值（单位：占本页宽/高的百分比）。<br />
+    调好后点「⭳ 下载 page JSON」，把下载到的文件放进 <code>wake-up-tokyo/public/comic/</code> 覆盖同名文件即可；位置会存到本地，下次打开还在。
+  </p>
+
+<script type="module">
+import {comicReadingOrder,applyComicOrder,measureComicFill} from '../comic-intro.js';
+
+const ASSET = '../public/comic/';
+const PAGES = [{ id: 'page1', img: './act1-the-loop.png' }, { id: 'page2', img: './act2.png' }];
+const $ = id => document.getElementById(id);
+const stage = $('stage'), ref = $('ref'), handle = $('handle'), video = $('video'), knob = document.querySelector('.knob');
+let data = null, pageId = 'page1', panels = [], clipIndex = 0;
+
+$('page').innerHTML = PAGES.map(p => `<option value="${p.id}">${p.id}</option>`).join('');
+$('page').onchange = () => loadPage($('page').value);
+
+async function loadPage(id) {
+  pageId = id;
+  const page = PAGES.find(p => p.id === id);
+  data = await fetch(ASSET + id + '.json').then(r => r.ok ? r.json() : null).catch(() => null);
+  if (!data) { $('msg').textContent = '没找到 ' + id + '.json'; return; }
+  ref.src = page.img;
+  stage.style.aspectRatio = `${data.width} / ${data.height}`;
+  stage.querySelectorAll('img.piece:not(.ref), .outline').forEach(el => el.remove());
+
+  // 参考用的格子影像（半透明）与边框
+  data.pieces = await measureComicFill(data.pieces, ASSET);
+  panels = comicReadingOrder(data.pieces.filter(p => !isBase(p)));
+  for (const p of data.pieces) {
+    const img = document.createElement('img');
+    img.className = 'piece';
+    img.src = ASSET + String(p.src).replace(/^\.?\//, '');
+    img.style.cssText = `left:${p.x}%;top:${p.y}%;width:${p.w}%;height:${p.h}%;opacity:.9`;
+    stage.insertBefore(img, handle);
+  }
+  for (const p of panels) {
+    const box = document.createElement('div');
+    box.className = 'outline';
+    box.style.cssText = `left:${p.x}%;top:${p.y}%;width:${p.w}%;height:${p.h}%`;
+    box.dataset.src = p.src;
+    stage.insertBefore(box, handle);
+  }
+  $('snapTo').innerHTML = '<option value="">—</option>' +
+    panels.map((p, i) => `<option value="${i}">第 ${i + 1} 格 · ${String(p.src).split('/').pop()}</option>`).join('');
+
+  const clips = data.clips || [];
+  if (!clips.length) { clips.push({ src: id + '/panel01.mp4', x: 0, y: 0, w: 30, h: 20, panel: 0, z: 1, loop: true, fit: 'cover' }); data.clips = clips; }
+  $('clipSel').innerHTML = clips.map((c, i) => `<option value="${i}">${String(c.src).split('/').pop()}</option>`).join('');
+  clipIndex = 0;
+  const savedOrder = localStorage.getItem('comicOrder:' + id);
+  if (savedOrder) { try { data.order = JSON.parse(savedOrder); } catch (e) {} }
+  const saved = localStorage.getItem('comicClip:' + id);
+  if (saved) { try { Object.assign(clips[0], JSON.parse(saved)); } catch (e) {} }
+  applyClip();
+  await renderOrder();
+}
+
+function applyClip() {
+  const clip = data.clips[clipIndex];
+  $('x').value = clip.x.toFixed(2); $('y').value = clip.y.toFixed(2);
+  $('w').value = clip.w.toFixed(2); $('h').value = clip.h.toFixed(2);
+  $('z').value = clip.z ?? 1;
+  const fit = clip.fit || (clip.crop ? 'fill' : 'cover');
+  $('fit').value = fit;
+  handle.style.cssText = `left:${clip.x}%;top:${clip.y}%;width:${clip.w}%;height:${clip.h}%;z-index:${30 + (clip.z ?? 1)}`;
+  video.style.objectFit = fit;
+  const c = clip.crop || { x: 0, y: 0, w: 1, h: 1 };
+  $('cx').value = c.x; $('cy').value = c.y; $('cw').value = c.w; $('ch').value = c.h;
+  if (clip.crop && c.w > 0 && c.h > 0) {
+    video.style.width = (100 / c.w) + '%';
+    video.style.height = (100 / c.h) + '%';
+    video.style.left = (-c.x / c.w * 100) + '%';
+    video.style.top = (-c.y / c.h * 100) + '%';
+  } else {
+    video.style.width = '100%'; video.style.height = '100%';
+    video.style.left = '0px'; video.style.top = '0px';
+  }
+  const poly = Array.isArray(clip.poly) && clip.poly.length >= 3 ? clip.poly : null;
+  // 轮廓裁切只作用在视频上；加在黄框上会把右下角的缩放把手一起裁掉
+  video.style.clipPath = poly ? 'polygon(' + poly.map(q => q[0] + '% ' + q[1] + '%').join(', ') + ')' : 'none';
+  $('poly').value = poly ? JSON.stringify(poly) : '';
+  handle.style.opacity = (+$('op').value || 100) / 100;
+  const want = ASSET + String(clip.src).replace(/^\.?\//, '');
+  if (!video.src.endsWith(String(clip.src).replace(/^\.?\//, ''))) video.src = want;
+  $('msg').textContent = '';
+}
+
+function readInputs() {
+  const clip = data.clips[clipIndex];
+  clip.x = +$('x').value || 0; clip.y = +$('y').value || 0;
+  clip.w = +$('w').value || 1; clip.h = +$('h').value || 1;
+  if (typeof zoomBase !== 'undefined') zoomBase = null;
+  clip.z = +$('z').value || 1; clip.fit = $('fit').value;
+  const cw = +$('cw').value, ch = +$('ch').value;
+  if (cw > 0 && ch > 0 && (cw < 1 || ch < 1 || +$('cx').value || +$('cy').value)) {
+    clip.crop = { x: +$('cx').value || 0, y: +$('cy').value || 0, w: cw, h: ch };
+  } else delete clip.crop;
+  applyClip();
+  localStorage.setItem('comicClip:' + pageId, JSON.stringify(clip));
+}
+for (const id of ['x', 'y', 'w', 'h', 'z', 'fit', 'cx', 'cy', 'cw', 'ch']) $(id).oninput = $(id).onchange = readInputs;
+$('poly').onchange = () => {
+  try {
+    const v = JSON.parse($('poly').value);
+    if (Array.isArray(v) && v.length >= 3) data.clips[clipIndex].poly = v; else delete data.clips[clipIndex].poly;
+  } catch (e) {}
+  applyClip();
+  localStorage.setItem('comicClip:' + pageId, JSON.stringify(data.clips[clipIndex]));
+};
+
+/* 拖动移动 / 右下角缩放 */
+let drag = null;
+const pct = e => {
+  const r = stage.getBoundingClientRect();
+  return { x: (e.clientX - r.left) / r.width * 100, y: (e.clientY - r.top) / r.height * 100 };
+};
+function beginDrag(kind, e, target) {
+  const p = pct(e), clip = data.clips[clipIndex];
+  drag = { kind, px: p.x, py: p.y, x0: clip.x, y0: clip.y, w0: clip.w, h0: clip.h };
+  try { target.setPointerCapture(e.pointerId); } catch (err) {}
+  e.preventDefault();
+}
+handle.addEventListener('pointerdown', e => { if (e.target !== knob) beginDrag('move', e, handle); });
+knob.addEventListener('pointerdown', e => { e.stopPropagation(); beginDrag('size', e, knob); });
+
+window.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const p = pct(e), clip = data.clips[clipIndex];
+  if (drag.kind === 'move') {
+    clip.x = +Math.max(-20, Math.min(120, drag.x0 + (p.x - drag.px))).toFixed(2);
+    clip.y = +Math.max(-20, Math.min(120, drag.y0 + (p.y - drag.py))).toFixed(2);
+  } else {
+    clip.w = +Math.max(.5, drag.w0 + (p.x - drag.px)).toFixed(2);
+    clip.h = +Math.max(.5, drag.h0 + (p.y - drag.py)).toFixed(2);
+  }
+  applyClip();
+});
+window.__clipDebug = () => ({ drag: drag ? { ...drag } : null, clip: data ? data.clips[clipIndex] : null });
+
+window.addEventListener('pointerup', () => {
+  if (!drag) return;
+  drag = null;
+  localStorage.setItem('comicClip:' + pageId, JSON.stringify(data.clips[clipIndex]));
+  $('msg').textContent = '已记录位置（记得下载 page JSON 覆盖）';
+});
+
+/* 方向键微调：↑↓←→ 移动，Shift + 方向键改大小 */
+window.addEventListener('keydown', e => {
+  if (['INPUT', 'SELECT', 'TEXTAREA'].includes((e.target.tagName || ''))) return;
+  if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+  const clip = data.clips[clipIndex], step = +$('step').value || .1;
+  if (e.key === 'ArrowLeft') clip.x = +(clip.x - step).toFixed(2);
+  if (e.key === 'ArrowRight') clip.x = +(clip.x + step).toFixed(2);
+  if (e.key === 'ArrowUp') clip.y = +(clip.y - step).toFixed(2);
+  if (e.key === 'ArrowDown') clip.y = +(clip.y + step).toFixed(2);
+  if (e.shiftKey) {
+    if (e.key === 'ArrowLeft') clip.w = +Math.max(.5, clip.w - step).toFixed(2);
+    if (e.key === 'ArrowRight') clip.w = +Math.max(.5, clip.w + step).toFixed(2);
+    if (e.key === 'ArrowUp') clip.h = +Math.max(.5, clip.h - step).toFixed(2);
+    if (e.key === 'ArrowDown') clip.h = +Math.max(.5, clip.h + step).toFixed(2);
+  }
+  e.preventDefault();
+  applyClip();
+  localStorage.setItem('comicClip:' + pageId, JSON.stringify(clip));
+});
+
+$('autoCrop').onclick = () => {
+  try {
+    const v = video;
+    if (!v.videoWidth) { $('msg').textContent = '视频还没加载完，稍等再试'; return; }
+    const cv = document.createElement('canvas');
+    cv.width = Math.min(640, v.videoWidth); cv.height = Math.round(cv.width * v.videoHeight / v.videoWidth);
+    const g = cv.getContext('2d', { willReadFrequently: true });
+    g.drawImage(v, 0, 0, cv.width, cv.height);
+    const d = g.getImageData(0, 0, cv.width, cv.height).data;
+    let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
+    for (let y = 0; y < cv.height; y++) for (let x = 0; x < cv.width; x++) {
+      const i = (y * cv.width + x) * 4;
+      const lum = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+      if (lum > 45) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    if (x1 < 0) { $('msg').textContent = '没找到亮内容，试试手动填裁切'; return; }
+    const clip = data.clips[clipIndex];
+    clip.crop = { x: +(x0 / cv.width).toFixed(4), y: +(y0 / cv.height).toFixed(4),
+                  w: +((x1 - x0 + 1) / cv.width).toFixed(4), h: +((y1 - y0 + 1) / cv.height).toFixed(4) };
+    applyClip();
+    localStorage.setItem('comicClip:' + pageId, JSON.stringify(clip));
+    $('msg').textContent = '已识别内容区 ' + JSON.stringify(clip.crop);
+  } catch (e) { $('msg').textContent = '识别失败：' + e.message; }
+};
+
+/* 缩放滑块：以当前宽高为 100% 基准等比缩放；滚轮在黄框上也能缩放 */
+let zoomBase = null;
+$('zoom').oninput = () => {
+  const clip = data.clips[clipIndex];
+  if (!zoomBase) zoomBase = { w: clip.w, h: clip.h };
+  const k = (+$('zoom').value || 100) / 100;
+  clip.w = +(zoomBase.w * k).toFixed(2);
+  clip.h = +(zoomBase.h * k).toFixed(2);
+  $('zoomVal').textContent = $('zoom').value + '%';
+  applyClip();
+  localStorage.setItem('comicClip:' + pageId, JSON.stringify(clip));
+};
+handle.addEventListener('wheel', e => {
+  e.preventDefault();
+  const clip = data.clips[clipIndex], k = e.deltaY > 0 ? 0.98 : 1.02;
+  clip.w = +Math.max(.5, clip.w * k).toFixed(2);
+  clip.h = +Math.max(.5, clip.h * k).toFixed(2);
+  zoomBase = null;
+  applyClip();
+  localStorage.setItem('comicClip:' + pageId, JSON.stringify(clip));
+}, { passive: false });
+
+$('op').oninput = () => { $('opVal').textContent = $('op').value + '%'; handle.style.opacity = (+$('op').value || 100) / 100; };
+$('seek').oninput = () => {
+  if (!video.duration) return;
+  video.pause();
+  video.currentTime = video.duration * (+$('seek').value / 100);
+  $('seekVal').textContent = video.currentTime.toFixed(2) + 's';
+};
+video.addEventListener('loadedmetadata', () => {
+  $('seek').max = 100;
+  $('seekVal').textContent = '0.00s';
+});
+video.addEventListener('timeupdate', () => {
+  if (!video.duration) return;
+  $('seek').value = Math.round(video.currentTime / video.duration * 100);
+  $('seekVal').textContent = video.currentTime.toFixed(2) + 's';
+});
+$('showPieces').onchange = () => {
+  const on = $('showPieces').checked;
+  stage.querySelectorAll('img.piece').forEach(el => { el.style.display = on ? '' : 'none'; });
+};
+$('showRef').onchange = () => { ref.style.opacity = $('showRef').checked ? .35 : 0; };
+
+$('autoPoly').onclick = () => {
+  try {
+    const v = video;
+    if (!v.videoWidth) { $('msg').textContent = '视频还没加载完，稍等再试'; return; }
+    const cv = document.createElement('canvas');
+    cv.width = 640; cv.height = Math.round(cv.width * v.videoHeight / v.videoWidth);
+    const g = cv.getContext('2d', { willReadFrequently: true });
+    g.drawImage(v, 0, 0, cv.width, cv.height);
+    const c = data.clips[clipIndex].crop || { x: 0, y: 0, w: 1, h: 1 };
+    const sx = Math.round(c.x * cv.width), sy = Math.round(c.y * cv.height);
+    const sw = Math.max(1, Math.round(c.w * cv.width)), sh = Math.max(1, Math.round(c.h * cv.height));
+    const d = g.getImageData(sx, sy, sw, sh).data;
+    const rows = [];
+    for (let y = 0; y < sh; y++) {
+      let lo = -1, hi = -1, cnt = 0;
+      for (let x = 0; x < sw; x++) {
+        const i = (y * sw + x) * 4;
+        const lum = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+        if (lum > 45) { if (lo < 0) lo = x; hi = x; cnt++; }
+      }
+      rows.push(cnt > sw * 0.2 ? [lo, hi] : null);
+    }
+    const valid = rows.map((r, i) => r ? i : -1).filter(i => i >= 0);
+    if (!valid.length) { $('msg').textContent = '没找到内容，先确认裁切区'; return; }
+    const top = valid[0], bottom = valid[valid.length - 1];
+    const fit = pick => {
+      const xs = valid.map(i => pick(rows[i])), ys = valid.slice();
+      const n = xs.length;
+      const mx = ys.reduce((a, b) => a + b, 0) / n, my = xs.reduce((a, b) => a + b, 0) / n;
+      let num = 0, den = 0;
+      for (let k = 0; k < n; k++) { num += (ys[k] - mx) * (xs[k] - my); den += (ys[k] - mx) ** 2; }
+      const slope = den ? num / den : 0;
+      const at = y => my + slope * (y - mx);
+      return [at(top), at(bottom)];
+    };
+    const [lt, lb] = fit(r => r[0]);
+    const [rt, rb] = fit(r => r[1]);
+    const poly = [[+(lt / sw * 100).toFixed(2), +(top / sh * 100).toFixed(2)],
+                  [+(rt / sw * 100).toFixed(2), +(top / sh * 100).toFixed(2)],
+                  [+(rb / sw * 100).toFixed(2), +(bottom / sh * 100).toFixed(2)],
+                  [+(lb / sw * 100).toFixed(2), +(bottom / sh * 100).toFixed(2)]];
+    const clip = data.clips[clipIndex];
+    clip.poly = poly;
+    applyClip();
+    localStorage.setItem('comicClip:' + pageId, JSON.stringify(clip));
+    $('msg').textContent = '已识别轮廓 ' + JSON.stringify(poly);
+  } catch (e) { $('msg').textContent = '识别失败：' + e.message; }
+};
+
+$('snapTo').onchange = () => {
+  const i = +$('snapTo').value;
+  if (!panels[i]) return;
+  const p = panels[i], clip = data.clips[clipIndex];
+  Object.assign(clip, { x: p.x, y: p.y, w: p.w, h: p.h });
+  applyClip();
+  localStorage.setItem('comicClip:' + pageId, JSON.stringify(clip));
+};
+$('resetBtn').onclick = () => { localStorage.removeItem('comicClip:' + pageId); loadPage(pageId); };
+$('playBtn').onclick = () => { if (video.paused) video.play().catch(() => {}); else video.pause(); };
+
+/* ---- 出场顺序：列出画面格，↑↓ 调整，写进 data.order ---- */
+function orderList() {
+  const panels = comicReadingOrder(data.pieces.filter(p => !isBase(p)));
+  const merged = applyComicOrder(panels, data.order);
+  return merged;
+}
+function isBase(p) { return typeof p.fill === 'number' ? p.fill < 0.35 : false; }
+
+async function renderOrder() {
+  const list = orderList();
+  const box = $('orderBox');
+  box.innerHTML = '';
+  list.forEach((p, i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:4px';
+    row.innerHTML = `<span style="width:26px;color:#ffd065">${i + 1}</span>`
+      + `<span style="flex:1">${String(p.src).split('/').pop()}</span>`
+      + `<span style="opacity:.6">x ${p.x.toFixed(0)}% · y ${p.y.toFixed(0)}% · ${(p.w * p.h / 100).toFixed(0)}% 面积</span>`
+      + `<button data-up="${i}">↑</button><button data-down="${i}">↓</button>`;
+    box.appendChild(row);
+  });
+  box.querySelectorAll('button').forEach(btn => {
+    btn.onclick = () => {
+      const i = +btn.dataset.up;
+      const j = btn.dataset.up != null ? i - 1 : i + 1;
+      const names = orderList().map(p => String(p.src).split('/').pop());
+      if (j < 0 || j >= names.length) return;
+      [names[i], names[j]] = [names[j], names[i]];
+      data.order = names;
+      localStorage.setItem('comicOrder:' + pageId, JSON.stringify(names));
+      renderOrder();
+    };
+  });
+}
+
+$('previewBtn').onclick = async () => {
+  const { playComicIntro, resetComicIntro } = await import('../comic-intro.js');
+  resetComicIntro();
+  const copy = JSON.parse(JSON.stringify(data));
+  await playComicIntro(document, { pages: [copy], assetBase: ASSET });
+};
+
+$('copyBtn').onclick = async () => {
+  const text = JSON.stringify({ clips: data.clips }, null, 2);
+  try { await navigator.clipboard.writeText(text); $('msg').textContent = '已复制 clips 片段'; }
+  catch (e) { $('msg').textContent = text; }
+};
+$('saveBtn').onclick = () => {
+  const blob = new Blob([JSON.stringify(data, null, 2) + '\n'], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = pageId + '.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  $('msg').textContent = '已下载 ' + pageId + '.json，放进 public/comic/ 覆盖即可';
+};
+
+loadPage('page1').then(() => {
+  setTimeout(() => document.getElementById('stage').scrollIntoView({ block: 'center' }), 300);
+});
+</script>
+</body>
+</html>

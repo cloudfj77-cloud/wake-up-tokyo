@@ -19,14 +19,15 @@ function fixture(){
   parent.position.y=.5;bone.name=name;bone.position.y=.1;parent.add(bone);scene.add(parent);
  }
  const asset=prepareCharacterAsset({scene,animations:[new T.AnimationClip('idle',1,[])]});
- const shield=new T.Group(),baton=new T.Group();shield.name='shield';baton.name='baton';
- const assets={infectedCop:asset,shieldCop:asset,batonCop:asset,guard:asset,props:{shield,baton}};
+ const shield=new T.Group(),baton=new T.Group(),gun=new T.Group();
+ shield.name='shield';baton.name='baton';gun.name='gun';
+ const assets={infectedCop:asset,shieldCop:asset,batonCop:asset,gunCop:asset,guard:asset,props:{shield,baton,gun}};
  const visuals=new Map(),units=[];
  const ctx=vm.createContext({T,assets,visuals,units});
  vm.runInContext(propCode+'\nthis.attach=attachCopProp;this.refresh=refreshCopProps;',ctx);
  return {assets,visuals,units,attach:ctx.attach,refresh:ctx.refresh};
 }
-const propCount=v=>{let count=0;v.root.traverse(n=>{if(n.name==='shield'||n.name==='baton')count++;});return count;};
+const propCount=v=>{let count=0;v.root.traverse(n=>{if(n.name==='shield'||n.name==='baton'||n.name==='gun')count++;});return count;};
 
 test('recycled infected police take the current soldier weapon in both directions',()=>{
  const f=fixture();
@@ -45,6 +46,30 @@ test('recycled infected police take the current soldier weapon in both direction
    assert.equal(propCount(b),1,'attach only one weapon');
    releaseCharacterVisual(b);
   }
+ }finally{clearCharacterPool();}
+});
+
+test('gun police carry the black gun on the borrowed shield model, guards do not',()=>{
+ const f=fixture();
+ try{
+  for(const type of [2,6]){
+   clearCharacterPool();
+   const v=acquireCharacterVisual(f.assets,'gunCop');
+   setCharacterKind(v,'enemy');f.attach(v,{type,kind:'enemy',converted:false});
+   assert.equal(v.userData.propMesh?.name,'gun','type '+type+' 感染前也要拿枪');
+   assert.equal(propCount(v),1);
+   const enemyMesh=v.userData.propMesh;
+   f.attach(v,{type,kind:'ally',converted:true});
+   assert.equal(v.userData.propMesh?.name,'gun','转化后仍然拿枪');
+   assert.equal(v.userData.propMesh,enemyMesh,'同兵种换阵营时复用同一把枪，不重建');
+   assert.ok(enemyMesh.parent,'枪还挂在手上');
+   assert.equal(propCount(v),1);
+   releaseCharacterVisual(v);
+  }
+  const guard=acquireCharacterVisual(f.assets,'gunCop');
+  setCharacterKind(guard,'ally');f.attach(guard,{type:2,kind:'ally',converted:true,guard:true});
+  assert.equal(propCount(guard),0,'召唤的护卫不拿枪');
+  releaseCharacterVisual(guard);
  }finally{clearCharacterPool();}
 });
 
