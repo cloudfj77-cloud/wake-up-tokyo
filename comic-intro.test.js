@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
 import {comicReadingOrder,comicIntroSequence,comicIntroTimeline,COMIC_INTRO_BASE_FILL,COMIC_INTRO_MIN_GAP,COMIC_INTRO_SIZE_GAP} from './comic-intro.js';
 
 const panel=(src,x,y,w=40,h=30,fill=.9)=>({src,x,y,w,h,fill,cx:x+w/2,cy:y+h/2});
@@ -76,4 +77,46 @@ test('已入版的分镜保持验收时的出场顺序',()=>{
  assert.deepEqual(base.map(stem),['01-panel']);
  assert.deepEqual(comicReadingOrder(panels).map(stem),
   ['03-panel','02-panel','05-panel','04-panel','06-panel','07-panel']);
+});
+
+function startFixture(){
+ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
+ const begin=source.indexOf('async function start(');
+ const snippet=source.slice(begin,source.indexOf("$('start').onclick",begin));
+ let finishIntro;
+ const intro=new Promise(resolve=>{finishIntro=resolve;});
+ const calls={intro:0,music:0},menu={hidden:false},hud={hidden:true};
+ const context=vm.createContext({
+  assets:{},starting:false,state:{time:0,infected:0,pending:0},conversionCount:0,
+  document:{},playComicIntro:()=>{calls.intro++;return intro;},
+  loadSaved:()=>null,music:{start:async()=>{calls.music++;}},
+  playerVisual:{holder:{rotation:{y:0}}},yaw:0,
+  $:id=>({menu,hud})[id],mode:'menu',
+  combatUI:{baseline:()=>{}},units:[],player:{},boss:{},toast:()=>{},
+ });
+ vm.runInContext(snippet,context);
+ return {context,calls,finishIntro,menu,hud};
+}
+
+test('开场未结束时重复开始不能提前进入游戏，也不会启动第二次开场',async()=>{
+ const f=startFixture();
+ const first=f.context.start();
+ await f.context.start();
+ assert.equal(f.calls.intro,1);
+ assert.equal(f.calls.music,0);
+ assert.equal(f.context.mode,'menu');
+ assert.equal(f.menu.hidden,false);
+ f.finishIntro();await first;
+ assert.equal(f.calls.music,1);
+ assert.equal(f.context.mode,'playing');
+ assert.equal(f.menu.hidden,true);
+ assert.equal(f.hud.hidden,false);
+});
+
+test('继续存档直接进入游戏，不等待新开局漫画',async()=>{
+ const f=startFixture();
+ await f.context.start(true);
+ assert.equal(f.calls.intro,0);
+ assert.equal(f.calls.music,1);
+ assert.equal(f.context.mode,'playing');
 });

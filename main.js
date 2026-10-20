@@ -962,8 +962,25 @@ function restore(saved){state=saved.state;state.sprinting=false;state.sprintExha
  const actorIds=new Set();for(const u of units){if(!Number.isSafeInteger(u.id)||actorIds.has(u.id))u.id=nextActorId++;actorIds.add(u.id);}
  for(const id of sprayMarkers.keys())disposeActorWarning(sprayMarkers,id);for(const id of chargeMarkers.keys())disposeActorWarning(chargeMarkers,id);
  player=saved.player;player.roll=0;player.vy=0;player.knock=0;yaw=saved.yaw;pitch=saved.pitch;cameraDistance=T.MathUtils.clamp(saved.cameraDistance??2.7,1.9,4.5);attackCd=saved.attackCd;breakCd=saved.breakCd;rushCd=saved.rushCd;reinforceTimer=saved.reinforceTimer;reinforceDirection=saved.reinforceDirection;totalReinforcements=saved.totalReinforcements;alerted=saved.alerted;state.weaponOrder??=[];if(state.bossCountdown!=null||state.weakenTasks)world.spawnWeakenSites();spawnQueue.jobs.length=0;spawnQueue.wait=0;recentSpawnPoints.length=0;for(const a of visuals.values()){if(a.v.aura){removeAura(a.v.aura);a.v.aura=null;}releaseCharacterVisual(a.v);}visuals.clear();saved.objects.forEach((o,i)=>{const w=world.destructibles[i];w.hp=o.hp;w.dead=o.dead;w.g.visible=!o.dead;if(w.instances){const d=new T.Object3D();d.scale.setScalar(0);d.updateMatrix();for(const ix of o.removed){w.removed.add(ix);w.instances.setMatrixAt(ix,d.matrix);}w.instances.instanceMatrix.needsUpdate=true;}});}
-async function start(continuing=false){if(!assets)return;if(continuing){const s=loadSaved();if(s)restore(s);}else if(state.time>0){location.reload();return;}conversionCount=state.infected;// 新开一局先放开场分镜；点任意处或按 Esc / 空格跳过，读档继续不重播。
- if(!continuing)await playComicIntro(document,{pages:['./comic/page1.json','./comic/page2.json','./comic/page3.json']});await music.start();playerVisual.holder.rotation.y=yaw;$('menu').hidden=true;$('hud').hidden=false;mode='playing';combatUI.baseline(units,state,player,boss);if(state.pending)chooseUpgrade();else toast('WASD 移动 · 短按 Shift 闪避 / 长按奔跑 · 左键轻击 · 右键重击 · 空格跳跃',4);}
+let starting=false;
+async function start(continuing=false){
+ if(!assets||starting)return;
+ // 分镜载入和播放期间只允许一次开始操作，防止连按回车绕过开场。
+ starting=true;
+ try{
+  if(continuing){const s=loadSaved();if(s)restore(s);}
+  else if(state.time>0){location.reload();return;}
+  conversionCount=state.infected;
+  // 新开局完整播放三页分镜；读档继续不重播。
+  if(!continuing)await playComicIntro(document,{pages:['./comic/page1.json','./comic/page2.json','./comic/page3.json']});
+  await music.start();
+  playerVisual.holder.rotation.y=yaw;
+  $('menu').hidden=true;$('hud').hidden=false;mode='playing';
+  combatUI.baseline(units,state,player,boss);
+  if(state.pending)chooseUpgrade();
+  else toast('WASD 移动 · 短按 Shift 闪避 / 长按奔跑 · 左键轻击 · 右键重击 · 空格跳跃',4);
+ }finally{starting=false;}
+}
 $('start').onclick=()=>{captureView();void start();};$('continue').onclick=()=>{captureView();void start(true);};
 // 暂停和地图保留音乐位置；选卡降低音乐音量。
 function togglePause(){if(mode==='map'){toggleMap();return;}if(mode==='playing'){mode='paused';music.pause();music.effect('uiOpen');saveRun();showDialog(`<div class="eyebrow">SIMULATION PAUSED</div><h2>东京，暂时静止。</h2><p>街区进度自动保存；Boss 战从进场前存档重试。所有战斗计时已暂停。</p><div class="controlTable">进入游戏后鼠标隐藏并转向，Esc 暂停后显示鼠标；未锁定时可右键拖动<br>左键 / J 轻击 · 右键 / K 重击 · 空格跳跃 · 短按 Shift 闪避 / 长按奔跑 · C 蹲伏<br>1 徒手 · 2 起按点出顺序切换枪械和注射器 · R 装填 · F 号令召集 / 解散 · Tab 地图<br>两下轻击即可叫醒打工人；持盾特警正面伤害减半。<br>空气传播 Lv2 可转化尸体；敌方净化士兵在 10 米内每 0.5 秒清除 2 点感染，多人不叠加。喷雾会先亮出扇形预警约 1 秒，再至少喷 2 秒。敌方攻击是红色警示，我方攻击是紫色。掷弹兵每秒投一枚空中炸弹，落地前地面会亮圈，2 米内 50 点伤害。持盾特警会短蓄力后向前冲，撞上会打伤并把玩家和我方单位击飞 1 秒。警戒升到新阶段时，秩序方会用英语呼叫增援，屏幕会同步显示中文字幕。军事介入和 Boss 战时，头顶会有一架飞机盘旋投弹，也会俯冲扫射。扫射前地面先亮出弹道。这架飞机有血，主角的强化炮弹打中会把它击落，飞机接着坠毁。军事介入还会派出坦克，消耗权重 40，炮弹落地前地面会亮圈。坦克开过时，敌方步兵会被挤开，玩家和我方部队会被撞飞并扣 60 点血。闪避的无敌时间里撞不上。坦克没有感染值，也不会被击飞、定身或减速。</div><button class="action" id="resume">继续觉醒 ↗</button><button class="action secondary" id="pauseSettings">设置</button><button class="action secondary" id="endRun">结束并复盘</button>`);$('resume').onclick=togglePause;$('pauseSettings').onclick=()=>settingsDialog('paused');$('endRun').onclick=()=>finish('ended');}else if(mode==='paused'){hideDialog();mode='playing';music.resume();music.effect('uiClose');captureView();}}

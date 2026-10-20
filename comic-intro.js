@@ -121,8 +121,6 @@ const COMIC_INTRO_CSS = `
   background:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0deg 3.2deg,rgba(41,35,50,.15) 3.2deg 3.6deg);
   mask-image:radial-gradient(circle,transparent 30%,#000 75%);-webkit-mask-image:radial-gradient(circle,transparent 30%,#000 75%)}
 @keyframes comicLinesFlash{0%{opacity:0;transform:scale(.7) rotate(-6deg)}25%{opacity:1}100%{opacity:0;transform:scale(1.25) rotate(4deg)}}
-.comicHint{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);color:#f4f0e6;opacity:.55;
-  font-size:12px;letter-spacing:4px;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.comicIntro *{animation-duration:.01ms!important}}
 `;
 
@@ -130,10 +128,9 @@ let introPlayed = false;
 export function comicIntroPlayed() { return introPlayed; }
 export function resetComicIntro() { introPlayed = false; }
 
-/* 播放开场分镜；按 pages 顺序连播，返回 Promise，播完或被跳过时 resolve。 */
+/* 新开局必须完整播放分镜；按 pages 顺序连播，全部播完后 resolve。 */
 export async function playComicIntro(doc = document, options = {}) {
-  const { pages = ['./comic/page1.json'], assetBase = './comic/', lead, minGap, sizeGap,
-    hint = '点击任意处跳过', onPanel = null } = options;
+  const { pages = ['./comic/page1.json'], assetBase = './comic/', lead, minGap, sizeGap, onPanel = null } = options;
   if (introPlayed) return false;
   introPlayed = true;
 
@@ -154,28 +151,13 @@ export async function playComicIntro(doc = document, options = {}) {
   }
   const root = doc.createElement('div');
   root.className = 'comicIntro';
-  root.innerHTML = '<div class="comicStage"><div class="comicLines"></div></div>' +
-    `<small class="comicHint">${hint}</small>`;
+  root.innerHTML = '<div class="comicStage"><div class="comicLines"></div></div>';
   const stageEl = root.querySelector('.comicStage');
   const lines = root.querySelector('.comicLines');
   host.appendChild(root);
 
-  let skipped = false;
-  let timers = [];
-  const finish = () => {
-    skipped = true;
-    timers.forEach(clearTimeout);
-    timers = [];
-    root.classList.add('done');
-    root.classList.add('closing');
-    setTimeout(() => root.remove(), 380);
-  };
-  const skip = () => finish();
-  root.addEventListener('pointerdown', skip);
-  const onKey = e => { if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); skip(); } };
-  doc.addEventListener('keydown', onKey);
-
-  for (let pageIndex = 0; pageIndex < loaded.length && !skipped; pageIndex++) {
+  const timers = [];
+  for (let pageIndex = 0; pageIndex < loaded.length; pageIndex++) {
     const data = loaded[pageIndex];
     // 每页用自己的画面比例
     stageEl.style.aspectRatio = `${data.width || 1080} / ${data.height || 905}`;
@@ -236,7 +218,6 @@ export async function playComicIntro(doc = document, options = {}) {
       stageEl.insertBefore(box, lines);
       const step = steps[Math.min(clip.panel || 0, steps.length - 1)];
       timers.push(setTimeout(() => {
-        if (skipped) return;
         // 和所属那一格同一时刻、同一条动画登场；loop=false 时播完停在最后一帧
         box.style.animation = `comicPanelIn ${step ? step.duration : .58}s cubic-bezier(.2,1.22,.3,1) forwards`;
         const played = video.play();
@@ -252,7 +233,6 @@ export async function playComicIntro(doc = document, options = {}) {
     panels.forEach((p, i) => {
       const step = steps[i];
       timers.push(setTimeout(() => {
-        if (skipped) return;
         p.el.style.animation = `comicPanelIn ${step.duration}s cubic-bezier(.2,1.22,.3,1) forwards`;
         lines.style.animation = 'none';
         void lines.offsetWidth;
@@ -262,16 +242,15 @@ export async function playComicIntro(doc = document, options = {}) {
     });
     // hold：整页不切的页面可以额外多停留一会儿（秒）
     await new Promise(r => setTimeout(r, (total + .35 + (Number(data.hold) || 0)) * 1000));
-    if (skipped) break;
     if (pageIndex < loaded.length - 1) {
       stageEl.classList.add('turning');
       await new Promise(r => setTimeout(r, 340));
-      if (skipped) break;
     }
   }
 
-  doc.removeEventListener('keydown', onKey);
-  root.removeEventListener('pointerdown', skip);
-  if (!skipped) finish();
+  timers.forEach(clearTimeout);
+  root.classList.add('done');
+  root.classList.add('closing');
+  setTimeout(() => root.remove(), 380);
   return true;
 }
