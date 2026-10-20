@@ -1,0 +1,9 @@
+// Merge into the Android application module. The SoundBank delivery goes in
+// src/main/assets/wwise/Android/ with Media/ intact.
+android {
+    androidResources {
+        noCompress += ['bnk', 'wem']
+    }
+}
+// After assemble, verify the final APK against the generated manifest:
+// python3 scripts/wwise/verify-native-archive.py --apk app.apk

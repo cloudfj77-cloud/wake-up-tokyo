@@ -1,0 +1,3253 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "736008490",
+    "Type": "User",
+    "GUID": "{A3C75556-AF68-4082-A765-39FA4B18FC6C}",
+    "Language": "SFX",
+    "Hash": "{992881B6-54C7-61F8-E8E8-F96BB2CFB60F}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\TokyoSfx",
+    "ShortName": "TokyoSfx",
+    "Path": "TokyoSfx.bnk",
+    "Media": [
+     {
+      "Id": "595524",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-jump-3.wav",
+      "CachePath": "1F/{1F9742E7-3189-7EEE-D2CD-FD1E630390DC}.wem"
+     },
+     {
+      "Id": "13192243",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-enemywindup-1.wav",
+      "CachePath": "18/{1830EABF-AC3E-BA22-BA29-C311BA83A7E0}.wem"
+     },
+     {
+      "Id": "14506724",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-steproad-1.wav",
+      "CachePath": "01/{01DECCAE-F6D4-E6C9-C2BB-8CDE2660BC67}.wem"
+     },
+     {
+      "Id": "17498570",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-stepstone-2.wav",
+      "CachePath": "07/{07051B6C-199D-D31A-7492-CA24E596F3A9}.wem"
+     },
+     {
+      "Id": "26003212",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-abilityevolve-2.wav",
+      "CachePath": "B8/{B81833AB-65C7-6F88-C2C1-EC30E7C44B7E}.wem"
+     },
+     {
+      "Id": "39890821",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-powerimpact-9.wav",
+      "CachePath": "20/{20DCB1D8-6986-4117-7C05-46A44BE85B4C}.wem"
+     },
+     {
+      "Id": "40003368",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-power-04.wav",
+      "CachePath": "40/{4073ABE0-9D5B-F8D2-F686-8479737BA0D3}.wem"
+     },
+     {
+      "Id": "48951976",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-land-1.wav",
+      "CachePath": "9E/{9EF8E2B0-6226-01FE-F5EE-F35867712EBE}.wem"
+     },
+     {
+      "Id": "57506908",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-jump-1.wav",
+      "CachePath": "32/{3233A59A-7D11-59D8-D961-97A6BF101E47}.wem"
+     },
+     {
+      "Id": "58968234",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-bosswarning-2.wav",
+      "CachePath": "30/{303ACB90-CB24-22F3-B529-2A53D9CF9B4C}.wem"
+     },
+     {
+      "Id": "59974856",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-uiacquire-3.wav",
+      "CachePath": "C9/{C98D0EC7-1793-F869-F9AC-075C8FCE2FA4}.wem"
+     },
+     {
+      "Id": "62480008",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-bosswarning-1.wav",
+      "CachePath": "32/{32C227B7-1F32-6124-248A-734F2B50F899}.wem"
+     },
+     {
+      "Id": "67812059",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-command-designed-5.wav",
+      "CachePath": "17/{177A06F2-A9C0-BFAB-AF0D-1EB11D064C4D}.wem"
+     },
+     {
+      "Id": "70515748",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-planeloop-1.wav",
+      "CachePath": "7A/{7AA96FB6-FD43-DEF5-722F-7AF945332853}.wem"
+     },
+     {
+      "Id": "87443203",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-bossthrow-02.wav",
+      "CachePath": "72/{72AAACEA-8F36-7513-0874-9D96FBC9B651}.wem"
+     },
+     {
+      "Id": "99535474",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-uiacquire-2.wav",
+      "CachePath": "B6/{B67157C2-463F-D8A6-F462-766CA08CFE68}.wem"
+     },
+     {
+      "Id": "104375995",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-tankloop-1.wav",
+      "CachePath": "AF/{AF79C981-0766-568C-035D-5E94AAA248D8}.wem"
+     },
+     {
+      "Id": "105773722",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-steproad-2.wav",
+      "CachePath": "83/{83A52C7D-D39B-1F88-CE22-D6C2C72CB5F0}.wem"
+     },
+     {
+      "Id": "140328457",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-pickupfactor-1.wav",
+      "CachePath": "05/{051B069F-5043-10D5-0986-15E7647FBC86}.wem"
+     },
+     {
+      "Id": "141776386",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-stepstone-1.wav",
+      "CachePath": "48/{4873A157-0557-5B77-801A-BF0C4C8EF853}.wem"
+     },
+     {
+      "Id": "142530176",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-worldmachinery-1.wav",
+      "CachePath": "69/{69C0789D-97FF-07BA-6E79-EC13DFAA08F7}.wem"
+     },
+     {
+      "Id": "149018464",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-stepmetal-04.wav",
+      "CachePath": "DD/{DD7334B8-1ECE-F3A1-3028-D64D39A50D10}.wem"
+     },
+     {
+      "Id": "167179929",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-meleelight-1.wav",
+      "CachePath": "D8/{D87556B3-A5BD-20F8-7433-104F810264AA}.wem"
+     },
+     {
+      "Id": "168760121",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunrifle-4.wav",
+      "CachePath": "9D/{9D45BF63-F363-F33D-A740-75BB3050D233}.wem"
+     },
+     {
+      "Id": "168892602",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uiback-2.wav",
+      "CachePath": "F2/{F2EBBADB-BA10-268F-70B9-0157CBDB9A31}.wem"
+     },
+     {
+      "Id": "177383944",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-power-01.wav",
+      "CachePath": "4D/{4DFF193D-1399-F8A7-370D-7CD1B182056F}.wem"
+     },
+     {
+      "Id": "177470899",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-grenadefall-1.wav",
+      "CachePath": "AC/{AC53FA19-E2F3-E939-AB53-4CD4AE6AC0C7}.wem"
+     },
+     {
+      "Id": "182505525",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-meleeheavy-1.wav",
+      "CachePath": "DA/{DA4699FB-9CA5-4A5E-8D65-3C45FC4C6B8B}.wem"
+     },
+     {
+      "Id": "194003436",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uifocus-1.wav",
+      "CachePath": "E1/{E1D331F4-9C1B-3640-01C0-C07BFEEBEA78}.wem"
+     },
+     {
+      "Id": "195130656",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-bossdeath-1.wav",
+      "CachePath": "AF/{AFFC5A12-7FC2-1FC8-2F44-12DC123D3206}.wem"
+     },
+     {
+      "Id": "197489274",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-pickuphealth-2.wav",
+      "CachePath": "96/{962D46A9-FC3A-E10A-DB7D-0BB69AEB028C}.wem"
+     },
+     {
+      "Id": "199152008",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-pickuppotion-1.wav",
+      "CachePath": "A6/{A69749CF-7902-E35D-DA72-344D1454CE85}.wem"
+     },
+     {
+      "Id": "207335239",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunsniper-3.wav",
+      "CachePath": "89/{89AE45BB-7E26-41C0-7969-AD36A0D1DAB9}.wem"
+     },
+     {
+      "Id": "211582813",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uiclose-3.wav",
+      "CachePath": "35/{35B33B38-CB00-FA9B-3067-D72576F98994}.wem"
+     },
+     {
+      "Id": "216716345",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunshotgun-1.wav",
+      "CachePath": "A6/{A6998EA9-C03C-E616-4C6B-60258D16AFD4}.wem"
+     },
+     {
+      "Id": "221858001",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-defeatsfx-3.wav",
+      "CachePath": "5F/{5F1AC049-59CC-5513-CED2-7726115CDBA7}.wem"
+     },
+     {
+      "Id": "225624303",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunsniper-1.wav",
+      "CachePath": "82/{8235E93C-9E88-3C3F-F42A-E7CC4ED6F9B6}.wem"
+     },
+     {
+      "Id": "229543824",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-powerbounce-2.wav",
+      "CachePath": "B7/{B7F24EAB-6EB2-8C19-4371-2A1B6403492E}.wem"
+     },
+     {
+      "Id": "235252624",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-jump-2.wav",
+      "CachePath": "71/{7166CB44-CBDC-15CD-B7B5-376882F9D2B1}.wem"
+     },
+     {
+      "Id": "236947402",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hitbody-3.wav",
+      "CachePath": "80/{80BEC1B0-DB8F-4BE5-A726-B99C5CAB3604}.wem"
+     },
+     {
+      "Id": "241010287",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-chargeready-2.wav",
+      "CachePath": "91/{91C4DED2-1F38-FD52-9A8A-D2EC02B00716}.wem"
+     },
+     {
+      "Id": "242733985",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-defeatsfx-1.wav",
+      "CachePath": "E2/{E2006FEE-6B05-4414-ED10-A2FC3185EB9D}.wem"
+     },
+     {
+      "Id": "246638256",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-meleelight-3.wav",
+      "CachePath": "23/{23127D64-3D68-0EAA-4F8A-5B4C85D53F77}.wem"
+     },
+     {
+      "Id": "250220477",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-abilityparasite-1.wav",
+      "CachePath": "74/{7467873F-439A-501D-5AF3-CC9B143E9319}.wem"
+     },
+     {
+      "Id": "252471596",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-infectionhit-3.wav",
+      "CachePath": "DD/{DDC30D52-AF3B-BA25-E539-4C0C0DF31A38}.wem"
+     },
+     {
+      "Id": "257853569",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-convert-02.wav",
+      "CachePath": "94/{94A8E637-0C27-FEA0-5046-44E55C6DB92E}.wem"
+     },
+     {
+      "Id": "261108201",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-explosion-1.wav",
+      "CachePath": "7D/{7D946BDC-284C-B80D-A4B7-CA8B2E1B1225}.wem"
+     },
+     {
+      "Id": "263534122",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-bossthrow-04.wav",
+      "CachePath": "BE/{BE8B0470-F0B3-FCF5-A612-648ABBA86F5C}.wem"
+     },
+     {
+      "Id": "270485357",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-sprayloop-2.wav",
+      "CachePath": "49/{49750267-7E0E-F39D-BF86-ECB86A0B5F86}.wem"
+     },
+     {
+      "Id": "273743464",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-command-designed-1.wav",
+      "CachePath": "7E/{7E310EAD-6649-BAD2-DF64-AC335DEF55F0}.wem"
+     },
+     {
+      "Id": "274636552",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-meleeheavy-2.wav",
+      "CachePath": "6B/{6B979E20-C55D-DC5E-F4A0-FF150D997A7E}.wem"
+     },
+     {
+      "Id": "276537021",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-clockbell-1.wav",
+      "CachePath": "0F/{0F0DB6C4-B1F4-26BA-FCB7-F1E2ECFA1FE1}.wem"
+     },
+     {
+      "Id": "277397111",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-kindlinggain-1.wav",
+      "CachePath": "7A/{7AA14859-848D-6019-D6CC-1E7A56E06DF1}.wem"
+     },
+     {
+      "Id": "287339495",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-abilityair-1.wav",
+      "CachePath": "90/{9063F220-D78C-2E98-2A10-98D906F27F72}.wem"
+     },
+     {
+      "Id": "289350463",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-breakglass-4.wav",
+      "CachePath": "F7/{F70C5152-6591-8DBE-A8DA-1DF89B65AF1D}.wem"
+     },
+     {
+      "Id": "296019229",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-abilityparasite-2.wav",
+      "CachePath": "AA/{AA2770D5-882E-33AE-894C-37855B6A76AF}.wem"
+     },
+     {
+      "Id": "301830517",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunshotgun-4.wav",
+      "CachePath": "62/{623E7491-13F1-EB7C-8E29-F3A7BEAFFFD7}.wem"
+     },
+     {
+      "Id": "304794435",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uiopen-1.wav",
+      "CachePath": "39/{390B67C7-47F6-BAFF-C4F5-A4893C9A97F3}.wem"
+     },
+     {
+      "Id": "307450214",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunpistol-2.wav",
+      "CachePath": "B9/{B9EDB8BC-BA74-7D85-1DAD-07365C368FB5}.wem"
+     },
+     {
+      "Id": "307624304",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunshotgun-2.wav",
+      "CachePath": "13/{13100E57-9B6E-FD6D-18C1-13C4F09CBAB2}.wem"
+     },
+     {
+      "Id": "313060352",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-convert-01.wav",
+      "CachePath": "BA/{BA312618-29A8-5D5E-140A-6A6E300CCD4A}.wem"
+     },
+     {
+      "Id": "317613749",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-kindlingend-1.wav",
+      "CachePath": "D9/{D920B939-C889-99D1-0E9F-0A29917EAE4D}.wem"
+     },
+     {
+      "Id": "318451640",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-stepmetal-01.wav",
+      "CachePath": "41/{41AEA4B0-D473-8C85-6D8A-16846F987624}.wem"
+     },
+     {
+      "Id": "321765417",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunrpg-1.wav",
+      "CachePath": "19/{1972E5C1-8F69-027E-B1BD-E9B69D2D9E37}.wem"
+     },
+     {
+      "Id": "322846665",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-breakstone-1.wav",
+      "CachePath": "74/{741D2657-A3AA-07AE-303E-5DF9F17206C5}.wem"
+     },
+     {
+      "Id": "333035324",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-bossarrival-1.wav",
+      "CachePath": "97/{97080CC0-0C8D-986C-2B51-9A7F5754FE66}.wem"
+     },
+     {
+      "Id": "342574205",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunpistol-1.wav",
+      "CachePath": "AE/{AEEE3199-256E-CA7C-CD3B-C29BABE68E58}.wem"
+     },
+     {
+      "Id": "344673335",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-authored-charge3.wav",
+      "CachePath": "26/{26E738DA-8A96-4D4C-9630-4AC2E1C5F700}.wem"
+     },
+     {
+      "Id": "370326621",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-powerbounce-1.wav",
+      "CachePath": "7B/{7B1BF121-0F4C-1130-EF5D-CDA024963128}.wem"
+     },
+     {
+      "Id": "376300352",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-bosswarning-3.wav",
+      "CachePath": "C3/{C30151D0-893A-A603-60E1-E7912EDD7BB6}.wem"
+     },
+     {
+      "Id": "378214208",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-breakglass-3.wav",
+      "CachePath": "A3/{A386D5C5-8324-328B-CCD7-23563870377D}.wem"
+     },
+     {
+      "Id": "380546799",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hitarmor-1.wav",
+      "CachePath": "3B/{3BD05B25-8FD9-4790-A843-E3ACE316A3C1}.wem"
+     },
+     {
+      "Id": "390101719",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-switchweapon-1.wav",
+      "CachePath": "9C/{9CD8EFB7-F57F-B94C-025F-83AEF0D77F5A}.wem"
+     },
+     {
+      "Id": "391931117",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunsniper-4.wav",
+      "CachePath": "65/{65828925-F47B-7DE1-3467-3D7195C2BEB0}.wem"
+     },
+     {
+      "Id": "392764862",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-pickupfactor-2.wav",
+      "CachePath": "7B/{7B309B89-7AEB-C303-29D2-133C4EAB4565}.wem"
+     },
+     {
+      "Id": "395378322",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-bossphase-1.wav",
+      "CachePath": "8F/{8F37674C-F682-58CD-6879-78F668318B29}.wem"
+     },
+     {
+      "Id": "410355212",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-radio-5.wav",
+      "CachePath": "43/{432CFF62-55E0-EBEC-5070-7FAFE32743E3}.wem"
+     },
+     {
+      "Id": "418006368",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-bosscore-2.wav",
+      "CachePath": "33/{332B3B42-DC53-2380-682B-5B68818D4AE9}.wem"
+     },
+     {
+      "Id": "434574810",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-steproad-4.wav",
+      "CachePath": "A9/{A9C17B0D-9761-9D87-5D66-154F43CEAA35}.wem"
+     },
+     {
+      "Id": "435139670",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-bossimpact-3.wav",
+      "CachePath": "F0/{F0EAA682-892E-BEF4-018C-78A96E2274DB}.wem"
+     },
+     {
+      "Id": "441561656",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-shielddash-1.wav",
+      "CachePath": "F8/{F805156B-D0DC-B171-F8BD-C5D510F89F7A}.wem"
+     },
+     {
+      "Id": "445450115",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-hitbody-1.wav",
+      "CachePath": "C1/{C1C09088-B881-6D1A-8B34-B564E0A21D3E}.wem"
+     },
+     {
+      "Id": "462426334",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uiconfirm-2.wav",
+      "CachePath": "7C/{7C5E0883-E018-7CC5-33AD-2AC75CE86A57}.wem"
+     },
+     {
+      "Id": "465035096",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-reload-2.wav",
+      "CachePath": "CD/{CDDF8D96-DF6F-F1B6-689A-9252AC2950D9}.wem"
+     },
+     {
+      "Id": "468974904",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-bossimpact-1.wav",
+      "CachePath": "48/{48A41E0B-6D1E-96BC-8C6E-A36E3B400786}.wem"
+     },
+     {
+      "Id": "469504182",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-reload-3.wav",
+      "CachePath": "96/{9679290F-299B-3819-CC2B-D0EE3AE5EE07}.wem"
+     },
+     {
+      "Id": "471260698",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-planewarning-2.wav",
+      "CachePath": "C2/{C2A2F5E1-596C-E635-7D0C-99FC4F5EB64B}.wem"
+     },
+     {
+      "Id": "473243285",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-land-4.wav",
+      "CachePath": "A2/{A2B3E9B6-10DB-0EDE-4738-8C0387F1C13E}.wem"
+     },
+     {
+      "Id": "493196012",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-planedive-1.wav",
+      "CachePath": "32/{32DF6A09-177A-F4FA-92D5-03FC4AC1D399}.wem"
+     },
+     {
+      "Id": "495971751",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-stepstone-4.wav",
+      "CachePath": "A2/{A2608EA5-D5BF-2A02-BC8C-C49F839D9B34}.wem"
+     },
+     {
+      "Id": "497181895",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-grenadethrow-1.wav",
+      "CachePath": "0C/{0CF6F62B-8A21-7D31-AF99-7EF5ED58C8C8}.wem"
+     },
+     {
+      "Id": "497252053",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-alertup-1.wav",
+      "CachePath": "15/{156CF630-E688-95C5-A792-A25667B8E33E}.wem"
+     },
+     {
+      "Id": "511960310",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunsniper-2.wav",
+      "CachePath": "2A/{2AB0C20E-9C56-D0A1-E80F-FB8981CCD455}.wem"
+     },
+     {
+      "Id": "517623554",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-breakstone-1.wav",
+      "CachePath": "7C/{7C49E61C-2115-EF51-F275-06D5D00E3A8D}.wem"
+     },
+     {
+      "Id": "522392807",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-abilityair-2.wav",
+      "CachePath": "EE/{EE669AF9-9BDF-2910-A651-B7EA3E3061F3}.wem"
+     },
+     {
+      "Id": "527577176",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-authored-charge1.wav",
+      "CachePath": "C4/{C4B37D4D-0333-5248-1B02-5B062337F17B}.wem"
+     },
+     {
+      "Id": "532890957",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-syringe-04.wav",
+      "CachePath": "AE/{AE07F28F-C686-DA1A-1ED7-204BB591B374}.wem"
+     },
+     {
+      "Id": "545550362",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-bridgecreak-1.wav",
+      "CachePath": "60/{60B08E54-589A-80BD-6623-AC9BCDBEDCE2}.wem"
+     },
+     {
+      "Id": "554987555",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-radio-6.wav",
+      "CachePath": "5A/{5A0373A3-21EB-1995-491E-EA1DC8D2E8CB}.wem"
+     },
+     {
+      "Id": "557283050",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-land-3.wav",
+      "CachePath": "6B/{6B570203-8AE9-8AFF-EF0E-7F4C897FA0F6}.wem"
+     },
+     {
+      "Id": "557472492",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hitbody-1.wav",
+      "CachePath": "55/{55232584-39F2-76B0-7028-828A2AE90475}.wem"
+     },
+     {
+      "Id": "561106147",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunrifle-3.wav",
+      "CachePath": "9F/{9FDA92FB-4B95-CEAC-9653-0025768E003A}.wem"
+     },
+     {
+      "Id": "568042525",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-reload-1.wav",
+      "CachePath": "B9/{B95F178C-4D95-0442-A2DE-E8B2C6401A01}.wem"
+     },
+     {
+      "Id": "568621385",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-radio-2.wav",
+      "CachePath": "3F/{3F1B475E-0467-0804-A814-9D8B45C75A3D}.wem"
+     },
+     {
+      "Id": "571751526",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hitarmor-2.wav",
+      "CachePath": "EF/{EF5F7B15-B4DF-93A1-1F47-9623DB0C5974}.wem"
+     },
+     {
+      "Id": "572441030",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-bosscoreopen-1.wav",
+      "CachePath": "10/{10918AFB-5FDA-259A-18EE-6C93E53D137A}.wem"
+     },
+     {
+      "Id": "574055499",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-syringe-02.wav",
+      "CachePath": "31/{31942045-F31A-ECEC-60B2-B7E713B8E168}.wem"
+     },
+     {
+      "Id": "589271934",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-bossimpact-2.wav",
+      "CachePath": "A5/{A5165591-72B0-6839-32C5-3D6EAA13152D}.wem"
+     },
+     {
+      "Id": "590931565",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-convert-pilot-a.wav",
+      "CachePath": "66/{66E6D92D-ECAE-497D-ACD7-9C909AE8BF97}.wem"
+     },
+     {
+      "Id": "592651643",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uiconfirm-3.wav",
+      "CachePath": "42/{42AF55F0-31A0-E0A1-606F-FDD359936E3B}.wem"
+     },
+     {
+      "Id": "593046040",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunrpg-4.wav",
+      "CachePath": "FC/{FC115255-2C6D-0515-55EE-913476B20B39}.wem"
+     },
+     {
+      "Id": "593105419",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-roll-3.wav",
+      "CachePath": "DD/{DD1A02B0-55CF-130C-E078-9FF8B727734E}.wem"
+     },
+     {
+      "Id": "596636332",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-spraywarning-1.wav",
+      "CachePath": "AB/{AB191CAB-48E0-2B33-28DF-68CE77260199}.wem"
+     },
+     {
+      "Id": "597406216",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-stepmetal-02.wav",
+      "CachePath": "85/{8582B132-34C5-BF25-6B2F-313B90F68874}.wem"
+     },
+     {
+      "Id": "608421049",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-enemywindup-2.wav",
+      "CachePath": "D7/{D74517DB-0E1D-9268-7495-0EB944A9F01A}.wem"
+     },
+     {
+      "Id": "616220708",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-roll-1.wav",
+      "CachePath": "74/{74EA6645-2560-C005-3DEC-B8DD481BAF67}.wem"
+     },
+     {
+      "Id": "624876332",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hurt-1.wav",
+      "CachePath": "5C/{5C168428-295A-9250-1FB6-E50387964446}.wem"
+     },
+     {
+      "Id": "627413359",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-abilityevolve-1.wav",
+      "CachePath": "6B/{6BED17D3-1E44-255E-08E5-32AC8F5AF7F9}.wem"
+     },
+     {
+      "Id": "628877248",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hitbody-2.wav",
+      "CachePath": "D5/{D54A178E-C319-1411-404D-39BBF8A49F90}.wem"
+     },
+     {
+      "Id": "629870990",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-command-designed-4.wav",
+      "CachePath": "F9/{F92E48D9-CADC-1534-3ABB-338E29A948A9}.wem"
+     },
+     {
+      "Id": "631408103",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-convert-03.wav",
+      "CachePath": "DD/{DD58340F-8ACE-E296-87AC-BCEA281AAD0A}.wem"
+     },
+     {
+      "Id": "643790383",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-police-3.wav",
+      "CachePath": "58/{5801B1EB-FCFE-8F40-1935-F895AF164871}.wem"
+     },
+     {
+      "Id": "659173891",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-stepstone-3.wav",
+      "CachePath": "20/{2087F3DA-AA1D-F615-F79C-280DFE7102E7}.wem"
+     },
+     {
+      "Id": "668460046",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-infectionhit-2.wav",
+      "CachePath": "83/{8365460D-A523-D981-B4B8-100BD3EDA41F}.wem"
+     },
+     {
+      "Id": "671801644",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-infectionhit-4.wav",
+      "CachePath": "FD/{FD09E2C7-4686-1C9D-041B-DFD3B526E1E0}.wem"
+     },
+     {
+      "Id": "683638178",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uiback-1.wav",
+      "CachePath": "A7/{A7C2B971-6988-D804-E641-CD25C37F60E0}.wem"
+     },
+     {
+      "Id": "686122141",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uireroll-3.wav",
+      "CachePath": "EF/{EFB99B71-8BDB-800D-722D-1774E81A68BB}.wem"
+     },
+     {
+      "Id": "699471592",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-roll-2.wav",
+      "CachePath": "52/{520D2056-0655-978E-8808-9FD1AAA5D617}.wem"
+     },
+     {
+      "Id": "701379912",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunrifle-1.wav",
+      "CachePath": "D7/{D7ED05C3-0E18-9871-0E7E-50250F4002D7}.wem"
+     },
+     {
+      "Id": "709414959",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-explosion-1.wav",
+      "CachePath": "EA/{EA275A41-1955-B197-17E8-BC823580FA31}.wem"
+     },
+     {
+      "Id": "709418164",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-sprayloop-3.wav",
+      "CachePath": "EF/{EF4727F2-1318-6CDA-26C3-2ECD3FD57876}.wem"
+     },
+     {
+      "Id": "723780370",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-powerimpact-10.wav",
+      "CachePath": "EE/{EE0BC3C7-FB92-C893-8C98-0876D76A8F6A}.wem"
+     },
+     {
+      "Id": "731497792",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-authored-charge2.wav",
+      "CachePath": "2A/{2AB5C86B-4969-1FEA-9193-E6CCBDAA2D24}.wem"
+     },
+     {
+      "Id": "737986033",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunrpg-2.wav",
+      "CachePath": "19/{195C75BB-4C36-A413-3A02-623CC8556A72}.wem"
+     },
+     {
+      "Id": "756978049",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-steproad-3.wav",
+      "CachePath": "88/{88F982E2-365C-4CB8-192B-D3CED7FF5F37}.wem"
+     },
+     {
+      "Id": "760475787",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-explosion-3.wav",
+      "CachePath": "4C/{4CEB83EF-C655-9D70-556F-9F438F8FA007}.wem"
+     },
+     {
+      "Id": "765489486",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunpistol-3.wav",
+      "CachePath": "DD/{DDAFB11D-1040-833E-FD02-CC97D260F2D4}.wem"
+     },
+     {
+      "Id": "768236506",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-seabed-1.wav",
+      "Path": "Media/768236506.wem",
+      "CachePath": "BB/{BBE5660A-3C94-D242-7E42-FB22702BD4F1}.wem",
+      "PrefetchSize": "29533",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "769084171",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunshotgun-3.wav",
+      "CachePath": "65/{65199D47-F58B-39D3-E9BE-8E86DBD25853}.wem"
+     },
+     {
+      "Id": "773117642",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-abilityblood-3.wav",
+      "CachePath": "21/{218432FA-AAB5-914A-2474-801C32EE16FC}.wem"
+     },
+     {
+      "Id": "774203739",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-abilitykindling-1.wav",
+      "CachePath": "79/{798BA541-9894-4118-F9C9-85AB31BBD971}.wem"
+     },
+     {
+      "Id": "781718746",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-breakmetal-1.wav",
+      "CachePath": "AA/{AAE6B077-04D2-67AD-A66D-3810550C7C49}.wem"
+     },
+     {
+      "Id": "794405729",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-land-2.wav",
+      "CachePath": "F5/{F552D076-28C5-F2B0-CE11-E2AAD8767D79}.wem"
+     },
+     {
+      "Id": "794502792",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-powerimpact-2.wav",
+      "CachePath": "1A/{1A16EEE3-F53A-EE09-DA6F-524B314BDC17}.wem"
+     },
+     {
+      "Id": "803120047",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-breakmetal-2.wav",
+      "CachePath": "AF/{AF5B3BBB-2AC4-8037-C3A0-18EAF311BF12}.wem"
+     },
+     {
+      "Id": "805182270",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-upgrade-1.wav",
+      "CachePath": "5D/{5D693F3D-B9CF-AC54-548B-4EFC92CDA13C}.wem"
+     },
+     {
+      "Id": "813820147",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-meleelight-2.wav",
+      "CachePath": "3D/{3D2EF5D9-D4FA-532D-6158-7686B2E4DFCE}.wem"
+     },
+     {
+      "Id": "825351950",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-powerimpact-3.wav",
+      "CachePath": "30/{3078295C-7A45-B4B3-0CF1-BC9F2574A0B8}.wem"
+     },
+     {
+      "Id": "837040182",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hurt-2.wav",
+      "CachePath": "F4/{F4CDCD84-6E07-5657-9C4A-3C8A4B917FFA}.wem"
+     },
+     {
+      "Id": "843200512",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-stepmetal-03.wav",
+      "CachePath": "76/{7620A42A-EEF0-B8F6-85A6-A5DECD8D3442}.wem"
+     },
+     {
+      "Id": "871105589",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-radio-4.wav",
+      "CachePath": "72/{72CE180A-6804-DD03-4487-93EEC1478269}.wem"
+     },
+     {
+      "Id": "872781068",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-meleelight-1.wav",
+      "CachePath": "3F/{3FA93262-7B9D-73E0-5637-5A876DC38CE6}.wem"
+     },
+     {
+      "Id": "876169649",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-riverbed-1.wav",
+      "Path": "Media/876169649.wem",
+      "CachePath": "C1/{C13528BB-9032-A826-6E7D-18F671ACB470}.wem",
+      "PrefetchSize": "38874",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "878051118",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-syringe-03.wav",
+      "CachePath": "DB/{DBFD2850-5730-ADBA-4E90-EE015E0ED3C8}.wem"
+     },
+     {
+      "Id": "884883026",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hurt-3.wav",
+      "CachePath": "5D/{5D94C76F-1A58-872A-3165-A42471DDD506}.wem"
+     },
+     {
+      "Id": "897349180",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-abilityblood-1.wav",
+      "CachePath": "3E/{3E3DC41B-2D89-E0D7-4167-64A3AC3F475A}.wem"
+     },
+     {
+      "Id": "899221199",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunrifle-2.wav",
+      "CachePath": "83/{8375CB9E-65EA-EE64-F23F-EF4805CBA5B2}.wem"
+     },
+     {
+      "Id": "901747907",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-bossdeath-1.wav",
+      "CachePath": "EB/{EB99EF8F-8D88-7C75-79B1-FEE169315A65}.wem"
+     },
+     {
+      "Id": "907529566",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-potionend-1.wav",
+      "CachePath": "F4/{F4BFE092-65DC-403E-DB07-4A89F195599D}.wem"
+     },
+     {
+      "Id": "914747443",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-radio-3.wav",
+      "CachePath": "A2/{A2C61845-47BF-745A-AE06-85B1D0AF8B5F}.wem"
+     },
+     {
+      "Id": "915512193",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-pickuppotion-1.wav",
+      "CachePath": "A4/{A40D119B-E8E6-449D-A79E-B01F0281E6E0}.wem"
+     },
+     {
+      "Id": "919615173",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-citybed-1.wav",
+      "Path": "Media/919615173.wem",
+      "CachePath": "28/{28836ABB-E40D-8779-39C2-6D70F45642E7}.wem",
+      "PrefetchSize": "28359",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "925901718",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-tankram-1.wav",
+      "CachePath": "BB/{BB1D0EA2-691F-4907-8290-435D55C1BEF7}.wem"
+     },
+     {
+      "Id": "940349237",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-abilitykindling-2.wav",
+      "CachePath": "85/{856CE58D-5A55-669F-7379-368DBB9FF937}.wem"
+     },
+     {
+      "Id": "941480394",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-hitarmor-3.wav",
+      "CachePath": "95/{9505A431-C104-9C04-7B64-14388E166E0E}.wem"
+     },
+     {
+      "Id": "941732260",
+      "Language": "SFX",
+      "Streaming": "true",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-windbed-1.wav",
+      "Path": "Media/941732260.wem",
+      "CachePath": "85/{85742274-23EF-62F3-EDC5-80A826C95205}.wem",
+      "PrefetchSize": "26603",
+      "ContainsPrefetch": "true"
+     },
+     {
+      "Id": "944508733",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-command-designed-2.wav",
+      "CachePath": "89/{89D3748F-91D9-773A-B156-BF468E9949FA}.wem"
+     },
+     {
+      "Id": "946649617",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-bosscore-1.wav",
+      "CachePath": "2F/{2F074A81-1445-B4C5-53F6-BC9DA3707D2F}.wem"
+     },
+     {
+      "Id": "946710357",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-infectionhit-1.wav",
+      "CachePath": "99/{99D43672-F739-4EB1-E633-90880D5CD34E}.wem"
+     },
+     {
+      "Id": "950255827",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-power-02.wav",
+      "CachePath": "10/{10E7F3E8-716E-0858-E60B-5A1BAC201740}.wem"
+     },
+     {
+      "Id": "954923735",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-abilityevolve-3.wav",
+      "CachePath": "CC/{CC3983EC-8CB0-E6F4-2362-D33109F00AE7}.wem"
+     },
+     {
+      "Id": "957668364",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-defeatsfx-2.wav",
+      "CachePath": "EC/{ECA6F100-B51F-6BDF-7C14-639542029DCA}.wem"
+     },
+     {
+      "Id": "965661170",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uireroll-2.wav",
+      "CachePath": "C7/{C7FAF199-DF85-1AA3-C8B9-908736B47872}.wem"
+     },
+     {
+      "Id": "973736678",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-abilityair-3.wav",
+      "CachePath": "8F/{8F0B7FE5-88B0-C32C-0675-0B1482D39EAA}.wem"
+     },
+     {
+      "Id": "977750697",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-functional-planecrash-1.wav",
+      "CachePath": "C2/{C2A54A35-E0C9-8DDE-72C5-04F19FC913F5}.wem"
+     },
+     {
+      "Id": "977893853",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-uifocus-2.wav",
+      "CachePath": "33/{33D23C1D-BFE3-9363-1B7F-02C9E8FE1984}.wem"
+     },
+     {
+      "Id": "987237783",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-authored-lowhp.wav",
+      "CachePath": "AC/{ACFBB192-3A29-A979-7AFE-6E3F72FA736D}.wem"
+     },
+     {
+      "Id": "992454373",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-switchweapon-3.wav",
+      "CachePath": "A5/{A5EAACEA-D820-3570-B1CA-62E6952AC66C}.wem"
+     },
+     {
+      "Id": "995321690",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-pickuphealth-1.wav",
+      "CachePath": "73/{734F499C-E20F-3719-F000-60894A3EE39E}.wem"
+     },
+     {
+      "Id": "996888397",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-bossthrow-03.wav",
+      "CachePath": "70/{708FDD4B-8E37-078D-F56C-8EC4C7605F05}.wem"
+     },
+     {
+      "Id": "999541285",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-breakmetal-3.wav",
+      "CachePath": "11/{11307F17-CD70-1896-5268-64493D8ABD29}.wem"
+     },
+     {
+      "Id": "1021999060",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunpistol-4.wav",
+      "CachePath": "4C/{4C41F230-6B28-9EE7-A504-0F5D0E9D3074}.wem"
+     },
+     {
+      "Id": "1023897360",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-powerbounce-3.wav",
+      "CachePath": "EC/{ECACAC01-ADCA-C274-03B5-613FC766A35A}.wem"
+     },
+     {
+      "Id": "1028115876",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-syringe-01.wav",
+      "CachePath": "C8/{C8CA28DA-1BB1-A405-BE99-4CBBC0FCC4FD}.wem"
+     },
+     {
+      "Id": "1028386703",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-meleeheavy-1.wav",
+      "CachePath": "FA/{FA6F91BB-14BB-2BA8-7080-8285CA4BA8B6}.wem"
+     },
+     {
+      "Id": "1034736998",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-power-03.wav",
+      "CachePath": "AA/{AAE24A7D-94B1-05EC-E046-33F2E650406E}.wem"
+     },
+     {
+      "Id": "1034820020",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-meleeheavy-3.wav",
+      "CachePath": "C7/{C7E02AE9-4B34-2737-34D9-ED9863E2CD4A}.wem"
+     },
+     {
+      "Id": "1041378040",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-breakstone-3.wav",
+      "CachePath": "46/{463B16E7-AFF6-1EC1-80AA-C48255F722B3}.wem"
+     },
+     {
+      "Id": "1042992877",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-switchweapon-2.wav",
+      "CachePath": "CE/{CE77A050-EBEE-3AB9-2EC5-BF82BCD409FB}.wem"
+     },
+     {
+      "Id": "1056309104",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-lib-empty-1.wav",
+      "CachePath": "00/{004DBEFB-EEEA-844E-45FA-E83AB4C043D0}.wem"
+     },
+     {
+      "Id": "1058365316",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-bossthrow-01.wav",
+      "CachePath": "7B/{7B27B80F-5407-5534-542D-45E6F4C852BF}.wem"
+     },
+     {
+      "Id": "1068356572",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-library-detail-upgrade-1.wav",
+      "CachePath": "3C/{3CF46CF5-3C7A-EEFF-68F9-2BA51D9242CA}.wem"
+     },
+     {
+      "Id": "1073499373",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "TokyoSfx\\tokyo-c2-gunrpg-3.wav",
+      "CachePath": "9B/{9BE881E0-747F-CBFB-FD44-4B6ABD9AB4FE}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3287044431",
+      "Name": "SFX_abilityAir",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_abilityAir",
+      "GUID": "{13089B6C-198F-4823-8893-811FDC0DF0B7}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "287339495"
+       },
+       {
+        "Id": "522392807"
+       },
+       {
+        "Id": "973736678"
+       }
+      ]
+     },
+     {
+      "Id": "3946173103",
+      "Name": "SFX_abilityBlood",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_abilityBlood",
+      "GUID": "{29AA6DE1-CCDE-449A-AA0A-0873A335C626}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.7885306",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "773117642"
+       },
+       {
+        "Id": "897349180"
+       }
+      ]
+     },
+     {
+      "Id": "3139079248",
+      "Name": "SFX_abilityCommand",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_abilityCommand",
+      "GUID": "{1883FD85-3227-450E-9BB6-63934CAF0207}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.47311834",
+      "DurationMax": "0.48698175",
+      "MediaRefs": [
+       {
+        "Id": "273743464"
+       },
+       {
+        "Id": "944508733"
+       }
+      ]
+     },
+     {
+      "Id": "1847480606",
+      "Name": "SFX_abilityEvolve",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_abilityEvolve",
+      "GUID": "{DD9785F6-BDA1-429A-AA89-2C44BF38699B}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "26003212"
+       },
+       {
+        "Id": "627413359"
+       },
+       {
+        "Id": "954923735"
+       }
+      ]
+     },
+     {
+      "Id": "2343155715",
+      "Name": "SFX_abilityKindling",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_abilityKindling",
+      "GUID": "{D6A5FA55-291C-4B9A-BC4F-EB1105700267}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.68996423",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "774203739"
+       },
+       {
+        "Id": "940349237"
+       }
+      ]
+     },
+     {
+      "Id": "3471836130",
+      "Name": "SFX_abilityParasite",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_abilityParasite",
+      "GUID": "{05EC7694-007A-4130-BA08-A04A45303C73}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.49283162",
+      "DurationMax": "0.50727266",
+      "MediaRefs": [
+       {
+        "Id": "250220477"
+       },
+       {
+        "Id": "296019229"
+       }
+      ]
+     },
+     {
+      "Id": "363889890",
+      "Name": "SFX_alertUp",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_alertUp",
+      "GUID": "{F09E4E20-1B62-4791-B7BE-801D134F13F6}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "497252053"
+       }
+      ]
+     },
+     {
+      "Id": "3555892569",
+      "Name": "SFX_bossArrival",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bossArrival",
+      "GUID": "{5D994598-A870-4B92-B709-52C7BA9C15A0}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "1.9713265",
+      "DurationMax": "2.0290906",
+      "MediaRefs": [
+       {
+        "Id": "333035324"
+       }
+      ]
+     },
+     {
+      "Id": "914458755",
+      "Name": "SFX_bossCore",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bossCore",
+      "GUID": "{5B7ADF10-F3C5-4C33-9241-F26E5BE14E57}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "418006368"
+       },
+       {
+        "Id": "946649617"
+       }
+      ]
+     },
+     {
+      "Id": "34743591",
+      "Name": "SFX_bossCoreOpen",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bossCoreOpen",
+      "GUID": "{85EE06E3-E632-41AE-B5E4-EB70D5FFD7C0}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.68996423",
+      "DurationMax": "0.7101817",
+      "MediaRefs": [
+       {
+        "Id": "572441030"
+       }
+      ]
+     },
+     {
+      "Id": "2460047740",
+      "Name": "SFX_bossDeath",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bossDeath",
+      "GUID": "{D0C0F4F0-75EA-4D58-916E-4CFA1ED29B1F}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "2.464158",
+      "DurationMax": "3.5185277",
+      "MediaRefs": [
+       {
+        "Id": "195130656"
+       },
+       {
+        "Id": "901747907"
+       }
+      ]
+     },
+     {
+      "Id": "1475680644",
+      "Name": "SFX_bossImpact",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bossImpact",
+      "GUID": "{E99B2D27-BC8F-489D-8665-4AA9DFEF5F61}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "1.9713265",
+      "DurationMax": "2.0290906",
+      "MediaRefs": [
+       {
+        "Id": "435139670"
+       },
+       {
+        "Id": "468974904"
+       },
+       {
+        "Id": "589271934"
+       }
+      ]
+     },
+     {
+      "Id": "3540314847",
+      "Name": "SFX_bossPhase",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bossPhase",
+      "GUID": "{871C57A1-770C-4E47-91A4-2232FC23ECD2}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.9713265",
+      "DurationMax": "2.0290906",
+      "MediaRefs": [
+       {
+        "Id": "395378322"
+       }
+      ]
+     },
+     {
+      "Id": "3017389154",
+      "Name": "SFX_bossThrow",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bossThrow",
+      "GUID": "{E5A2C7B2-5809-4633-AA16-130C37CDD619}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "87443203"
+       },
+       {
+        "Id": "263534122"
+       },
+       {
+        "Id": "996888397"
+       },
+       {
+        "Id": "1058365316"
+       }
+      ]
+     },
+     {
+      "Id": "1210799710",
+      "Name": "SFX_bossWarning",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bossWarning",
+      "GUID": "{E7B757FA-2118-4975-80A7-27B476682E61}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "58968234"
+       },
+       {
+        "Id": "62480008"
+       },
+       {
+        "Id": "376300352"
+       }
+      ]
+     },
+     {
+      "Id": "2917267986",
+      "Name": "SFX_breakGlass",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_breakGlass",
+      "GUID": "{6DF6F9B2-D901-4306-9F84-3EE15D3D7B3F}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.5477618",
+      "DurationMax": "1.0909956",
+      "MediaRefs": [
+       {
+        "Id": "289350463"
+       },
+       {
+        "Id": "378214208"
+       }
+      ]
+     },
+     {
+      "Id": "1649601427",
+      "Name": "SFX_breakMetal",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_breakMetal",
+      "GUID": "{DA01E477-BC4A-4040-96F7-8B81225C9407}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.59139794",
+      "DurationMax": "0.6087272",
+      "MediaRefs": [
+       {
+        "Id": "781718746"
+       },
+       {
+        "Id": "803120047"
+       },
+       {
+        "Id": "999541285"
+       }
+      ]
+     },
+     {
+      "Id": "773528373",
+      "Name": "SFX_breakStone",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_breakStone",
+      "GUID": "{ABFEA1F3-3617-4F35-9023-E52F8441FF21}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.7885306",
+      "DurationMax": "2.196427",
+      "MediaRefs": [
+       {
+        "Id": "322846665"
+       },
+       {
+        "Id": "517623554"
+       },
+       {
+        "Id": "1041378040"
+       }
+      ]
+     },
+     {
+      "Id": "3053262838",
+      "Name": "SFX_bridgeCreak",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_bridgeCreak",
+      "GUID": "{82482C9F-D3D8-4E12-A38E-332BA32970FB}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "1.1827959",
+      "DurationMax": "1.2174544",
+      "MediaRefs": [
+       {
+        "Id": "545550362"
+       }
+      ]
+     },
+     {
+      "Id": "3527780750",
+      "Name": "SFX_charge1",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_charge1",
+      "GUID": "{68666609-00AC-4A27-B87C-1C3663F5EE77}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.19",
+      "DurationMax": "0.19",
+      "MediaRefs": [
+       {
+        "Id": "527577176"
+       }
+      ]
+     },
+     {
+      "Id": "3527780749",
+      "Name": "SFX_charge2",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_charge2",
+      "GUID": "{AE9A990F-591E-4251-8B86-ED285CE7E4AC}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.19",
+      "DurationMax": "0.19",
+      "MediaRefs": [
+       {
+        "Id": "731497792"
+       }
+      ]
+     },
+     {
+      "Id": "3527780748",
+      "Name": "SFX_charge3",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_charge3",
+      "GUID": "{18A9DED4-EB38-4EC5-9CFF-65D0FB32EF25}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.23",
+      "DurationMax": "0.23",
+      "MediaRefs": [
+       {
+        "Id": "344673335"
+       }
+      ]
+     },
+     {
+      "Id": "1072352218",
+      "Name": "SFX_chargeReady",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_chargeReady",
+      "GUID": "{0FC21CA8-47C5-4F0A-A40F-E95C9660D77A}",
+      "DurationType": "OneShot",
+      "DurationMin": "1",
+      "DurationMax": "1",
+      "MediaRefs": [
+       {
+        "Id": "241010287"
+       }
+      ]
+     },
+     {
+      "Id": "2508981997",
+      "Name": "SFX_cityBed",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_cityBed",
+      "GUID": "{BB1454E5-4340-4C05-BED4-AEA94E76513C}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "919615173"
+       }
+      ]
+     },
+     {
+      "Id": "2812632974",
+      "Name": "SFX_clockBell",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_clockBell",
+      "GUID": "{D6544AB9-01BA-41FC-B986-3B975B7AA7B5}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "2.9569898",
+      "DurationMax": "3.0436358",
+      "MediaRefs": [
+       {
+        "Id": "276537021"
+       }
+      ]
+     },
+     {
+      "Id": "4095129048",
+      "Name": "SFX_commandDismiss",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_commandDismiss",
+      "GUID": "{DB248D3A-5470-4E52-9B52-23DFBB056787}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.47311834",
+      "DurationMax": "0.48698175",
+      "MediaRefs": [
+       {
+        "Id": "629870990"
+       }
+      ]
+     },
+     {
+      "Id": "2843819038",
+      "Name": "SFX_convert",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_convert",
+      "GUID": "{D49BF102-2821-497D-B448-682625B98E2D}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "257853569"
+       },
+       {
+        "Id": "313060352"
+       },
+       {
+        "Id": "590931565"
+       },
+       {
+        "Id": "631408103"
+       }
+      ]
+     },
+     {
+      "Id": "1227861689",
+      "Name": "SFX_defeatSfx",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_defeatSfx",
+      "GUID": "{0E36712C-DB48-4C54-8103-770C3229F8D2}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "221858001"
+       },
+       {
+        "Id": "242733985"
+       },
+       {
+        "Id": "957668364"
+       }
+      ]
+     },
+     {
+      "Id": "3352184468",
+      "Name": "SFX_empty",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_empty",
+      "GUID": "{A93C3546-2C1A-4C81-AC27-8DA1FED22E43}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.255718",
+      "DurationMax": "0.2632111",
+      "MediaRefs": [
+       {
+        "Id": "1056309104"
+       }
+      ]
+     },
+     {
+      "Id": "1266503598",
+      "Name": "SFX_enemyWindup",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_enemyWindup",
+      "GUID": "{64FA18EA-4FBF-4FB0-A23E-AF5926BCF8F5}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.34498212",
+      "DurationMax": "0.35509086",
+      "MediaRefs": [
+       {
+        "Id": "13192243"
+       },
+       {
+        "Id": "608421049"
+       }
+      ]
+     },
+     {
+      "Id": "992806370",
+      "Name": "SFX_explosion",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_explosion",
+      "GUID": "{6AB227C0-DE85-4039-9010-7D11B8CD15ED}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "1.4784949",
+      "DurationMax": "1.927636",
+      "MediaRefs": [
+       {
+        "Id": "261108201"
+       },
+       {
+        "Id": "709414959"
+       },
+       {
+        "Id": "760475787"
+       }
+      ]
+     },
+     {
+      "Id": "4222619946",
+      "Name": "SFX_grenadeFall",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_grenadeFall",
+      "GUID": "{319C9BBC-E8D9-4BF4-B1DA-2A75CB9294D4}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.6406811",
+      "DurationMax": "0.6594544",
+      "MediaRefs": [
+       {
+        "Id": "177470899"
+       }
+      ]
+     },
+     {
+      "Id": "49383035",
+      "Name": "SFX_grenadeThrow",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_grenadeThrow",
+      "GUID": "{8254310D-9AF3-48B9-B4D2-0D816FE15051}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.4461153",
+      "DurationMax": "0.45918745",
+      "MediaRefs": [
+       {
+        "Id": "497181895"
+       }
+      ]
+     },
+     {
+      "Id": "657574097",
+      "Name": "SFX_guardSpawn",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_guardSpawn",
+      "GUID": "{68917856-E4B2-4370-9D3D-2F346164AC5D}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.47311834",
+      "DurationMax": "0.48698175",
+      "MediaRefs": [
+       {
+        "Id": "67812059"
+       }
+      ]
+     },
+     {
+      "Id": "2331563100",
+      "Name": "SFX_gunPistol",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_gunPistol",
+      "GUID": "{BBDD4BB6-DE6A-427F-AABC-A2C645AE7B4A}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "307450214"
+       },
+       {
+        "Id": "342574205"
+       },
+       {
+        "Id": "765489486"
+       },
+       {
+        "Id": "1021999060"
+       }
+      ]
+     },
+     {
+      "Id": "3661115889",
+      "Name": "SFX_gunRifle",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_gunRifle",
+      "GUID": "{B5A37F4F-A608-4D8A-9A47-E3097B87DBEF}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "168760121"
+       },
+       {
+        "Id": "561106147"
+       },
+       {
+        "Id": "701379912"
+       },
+       {
+        "Id": "899221199"
+       }
+      ]
+     },
+     {
+      "Id": "1572741718",
+      "Name": "SFX_gunRpg",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_gunRpg",
+      "GUID": "{FFBAE45B-5814-4176-AF35-4411DD2AD4C7}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "321765417"
+       },
+       {
+        "Id": "593046040"
+       },
+       {
+        "Id": "737986033"
+       },
+       {
+        "Id": "1073499373"
+       }
+      ]
+     },
+     {
+      "Id": "243986381",
+      "Name": "SFX_gunShotgun",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_gunShotgun",
+      "GUID": "{9F7B3042-FF32-42D8-964A-838B46809AC2}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "216716345"
+       },
+       {
+        "Id": "301830517"
+       },
+       {
+        "Id": "307624304"
+       },
+       {
+        "Id": "769084171"
+       }
+      ]
+     },
+     {
+      "Id": "1978001440",
+      "Name": "SFX_gunSniper",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_gunSniper",
+      "GUID": "{E9125784-AE50-4EC3-9E6D-E22974DA74DF}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "207335239"
+       },
+       {
+        "Id": "225624303"
+       },
+       {
+        "Id": "391931117"
+       },
+       {
+        "Id": "511960310"
+       }
+      ]
+     },
+     {
+      "Id": "3484839773",
+      "Name": "SFX_hitArmor",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_hitArmor",
+      "GUID": "{81FE3426-303D-447D-9495-33865C7D20A4}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.41525173",
+      "DurationMax": "0.4455545",
+      "MediaRefs": [
+       {
+        "Id": "380546799"
+       },
+       {
+        "Id": "571751526"
+       },
+       {
+        "Id": "941480394"
+       }
+      ]
+     },
+     {
+      "Id": "169783108",
+      "Name": "SFX_hitBody",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_hitBody",
+      "GUID": "{F5B634E2-576A-45A1-B5DA-4B5C12BD810D}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.27598572",
+      "DurationMax": "0.7916413",
+      "MediaRefs": [
+       {
+        "Id": "236947402"
+       },
+       {
+        "Id": "445450115"
+       },
+       {
+        "Id": "557472492"
+       },
+       {
+        "Id": "628877248"
+       }
+      ]
+     },
+     {
+      "Id": "3055394594",
+      "Name": "SFX_hurt",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_hurt",
+      "GUID": "{A0507500-56BD-41B5-A99B-4FC832EA2779}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.14980027",
+      "DurationMax": "0.27437112",
+      "MediaRefs": [
+       {
+        "Id": "624876332"
+       },
+       {
+        "Id": "837040182"
+       },
+       {
+        "Id": "884883026"
+       }
+      ]
+     },
+     {
+      "Id": "1883413383",
+      "Name": "SFX_infectionHit",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_infectionHit",
+      "GUID": "{026145DD-D281-497C-84D1-350CAA57C047}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "252471596"
+       },
+       {
+        "Id": "668460046"
+       },
+       {
+        "Id": "671801644"
+       },
+       {
+        "Id": "946710357"
+       }
+      ]
+     },
+     {
+      "Id": "3695098761",
+      "Name": "SFX_jump",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_jump",
+      "GUID": "{2E8BB5CB-6827-40A3-8345-B660C1B90C9D}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.12329004",
+      "DurationMax": "0.15640907",
+      "MediaRefs": [
+       {
+        "Id": "595524"
+       },
+       {
+        "Id": "57506908"
+       },
+       {
+        "Id": "235252624"
+       }
+      ]
+     },
+     {
+      "Id": "2992653910",
+      "Name": "SFX_kindlingEnd",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_kindlingEnd",
+      "GUID": "{5027D3A1-0473-4537-9920-C8AA2E55FC9B}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.3942653",
+      "DurationMax": "0.40581813",
+      "MediaRefs": [
+       {
+        "Id": "317613749"
+       }
+      ]
+     },
+     {
+      "Id": "96736914",
+      "Name": "SFX_kindlingGain",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_kindlingGain",
+      "GUID": "{6B310D78-5C7F-4EC8-B342-49D3AE18E570}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.34498212",
+      "DurationMax": "0.35509086",
+      "MediaRefs": [
+       {
+        "Id": "277397111"
+       }
+      ]
+     },
+     {
+      "Id": "535969926",
+      "Name": "SFX_land",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_land",
+      "GUID": "{8D2B8F95-5BE3-424C-AA99-1FE4C402229B}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.4285376",
+      "DurationMax": "0.5413233",
+      "MediaRefs": [
+       {
+        "Id": "48951976"
+       },
+       {
+        "Id": "473243285"
+       },
+       {
+        "Id": "557283050"
+       },
+       {
+        "Id": "794405729"
+       }
+      ]
+     },
+     {
+      "Id": "621900101",
+      "Name": "SFX_lowHp",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_lowHp",
+      "GUID": "{618A7E8A-B065-4863-B586-0966366DD74F}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.41397855",
+      "DurationMax": "0.42610902",
+      "MediaRefs": [
+       {
+        "Id": "987237783"
+       }
+      ]
+     },
+     {
+      "Id": "778132812",
+      "Name": "SFX_meleeHeavy",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_meleeHeavy",
+      "GUID": "{324C14F7-3C3B-446B-8D6E-C6CDE4C1D6D7}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.47311834",
+      "DurationMax": "0.57431716",
+      "MediaRefs": [
+       {
+        "Id": "182505525"
+       },
+       {
+        "Id": "274636552"
+       },
+       {
+        "Id": "1028386703"
+       },
+       {
+        "Id": "1034820020"
+       }
+      ]
+     },
+     {
+      "Id": "1021964185",
+      "Name": "SFX_meleeLight",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_meleeLight",
+      "GUID": "{07076E8C-9997-47EF-9E12-5E8BE16D0176}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.27598572",
+      "DurationMax": "0.3033913",
+      "MediaRefs": [
+       {
+        "Id": "167179929"
+       },
+       {
+        "Id": "246638256"
+       },
+       {
+        "Id": "813820147"
+       },
+       {
+        "Id": "872781068"
+       }
+      ]
+     },
+     {
+      "Id": "3090474213",
+      "Name": "SFX_Pause",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_Pause",
+      "GUID": "{F7F05480-DA07-46A4-A715-E8A942880EA4}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "2392911328",
+      "Name": "SFX_pickupFactor",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_pickupFactor",
+      "GUID": "{B30BA9B0-6D99-4297-96B0-C1F12154ED0A}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.27598572",
+      "DurationMax": "0.2840727",
+      "MediaRefs": [
+       {
+        "Id": "140328457"
+       },
+       {
+        "Id": "392764862"
+       }
+      ]
+     },
+     {
+      "Id": "519740947",
+      "Name": "SFX_pickupHealth",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_pickupHealth",
+      "GUID": "{9C7C3667-BEB9-4F8C-A16F-05064E131D31}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.34498212",
+      "DurationMax": "0.35509086",
+      "MediaRefs": [
+       {
+        "Id": "197489274"
+       },
+       {
+        "Id": "995321690"
+       }
+      ]
+     },
+     {
+      "Id": "821825544",
+      "Name": "SFX_pickupPotion",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_pickupPotion",
+      "GUID": "{D870668B-96EA-4721-AEA2-C30518BF8D4F}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.3949429",
+      "DurationMax": "0.6087272",
+      "MediaRefs": [
+       {
+        "Id": "199152008"
+       },
+       {
+        "Id": "915512193"
+       }
+      ]
+     },
+     {
+      "Id": "3123707582",
+      "Name": "SFX_planeCrash",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_planeCrash",
+      "GUID": "{EC0E0CC9-B671-4E67-AEE0-ABA237CCDB94}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "2.1684592",
+      "DurationMax": "2.2319999",
+      "MediaRefs": [
+       {
+        "Id": "977750697"
+       }
+      ]
+     },
+     {
+      "Id": "2233666647",
+      "Name": "SFX_planeDive",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_planeDive",
+      "GUID": "{C0957AAE-FFB3-4B65-BF1E-8CA31ABCA2E4}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "2.759857",
+      "DurationMax": "2.8407269",
+      "MediaRefs": [
+       {
+        "Id": "493196012"
+       }
+      ]
+     },
+     {
+      "Id": "124427551",
+      "Name": "SFX_planeLoop",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_planeLoop",
+      "GUID": "{0799EA0B-D34D-4CFF-AB6A-651B759B654A}",
+      "MaxAttenuation": "65",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "70515748"
+       }
+      ]
+     },
+     {
+      "Id": "1441628827",
+      "Name": "SFX_planeWarning",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_planeWarning",
+      "GUID": "{C4BF90A1-90AE-4846-A821-47F43F092AF3}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.5421148",
+      "DurationMax": "0.55799997",
+      "MediaRefs": [
+       {
+        "Id": "471260698"
+       }
+      ]
+     },
+     {
+      "Id": "3734421463",
+      "Name": "SFX_police",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_police",
+      "GUID": "{9F682012-DC64-4C5B-9881-0B72D2ADE4F0}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "16.937628",
+      "DurationMax": "17.433937",
+      "MediaRefs": [
+       {
+        "Id": "643790383"
+       }
+      ]
+     },
+     {
+      "Id": "3422642559",
+      "Name": "SFX_potionEnd",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_potionEnd",
+      "GUID": "{E5363D21-C8CD-4AAA-841B-EF3AC66840A1}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "907529566"
+       }
+      ]
+     },
+     {
+      "Id": "2389380880",
+      "Name": "SFX_power",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_power",
+      "GUID": "{4F8C7283-DF83-4DA1-BF0D-1D38F0BBCDE2}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "40003368"
+       },
+       {
+        "Id": "177383944"
+       },
+       {
+        "Id": "950255827"
+       },
+       {
+        "Id": "1034736998"
+       }
+      ]
+     },
+     {
+      "Id": "754065912",
+      "Name": "SFX_powerBounce",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_powerBounce",
+      "GUID": "{3CA7E8D7-A1C2-41A5-B205-823F6EC1653A}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.12630863",
+      "DurationMax": "0.37924972",
+      "MediaRefs": [
+       {
+        "Id": "229543824"
+       },
+       {
+        "Id": "370326621"
+       },
+       {
+        "Id": "1023897360"
+       }
+      ]
+     },
+     {
+      "Id": "4217699670",
+      "Name": "SFX_powerImpact",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_powerImpact",
+      "GUID": "{75B5468F-FF08-4134-B9E3-E77567D0C228}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "1.1827959",
+      "DurationMax": "1.2174544",
+      "MediaRefs": [
+       {
+        "Id": "39890821"
+       },
+       {
+        "Id": "723780370"
+       },
+       {
+        "Id": "794502792"
+       },
+       {
+        "Id": "825351950"
+       }
+      ]
+     },
+     {
+      "Id": "4121067832",
+      "Name": "SFX_radio2",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_radio2",
+      "GUID": "{757EDBCC-7FAA-405A-A4C7-20D1BDAD2C26}",
+      "DurationType": "OneShot",
+      "DurationMin": "4.1085835",
+      "DurationMax": "4.1085835",
+      "MediaRefs": [
+       {
+        "Id": "568621385"
+       }
+      ]
+     },
+     {
+      "Id": "4121067833",
+      "Name": "SFX_radio3",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_radio3",
+      "GUID": "{091DA7A9-20FF-419E-BE6C-1C32A4780A26}",
+      "DurationType": "OneShot",
+      "DurationMin": "3.8386874",
+      "DurationMax": "3.8386874",
+      "MediaRefs": [
+       {
+        "Id": "914747443"
+       }
+      ]
+     },
+     {
+      "Id": "4121067838",
+      "Name": "SFX_radio4",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_radio4",
+      "GUID": "{E6BDC7A2-B47F-4BF1-8328-22F72460B341}",
+      "DurationType": "OneShot",
+      "DurationMin": "3.9107916",
+      "DurationMax": "3.9107916",
+      "MediaRefs": [
+       {
+        "Id": "871105589"
+       }
+      ]
+     },
+     {
+      "Id": "4121067839",
+      "Name": "SFX_radio5",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_radio5",
+      "GUID": "{5F3F6563-64DD-47DB-AC03-0DE69619BD4C}",
+      "DurationType": "OneShot",
+      "DurationMin": "3.5248542",
+      "DurationMax": "3.5248542",
+      "MediaRefs": [
+       {
+        "Id": "410355212"
+       }
+      ]
+     },
+     {
+      "Id": "4121067836",
+      "Name": "SFX_radio6",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_radio6",
+      "GUID": "{5C152428-EB40-4186-85F3-02CCFB1F0F68}",
+      "DurationType": "OneShot",
+      "DurationMin": "4.2307916",
+      "DurationMax": "4.2307916",
+      "MediaRefs": [
+       {
+        "Id": "554987555"
+       }
+      ]
+     },
+     {
+      "Id": "3899697810",
+      "Name": "SFX_reload",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_reload",
+      "GUID": "{82BDDD04-3729-4A3B-8CF5-8FF6F8AA9BBF}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.42414322",
+      "DurationMax": "0.66213876",
+      "MediaRefs": [
+       {
+        "Id": "465035096"
+       },
+       {
+        "Id": "469504182"
+       },
+       {
+        "Id": "568042525"
+       }
+      ]
+     },
+     {
+      "Id": "101625196",
+      "Name": "SFX_Resume",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_Resume",
+      "GUID": "{B6406955-A3DA-45AE-BF5F-1F4DCCE8C410}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "3524008470",
+      "Name": "SFX_riverBed",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_riverBed",
+      "GUID": "{92E069BE-F9ED-4CB5-9B78-BA0D250A1F3C}",
+      "MaxAttenuation": "65",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "876169649"
+       }
+      ]
+     },
+     {
+      "Id": "1888367904",
+      "Name": "SFX_roll",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_roll",
+      "GUID": "{F4DBE2B6-1F60-44F8-AB77-1FCC4418D689}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.49283162",
+      "DurationMax": "0.50727266",
+      "MediaRefs": [
+       {
+        "Id": "593105419"
+       },
+       {
+        "Id": "616220708"
+       },
+       {
+        "Id": "699471592"
+       }
+      ]
+     },
+     {
+      "Id": "2633045023",
+      "Name": "SFX_seaBed",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_seaBed",
+      "GUID": "{02E757B5-02CB-4F3C-9F65-DDAD3CDB6BF1}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "768236506"
+       }
+      ]
+     },
+     {
+      "Id": "476859138",
+      "Name": "SFX_shieldDash",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_shieldDash",
+      "GUID": "{B8311DF6-69F7-461A-9C58-777AE7C4E0E3}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.3942653",
+      "DurationMax": "0.40581813",
+      "MediaRefs": [
+       {
+        "Id": "441561656"
+       }
+      ]
+     },
+     {
+      "Id": "2507834306",
+      "Name": "SFX_sprayLoop",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_sprayLoop",
+      "GUID": "{03624FFF-FFBF-4097-BB23-B90E1BAED0D9}",
+      "MaxAttenuation": "65",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "270485357"
+       },
+       {
+        "Id": "709418164"
+       }
+      ]
+     },
+     {
+      "Id": "1344146796",
+      "Name": "SFX_sprayWarning",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_sprayWarning",
+      "GUID": "{886C5E2D-D95B-48BD-AE82-49DAE364BE6D}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "596636332"
+       }
+      ]
+     },
+     {
+      "Id": "1860966172",
+      "Name": "SFX_stepMetal",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_stepMetal",
+      "GUID": "{C9BFC3DA-D22F-4DF5-97EF-6C8074CA636C}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.21684591",
+      "DurationMax": "0.22319996",
+      "MediaRefs": [
+       {
+        "Id": "149018464"
+       },
+       {
+        "Id": "318451640"
+       },
+       {
+        "Id": "597406216"
+       },
+       {
+        "Id": "843200512"
+       }
+      ]
+     },
+     {
+      "Id": "1802563937",
+      "Name": "SFX_stepRoad",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_stepRoad",
+      "GUID": "{DA19FBA7-E92D-4130-B40A-16F774B29F4B}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.23614848",
+      "DurationMax": "0.3677727",
+      "MediaRefs": [
+       {
+        "Id": "14506724"
+       },
+       {
+        "Id": "105773722"
+       },
+       {
+        "Id": "434574810"
+       },
+       {
+        "Id": "756978049"
+       }
+      ]
+     },
+     {
+      "Id": "3247710726",
+      "Name": "SFX_stepStone",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_stepStone",
+      "GUID": "{4B492856-D3C9-4792-9541-B8E1034BD019}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.19436046",
+      "DurationMax": "0.2669945",
+      "MediaRefs": [
+       {
+        "Id": "17498570"
+       },
+       {
+        "Id": "141776386"
+       },
+       {
+        "Id": "495971751"
+       },
+       {
+        "Id": "659173891"
+       }
+      ]
+     },
+     {
+      "Id": "650331997",
+      "Name": "SFX_Stop",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_Stop",
+      "GUID": "{D0A5FE0C-022B-4BAD-937C-216E0594A460}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "608687653",
+      "Name": "SFX_switchWeapon",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_switchWeapon",
+      "GUID": "{718EA66D-E383-4001-95B4-D216D7199FE0}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.50874597",
+      "DurationMax": "0.8193299",
+      "MediaRefs": [
+       {
+        "Id": "390101719"
+       },
+       {
+        "Id": "992454373"
+       },
+       {
+        "Id": "1042992877"
+       }
+      ]
+     },
+     {
+      "Id": "3527844844",
+      "Name": "SFX_syringe",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_syringe",
+      "GUID": "{10F5E91B-C27A-4B7F-A030-C9DE29642E06}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.98566324",
+      "DurationMax": "1.0145453",
+      "MediaRefs": [
+       {
+        "Id": "532890957"
+       },
+       {
+        "Id": "574055499"
+       },
+       {
+        "Id": "878051118"
+       },
+       {
+        "Id": "1028115876"
+       }
+      ]
+     },
+     {
+      "Id": "1056984907",
+      "Name": "SFX_tankLoop",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_tankLoop",
+      "GUID": "{7FBF8521-2F4E-4B20-BE77-BC927C5E88B2}",
+      "MaxAttenuation": "65",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "104375995"
+       }
+      ]
+     },
+     {
+      "Id": "2402644619",
+      "Name": "SFX_tankRam",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_tankRam",
+      "GUID": "{0DFE3BD8-B694-4EBD-AF46-63FCF4DBB68C}",
+      "MaxAttenuation": "65",
+      "DurationType": "OneShot",
+      "DurationMin": "0.6406811",
+      "DurationMax": "0.6594544",
+      "MediaRefs": [
+       {
+        "Id": "925901718"
+       }
+      ]
+     },
+     {
+      "Id": "3793925297",
+      "Name": "SFX_uiAcquire",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_uiAcquire",
+      "GUID": "{53009B68-A610-4FD3-B332-004CF1C09BB1}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.6",
+      "DurationMax": "0.6",
+      "MediaRefs": [
+       {
+        "Id": "59974856"
+       },
+       {
+        "Id": "99535474"
+       }
+      ]
+     },
+     {
+      "Id": "3656872646",
+      "Name": "SFX_uiBack",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_uiBack",
+      "GUID": "{01875E3D-6ED3-4254-A2E1-60A3F0C05D22}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.16",
+      "DurationMax": "0.31",
+      "MediaRefs": [
+       {
+        "Id": "168892602"
+       },
+       {
+        "Id": "683638178"
+       }
+      ]
+     },
+     {
+      "Id": "3412173857",
+      "Name": "SFX_uiClose",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_uiClose",
+      "GUID": "{58984C9F-41C3-4A4D-9E9E-CE4A949DC289}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.25",
+      "DurationMax": "0.25",
+      "MediaRefs": [
+       {
+        "Id": "211582813"
+       }
+      ]
+     },
+     {
+      "Id": "1664656389",
+      "Name": "SFX_uiConfirm",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_uiConfirm",
+      "GUID": "{69F18755-B85D-4C2F-A00C-B61369295E56}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.18",
+      "DurationMax": "0.24",
+      "MediaRefs": [
+       {
+        "Id": "462426334"
+       },
+       {
+        "Id": "592651643"
+       }
+      ]
+     },
+     {
+      "Id": "2660735697",
+      "Name": "SFX_uiFocus",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_uiFocus",
+      "GUID": "{8C20F3FC-9905-46D8-B46B-8FEC8FA67A41}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.09",
+      "DurationMax": "0.09",
+      "MediaRefs": [
+       {
+        "Id": "194003436"
+       },
+       {
+        "Id": "977893853"
+       }
+      ]
+     },
+     {
+      "Id": "538109251",
+      "Name": "SFX_uiOpen",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_uiOpen",
+      "GUID": "{91FFD36F-3BD7-47D2-B4F5-CB691187596A}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.31",
+      "DurationMax": "0.31",
+      "MediaRefs": [
+       {
+        "Id": "304794435"
+       }
+      ]
+     },
+     {
+      "Id": "2219087161",
+      "Name": "SFX_uiReroll",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_uiReroll",
+      "GUID": "{66023A12-E816-4EC3-974B-9988478EAC53}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.09297917",
+      "DurationMax": "0.31152084",
+      "MediaRefs": [
+       {
+        "Id": "686122141"
+       },
+       {
+        "Id": "965661170"
+       }
+      ]
+     },
+     {
+      "Id": "1704782783",
+      "Name": "SFX_upgrade",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_upgrade",
+      "GUID": "{0A107EAF-6886-441C-BC69-F34DF13E627E}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.0842296",
+      "DurationMax": "1.2174544",
+      "MediaRefs": [
+       {
+        "Id": "805182270"
+       },
+       {
+        "Id": "1068356572"
+       }
+      ]
+     },
+     {
+      "Id": "888222360",
+      "Name": "SFX_windBed",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_windBed",
+      "GUID": "{7F9E764F-9A0B-4F26-81FC-DEA2673D947F}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "941732260"
+       }
+      ]
+     },
+     {
+      "Id": "1888602901",
+      "Name": "SFX_worldMachinery",
+      "ObjectPath": "\\Events\\Default Work Unit\\SFX_worldMachinery",
+      "GUID": "{18B38AEB-3491-4EC0-AEAF-1C43A6C0BCF7}",
+      "MaxAttenuation": "65",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "142530176"
+       }
+      ]
+     }
+    ],
+    "GameParameters": [
+     {
+      "Id": "843230422",
+      "Name": "SFX_GainDb",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\SFX_GainDb",
+      "GUID": "{F2DA08D2-DC81-45BF-A816-E5FBE423D910}"
+     },
+     {
+      "Id": "1986000621",
+      "Name": "Impact_Strength",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Impact_Strength",
+      "GUID": "{617296AA-5E98-45D5-ACDA-C708D1ABCE1E}"
+     },
+     {
+      "Id": "2456027155",
+      "Name": "Ambience_GainDb",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Ambience_GainDb",
+      "GUID": "{0D381793-A41C-4965-ABD3-052812CD059E}"
+     },
+     {
+      "Id": "3228572075",
+      "Name": "Voice_GainDb",
+      "ObjectPath": "\\Game Parameters\\Default Work Unit\\Voice_GainDb",
+      "GUID": "{137CFF85-F3A0-481B-B1C4-E95156F95454}"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{E12FE895-F63F-B9BF-BE3B-D5850974A8A8}"
+ }
+}
