@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-10-20T08:51:50.958Z",
+  "generationId": "9aa8941f-fe2f-4c67-a3d2-081d51685b36",
+  "project": "wwise/WakeUpTokyo/WakeUpTokyo.wproj",
+  "projectFingerprint": "0c8e7c18aa52ad979e87d7406c7e1153c772427f1ad882751e40c08e05fc0c55",
+  "sdkVersion": "2025.1.10.9233",
+  "command": "WwiseConsole generate-soundbank <project> --platform Android --bank TokyoMusic TokyoSfx --soundbank-path Android <platform-output> --root-output-path <platform-output> --abort-on-load-issues --no-source-control",
+  "result": "/Users/lin/Library/Application Support/Wwise2019/Bottles/Wwise2019x64/drive_c/Program Files/Audiokinetic/Wwise 2025.1.10.9233 -> /Library/Application Support/Audiokinetic/Wwise 2025.1.10.9233\n\r\nWwise | v2025.1.10 | Build no.9233 | (C) 2006-2026. Audiokinetic Inc. All rights reserved.\r\n\r\n\r\n*** Loading Project ***\r\n\r\n\r\n*** Bank Generation ***\r\n\r\n\r\nProcess completed successfully."
+}

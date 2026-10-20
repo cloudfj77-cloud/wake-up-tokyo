@@ -1,0 +1,43 @@
+{
+ "ProjectInfo": {
+  "Project": {
+   "Name": "WakeUpTokyo",
+   "GUID": "{E5D4C90C-5E88-452C-9CA0-19EC782CEC8F}",
+   "Generator": "2025.1.10.9233"
+  },
+  "CacheRoot": "../../.cache",
+  "Platforms": [
+   {
+    "Name": "Android",
+    "GUID": "{3FFF8E41-A1DA-46C8-8318-5E510D609B63}",
+    "BasePlatform": "Android",
+    "BasePlatformGUID": "{A2D401DE-B8B6-4FEB-8142-137C34D507CA}",
+    "Path": "../Android"
+   },
+   {
+    "Name": "Web",
+    "GUID": "{24DFC2DF-C376-4062-944C-5346F1A17E52}",
+    "BasePlatform": "Web",
+    "BasePlatformGUID": "{639AD233-23F2-4C0F-9127-79F44C15E1DA}",
+    "Path": "../Web"
+   },
+   {
+    "Name": "Windows",
+    "GUID": "{7BB9BD8B-03D9-4278-9BA1-D4CCA29AB7DD}",
+    "BasePlatform": "Windows",
+    "BasePlatformGUID": "{6E0CB257-C6C8-4C5C-8366-2740DFC441EB}",
+    "Path": "."
+   }
+  ],
+  "Languages": [
+   {
+    "Name": "English(US)",
+    "Id": "684519430",
+    "GUID": "{CF121B02-2BAF-47EF-939E-11A4A0BE7992}",
+    "Default": "true",
+    "UseAsStandIn": "true"
+   }
+  ],
+  "FileHash": "{5AE7507B-DDB4-B617-1160-3BC267133560}"
+ }
+}

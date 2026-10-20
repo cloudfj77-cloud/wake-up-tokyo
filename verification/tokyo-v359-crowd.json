@@ -1,0 +1,1373 @@
+{
+  "before": {
+    "buildings": 0,
+    "spawn": {
+      "x": 5,
+      "z": 8,
+      "floorY": -3.8499997869133953
+    },
+    "bossSpawn": {
+      "x": 8.75,
+      "z": -8.850000000000001,
+      "floorY": 0
+    },
+    "calls": 1,
+    "triangles": 2,
+    "position": {
+      "x": 5,
+      "z": 8,
+      "y": 0,
+      "vy": 0,
+      "crouch": false,
+      "roll": 0,
+      "rollX": 0,
+      "rollZ": 1,
+      "floorY": -3.8499997869133953
+    },
+    "people": [
+      {
+        "id": 0,
+        "kind": "human",
+        "x": -14.784166016535673,
+        "z": -5.2831579252187995,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 1,
+        "kind": "human",
+        "x": -12.534545701507257,
+        "z": -28.288162931101287,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 2,
+        "kind": "human",
+        "x": -12.068158112154004,
+        "z": -32.5047366613032,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 3,
+        "kind": "human",
+        "x": -5.0292082089265895,
+        "z": -27.36683283570633,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 4,
+        "kind": "human",
+        "x": -1.2456369805551792,
+        "z": -31.76279101746169,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 5,
+        "kind": "human",
+        "x": -3.199983432460582,
+        "z": -29.990210922900687,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 6,
+        "kind": "human",
+        "x": -3.3232753621795066,
+        "z": -27.208121030824834,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 7,
+        "kind": "human",
+        "x": -1.5319999999999832,
+        "z": -16.65,
+        "floorY": -9.834766426242147e-8,
+        "stationary": false
+      },
+      {
+        "id": 8,
+        "kind": "human",
+        "x": -17.282176276672487,
+        "z": -9.231859615922207,
+        "floorY": 0.020899999631195793,
+        "stationary": false
+      },
+      {
+        "id": 9,
+        "kind": "human",
+        "x": -15.839122181164008,
+        "z": -11.633409638260922,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 10,
+        "kind": "human",
+        "x": -13.152626416265838,
+        "z": 0.769731997893444,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 11,
+        "kind": "human",
+        "x": -17.04753370009149,
+        "z": -11.941411924035028,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 12,
+        "kind": "guard",
+        "x": -5.14366653040527,
+        "z": -15.481222176801749,
+        "floorY": -9.834766426242147e-8,
+        "stationary": false
+      },
+      {
+        "id": 13,
+        "kind": "guard",
+        "x": -14.917459004651743,
+        "z": -7.357548540567376,
+        "floorY": 0.020899999631195793,
+        "stationary": false
+      },
+      {
+        "id": 14,
+        "kind": "human",
+        "x": 11.664671688602935,
+        "z": 0.14326608032187382,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 15,
+        "kind": "human",
+        "x": 11.829342346060363,
+        "z": -5.224103985107512,
+        "floorY": 0.2750001229345793,
+        "stationary": false
+      },
+      {
+        "id": 16,
+        "kind": "human",
+        "x": 6.145076067284811,
+        "z": -7.643637760408772,
+        "floorY": 0.027499947650357792,
+        "stationary": false
+      },
+      {
+        "id": 17,
+        "kind": "human",
+        "x": 11.204629043761333,
+        "z": -5.462736359365992,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 18,
+        "kind": "human",
+        "x": 9.440811981913338,
+        "z": -10.332427439973332,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 19,
+        "kind": "human",
+        "x": 6.949652741104433,
+        "z": -10.297961862189165,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 20,
+        "kind": "human",
+        "x": 11.507865652518854,
+        "z": -11.897680775646869,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 21,
+        "kind": "human",
+        "x": 3.0752773673254383,
+        "z": -0.5806924460439502,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 22,
+        "kind": "human",
+        "x": 16.536916900956587,
+        "z": -14.323485107806869,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 23,
+        "kind": "human",
+        "x": 7.940739551678781,
+        "z": -4.276121936735993,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 24,
+        "kind": "human",
+        "x": 7.640174918661426,
+        "z": -10.647385752338167,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 25,
+        "kind": "human",
+        "x": 4.959552191241795,
+        "z": -1.3572354440555974,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 26,
+        "kind": "guard",
+        "x": 11.061612353251927,
+        "z": -4.905806176625971,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 27,
+        "kind": "guard",
+        "x": 3.926090210340872,
+        "z": -9.351171014029026,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 28,
+        "kind": "human",
+        "x": -9.766832835706605,
+        "z": 14.570791791073345,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 29,
+        "kind": "human",
+        "x": 5.003474152793617,
+        "z": 13.652651506636937,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 30,
+        "kind": "human",
+        "x": 2.464965508403925,
+        "z": 15.71156002347532,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 31,
+        "kind": "human",
+        "x": 1.2750246005984662,
+        "z": 5.123658559204132,
+        "floorY": -6.106226635438361e-16,
+        "stationary": false
+      },
+      {
+        "id": 32,
+        "kind": "human",
+        "x": -5.9436723808746725,
+        "z": 8.471144593775145,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 33,
+        "kind": "human",
+        "x": -2.3637631749756873,
+        "z": 2.1536577751702,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 34,
+        "kind": "human",
+        "x": 4.465520090619926,
+        "z": 14.55673995427578,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 35,
+        "kind": "human",
+        "x": 1.649914164992191,
+        "z": 16.405661046880674,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 36,
+        "kind": "human",
+        "x": -0.3926894479791217,
+        "z": 8.35930254401131,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 37,
+        "kind": "human",
+        "x": -7.45212421242938,
+        "z": 15.129150259905245,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 38,
+        "kind": "human",
+        "x": -12.289860714974477,
+        "z": 8.49527695785558,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 39,
+        "kind": "human",
+        "x": -14.686734481596437,
+        "z": 7.979308478408765,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 40,
+        "kind": "guard",
+        "x": -2.601436649074241,
+        "z": 7.977939511153161,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 41,
+        "kind": "guard",
+        "x": -15.908890093479254,
+        "z": 15.56374003087036,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 42,
+        "kind": "human",
+        "x": 3.5123441095248755,
+        "z": -3.6677069489682435,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 43,
+        "kind": "human",
+        "x": 13.743209407294437,
+        "z": 10.596440110303512,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 44,
+        "kind": "human",
+        "x": 12.502379662323106,
+        "z": 13.05264110096224,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 45,
+        "kind": "human",
+        "x": 11.772431993130457,
+        "z": 12.263967226377934,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 46,
+        "kind": "human",
+        "x": 5.656333469594699,
+        "z": -1.018777823198237,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 47,
+        "kind": "human",
+        "x": 16.441124978696205,
+        "z": 6.6859869154128875,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 48,
+        "kind": "human",
+        "x": 8.862334348234112,
+        "z": -1.2787387328323254,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 49,
+        "kind": "human",
+        "x": 16.403677362411422,
+        "z": 8.345822791653928,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 50,
+        "kind": "human",
+        "x": 9.398848579729636,
+        "z": -4.573532262948421,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 51,
+        "kind": "human",
+        "x": 7.468840279231365,
+        "z": -3.2517912781267158,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 52,
+        "kind": "human",
+        "x": 5.191362764651296,
+        "z": 2.3850709675486805,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 53,
+        "kind": "human",
+        "x": 11.841060552534222,
+        "z": 7.35133868701845,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 54,
+        "kind": "guard",
+        "x": 8.343548882967173,
+        "z": -6.6563094178842634,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 55,
+        "kind": "guard",
+        "x": 17.57919910669784,
+        "z": 7.136498883372325,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 56,
+        "kind": "human",
+        "x": 1,
+        "z": 8,
+        "floorY": -3.8499997869133953,
+        "stationary": true
+      }
+    ],
+    "towers": []
+  },
+  "after": {
+    "buildings": 0,
+    "spawn": {
+      "x": 5,
+      "z": 8,
+      "floorY": -3.8499997869133953
+    },
+    "bossSpawn": {
+      "x": 8.75,
+      "z": -8.850000000000001,
+      "floorY": 0
+    },
+    "calls": 1,
+    "triangles": 2,
+    "position": {
+      "x": 5,
+      "z": 8,
+      "y": 0,
+      "vy": 0,
+      "crouch": false,
+      "roll": 0,
+      "rollX": 0,
+      "rollZ": 1,
+      "floorY": -3.8499997869133953
+    },
+    "people": [
+      {
+        "id": 0,
+        "kind": "human",
+        "x": -13.236591786182117,
+        "z": -4.1636780068844725,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 1,
+        "kind": "human",
+        "x": -12.270449536852304,
+        "z": -26.396477306632228,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 2,
+        "kind": "human",
+        "x": -13.128964449345018,
+        "z": -32.87177005371272,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 3,
+        "kind": "human",
+        "x": -5.0292082089265895,
+        "z": -27.36683283570633,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 4,
+        "kind": "human",
+        "x": -3.0879150235744617,
+        "z": -31.258575886573,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 5,
+        "kind": "human",
+        "x": -3.552664957578444,
+        "z": -31.867399519672226,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 6,
+        "kind": "human",
+        "x": -2.3291441549221976,
+        "z": -28.83904850584184,
+        "floorY": 4.917383142344356e-8,
+        "stationary": false
+      },
+      {
+        "id": 7,
+        "kind": "human",
+        "x": -1.5319999999999832,
+        "z": -16.65,
+        "floorY": -9.834766426242147e-8,
+        "stationary": false
+      },
+      {
+        "id": 8,
+        "kind": "human",
+        "x": -15.492596736024533,
+        "z": -8.564307105850908,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 9,
+        "kind": "human",
+        "x": -15.839122181164008,
+        "z": -11.633409638260922,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 10,
+        "kind": "human",
+        "x": -11.271410648415246,
+        "z": 1.100259637884967,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 11,
+        "kind": "human",
+        "x": -17.04753370009149,
+        "z": -11.941411924035028,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 12,
+        "kind": "guard",
+        "x": -4.860154102639048,
+        "z": -15.360869763854991,
+        "floorY": -9.834766426242147e-8,
+        "stationary": false
+      },
+      {
+        "id": 13,
+        "kind": "guard",
+        "x": -16.399892086764556,
+        "z": -6.153134391254294,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 14,
+        "kind": "human",
+        "x": 11.664671688602935,
+        "z": 0.14326608032187382,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 15,
+        "kind": "human",
+        "x": 11.836251306679033,
+        "z": -5.221846097418276,
+        "floorY": 0.2750001229345793,
+        "stationary": false
+      },
+      {
+        "id": 16,
+        "kind": "human",
+        "x": 6.239454283858243,
+        "z": -5.820426146172851,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 17,
+        "kind": "human",
+        "x": 11.204629819711885,
+        "z": -5.4627361581218175,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 18,
+        "kind": "human",
+        "x": 8.134922563662089,
+        "z": -10.2786322809206,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 19,
+        "kind": "human",
+        "x": 6.229761158173839,
+        "z": -8.468496629374613,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 20,
+        "kind": "human",
+        "x": 13.235007707071683,
+        "z": -11.082081848843172,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 21,
+        "kind": "human",
+        "x": 2.191964347168777,
+        "z": -2.1742914565951565,
+        "floorY": 0.020899999631195765,
+        "stationary": false
+      },
+      {
+        "id": 22,
+        "kind": "human",
+        "x": 15.949670728491675,
+        "z": -12.505969435540656,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 23,
+        "kind": "human",
+        "x": 8.119171456853895,
+        "z": -2.413856205153241,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 24,
+        "kind": "human",
+        "x": 5.859171041751255,
+        "z": -9.95727961815372,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 25,
+        "kind": "human",
+        "x": 6.604133258463452,
+        "z": -2.149048398897662,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 26,
+        "kind": "guard",
+        "x": 11.061612353251927,
+        "z": -4.905806176625971,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 27,
+        "kind": "guard",
+        "x": 5.774346688693368,
+        "z": -8.869331542590574,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 28,
+        "kind": "human",
+        "x": -9.766832835706605,
+        "z": 14.570791791073345,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 29,
+        "kind": "human",
+        "x": 3.3102260484683015,
+        "z": 14.306303725950496,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 30,
+        "kind": "human",
+        "x": 2.050229826968667,
+        "z": 15.745203395862974,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 31,
+        "kind": "human",
+        "x": 2.3647745946572547,
+        "z": 5.240835977920134,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 32,
+        "kind": "human",
+        "x": -5.1299001254033145,
+        "z": 7.996593717437192,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 33,
+        "kind": "human",
+        "x": -2.3637631749756873,
+        "z": 2.1536577751702,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 34,
+        "kind": "human",
+        "x": 4.465520090619926,
+        "z": 14.55673995427578,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 35,
+        "kind": "human",
+        "x": -0.2382924960581651,
+        "z": 16.11774284465452,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 36,
+        "kind": "human",
+        "x": -0.1533667833683524,
+        "z": 8.463541825405382,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 37,
+        "kind": "human",
+        "x": -8.577523841920444,
+        "z": 14.585040849998173,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 38,
+        "kind": "human",
+        "x": -14.10812461518076,
+        "z": 7.910351599186074,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 39,
+        "kind": "human",
+        "x": -16.543397892391752,
+        "z": 8.427663544201494,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 40,
+        "kind": "guard",
+        "x": -0.7157120450453778,
+        "z": 8.281689414475359,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 41,
+        "kind": "guard",
+        "x": -16.13453886341678,
+        "z": 14.334243382386234,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 42,
+        "kind": "human",
+        "x": 5.38092102894049,
+        "z": -4.063486663248037,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 43,
+        "kind": "human",
+        "x": 13.367483954550506,
+        "z": 12.46915249349754,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 44,
+        "kind": "human",
+        "x": 11.92265003050334,
+        "z": 13.509856326311493,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 45,
+        "kind": "human",
+        "x": 10.383293008236235,
+        "z": 13.574888340196438,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 46,
+        "kind": "human",
+        "x": 5.656333469594699,
+        "z": -1.018777823198237,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 47,
+        "kind": "human",
+        "x": 16.288855103633992,
+        "z": 8.133712806679483,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 48,
+        "kind": "human",
+        "x": 9.280900360834943,
+        "z": -3.142343781951768,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 49,
+        "kind": "human",
+        "x": 18.28912271267441,
+        "z": 8.040344286388496,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 50,
+        "kind": "human",
+        "x": 9.398848579729636,
+        "z": -4.573532262948421,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 51,
+        "kind": "human",
+        "x": 6.8476994275219365,
+        "z": -5.058004257912242,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 52,
+        "kind": "human",
+        "x": 4.840798479559105,
+        "z": 0.5074858248651694,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 53,
+        "kind": "human",
+        "x": 11.841060552534222,
+        "z": 7.35133868701845,
+        "floorY": -3.8499997869133953,
+        "stationary": false
+      },
+      {
+        "id": 54,
+        "kind": "guard",
+        "x": 6.767490760143252,
+        "z": -5.941534906902576,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 55,
+        "kind": "guard",
+        "x": 15.99380375853604,
+        "z": 7.638188173083041,
+        "floorY": -9.83476642346659e-8,
+        "stationary": false
+      },
+      {
+        "id": 56,
+        "kind": "human",
+        "x": 1,
+        "z": 8,
+        "floorY": -3.8499997869133953,
+        "stationary": true
+      }
+    ],
+    "towers": []
+  },
+  "motion": [
+    {
+      "id": 0,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317500000445
+    },
+    {
+      "id": 1,
+      "kind": "human",
+      "floorY": 4.917383142344356e-8,
+      "stationary": false,
+      "distance": 1.9100317500000747
+    },
+    {
+      "id": 2,
+      "kind": "human",
+      "floorY": 4.917383142344356e-8,
+      "stationary": false,
+      "distance": 1.1225077265516972
+    },
+    {
+      "id": 3,
+      "kind": "human",
+      "floorY": 4.917383142344356e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 4,
+      "kind": "human",
+      "floorY": 4.917383142344356e-8,
+      "stationary": false,
+      "distance": 1.9100317499999988
+    },
+    {
+      "id": 5,
+      "kind": "human",
+      "floorY": 4.917383142344356e-8,
+      "stationary": false,
+      "distance": 1.9100317500001307
+    },
+    {
+      "id": 6,
+      "kind": "human",
+      "floorY": 4.917383142344356e-8,
+      "stationary": false,
+      "distance": 1.9100317500000425
+    },
+    {
+      "id": 7,
+      "kind": "human",
+      "floorY": -9.834766426242147e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 8,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317500000457
+    },
+    {
+      "id": 9,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 10,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317499999981
+    },
+    {
+      "id": 11,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 12,
+      "kind": "guard",
+      "floorY": -9.834766426242147e-8,
+      "stationary": false,
+      "distance": 0.30800000000000727
+    },
+    {
+      "id": 13,
+      "kind": "guard",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317499999964
+    },
+    {
+      "id": 14,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 15,
+      "kind": "human",
+      "floorY": 0.2750001229345793,
+      "stationary": false,
+      "distance": 0.007268548248965391
+    },
+    {
+      "id": 16,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.8256527156193578
+    },
+    {
+      "id": 17,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 8.016224027014816e-7
+    },
+    {
+      "id": 18,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.3069969746858998
+    },
+    {
+      "id": 19,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9660078660197473
+    },
+    {
+      "id": 20,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317500000643
+    },
+    {
+      "id": 21,
+      "kind": "human",
+      "floorY": 0.020899999631195765,
+      "stationary": false,
+      "distance": 1.822031750000001
+    },
+    {
+      "id": 22,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317499999815
+    },
+    {
+      "id": 23,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.8707943766784905
+    },
+    {
+      "id": 24,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317500000001
+    },
+    {
+      "id": 25,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.8252711146894434
+    },
+    {
+      "id": 26,
+      "kind": "guard",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 27,
+      "kind": "guard",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.910031749999998
+    },
+    {
+      "id": 28,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 29,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.8150345359289488
+    },
+    {
+      "id": 30,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0.4160980196554438
+    },
+    {
+      "id": 31,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.0960317500000056
+    },
+    {
+      "id": 32,
+      "kind": "human",
+      "floorY": -3.8499997869133953,
+      "stationary": false,
+      "distance": 0.942031749999999
+    },
+    {
+      "id": 33,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 34,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 35,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317500000032
+    },
+    {
+      "id": 36,
+      "kind": "human",
+      "floorY": -3.8499997869133953,
+      "stationary": false,
+      "distance": 0.26103862852449894
+    },
+    {
+      "id": 37,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.2500317499999931
+    },
+    {
+      "id": 38,
+      "kind": "human",
+      "floorY": -3.8499997869133953,
+      "stationary": false,
+      "distance": 1.9100317499999873
+    },
+    {
+      "id": 39,
+      "kind": "human",
+      "floorY": -3.8499997869133953,
+      "stationary": false,
+      "distance": 1.9100317500000086
+    },
+    {
+      "id": 40,
+      "kind": "guard",
+      "floorY": -3.8499997869133953,
+      "stationary": false,
+      "distance": 1.9100317499999988
+    },
+    {
+      "id": 41,
+      "kind": "guard",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.2500317499999818
+    },
+    {
+      "id": 42,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.910031750000021
+    },
+    {
+      "id": 43,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317499999555
+    },
+    {
+      "id": 44,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0.7383306903421051
+    },
+    {
+      "id": 45,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317500000088
+    },
+    {
+      "id": 46,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 47,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.4557116373427539
+    },
+    {
+      "id": 48,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317499999941
+    },
+    {
+      "id": 49,
+      "kind": "human",
+      "floorY": -3.8499997869133953,
+      "stationary": false,
+      "distance": 1.9100317499998585
+    },
+    {
+      "id": 50,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 51,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.9100317499999901
+    },
+    {
+      "id": 52,
+      "kind": "human",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.910031749999999
+    },
+    {
+      "id": 53,
+      "kind": "human",
+      "floorY": -3.8499997869133953,
+      "stationary": false,
+      "distance": 0
+    },
+    {
+      "id": 54,
+      "kind": "guard",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.730566903667227
+    },
+    {
+      "id": 55,
+      "kind": "guard",
+      "floorY": -9.83476642346659e-8,
+      "stationary": false,
+      "distance": 1.6628801981452277
+    },
+    {
+      "id": 56,
+      "kind": "human",
+      "floorY": -3.8499997869133953,
+      "stationary": true,
+      "distance": 0
+    }
+  ]
+}

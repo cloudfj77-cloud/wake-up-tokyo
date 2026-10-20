@@ -43,6 +43,14 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 #endAftermath{font-size:13px;padding:10px 25px}
 #objectiveSteps span i{border-radius:0;border-color:var(--paper);transform:rotate(45deg)}#objectiveSteps span.done i{background:var(--paper);box-shadow:none}
 #objectiveDistance{color:var(--paper)}
+.objectivePanel.tokyoObjectives{width:300px;max-width:calc(100vw - 32px)}
+.tokyoObjectives #objective{font-size:19px;line-height:1.35}
+.tokyoObjectives #objectiveSub{font-size:12px;line-height:1.6;color:var(--paper);margin-top:8px}
+.tokyoObjectives #objectiveSteps{margin-top:10px;display:grid;gap:6px}
+.tokyoObjectives #objectiveSteps span{font-size:11px;line-height:1.4;opacity:.55}
+.tokyoObjectives #objectiveSteps span.current{opacity:1;font-weight:800}
+.tokyoObjectives #objectiveSteps span.current i{background:var(--rebel)}
+.tokyoObjectives #objectiveDistance:not(:empty){margin-top:10px;padding:7px 9px;border-left:3px solid var(--rebel);background:#ffffff12;font-size:13px;font-weight:800}
 #levelUpFx .levelUpWord:before{mask:none;-webkit-mask:none;background:var(--rebel);clip-path:polygon(0 25%,31% 8%,39% 0,60% 16%,100% 0,87% 54%,100% 73%,56% 81%,45% 100%,31% 75%,0 95%,10% 55%)}
 .levelUpDialog .eyebrow,.levelUpDialog strong,.levelUpDialog b{color:var(--paper);text-shadow:3px 3px #000}.levelUpDialog b{display:inline-block;background:var(--rebel);padding:4px 12px;clip-path:var(--cut)}
 .levelUpBurst{border-radius:0;background:var(--rebel);clip-path:polygon(50% 0,60% 28%,92% 10%,72% 42%,100% 50%,70% 59%,90% 92%,59% 72%,50% 100%,40% 70%,10% 90%,28% 58%,0 50%,29% 41%,10% 10%,41% 29%);opacity:.35}
@@ -113,3 +121,14 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 .combatPop b{font-family:'Marker Felt',Impact,'Arial Black',sans-serif;font-style:italic}
 .combatPop small{background-image:linear-gradient(-12deg,transparent 75%,#ffffff30 76%,transparent 80%)}
 .combatPop.subdued:before{background-image:none}
+
+/* A short completion stamp, then the next objective; same ink/paper/rebel palette. */
+#objectiveFeedback{color:var(--paper);background:var(--rebel);padding:7px 10px;margin:-4px 0 10px;font-size:15px;font-weight:900;letter-spacing:.08em;clip-path:var(--cut)}
+#objectiveFeedback[hidden]{display:none}
+.objectivePanel.objectiveComplete{border-color:var(--paper);animation:objectivePunch .45s ease-out}
+.objectiveComplete #objectiveSteps .done{opacity:1;color:var(--paper);font-weight:800}
+.objectiveComplete #objectiveSteps i:after{content:'✓';display:block;transform:rotate(-45deg);color:var(--ui-black);font-size:10px;line-height:10px}
+.objectiveNext #objective,.objectiveNext #objectiveSteps{animation:objectiveReveal .4s ease-out}
+@keyframes objectivePunch{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-8px) scale(1.035)}100%{transform:translateY(0) scale(1)}}
+@keyframes objectiveReveal{from{opacity:.15;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.objectivePanel.objectiveComplete,.objectiveNext #objective,.objectiveNext #objectiveSteps{animation:none}}
