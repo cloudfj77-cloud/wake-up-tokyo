@@ -5,6 +5,7 @@ import {createCombatUI} from './combat-ui.js';
 import {selectedMap} from './maps.js';
 import {createComicAbilityFX,resolveComicAim,launchComicBallistic,stepComicBallistic,stepComicNeedle,createFleshProgressHUD} from './comic-fx.js';
 import {playComicIntro} from './comic-intro.js';
+import {createTouchControls,isTouchDevice} from './touch-controls.js';
 import {createPointerLock} from './pointer-lock.js';
 import * as T from 'three';
 import {createBoss,hitBoss as baseHitBoss,animateBoss,canBossBombTarget} from './boss.js';
@@ -21,7 +22,7 @@ const mapConfig=selectedMap(location.search);
 const $=id=>document.getElementById(id),canvas=$('game');
 const pointerLock=createPointerLock(canvas,(message,seconds)=>toast(message,seconds));
 // 点开始、继续、关地图或选完卡时锁住鼠标，画面跟着鼠标转。选卡和暂停会先放开。
-function captureView(){if(showDebug||window.__propUi)return;void pointerLock.request({quiet:true});}
+function captureView(){if(showDebug||window.__propUi||(typeof touchMode!=='undefined'&&touchMode))return;void pointerLock.request({quiet:true});}
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
 const music=new Soundtrack();let mode='loading',state=makeState(),units=[],player={x:0,z:-7,y:0,vy:0,crouch:false,roll:0,rollX:0,rollZ:1},world,assets;let hurtTimer=0,lastHp=null;
 const PLAYER_HEIGHT=characterHeight('player'),STANDING_CHEST=PLAYER_HEIGHT*.72,CROUCH_CHEST=PLAYER_HEIGHT*.45,ROLL_DURATION=.72,ACTION_BUFFER=.18,JUMP_SPEED=7,GRAVITY=18;
@@ -807,9 +808,31 @@ function weaponSelect(index){
  toast(index===LAUNCHER_SLOT?'切换 · 可感染注射器':index<0?'切换 · 徒手':'切换 · '+GUNS[index].name,.7);
 }
 const keys={};const SHIFT_HOLD_MS=180;keys.shiftStartedAt=null;
+// 手机版：触屏用虚拟摇杆 + 按钮，直接写 keys / yaw、pitch，不碰键鼠逻辑。
+const touchMode=typeof isTouchDevice==='function'?isTouchDevice():false;
+const touch=typeof createTouchControls==='function'?createTouchControls(document,{
+ active:()=>mode==='playing',
+ onMove:(x,y,sprint)=>{
+  keys.KeyW=y<-.22;keys.KeyS=y>.22;keys.KeyA=x<-.22;keys.KeyD=x>.22;
+  keys.ShiftLeft=!!sprint;keys.ShiftRight=!!sprint;
+  if(sprint&&keys.shiftStartedAt===null)keys.shiftStartedAt=performance.now();
+  if(!sprint)keys.shiftStartedAt=null;
+ },
+ onLook:(dx,dy)=>{yaw-=dx*.0032*settings.sensitivity;pitch=T.MathUtils.clamp(pitch+dy*.0028*settings.sensitivity,PITCH_UP,maxLookDown());},
+ actions:{
+  primary:()=>primary(),
+  heavy:()=>heavy(),
+  jump:()=>requestJump(),
+  roll:()=>rush(),
+  weapon:()=>{const slots=[-1,...weaponSlots(state).map(s=>s.weapon)];const i=slots.indexOf(state.weapon);weaponSelect(slots[(i+1)%slots.length]);},
+  pause:()=>togglePause(),
+ },
+}):null;
+if(touchMode&&touch&&typeof settings==='object'){settings.quality='low';if(typeof applyQuality==='function')applyQuality();}
+if(typeof window!=='undefined')window.touchSnapshot=()=>({mode,touchMode,hasTouch:!!touch,visible:!!document.getElementById('touchUI')?.classList.contains('on')});
 function shiftHeld(){return keys.shiftStartedAt!==null&&(keys.ShiftLeft||keys.ShiftRight)&&performance.now()-keys.shiftStartedAt>=SHIFT_HOLD_MS;}
 addEventListener('keydown',e=>{const typing=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName);if(!typing&&(e.code==='F3'||(mode==='playing'&&['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Tab'].includes(e.code))))e.preventDefault();if(e.code==='F3'){e.preventDefault();toggleDebug();return;}if(typing)return;keys[e.code]=true;if(e.repeat)return;if(e.code==='Escape'||e.code==='KeyP'){togglePause();return;}if(mode==='map'&&e.code==='Tab'){e.preventDefault();toggleMap();return;}if(mode!=='playing')return;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&keys.shiftStartedAt===null)keys.shiftStartedAt=performance.now();if(e.code==='KeyJ')primary();if(e.code==='KeyK')heavy();if(e.code==='Digit1')weaponSelect(-1);else if(/^Digit[2-9]$/.test(e.code)){const slot=weaponSlots(state)[Number(e.code.slice(5))-2];if(slot)weaponSelect(slot.weapon);}if(e.code==='Space')requestJump();if(e.code==='KeyC'&&player.roll<=0&&!(player.knock>0))player.crouch=!player.crouch;if(e.code==='KeyF'&&state.abilities.command){if(squadIds.size){music.effect('commandDismiss');squadIds.clear();toast('群落已解散 · 自主行动');}else{const cap=state.abilities.command?Math.max(6,guardWanted(state).count):6;units.filter(u=>u.converted&&!u.dead&&distance(player,u)<22).sort((a,b)=>distance(player,a)-distance(player,b)).slice(0,cap).forEach(u=>squadIds.add(u.id));music.effect(squadIds.size?'abilityCommand':'uiBack');toast((state.abilities.command?'号令召集 ':'已召集 ')+squadIds.size+' 名同伴');}}if(e.code==='KeyR')reloadGun();if(e.code==='Tab')toggleMap();});addEventListener('keyup',e=>{keys[e.code]=false;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&!keys.ShiftLeft&&!keys.ShiftRight){const started=keys.shiftStartedAt;keys.shiftStartedAt=null;state.sprinting=false;if(mode==='playing'&&started!==null&&performance.now()-started<SHIFT_HOLD_MS)requestRoll();}});
-canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('pointerdown',e=>{if(mode!=='playing')return;if(e.button===0){mouseHeld=true;primary();if(!showDebug&&!window.__propUi&&!pointerLock.locked())void pointerLock.request();}else if(e.button===2){if(pointerLock.locked())heavy();else{dragging=true;lastMouse={x:e.clientX,y:e.clientY};}}});addEventListener('pointerup',()=>{mouseHeld=false;dragging=false;});addEventListener('pointermove',e=>{if(mode!=='playing')return;let dx=0,dy=0;if(pointerLock.locked()){dx=e.movementX;dy=e.movementY;}else if(dragging&&lastMouse){dx=e.clientX-lastMouse.x;dy=e.clientY-lastMouse.y;lastMouse={x:e.clientX,y:e.clientY};}yaw-=dx*.0025*settings.sensitivity;pitch=T.MathUtils.clamp(pitch+dy*.0022*settings.sensitivity,PITCH_UP,maxLookDown());});canvas.addEventListener('wheel',e=>{e.preventDefault();if(mode!=='playing'||switchTime||!e.deltaY)return;const slots=[-1,...weaponSlots(state).map(s=>s.weapon)];const index=slots.indexOf(state.weapon);weaponSelect(slots[(index+(e.deltaY>0?1:-1)+slots.length)%slots.length]);},{passive:false});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('pointerdown',e=>{if(mode!=='playing'||e.pointerType==='touch')return;if(e.button===0){mouseHeld=true;primary();if(!showDebug&&!window.__propUi&&!pointerLock.locked())void pointerLock.request();}else if(e.button===2){if(pointerLock.locked())heavy();else{dragging=true;lastMouse={x:e.clientX,y:e.clientY};}}});addEventListener('pointerup',()=>{mouseHeld=false;dragging=false;});addEventListener('pointermove',e=>{if(mode!=='playing')return;let dx=0,dy=0;if(pointerLock.locked()){dx=e.movementX;dy=e.movementY;}else if(dragging&&lastMouse){dx=e.clientX-lastMouse.x;dy=e.clientY-lastMouse.y;lastMouse={x:e.clientX,y:e.clientY};}yaw-=dx*.0025*settings.sensitivity;pitch=T.MathUtils.clamp(pitch+dy*.0022*settings.sensitivity,PITCH_UP,maxLookDown());});canvas.addEventListener('wheel',e=>{e.preventDefault();if(mode!=='playing'||switchTime||!e.deltaY)return;const slots=[-1,...weaponSlots(state).map(s=>s.weapon)];const index=slots.indexOf(state.weapon);weaponSelect(slots[(index+(e.deltaY>0?1:-1)+slots.length)%slots.length]);},{passive:false});
 function toggleMap(){
  if(mode!=='playing'&&mode!=='map')return;
  const open=mode==='playing';mode=open?'map':'playing';if(open)music.pause();else music.resume();music.effect(open?'uiOpen':'uiClose');clearInput();
@@ -2041,7 +2064,7 @@ const frozen=typeof window!=='undefined'&&!!window.__propFreeze;
   try{updateEffects(dt);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}catch{}
  }else if(mode==='menu'){for(const {v}of visuals.values())updateCharacterVisual(v,false,dt,0);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}
  music.update({mode,state,boss,emitters:activeAudioEmitters(),spots:activeAudioSpots(),walkers:units.filter(u=>!ENEMIES[u.type]?.tank&&distance(player,u)<12).map(u=>({id:u.id,kind:u.kind,dead:u.dead,x:u.x,y:world.heightAt(u.x,u.z),z:u.z,surface:mapConfig.id==='tidewater'?'stepStone':bridgeDeckHeight(u.x,u.z)!==null?'stepMetal':'stepRoad'})),hidden:document.hidden,map:mapConfig.id,player:{x:player.x,y:world.heightAt(player.x,player.z)+player.y,z:player.z},listener:{x:player.x,y:world.heightAt(player.x,player.z)+STANDING_CHEST+player.y,z:player.z},forward:forward(),grounded:player.y===0&&player.roll<=0&&!(player.knock>0),crouch:player.crouch,surface:mapConfig.id==='tidewater'?'stepStone':bridgeDeckHeight(player.x,player.z)!==null?'stepMetal':'stepRoad'});
- updateAlertEffect(dt);updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;policeAlertTimer=Math.max(0,policeAlertTimer-dt);if(!policeAlertTimer)$('policeAlert').classList.remove('active','upgrade','boss','win','quest','radio');if(!cameraUpdated&&dt>0)updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}combatUI.tick(realDt,mode==='playing',state);cameraCutaway.update(camera,player,world.heightAt(player.x,player.z),PLAYER_HEIGHT*(player.crouch?.7:1),renderer.getDrawingBufferSize(cameraBufferSize),realDt,!['menu','loading'].includes(mode)&&!(import.meta.env.DEV&&debugQuery.has('cutawayOff')));
+ updateAlertEffect(dt);updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;policeAlertTimer=Math.max(0,policeAlertTimer-dt);if(!policeAlertTimer)$('policeAlert').classList.remove('active','upgrade','boss','win','quest','radio');if(!cameraUpdated&&dt>0)updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}if(touchMode&&touch){if(mode==='playing')touch.show();else touch.hide();}combatUI.tick(realDt,mode==='playing',state);cameraCutaway.update(camera,player,world.heightAt(player.x,player.z),PLAYER_HEIGHT*(player.crouch?.7:1),renderer.getDrawingBufferSize(cameraBufferSize),realDt,!['menu','loading'].includes(mode)&&!(import.meta.env.DEV&&debugQuery.has('cutawayOff')));
  // 镜头和战斗界面沿用本地逻辑。画面最后才走描边和厚涂，关掉时仍直接画场景。
  syncFogMode();
  if(toonFilter?.ready&&toonFilter.enabled){const outlined=(outlineFilter?.ready&&outlineFilter.enabled)?outlineFilter.render(scene,camera):null;blitFilter(renderer,toonFilter.render(scene,camera,outlined,outlined&&scene.fog?{depthTexture:outlineFilter.color.depthTexture,normalTexture:outlineFilter.normal?outlineFilter.normal.texture:null,color:scene.fog.color,near:scene.fog.near,far:scene.fog.far,cameraNear:camera.near,cameraFar:camera.far,amount:fogVisible()?fogPassAmount:0,edge:edgePassAmount,edgeThreshold,edgeStep,edgeFarScale,edgeFarThreshold,edgeFarLighten,edgeColor,lineFade,lineFadeRange}:null));}
