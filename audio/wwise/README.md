@@ -34,7 +34,7 @@
 
 ## Wwise 作者工程
 
-打开 `wwise/WakeUpTokyo/WakeUpTokyo.wproj`，版本 **2025.1.10.9233 / Web**。交付可编辑 PCM 位于该工程 `Originals/SFX/TokyoMusic/`。七份交付源统一 -18.0 LUFS，实测真峰值 -7.50 至 -4.78 dBTP，详见 `source-quality.json`。源循环交界使用 40 ms 交叉淡化，保持 Vorbis Q4；五个长音乐媒体采用流式读取，胜利和失败短句保留在内存银行。
+打开 `wwise/WakeUpTokyo/WakeUpTokyo.wproj`，版本 **2025.1.10.9233**，已配置 **Web、Windows、Android**。交付可编辑 PCM 位于该工程 `Originals/SFX/TokyoMusic/`。七份交付源统一 -18.0 LUFS，实测真峰值 -7.50 至 -4.78 dBTP，详见 `source-quality.json`。源循环交界使用 40 ms 交叉淡化，保持 Vorbis Q4；五个长音乐媒体采用流式读取，胜利和失败短句保留在内存银行。
 
 这是 Wwise SoundEngine 的 Sound SFX 循环与事件转场方案。循环点、淡变、延迟尾声、暂停与混音曲线都保存在作者工程；游戏只提交状态。本游戏扩展了 Web Stream Manager I/O；不使用 MusicEngine、节拍同步或可拆分 stems。阶段之间采用时间交叉淡化。
 
@@ -49,6 +49,37 @@ npm run build
 `generate.mjs` 拒绝版本不匹配、加载警告、超过 200 媒体、未知流式路径和缺失事件，同批生成三份银行、9 个流式文件及哈希记录。`sync-runtime.mjs` 校验银行、媒体和运行时后重建导入目录；`verify-delivery.mjs` 可独立复查交付哈希、事件和实际媒体数。本游戏已扩展流式 I/O，不再使用原通用技能中只接受内存银行的 sync/verify。普通声音修改不需要重新编译 Wasm。
 
 需要按本轮模板重新写事件时，先在 Wwise 打开本工程并启用 WAAPI，然后执行 `node scripts/wwise/author.mjs`。脚本只接受本工程 ID，以撤销组修改本轮音乐对象；它会重设模板拥有的曲线和事件，手工精调后请直接在 Wwise 保存并生成银行。循环点和主配置信息在 `cues.json`。`prepare-sources.py --originals <Suno原始WAV目录> --ffmpeg <程序路径>` 可重现响度处理，原始文件哈希另见 `originals-analysis.json`。
+
+## Windows / Android SoundBank 交付（2026-10-20）
+
+原生平台输出分别在 `generated/native/Windows/` 与 `generated/native/Android/`。每个平台为 3 个 Bank、200 个媒体（7 音乐 + 193 音效）、9 个 `Media/*.wem`；常驻银行 2,992,869 字节，流式媒体 8,568,487 字节，总媒体 11,561,356 字节。保持音乐/主要音效 Vorbis Q4、环境 Q3/32 kHz、电台 Q3/24 kHz 单声道和 2 秒预取；事件名、事件 ID、精选媒体 ID 与 Web 一致。原生包不携带 Web 的 Wasm/Worklet，网页构建也不包含这些新增原生文件。
+
+先保存 Wwise 工程，再用匹配的 WwiseConsole 执行：
+
+```sh
+# WWISE_CONSOLE 指向本机的 WwiseConsole.exe 或 macOS WwiseConsole.sh。
+npm run wwise:generate:native
+npm run wwise:verify:native
+npm run package:audio:native
+```
+
+`generate` 默认依次生成 Windows、Android；可追加 `-- --platform Android` 单独生成。`package:audio:native` 先校验，再复制到全新交付目录；Windows 内容在 `audio/wwise/Windows/`，Android 内容在 `assets/wwise/Android/`。`audio-manifest.json` 为同批生成的逐文件 SHA-256，`generation.json` 保存生成命令与工程/源文件指纹。缺少流式文件、超出媒体上限、版本/平台/事件不一致、文件损坏或混入旧音频都会报错；不会回退成“只有 Bank 也算成功”。
+
+把交付目录复制到宿主项目后，再核对**最终目录或安装包**，不要只检查导出缓存：
+
+```sh
+node scripts/wwise/native-delivery.mjs verify --platform Windows --root /path/to/final/audio/wwise/Windows
+node scripts/wwise/native-delivery.mjs verify --platform Android --root /path/to/final/assets/wwise/Android
+python3 scripts/wwise/verify-native-archive.py --apk /path/to/app.apk
+# 引擎改了 APK 内路径时明确指定，例如：
+python3 scripts/wwise/verify-native-archive.py --apk /path/to/app.apk --prefix assets/Audio/GeneratedSoundBanks/Android
+```
+
+Android 应将整个目录放到应用模块 `src/main/assets/wwise/Android/`，合入交付包内 `wwise-audio.gradle` 的 `androidResources.noCompress += ['bnk', 'wem']`。这是 APK 容器存储设置，不改变 Vorbis 编码。APK 检查器逐项核对最终 ZIP 条目的原字节和媒体清单，并拒绝被压缩的 BNK/WEM，保证交付采用可定位读取的资产布局；项目若使用自定义加密/打包 I/O，需对其实际读取格式另做验证。[Android 官方 noCompress 说明](https://developer.android.com/reference/tools/gradle-api/7.3/com/android/build/api/dsl/AndroidResources)。
+
+宿主须提供 **Wwise 2025.1.10.9233 SoundEngine、StreamMgr 和 Vorbis 解码器**，使用目标平台的原生库，先加载 `Init.bnk`，再加载两个内容 Bank。原生 I/O 必须同时能定位 Bank 目录和 `Media/` 中的文件；Android 还要使用支持 APK assets 的 I/O，或完整提取并校验后再打开。初始化、真实 System 输出、首个事件、后台挂起/恢复由宿主负责；这份 SoundBank 交付不构成 EXE/APK 引擎接入或真机播放验收。
+
+专项测试：`npm run test:audio:native`、`python3 scripts/wwise/native-archive.test.py`。覆盖实际导出的两套银行、错平台、遗漏 WEM、坏字节、清单替换、旧压缩文件，以及 Android APK 资产被二次压缩的拦截。Python 用实际媒体构造 ZIP/APK **目录布局**夹具，没有将它当作可安装 APK 或真机证据。
 
 ## Wwise 压缩与流式读取
 

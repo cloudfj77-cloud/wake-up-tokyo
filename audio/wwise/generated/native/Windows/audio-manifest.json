@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "platform": "Windows",
+  "basePlatform": "Windows",
+  "sdkVersion": "2025.1.10.9233",
+  "bankVersion": 172,
+  "maximumMedia": 200,
+  "mediaCount": 200,
+  "mediaByBank": {
+    "Init.bnk": 0,
+    "TokyoMusic.bnk": 7,
+    "TokyoSfx.bnk": 193
+  },
+  "streams": [
+    {
+      "id": "2611905",
+      "file": "Media/2611905.wem",
+      "prefetchBytes": 29909,
+      "bytes": 540047
+    },
+    {
+      "id": "53097435",
+      "file": "Media/53097435.wem",
+      "prefetchBytes": 28866,
+      "bytes": 1452212
+    },
+    {
+      "id": "659547489",
+      "file": "Media/659547489.wem",
+      "prefetchBytes": 30019,
+      "bytes": 1315747
+    },
+    {
+      "id": "663454604",
+      "file": "Media/663454604.wem",
+      "prefetchBytes": 31473,
+      "bytes": 1129734
+    },
+    {
+      "id": "768236506",
+      "file": "Media/768236506.wem",
+      "prefetchBytes": 29533,
+      "bytes": 885930
+    },
+    {
+      "id": "876169649",
+      "file": "Media/876169649.wem",
+      "prefetchBytes": 38874,
+      "bytes": 1023971
+    },
+    {
+      "id": "879483395",
+      "file": "Media/879483395.wem",
+      "prefetchBytes": 35361,
+      "bytes": 995943
+    },
+    {
+      "id": "919615173",
+      "file": "Media/919615173.wem",
+      "prefetchBytes": 28359,
+      "bytes": 845023
+    },
+    {
+      "id": "941732260",
+      "file": "Media/941732260.wem",
+      "prefetchBytes": 26603,
+      "bytes": 379880
+    }
+  ],
+  "eventIds": {
+    "Music_Aftermath": "3781935787",
+    "Music_Boss": "1090969866",
+    "Music_Countdown": "646355010",
+    "Music_Defeat": "3125733004",
+    "Music_Menu": "1598298728",
+    "Music_Pause": "2895066125",
+    "Music_Pressure": "1575781068",
+    "Music_Resume": "2775610868",
+    "Music_Stop": "3227181061",
+    "Music_Street": "3514563608",
+    "Music_Victory": "2637400697",
+    "Music_VictoryAftermath": "2052127271",
+    "SFX_abilityAir": "3287044431",
+    "SFX_abilityBlood": "3946173103",
+    "SFX_abilityCommand": "3139079248",
+    "SFX_abilityEvolve": "1847480606",
+    "SFX_abilityKindling": "2343155715",
+    "SFX_abilityParasite": "3471836130",
+    "SFX_alertUp": "363889890",
+    "SFX_bossArrival": "3555892569",
+    "SFX_bossCore": "914458755",
+    "SFX_bossCoreOpen": "34743591",
+    "SFX_bossDeath": "2460047740",
+    "SFX_bossImpact": "1475680644",
+    "SFX_bossPhase": "3540314847",
+    "SFX_bossThrow": "3017389154",
+    "SFX_bossWarning": "1210799710",
+    "SFX_breakGlass": "2917267986",
+    "SFX_breakMetal": "1649601427",
+    "SFX_breakStone": "773528373",
+    "SFX_bridgeCreak": "3053262838",
+    "SFX_charge1": "3527780750",
+    "SFX_charge2": "3527780749",
+    "SFX_charge3": "3527780748",
+    "SFX_chargeReady": "1072352218",
+    "SFX_cityBed": "2508981997",
+    "SFX_clockBell": "2812632974",
+    "SFX_commandDismiss": "4095129048",
+    "SFX_convert": "2843819038",
+    "SFX_defeatSfx": "1227861689",
+    "SFX_empty": "3352184468",
+    "SFX_enemyWindup": "1266503598",
+    "SFX_explosion": "992806370",
+    "SFX_grenadeFall": "4222619946",
+    "SFX_grenadeThrow": "49383035",
+    "SFX_guardSpawn": "657574097",
+    "SFX_gunPistol": "2331563100",
+    "SFX_gunRifle": "3661115889",
+    "SFX_gunRpg": "1572741718",
+    "SFX_gunShotgun": "243986381",
+    "SFX_gunSniper": "1978001440",
+    "SFX_hitArmor": "3484839773",
+    "SFX_hitBody": "169783108",
+    "SFX_hurt": "3055394594",
+    "SFX_infectionHit": "1883413383",
+    "SFX_jump": "3695098761",
+    "SFX_kindlingEnd": "2992653910",
+    "SFX_kindlingGain": "96736914",
+    "SFX_land": "535969926",
+    "SFX_lowHp": "621900101",
+    "SFX_meleeHeavy": "778132812",
+    "SFX_meleeLight": "1021964185",
+    "SFX_Pause": "3090474213",
+    "SFX_pickupFactor": "2392911328",
+    "SFX_pickupHealth": "519740947",
+    "SFX_pickupPotion": "821825544",
+    "SFX_planeCrash": "3123707582",
+    "SFX_planeDive": "2233666647",
+    "SFX_planeLoop": "124427551",
+    "SFX_planeWarning": "1441628827",
+    "SFX_police": "3734421463",
+    "SFX_potionEnd": "3422642559",
+    "SFX_power": "2389380880",
+    "SFX_powerBounce": "754065912",
+    "SFX_powerImpact": "4217699670",
+    "SFX_radio2": "4121067832",
+    "SFX_radio3": "4121067833",
+    "SFX_radio4": "4121067838",
+    "SFX_radio5": "4121067839",
+    "SFX_radio6": "4121067836",
+    "SFX_reload": "3899697810",
+    "SFX_Resume": "101625196",
+    "SFX_riverBed": "3524008470",
+    "SFX_roll": "1888367904",
+    "SFX_seaBed": "2633045023",
+    "SFX_shieldDash": "476859138",
+    "SFX_sprayLoop": "2507834306",
+    "SFX_sprayWarning": "1344146796",
+    "SFX_stepMetal": "1860966172",
+    "SFX_stepRoad": "1802563937",
+    "SFX_stepStone": "3247710726",
+    "SFX_Stop": "650331997",
+    "SFX_switchWeapon": "608687653",
+    "SFX_syringe": "3527844844",
+    "SFX_tankLoop": "1056984907",
+    "SFX_tankRam": "2402644619",
+    "SFX_uiAcquire": "3793925297",
+    "SFX_uiBack": "3656872646",
+    "SFX_uiClose": "3412173857",
+    "SFX_uiConfirm": "1664656389",
+    "SFX_uiFocus": "2660735697",
+    "SFX_uiOpen": "538109251",
+    "SFX_uiReroll": "2219087161",
+    "SFX_upgrade": "1704782783",
+    "SFX_windBed": "888222360",
+    "SFX_worldMachinery": "1888602901"
+  },
+  "bankBytes": 2992869,
+  "streamBytes": 8568487,
+  "audioBytes": 11561356,
+  "requiredCodecLibraries": [
+    "AkVorbisDecoder"
+  ],
+  "files": [
+    {
+      "file": "Init.bnk",
+      "bytes": 1018,
+      "sha256": "5fb72327c4bb72dbe03611ea9cec2506c1701e58ee5e43ba3913419a9d83fbfc"
+    },
+    {
+      "file": "Init.json",
+      "bytes": 3293,
+      "sha256": "6bd2b120bc0f840785408145253da6920cfc2a10437cf814cd0f9ee44b4a8a67"
+    },
+    {
+      "file": "Media/2611905.wem",
+      "bytes": 540047,
+      "sha256": "28648c2ff41dfd8296ef0b2640ebbb7aee95c524522df389f148fe22a18c9e01"
+    },
+    {
+      "file": "Media/53097435.wem",
+      "bytes": 1452212,
+      "sha256": "779798266eccb4a8674870d7508317ad2f0289b096e6d64d4914a3461322089c"
+    },
+    {
+      "file": "Media/659547489.wem",
+      "bytes": 1315747,
+      "sha256": "2640103ea21ee1a898f10ffc566c24d79ba7a3b182d9adb88eb117320e2c708d"
+    },
+    {
+      "file": "Media/663454604.wem",
+      "bytes": 1129734,
+      "sha256": "00f9151ecc1968c52c89bcd04a163183e11a2d39f1bc9659913d9fc3be324db5"
+    },
+    {
+      "file": "Media/768236506.wem",
+      "bytes": 885930,
+      "sha256": "dc4cea009844701443ea12809956122841347edec99f89fd15f1ab70fb26e0d3"
+    },
+    {
+      "file": "Media/876169649.wem",
+      "bytes": 1023971,
+      "sha256": "7ce5ade9735a77a4eff853c132dc46038d7d155d182f5000c4da9681eba30097"
+    },
+    {
+      "file": "Media/879483395.wem",
+      "bytes": 995943,
+      "sha256": "4c1ab44b78c3fe124bd10b55c0591ae1e9aeedf2c6e8b83d47479a165ca44628"
+    },
+    {
+      "file": "Media/919615173.wem",
+      "bytes": 845023,
+      "sha256": "4cea776885966c0d861637826db450a92cd49f618e94acd6ceabf6d389fc7ea8"
+    },
+    {
+      "file": "Media/941732260.wem",
+      "bytes": 379880,
+      "sha256": "17fbf490c9fdae795bb7d9cc59c186bb8bbb6811fe9d8ec804d7645c27689912"
+    },
+    {
+      "file": "PlatformInfo.json",
+      "bytes": 1069,
+      "sha256": "877f14209ec7e062c3a252a82322d7c1cfa09dae8c2843ea1605f27128c15a1c"
+    },
+    {
+      "file": "PluginInfo.json",
+      "bytes": 331,
+      "sha256": "8fec5e430ab01bd56333b7cba11211caf679890f96cec4f7210b92395dc68d34"
+    },
+    {
+      "file": "ProjectInfo.json",
+      "bytes": 1058,
+      "sha256": "b5ec2794ccbd480b0b859a40b096b9e30a45af1a4d39c0f8be930518e479853f"
+    },
+    {
+      "file": "TokyoMusic.bnk",
+      "bytes": 409050,
+      "sha256": "bf9466df143fd5afb14fba37d14b440ef02a333fd5f8c728fd510f95b6c73c64"
+    },
+    {
+      "file": "TokyoMusic.json",
+      "bytes": 6704,
+      "sha256": "c663a6fb364ea29fb2293b728f20d8d6c4323bdba395e35ec732a4aaba9995e2"
+    },
+    {
+      "file": "TokyoSfx.bnk",
+      "bytes": 2582801,
+      "sha256": "4ff371d7845739fa022f63fa11a5b918dcc93e1ea851533118c131eb61629474"
+    },
+    {
+      "file": "TokyoSfx.json",
+      "bytes": 89393,
+      "sha256": "0782ed9f0d883b788cbe31192cc3ae97317caeeb524d58a6848efc4696b7f39e"
+    }
+  ],
+  "generationId": "7404deae-4c69-4931-8274-600b909a5ee3",
+  "projectFingerprint": "0c8e7c18aa52ad979e87d7406c7e1153c772427f1ad882751e40c08e05fc0c55"
+}

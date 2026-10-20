@@ -1,0 +1,33 @@
+{
+  "version": "0.3.59",
+  "preview": "http://127.0.0.1:5230/?map=riverside",
+  "changes": [
+    "Queued objective completion stamp, panel punch, confirmation sound, then next-objective reveal; simulation-time timing survives pause; restored progress is baselined.",
+    "Syringe rear grip follows animated right palm; reduced prop scale, attached charge effect and muzzle origin with wall protection; shipped fallback wrist supported.",
+    "Tokyo-only saturation 1.03, exposure 1.24, contrast 1.02, shadow strength .65; shader source, fog range and Tidewater profile preserved.",
+    "Tutorial permits peaceful crowd locomotion, frees converted guide, and rotates AI navigation access to prevent later actors from starving."
+  ],
+  "validation": {
+    "tests": 301,
+    "passed": 301,
+    "build": "passed",
+    "browser": [
+      "Tutorial completion stamp and next objective verified in actual game",
+      "Held syringe firing, crouch and jump exercised without console errors",
+      "Production page refreshed at v0.3.59; existing save retained"
+    ],
+    "crowd": {
+      "sampled": 57,
+      "moved": 42,
+      "movingOnSubwayPlatform": 6,
+      "tutorialWorkerStayedInPlace": true
+    }
+  },
+  "screenshots": [
+    "tokyo-v359-objective.jpg",
+    "tokyo-v359-grip.jpg"
+  ],
+  "limits": [
+    "Long-session crowd congestion and large combat stress were not tested."
+  ]
+}

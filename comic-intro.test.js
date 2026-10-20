@@ -1,3 +1,4 @@
+import {tutorialActive} from './tokyo/gameplay.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -87,7 +88,7 @@ function startFixture(){
  const intro=new Promise(resolve=>{finishIntro=resolve;});
  const calls={intro:0,music:0},menu={hidden:false},hud={hidden:true};
  const context=vm.createContext({
-  assets:{},starting:false,state:{time:0,infected:0,pending:0},conversionCount:0,
+  objectiveFeedback:{reset(){}},objectiveFeedbackKey:null,tutorialActive,assets:{},starting:false,state:{time:0,infected:0,pending:0},conversionCount:0,
   document:{},playComicIntro:()=>{calls.intro++;return intro;},
   loadSaved:()=>null,music:{start:async()=>{calls.music++;}},
   playerVisual:{holder:{rotation:{y:0}}},yaw:0,

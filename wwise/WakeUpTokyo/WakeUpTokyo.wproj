@@ -3,7 +3,9 @@
 	<ProjectInfo>
 		<Project Name="WakeUpTokyo" ID="{E5D4C90C-5E88-452C-9CA0-19EC782CEC8F}">
 			<Platforms>
+				<Platform Name="Android" ReferencePlatform="Android" ID="{3FFF8E41-A1DA-46C8-8318-5E510D609B63}"/>
 				<Platform Name="Web" ReferencePlatform="Web" ID="{24DFC2DF-C376-4062-944C-5346F1A17E52}"/>
+				<Platform Name="Windows" ReferencePlatform="Windows" ID="{7BB9BD8B-03D9-4278-9BA1-D4CCA29AB7DD}"/>
 			</Platforms>
 			<LanguageList>
 				<Language Name="English(US)" ID="{CF121B02-2BAF-47EF-939E-11A4A0BE7992}"/>
@@ -15,11 +17,15 @@
 				<Property Name="ExternalSourcesInputPath" Type="string">
 					<ValueList>
 						<Value Platform="Web"></Value>
+						<Value Platform="Windows"></Value>
+						<Value Platform="Android"></Value>
 					</ValueList>
 				</Property>
 				<Property Name="ExternalSourcesOutputPath" Type="string">
 					<ValueList>
 						<Value Platform="Web">GeneratedSoundBanks\Web\</Value>
+						<Value Platform="Windows">GeneratedSoundBanks\Windows\</Value>
+						<Value Platform="Android">GeneratedSoundBanks\Android\</Value>
 					</ValueList>
 				</Property>
 				<Property Name="GenerateSoundBankXML" Type="bool" Value="True"/>
@@ -27,26 +33,36 @@
 				<Property Name="SoundBankPaths" Type="string">
 					<ValueList>
 						<Value Platform="Web">GeneratedSoundBanks\Web\</Value>
+						<Value Platform="Windows">GeneratedSoundBanks\Windows\</Value>
+						<Value Platform="Android">GeneratedSoundBanks\Android\</Value>
 					</ValueList>
 				</Property>
 				<Property Name="SoundBankPostGenerateCustomCmdDescription" Type="string">
 					<ValueList>
 						<Value Platform="Web"></Value>
+						<Value Platform="Windows"></Value>
+						<Value Platform="Android"></Value>
 					</ValueList>
 				</Property>
 				<Property Name="SoundBankPostGenerateCustomCmdLines" Type="string">
 					<ValueList>
 						<Value Platform="Web"></Value>
+						<Value Platform="Windows"></Value>
+						<Value Platform="Android"></Value>
 					</ValueList>
 				</Property>
 				<Property Name="SoundBankPreGenerateCustomCmdDescription" Type="string">
 					<ValueList>
 						<Value Platform="Web"></Value>
+						<Value Platform="Windows"></Value>
+						<Value Platform="Android"></Value>
 					</ValueList>
 				</Property>
 				<Property Name="SoundBankPreGenerateCustomCmdLines" Type="string">
 					<ValueList>
 						<Value Platform="Web"></Value>
+						<Value Platform="Windows"></Value>
+						<Value Platform="Android"></Value>
 					</ValueList>
 				</Property>
 				<Property Name="WwiseVersionWhenCreated" Type="string" Value="Branch=wwise_v2025.1.10|Build=9233|VersionName=v2025.1.10|Config=Release"/>

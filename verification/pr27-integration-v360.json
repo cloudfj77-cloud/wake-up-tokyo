@@ -1,0 +1,39 @@
+{
+  "version": "0.3.60",
+  "preview": "http://127.0.0.1:5230/?map=riverside",
+  "pr": {
+    "url": "https://github.com/cloudfj77-cloud/wake-up-tokyo/pull/27",
+    "head": "eba0296cd32ac0472efdd84064c0abcfab2b9aa0",
+    "integration": "Applied locally; remote PR not merged"
+  },
+  "changes": [
+    "Integrated Windows and Android SoundBanks, authoring platform settings, delivery tools and validation.",
+    "Merged npm scripts with all current Tokyo regression tests; retained v0.3.59 gameplay, model, shaders, objective feedback, held syringe, crowd movement and Web audio.",
+    "Fixed first-run packaging when the release parent directory does not yet exist; existing output folders are still rejected."
+  ],
+  "validation": {
+    "nodeTests": {
+      "passed": 310,
+      "failed": 0
+    },
+    "pythonArchiveTests": {
+      "passed": 5,
+      "failed": 0
+    },
+    "build": "passed",
+    "nativeDelivery": "Windows and Android each verified: 200 media, 9 streamed WEM, 18 manifest files",
+    "nativePackaging": "Both platforms packaged and verified successfully",
+    "preservedFileHashes": 32,
+    "nativeBanksIncludedInWebBuild": false,
+    "httpVersion": "0.3.60",
+    "browser": "Continued existing Tokyo save; moved in plaza, observed crowd and combat, objective panel rendered; no console errors in sampled log"
+  },
+  "screenshots": [
+    "tokyo-v360-pr27.jpg"
+  ],
+  "limits": [
+    "Native Windows/Android host integration and real-device audio playback not tested.",
+    "Existing in-app Chromium pointer-lock failure remains; keyboard movement and right-drag fallback available.",
+    "No remote push or merge performed."
+  ]
+}

@@ -463,8 +463,8 @@ function resolveComicAim(T,camera,muzzle,{world,units=[],boss=null,range=28,body
   ray.at(t,point);delta.copy(point).sub(muzzle);
   if(delta.dot(direction)<.15||delta.x*direction.x+delta.z*direction.z<=1e-6)continue;
   if(Math.hypot(delta.x,delta.z)>=maxRange){distance=t;break;}
-  const ground=world.heightAt(point.x,point.z);
-  if(Number.isFinite(ground)&&ground>-2&&point.y<=ground+.2){distance=t;kind='ground';break;}
+  const ground=world.groundAt?.(point.x,point.y,point.z)??world.heightAt(point.x,point.z);
+  if(Number.isFinite(ground)&&ground>(world.multilevel?-90:-2)&&point.y<=ground+.2){distance=t;kind='ground';break;}
   if(comicProjectileBlocked(T,world,point.x,point.y,point.z,.06)){distance=t;kind='obstacle';break;}
  }
  function consider(center,radius,hitKind){
@@ -474,7 +474,7 @@ function resolveComicAim(T,camera,muzzle,{world,units=[],boss=null,range=28,body
  }
  for(const u of units){
   if(u.dead||u.converted||u.kind==='corpse')continue;
-  consider(new T.Vector3(u.x,world.heightAt(u.x,u.z)+bodyHeight*.62,u.z),bodyHeight*.36,'unit');
+  consider(new T.Vector3(u.x,world.heightAt(u.x,u.z,u.floorY)+bodyHeight*.62,u.z),bodyHeight*.36,'unit');
  }
  if(boss?.active&&!boss.dead)consider(new T.Vector3(boss.x,(boss.root?.position.y||0)+3.4,boss.z),3.4,'boss');
  for(const flyer of flyers)if(flyer)consider(new T.Vector3(flyer.x,flyer.y,flyer.z),flyer.radius||2.6,'flyer');
@@ -495,7 +495,7 @@ function stepComicBallistic(T,b,dt,world,onImpact){
  const count=Math.max(1,Math.ceil(Math.hypot(b.vx,b.vy,b.vz)*dt/.13)),h=dt/count;
  for(let i=0;i<count;i++){
   const x=b.x+b.vx*h,z=b.z+b.vz*h,y=b.y+b.vy*h-4.25*h*h,nextVy=b.vy-8.5*h;
-  const ground=world.heightAt(x,z),groundHit=Number.isFinite(ground)&&ground>-2&&y<=ground+.24;
+  const ground=world.groundAt?.(x,y,z)??world.heightAt(x,z),groundHit=Number.isFinite(ground)&&ground>(world.multilevel?-90:-2)&&y<=ground+.24;
   const wallHit=comicProjectileBlocked(T,world,x,y,z,.2);
   if(groundHit||wallHit){
    if(!wallHit){b.x=x;b.z=z;b.y=ground+.24;}
@@ -516,13 +516,13 @@ function stepComicNeedle(T,b,dt,world,{units=[],boss=null,bodyHeight=.935,onUnit
   start.set(b.x,b.y,b.z);end.copy(start).addScaledVector(velocity,step);ray.set(start,direction);const length=start.distanceTo(end),contacts=[];
   let terrainDistance=Infinity;
   for(let sample=1;sample<=4;sample++){
-   terrainPoint.copy(start).lerp(end,sample/4);const floor=world.heightAt(terrainPoint.x,terrainPoint.z);
-   if(comicProjectileBlocked(T,world,terrainPoint.x,terrainPoint.y,terrainPoint.z,.035)||Number.isFinite(floor)&&floor>-2&&terrainPoint.y<=floor+.035){terrainDistance=start.distanceTo(terrainPoint);break;}
+   terrainPoint.copy(start).lerp(end,sample/4);const floor=world.groundAt?.(terrainPoint.x,terrainPoint.y,terrainPoint.z)??world.heightAt(terrainPoint.x,terrainPoint.z);
+   if(comicProjectileBlocked(T,world,terrainPoint.x,terrainPoint.y,terrainPoint.z,.035)||Number.isFinite(floor)&&floor>(world.multilevel?-90:-2)&&terrainPoint.y<=floor+.035){terrainDistance=start.distanceTo(terrainPoint);break;}
   }
   for(const u of units){
    if(u.dead||u.converted||u.kind==='corpse'||b.hitIds.has(u.id))continue;
    if(u.x<Math.min(start.x,end.x)-radius||u.x>Math.max(start.x,end.x)+radius||u.z<Math.min(start.z,end.z)-radius||u.z>Math.max(start.z,end.z)+radius)continue;
-   const floor=world.heightAt(u.x,u.z);box.min.set(u.x-radius,floor-.05,u.z-radius);box.max.set(u.x+radius,floor+bodyHeight*1.15,u.z+radius);
+   const floor=world.heightAt(u.x,u.z,u.floorY);box.min.set(u.x-radius,floor-.05,u.z-radius);box.max.set(u.x+radius,floor+bodyHeight*1.15,u.z+radius);
    if(ray.intersectBox(box,hit)){const distance=start.distanceTo(hit);if(distance<=length+1e-8)contacts.push({u,distance,point:hit.clone()});}
   }
   if(boss?.active&&!boss.dead&&!b.hitIds.has('boss')){
