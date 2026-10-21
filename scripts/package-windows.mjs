@@ -1,14 +1,18 @@
 // Build a resource-folder launcher and a self-contained offline Windows EXE.
-import {cp,mkdir,readFile,readdir,writeFile,stat} from 'node:fs/promises';
+import {cp,mkdir,readFile,readdir,writeFile,stat,rm} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-import {resolve,join} from 'node:path';
+import {resolve,join,dirname,relative,sep} from 'node:path';
 
 if(process.platform!=='win32')throw Error('Windows packaging needs the Windows .NET Framework compiler');
 const pkg=JSON.parse(await readFile('package.json','utf8'));
 const title=pkg.game.title,release=resolve('release'),folder=join(release,title+'-电脑版');
 const builds=(await readdir(release)).filter(n=>n.startsWith('wake-up-tokyo-local-')).sort();
 if(!builds.length)throw Error('Run scripts/package-local.mjs first');
+// This directory contains generated files only. Reusing it would retain obsolete
+// hashed chunks after a code change, so verify its exact parent before cleaning.
+if(dirname(resolve(folder))!==release||resolve(folder)===release)throw Error('Invalid generated Windows output directory');
+await rm(folder,{recursive:true,force:true});
 await mkdir(folder,{recursive:true});await cp(join(release,builds.at(-1)),folder,{recursive:true});
 const indexHash=createHash('sha256').update(await readFile(join(folder,'index.html'))).digest('hex');
 const source=await readFile('scripts/windows-launcher.cs','utf8'),generated=join(release,'windows-build','windows-launcher.generated.cs');
@@ -28,6 +32,6 @@ execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command','Compre
 const zipHash=createHash('sha256').update(await readFile(zip)).digest('hex'),exe=join(release,title+'.exe');
 await compile(exe,zipHash.slice(0,16),zip);
 await cp(zip,join(release,title+'-电脑版.zip'));
-const artifacts={};for(const [kind,path]of Object.entries({exe,html:zip}))artifacts[kind]={path,bytes:(await stat(path)).size,sha256:createHash('sha256').update(await readFile(path)).digest('hex')};
-await writeFile('verification/windows-desktop-validation.json',JSON.stringify({date:'2026-10-21',title,build:zipHash.slice(0,16),indexSha256:indexHash,artifacts,htmlEntry:join(folder,'index.html'),launchesLocalH5:true,bundledNode:true},null,2)+'\n');
+const artifacts={};for(const [kind,path]of Object.entries({exe,html:zip}))artifacts[kind]={path:relative(process.cwd(),path).split(sep).join('/'),bytes:(await stat(path)).size,sha256:createHash('sha256').update(await readFile(path)).digest('hex')};
+await writeFile('verification/windows-desktop-validation.json',JSON.stringify({date:new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Shanghai'}).format(new Date()),title,build:zipHash.slice(0,16),indexSha256:indexHash,artifacts,htmlEntry:relative(process.cwd(),join(folder,'index.html')).split(sep).join('/'),launchesLocalH5:true,bundledNode:true},null,2)+'\n');
 console.log(JSON.stringify({folder,artifacts}));

@@ -1,0 +1,11 @@
+{
+  "executableRelativePath": "Wake up 打工人！.exe",
+  "archive": "release/Windows上传包-20261021113906/Wake up 打工人！-Windows上传包.zip",
+  "bytes": 244406163,
+  "sha256": "f31b38ba2265718a37725be6dfc3146cc384d7aaba37fe5b4ccbcba69f1e28f6",
+  "archiveFiles": 335,
+  "matchedCurrentWebFiles": 327,
+  "obsoleteAssets": false,
+  "rootExecutable": true,
+  "extractedExeSmoke": true
+}

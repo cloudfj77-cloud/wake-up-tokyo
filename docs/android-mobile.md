@@ -30,6 +30,8 @@ npm run dev
 npm run package:windows
 ```
 
+Windows 上传平台使用 `npm run package:windows:upload`，输出在 `release/Windows上传包-时间戳/`。上传其中的 ZIP；可执行文件相对路径填写 `Wake up 打工人！.exe`，启动参数留空。EXE 位于 ZIP 根目录，资源和附带运行环境均在同一包内。
+
 开发入口为 `http://127.0.0.1:5200/`。`?touch=1` 可预览手机操作，`?touch=0` 使用键鼠。打包命令在 Windows 下生成 `release/Wake up 打工人！.exe` 和 `release/Wake up 打工人！-HTML资源包.zip`，含离线 Node 运行环境；HTML 资源包需要通过附带启动器或本地 HTTP 服务运行。
 
 ## 验证
