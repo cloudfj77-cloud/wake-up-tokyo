@@ -92,11 +92,9 @@ public class AssetServer {
         }
 
         OutputStream out = client.getOutputStream();
-        AssetManager.AssetInputStream stream = null;
-        long total = -1;
         try {
             android.content.res.AssetFileDescriptor fd = assets.openFd(asset);
-            total = fd.getLength();
+            long total = fd.getLength();
             if (partial && (start >= total || (end >= 0 && end < start))) {
                 out.write(("HTTP/1.1 416 Range Not Satisfiable\r\nContent-Range: bytes */" + total + "\r\nContent-Length: 0\r\nConnection: close\r\n\r\n").getBytes("UTF-8"));
                 fd.close();
@@ -104,23 +102,42 @@ public class AssetServer {
             }
             FileInputStream fis = fd.createInputStream();
             if (start > 0) { long skipped = 0; while (skipped < start) skipped += fis.skip(start - skipped); }
-            stream = null;
             write(out, partial ? 206 : 200, path, total, start, end, partial, fis);
             fis.close();
             fd.close();
             return;
         } catch (Throwable fdError) {
-            // 被压缩的资源拿不到文件描述符，退回普通流式读取（不支持 Range）
+            // 被压缩的资源拿不到文件描述符：整份读进内存再按准确长度回，
+            // 绝不能用 available() 当长度 —— 压缩流的 available 是压缩后的估算值，
+            // 长度错了浏览器会截断资源，贴图/几何就坏了（表现为大块面渲染异常）。
         }
         try {
-            stream = (AssetManager.AssetInputStream) assets.open(asset, AssetManager.ACCESS_STREAMING);
-            total = stream.available();
-            write(out, 200, path, total, 0, -1, false, stream);
+            InputStream raw = assets.open(asset, AssetManager.ACCESS_STREAMING);
+            java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
+            byte[] chunk = new byte[64 * 1024];
+            int read;
+            while ((read = raw.read(chunk)) > 0) buffer.write(chunk, 0, read);
+            raw.close();
+            byte[] data = buffer.toByteArray();
+            long total = data.length;
+            long from = partial ? start : 0;
+            long to = end >= 0 ? Math.min(end, total - 1) : total - 1;
+            if (partial && from >= total) { out.write("HTTP/1.1 416 Range Not Satisfiable\r\nContent-Length: 0\r\nConnection: close\r\n\r\n".getBytes("UTF-8")); return; }
+            StringBuilder h = new StringBuilder();
+            h.append(partial ? "HTTP/1.1 206 Partial Content\r\n" : "HTTP/1.1 200 OK\r\n");
+            h.append("Content-Type: ").append(mime(path)).append("\r\n");
+            h.append("Content-Length: ").append(to - from + 1).append("\r\n");
+            if (partial) h.append("Content-Range: bytes ").append(from).append('-').append(to).append('/').append(total).append("\r\n");
+            h.append("Accept-Ranges: bytes\r\nCache-Control: no-store\r\n");
+            h.append("Cross-Origin-Opener-Policy: same-origin\r\n");
+            h.append("Cross-Origin-Embedder-Policy: require-corp\r\n");
+            h.append("Connection: close\r\n\r\n");
+            out.write(h.toString().getBytes("UTF-8"));
+            out.write(data, (int) from, (int) (to - from + 1));
+            out.flush();
         } catch (Throwable missing) {
             String body = "404 Not Found";
             out.write(("HTTP/1.1 404 Not Found\r\nContent-Length: " + body.length() + "\r\nConnection: close\r\n\r\n" + body).getBytes("UTF-8"));
-        } finally {
-            if (stream != null) try { stream.close(); } catch (Throwable ignored) { }
         }
     }
 

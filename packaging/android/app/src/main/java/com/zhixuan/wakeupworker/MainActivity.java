@@ -71,7 +71,12 @@ public class MainActivity extends Activity {
         s.setSupportZoom(false);
         web.setBackgroundColor(0xFF000000);
         setContentView(web);
-        web.loadUrl("http://127.0.0.1:8099/index.html");
+        // 远程调试：chrome://inspect 可直接连上手机里的页面排查渲染问题
+        android.webkit.WebView.setWebContentsDebuggingEnabled(true);
+        // adb 里可以带参数启动：adb shell am start -n com.zhixuan.wakeupworker/.MainActivity --es params "?lowspec=1&debug=1"
+        String params = getIntent() != null ? getIntent().getStringExtra("params") : null;
+        String url = "http://127.0.0.1:8099/index.html" + (params != null && params.startsWith("?") ? params : "");
+        web.loadUrl(url);
     }
 
     @Override

@@ -11177,12 +11177,14 @@ async function HB(j, A, { quality: M = "standard" } = {}) {
   }
   let Q = gChunks.length ? gChunks[0].mesh : new GM(O.buildGeometry(1), g);
   if (!gChunks.length) { Q.name = "Tidewater architecture", Q.castShadow = gShadow, Q.receiveShadow = true, N.add(Q); }
+  // 移动端 WebView：描边法线趟范围减半、雾外不留余量（?lowspec=1 可在桌面上验证）
+  const gLow = typeof location !== "undefined" && (new URLSearchParams(location.search).get("lowspec") === "1" || /Android|iPhone|iPad|iPod|Mobile|wv\)/i.test((navigator && navigator.userAgent) || ""));
   // 分块后就能按距离分级：主画面雾吞掉后不画，描边法线趟只画近处（远处本来就不该有描边）。
   function gApply(gPos, gMode) {
     const gf = j.fog;
     const gOff = !gf || !Number.isFinite(gf.near) || gf.near > 500;
     if (gOff) { for (const gc of gChunks) gc.mesh.visible = true; return; }
-    const gr = gMode === "outline" ? gf.near + (gf.far - gf.near) * 0.3 : gf.far + 10;
+    const gr = gMode === "outline" ? gf.near + (gf.far - gf.near) * (gLow ? 0.15 : 0.3) : gf.far + (gLow ? 0 : 10);
     for (const gc of gChunks) {
       const gd = Math.sqrt(gPos.distanceToSquared(gc.center));
       gc.mesh.visible = gd < gr + gc.radius;

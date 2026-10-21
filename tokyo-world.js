@@ -3,6 +3,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {block} from './world.js';
 import {WalkCollision} from './tokyo/collision.js';
 import {batchStaticScene} from './tokyo/render-batches.js';
+import {LOW_SPEC_RENDER} from './device.js';
 import {createTokyoNavigation} from './tokyo/navigation.js';
 import {createTokyoPopulation,TUTORIAL_LAYOUT} from './tokyo/gameplay.js';
 
@@ -20,6 +21,8 @@ const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision
  lodMeters:Number.isFinite(cityLod)?cityLod:undefined,
  cullMeters:Number.isFinite(cityCull)?cityCull:undefined,
  shadow:cityQuery.get('staticshadow')==='1',
+ // 移动端 WebView：LOD 更早换代理体、描边法线趟范围减半
+ ...LOW_SPEC_RENDER,
 });
  // Source meshes are retained by the collision index; only render batches and transparent meshes stay in the scene tree.
  const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
