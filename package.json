@@ -22,7 +22,7 @@
     "vite": "^7.1.7"
   },
   "game": {
-    "title": "都给我醒醒！",
+    "title": "Wake up 打工人！",
     "stage": "demo"
   }
 }
