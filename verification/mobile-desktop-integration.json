@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-21",
+  "version": "0.3.61",
+  "title": "Wake up 打工人！",
+  "base": "7948977176299943de55de035ddaa06a22e99a82",
+  "integratedUpstream": "1f654f09b8544ec99836caebf10375b8d63c1a3a",
+  "suppliedArtifacts": {
+    "apk": "ab3e66f76be0aa49d85465361f6db8c65174c6fe2acb22b9f3173fee6403af36",
+    "exe": "6579bdd96c7db062eddcdae54d9185dd60683a4ac328d88dfbf79376330101b2",
+    "htmlZip": "9163796741ff5931b984d5d2945a7ab64b4980cdc26cb8b4092f6e163c936089"
+  },
+  "validation": {
+    "fullTests": {
+      "total": 354,
+      "passed": 351,
+      "skipped": 3,
+      "failed": 0
+    },
+    "mobileTests": {
+      "passed": 6,
+      "failed": 0
+    },
+    "productionBuild": "passed",
+    "capacitorSync": "passed",
+    "androidAssembleDebug": "passed",
+    "windowsSelfContainedSmoke": "passed",
+    "assetServerJavaContract": "passed",
+    "settingsBackUi": "passed",
+    "windowsUploadArchive": "passed"
+  },
+  "android": {
+    "applicationId": "com.wakeuptokyo.game",
+    "versionCode": 6,
+    "versionName": "0.3.61-mobile.6",
+    "path": "android/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 222795256,
+    "sha256": "c8b09dcee822e664c2186739657ac1ef85648e27ec8dd27fb69a806f9d9f131d",
+    "signatureVerified": true,
+    "sameSignerAsSuppliedApk": true
+  },
+  "limits": [
+    "MuMu installation, display name and existing-save menu checked. No complete playthrough of the final APK.",
+    "No claim of measured Android hardware frame rate."
+  ]
+}

@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.application'
+}
+
+def gamePackage = new groovy.json.JsonSlurper().parse(rootProject.file('../../package.json'))
+
+android {
+    namespace 'com.zhixuan.wakeupworker'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.zhixuan.wakeupworker"
+        minSdk 26
+        targetSdk 34
+        versionCode gamePackage.version.tokenize('.').with { v -> v[0].toInteger() * 1000000 + v[1].toInteger() * 1000 + v[2].toInteger() }
+        versionName gamePackage.version
+    }
+
+    // 游戏资源不能让 aapt 压缩：压缩后拿不到文件描述符，Range 请求（Wwise 分段流式）会失效。
+    androidResources {
+        noCompress += ['wem', 'bnk', 'glb', 'fbx', 'wasm', 'bin', 'json', 'obj', 'frag', 'png', 'jpg', 'jpeg', 'webp', 'txt']
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packagingOptions {
+        jniLibs { useLegacyPackaging true }
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.18.0-rc01'
+}

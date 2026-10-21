@@ -12,7 +12,7 @@ const L=STAGES.tidewater.LAYOUT;
 const level=new Level({...L,single:L.single.filter(p=>p.onlyIn!=='zones'),half:L.half.filter(p=>p.onlyIn!=='zones')},cols);
 const nav=createTidewaterNavigation(level);
 test('Tidewater save survives and replacement Tokyo saves are isolated',()=>{
- assert.equal(selectedMap('').saveKey,'wake-up-tokyo-tidewater-v1');
+ assert.equal(selectedMap('?map=tidewater').saveKey,'wake-up-tokyo-tidewater-v1');
  assert.equal(selectedMap('?map=riverside').saveKey,'wake-up-tokyo-cyber-v1');
  assert.equal(selectedMap('?map=bad').id,'tidewater');
  assert.notEqual(selectedMap('?map=riverside').saveKey,selectedMap('').saveKey);

@@ -2,18 +2,30 @@ import * as T from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {block} from './world.js';
 import {WalkCollision} from './tokyo/collision.js';
-import {batchStaticScene} from './tokyo/render-batches.js';
+import {batchStaticScene,pruneEmptyStaticGroups} from './tokyo/render-batches.js';
+import {prepareStaticMaterials} from './tokyo/material-atlas.js';
+import {LOW_SPEC_RENDER} from './device.js';
 import {createTokyoNavigation} from './tokyo/navigation.js';
 import {createTokyoPopulation,TUTORIAL_LAYOUT} from './tokyo/gameplay.js';
 
-export async function loadTokyo(scene){
+export async function loadTokyo(scene,renderer){
  const [gltf,data]=await Promise.all([new GLTFLoader().loadAsync(new URL('./assets/scenes/tokyo-district.glb',import.meta.url).href),fetch(new URL('./assets/scenes/tokyo-navigation.json',import.meta.url)).then(r=>{if(!r.ok)throw Error('东京通路加载失败');return r.json();})]);
  const root=gltf.scene;root.name='Tokyo Cyber District';root.scale.setScalar(.55);root.position.set(11,3.3,-28.6);root.updateMatrixWorld(true);
  // Keep Wake Up's light rig, fog and postprocessing; the asset contributes geometry and materials only.
  const lights=[];root.traverse(o=>{if(o.isLight)lights.push(o);if(o.isMesh){o.castShadow=o.receiveShadow=true;}});lights.forEach(o=>o.removeFromParent());
- const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision),batch=batchStaticScene(root);
+ const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision);
+ const materialStats=prepareStaticMaterials(root,{maxSize:renderer?.capabilities.maxTextureSize??4096});
+ const cityQuery=new URLSearchParams(location.search);
+ const cityLod=parseFloat(cityQuery.get('citylod')),cityCull=parseFloat(cityQuery.get('citycull'));
+ const batch=batchStaticScene(root,{
+  ...LOW_SPEC_RENDER,fog:scene.fog,
+  lodMeters:Number.isFinite(cityLod)?cityLod:undefined,
+  cullMeters:Number.isFinite(cityCull)?cityCull:undefined,
+  shadow:cityQuery.get('staticshadow')==='1',
+ });
+ console.info('[TokyoRender]',JSON.stringify({...materialStats,batches:batch.batchCount}));
  // Source meshes are retained by the collision index; only render batches and transparent meshes stay in the scene tree.
- const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
+ const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());pruneEmptyStaticGroups(root);root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
  // shortcut: Imported architecture is static; add destructible modules when building damage is required.
  const towers=[],destructibles=[],buildings=[];
  const towerBlocked=(x,z,r=.16,hint=0)=>towers.some(o=>!o.dead&&Math.abs(nav.heightAt(x,z,hint)-o.floorY)<o.h&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r);
@@ -40,10 +52,18 @@ export async function loadTokyo(scene){
  const diamond=new T.Mesh(new T.OctahedronGeometry(.19),markerMaterial);diamond.position.y=1.7;marker.add(diamond);marker.visible=false;scene.add(marker);
  const map=document.createElement('canvas');map.width=Math.ceil((data.bounds.maxX-data.bounds.minX)*2);map.height=Math.ceil((data.bounds.maxZ-data.bounds.minZ)*2);const ctx=map.getContext('2d');ctx.fillStyle='#283d49';ctx.fillRect(0,0,map.width,map.height);
  for(let i=0;i<data.nodes.length;i++){const p=nav.point(i);ctx.fillStyle=p.floorY>8?'#8c9ba3':p.floorY>2?'#a9a99f':'#c9b8a0';ctx.fillRect((p.x+58)*2,(55-p.z)*2,1,1);}
- return {root,multilevel:true,buildings,obstacles:[],destructibles,towers,spawn,bossSpawn,entries,spawnWeakenSites,breakAt,tutorial,
-  populationSpot:population.spawn,populationTarget:population.wander,
+ return {root,renderStats:{...materialStats,batches:batch.batchCount},multilevel:true,buildings,obstacles:[],destructibles,towers,spawn,bossSpawn,entries,spawnWeakenSites,breakAt,tutorial,
+  populationSpot:population.spawn,populationTarget:population.wander,rebalancePopulation:population.rebalance,
+  combatClear(a,b){
+   const origin=new T.Vector3(a.x,nav.heightAt(a.x,a.z,a.floorY)+.55+(a.y||0),a.z),end=new T.Vector3(b.x,nav.heightAt(b.x,b.z,b.floorY)+.55+(b.y||0),b.z),direction=end.clone().sub(origin),distance=direction.length();
+   if(distance<.001)return true;direction.multiplyScalar(1/distance);
+   const ray=new T.Ray(origin,direction),point=new T.Vector3();
+   for(const o of towers)if(!o.dead&&ray.intersectBox(new T.Box3(new T.Vector3(o.x-o.w/2,o.floorY,o.z-o.d/2),new T.Vector3(o.x+o.w/2,o.floorY+o.h,o.z+o.d/2)),point)&&point.distanceTo(origin)<distance-.1)return false;
+   return !collision.raycast(origin,direction,Math.max(0,distance-.1));
+  },
   guideTo(p){marker.visible=!!p;if(p)marker.position.set(p.x,p.floorY,p.z);},
   free,nearest,heightAt:nav.heightAt,groundAt:(x,y,z)=>collision.raycast(new T.Vector3(x,y+.05,z),new T.Vector3(0,-1,0),Math.max(.1,y+5),true)?.point.y??-99,solid:(x,z,r=.1,y)=>y===undefined?!free(x,z,r):nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2)||towers.some(o=>!o.dead&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r&&y>=o.floorY&&y<=o.floorY+o.h),
+  movePoint:(u,x,z,r=.16)=>{const p=nav.movePoint(u,x,z,r);return p&&!towerBlocked(x,z,r,p.floorY)?p:null;},
   canMove:(u,x,z,r=.16)=>nav.canMove(u,x,z,r)&&!towerBlocked(x,z,r,u.floorY),clear:(a,b,r=.16)=>{
    if(!nav.clear(a,b,r))return false;
    const steps=Math.ceil(Math.hypot(b.x-a.x,b.z-a.z)/.2);
@@ -54,7 +74,8 @@ export async function loadTokyo(scene){
   cameraBlocked:(x,y,z,r=.16)=>nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2),
   menuCamera:{from:[38,27,36],look:[0,3,-6]},
   drawMap(ctx,px,pz){ctx.drawImage(map,px(data.bounds.minX),pz(data.bounds.maxZ),px(data.bounds.maxX)-px(data.bounds.minX),pz(data.bounds.minZ)-pz(data.bounds.maxZ));},
-  update(dt,camera){batch.updateDetailVisibility(camera.position);},
+  update(dt,camera){batch.updateDetailVisibility(camera.position,camera);},
+ updateDetailVisibility:(p,c)=>batch.updateDetailVisibility(p,c),updateOutlineVisibility:batch.updateOutlineVisibility,
   diagnostics:{model:'tokyo-district',nodes:data.nodes.length,batches:batch.batchCount},
  };
 }

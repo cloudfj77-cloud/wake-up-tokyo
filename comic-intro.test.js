@@ -83,13 +83,13 @@ test('已入版的分镜保持验收时的出场顺序',()=>{
 function startFixture(){
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
  const begin=source.indexOf('async function start(');
- const snippet=source.slice(begin,source.indexOf("$('start').onclick",begin));
+ const snippet=source.slice(begin,source.indexOf("$('start').onclick",begin)).replaceAll('import.meta.env.DEV','false').replaceAll('import.meta.env.MODE',"'production'");
  let finishIntro;
  const intro=new Promise(resolve=>{finishIntro=resolve;});
  const calls={intro:0,music:0},menu={hidden:false},hud={hidden:true};
  const context=vm.createContext({
   objectiveFeedback:{reset(){}},objectiveFeedbackKey:null,tutorialActive,assets:{},starting:false,state:{time:0,infected:0,pending:0},conversionCount:0,
-  document:{},playComicIntro:()=>{calls.intro++;return intro;},
+  touchMode:false,document:{},playComicIntro:()=>{calls.intro++;return intro;},
   loadSaved:()=>null,music:{start:async()=>{calls.music++;}},
   playerVisual:{holder:{rotation:{y:0}}},yaw:0,
   $:id=>({menu,hud})[id],mode:'menu',

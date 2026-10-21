@@ -132,3 +132,30 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 @keyframes objectivePunch{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-8px) scale(1.035)}100%{transform:translateY(0) scale(1)}}
 @keyframes objectiveReveal{from{opacity:.15;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
 @media(prefers-reduced-motion:reduce){.objectivePanel.objectiveComplete,.objectiveNext #objective,.objectiveNext #objectiveSteps{animation:none}}
+
+/* Pause is a compact action menu shared by desktop and touch. */
+.dialog.settingsDialog,.touch-mode .dialog.settingsDialog{width:min(400px,calc(100vw - 32px));max-width:400px;padding:22px 26px;border:2px solid var(--paper);border-top:6px solid var(--rebel);box-shadow:7px 7px #000}
+.dialog.settingsDialog:before,.dialog.settingsDialog:after{display:none}
+.settingsHeading,.upgradeHeading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 18px}
+.dialog .settingsHeading h2,.dialog .upgradeHeading h2{margin:0;font-size:30px;line-height:1.1}
+.settingsHeading>span,.upgradeHeading>span{color:var(--rebel);font-size:24px;font-weight:900;font-style:italic}
+.settingsRows{display:grid;gap:0;margin-bottom:18px}
+.settingsRows .setting{display:grid;grid-template-columns:70px minmax(0,1fr);align-items:center;gap:20px;min-height:50px;margin:0;padding:8px 0;border-bottom:1px solid #fff3;font-size:15px;color:var(--paper)}
+.settingsRows input[type=range],.settingsRows select{width:100%;min-width:0;margin:0;accent-color:var(--rebel)}
+.settingsRows select{min-height:32px;padding:4px 8px;border:1px solid #fff7;border-radius:0;background:var(--ui-black);color:var(--paper);font:inherit}
+.settingsDialog>.action{display:block;width:100%;margin:10px 0 0;min-height:44px;box-shadow:none}
+.settingsDialog>.action[hidden]{display:none}
+.dialog.upgradeDialog{width:min(960px,calc(100vw - 32px))}
+.upgradeDialog .cards{margin-top:0}
+@media(max-height:460px){.dialog.settingsDialog,.touch-mode .dialog.settingsDialog{padding:16px 22px}.settingsHeading{margin-bottom:8px}.settingsRows{margin-bottom:10px}.settingsRows .setting{min-height:40px;padding:5px 0}.dialog .settingsHeading h2{font-size:26px}}
+.dialog.pauseDialog,.touch-mode .dialog.pauseDialog{width:min(340px,calc(100vw - 36px));max-width:340px;padding:25px 25px 22px;overflow:visible;border:2px solid var(--paper);border-top:6px solid var(--rebel);box-shadow:7px 7px #000}
+.dialog.pauseDialog:before,.dialog.pauseDialog:after{display:none}
+.pauseMenu header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:26px}
+.dialog.pauseDialog h2,.touch-mode .dialog.pauseDialog h2{margin:0;color:var(--paper);font-size:32px;line-height:1.15;letter-spacing:1px;text-shadow:2px 2px #000}
+.pauseMark{display:block;transform:skew(-10deg);color:var(--rebel);font:900 36px/1 system-ui}
+.pauseActions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pauseActions .action{width:100%;margin:0;min-height:46px;padding:11px 10px;font-size:14px;letter-spacing:1px;box-shadow:none}
+.pauseActions .pauseResume{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;min-height:54px;margin-bottom:2px;font-size:18px;padding:12px 17px}
+.pauseResume span{font-size:24px;line-height:1}
+.pauseActions .pauseEnd{border-color:#fffdf270;color:var(--ui-secondary)}
+@media(max-height:420px){.dialog.pauseDialog,.touch-mode .dialog.pauseDialog{padding:18px 22px 20px}.pauseMenu header{margin-bottom:20px}.dialog.pauseDialog h2,.touch-mode .dialog.pauseDialog h2{font-size:28px}.pauseActions .action{min-height:42px}.pauseActions .pauseResume{min-height:50px}}

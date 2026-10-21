@@ -22,3 +22,9 @@ wwise/**/*.wsettings
 wwise/**/*.validationcache
 wwise/**/*.prof
 wwise/**/*.akd
+
+# Android local SDK configuration and generated game copies
+packaging/android/.gradle/
+packaging/android/local.properties
+packaging/android/**/build/
+packaging/android/app/src/main/assets/www/

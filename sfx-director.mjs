@@ -1,6 +1,7 @@
 // 声音选择、距离衰减、循环与复音由 Wwise 工程负责；这里管理玩法生命周期。
 import cues from './audio/wwise/sfx-runtime.json' with {type:'json'};
-const catalog=new Map(cues.map(c=>[c.key,c]));
+import japaneseRadio from './japanese-radio.json' with {type:'json'};
+const catalog=new Map(cues.map(c=>{const line=japaneseRadio.lines[c.key];return [c.key,line?{...c,text:line.text,caption:line.caption,clips:[{seconds:line.seconds}]}:c];}));
 const aliases={infect:'meleeLight',attack:'meleeHeavy',hit:'hitBody',shoot:'syringe',powerThrow:'power',break:'breakStone',defeat:'defeatSfx'};
 export class SfxDirector{
  constructor({getAudio,now=()=>performance.now()/1000,onRadio=()=>{}}={}){

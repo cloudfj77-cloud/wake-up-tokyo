@@ -1,4 +1,5 @@
 // 游戏只提交场景和混音意图；循环、淡变、暂停与尾声衔接由 Wwise 事件执行。
+import {withJapaneseRadio} from './japanese-radio.js';
 export const MUSIC_SCENES=Object.freeze(['menu','street','pressure','countdown','boss','victory','defeat','aftermath']);
 export function selectMusicScene({mode,state={},boss={}}={}){
  if(mode==='loading'||mode==='menu')return 'menu';
@@ -9,7 +10,7 @@ export function selectMusicScene({mode,state={},boss={}}={}){
  if(state.bossCountdown!=null&&!state.bossSpawned)return 'countdown';
  return state.alert>=3?'pressure':'street';
 }
-const backend=async()=>{const {createWwiseAudio}=await import('./src/wwise/index.mjs');return createWwiseAudio();};
+const backend=async()=>{if(globalThis.Capacitor?.isNativePlatform?.()||new URLSearchParams(globalThis.location?.search??'').get('mobileAudio')==='1'){const {createMobileAudio}=await import('./mobile-audio.js');return withJapaneseRadio(await createMobileAudio());}const {createWwiseAudio}=await import('./src/wwise/index.mjs');return withJapaneseRadio(await createWwiseAudio());};
 const loopingScenes=new Set(['menu','street','pressure','countdown','boss','aftermath']);
 export class MusicDirector{
  constructor({createAudio=backend,onStatus=()=>{},now=()=>performance.now()}={}){

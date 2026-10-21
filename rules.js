@@ -1,3 +1,4 @@
+import {sameCombatLayer} from './combat-space.js';
 export const LEVEL_CAP=15;
 export const EVOLVE_CAP=50;
 // 前中期比上一版松：5 级 57 点，8 级 78 点。倍率从 1.45 起每级降 0.1，降到 1 倍就不再乘。
@@ -307,7 +308,7 @@ export function releaseFleshTide(j, A, M) {
 }
 export function spawnAirDrop(s,units,player){
  const angle=Math.random()*Math.PI*2,radius=Math.sqrt(Math.random())*AIR_SPAWN_RANGE;
- (s.airDrops??=[]).push({x:player.x+Math.cos(angle)*radius,z:player.z+Math.sin(angle)*radius,remaining:.65});
+ (s.airDrops??=[]).push({x:player.x+Math.cos(angle)*radius,z:player.z+Math.sin(angle)*radius,floorY:player.floorY,remaining:.65});
 }
 
 export function grantFrenzy(j, A = false) {
@@ -425,7 +426,7 @@ export function convert(j, A) {
     D !== A.type && (A.type = D, A.threshold = ENEMIES[D].threshold, N = true);
   }
   const I = allyTemplate(A.type);
-  return A.ingressTime = 0, A.ingressGoal = null, A.ingressCull = 0, A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.sprayPhase = "", A.chargePhase = "", A.knock = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.logicElapsed = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
+  return A.ingressTime = 0, A.ingressGoal = null, A.ingressCull = 0, A.converted = true, A.stationary = false, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.sprayPhase = "", A.chargePhase = "", A.knock = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.logicElapsed = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
 }
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
  if(u.dead||u.converted||u.kind==='corpse')return 'none';
@@ -505,14 +506,14 @@ export function tickInfection(j, A, M, N) {
     const corpse = u.kind === "corpse";
     let rate = 0, drain = 0;
     for (const ally of purifiers) {
-      if (ally === u || distance(ally, u) > (ENEMIES[ally.type].aura || 8)) continue;
+      if (ally === u || !sameCombatLayer(ally,u) || distance(ally, u) > (ENEMIES[ally.type].aura || 8)) continue;
       if (ally.kind === "ally") rate = Math.max(rate, (ENEMIES[ally.type].aid ?? ENEMIES[ally.type].drain ?? 8)*kindlingMultiplier(j,M,ally));
       else drain = Math.max(drain, ENEMIES[ally.type].drain ?? 8);
     }
     drain = Math.min(drain, PURIFY_MAX);
     const tag = u.tagged, playerTag = tag === "player" || tag === true || u.playerInfection === true, armyTag = tag === "army" && j.abilities.dot >= 3;
     if (playerTag) u.playerInfection = true;
-    const inMother = !!(aura.radius && (!corpse || aura.corpse) && distance(M, u) <= aura.radius);
+    const inMother = !!(aura.radius && (!corpse || aura.corpse) && sameCombatLayer(M,u) && distance(M, u) <= aura.radius);
     let mistGain = 0;
     if (inMother) {
       rate += aura.perHalf * 2 * fireBonus;
@@ -520,7 +521,7 @@ export function tickInfection(j, A, M, N) {
     } else if (!corpse && j.abilities.air >= 3) {
       let exposure = 0;
       for (const cloud of j.airClouds || []) {
-        if (cloud.time > 0 && Math.hypot(u.x - cloud.x, u.z - cloud.z) <= AIR_CLOUD_RADIUS) exposure = Math.max(exposure, Math.min(N, cloud.time));
+        if (cloud.time > 0 && sameCombatLayer(cloud,u) && Math.hypot(u.x - cloud.x, u.z - cloud.z) <= AIR_CLOUD_RADIUS) exposure = Math.max(exposure, Math.min(N, cloud.time));
       }
       if (exposure > 0) {
         const elapsed = (u.mistTick || 0) + exposure, ticks = Math.floor((elapsed + 1e-9) / 0.5);
@@ -1040,7 +1041,7 @@ export function stepSimulation(s,units,player,dt,mode){
  s.airClouds??=[];s.airDrops??=[];
  for(const cloud of s.airClouds)cloud.time=Math.max(0,cloud.time-dt);
  s.airClouds=s.airClouds.filter(c=>c.time>1e-9);
- for(const drop of s.airDrops){drop.remaining-=dt;if(drop.remaining<=0)s.airClouds.push({x:drop.x,z:drop.z,time:3});}
+ for(const drop of s.airDrops){drop.remaining-=dt;if(drop.remaining<=0)s.airClouds.push({x:drop.x,z:drop.z,floorY:drop.floorY,time:3});}
  s.airDrops=s.airDrops.filter(d=>d.remaining>0);
  if(s.abilities.air>=3){s.airPulse=(s.airPulse||0)+dt;while(s.airPulse+1e-9>=.5){s.airPulse=Math.max(0,s.airPulse-.5);spawnAirDrop(s,units,player);}}
  tickInfection(s,units,player,dt);

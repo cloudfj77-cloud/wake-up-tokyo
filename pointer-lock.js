@@ -46,7 +46,8 @@ export function createPointerLock(canvas, notify, win = window, doc = document) 
       canvas.style.cursor = 'none';
       if(!quiet) notify('鼠标已捕获 · 移动鼠标转向 · Esc 释放', 4);
     } catch (error) {
-      notify('鼠标锁定失败：'+(error?.message ?? String(error)), 8);
+      console.warn('[pointer-lock]',error?.message??String(error));
+      if(!quiet)notify('右键拖动转动视角',3);
     } finally { pending = false; }
   };
   const changed = () => { if (locked() && !quiet) notify('鼠标已锁定 · 移动鼠标转向 · Esc 释放', 3); };
