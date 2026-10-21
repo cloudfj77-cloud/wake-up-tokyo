@@ -1,3 +1,4 @@
+import {LOW_SPEC_RENDER} from './device.js';
 import * as T from 'three';
 import {block} from './world.js';
 import {createTidewaterNavigation} from './tidewater-navigation.js';
@@ -55,7 +56,7 @@ export async function loadTidewater(scene,renderer,{quality='standard'}={}){
   const f=scene.fog;
   const disabled=!f||!Number.isFinite(f.near)||f.near>500;   // 菜单/开场里雾被关掉
   if(disabled){for(const c of chunks)c.mesh.visible=true;return;}
-  const range=profile==='outline'?f.near+(f.far-f.near)*.3:f.far+10;
+  const range=profile==='outline'?f.near+(f.far-f.near)*LOW_SPEC_RENDER.outlineFactor:f.far+LOW_SPEC_RENDER.cullPad;
   for(const c of chunks){
    const d=Math.sqrt(position.distanceToSquared(c.center));
    c.mesh.visible=d<range+c.radius;

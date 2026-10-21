@@ -96,7 +96,7 @@ test('civilian path stays fixed when infection rises and reverses at its endpoin
 test('real key and wheel handlers preserve weapon controls and defer Shift action until release',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),events={},calls=[];
  const state=r.makeState();state.pending=1;state.abilities.guns=1;state.weaponOrder=['pistol','shotgun'];
- const ctx=vm.createContext({MOBILE_DEVICE:false,...r,performance:{now:()=>0},state,mode:'playing',player:{roll:0},units:[],switchTime:0,squadIds:new Set(),canvas:{addEventListener:(k,fn)=>events[k]=fn},addEventListener:(k,fn)=>events[k]=fn,reloadGun:()=>calls.push('reload'),toggleMap:()=>calls.push('map'),togglePause(){},toggleDebug(){},primary(){},heavy(){},requestJump(){},requestRoll:()=>calls.push('roll'),weaponSelect:w=>calls.push(w),toast(){}});
+ const ctx=vm.createContext({isTouchDevice:()=>false,MOBILE_DEVICE:false,...r,performance:{now:()=>0},state,mode:'playing',player:{roll:0},units:[],switchTime:0,squadIds:new Set(),canvas:{addEventListener:(k,fn)=>events[k]=fn},addEventListener:(k,fn)=>events[k]=fn,reloadGun:()=>calls.push('reload'),toggleMap:()=>calls.push('map'),togglePause(){},toggleDebug(){},primary(){},heavy(){},requestJump(){},requestRoll:()=>calls.push('roll'),weaponSelect:w=>calls.push(w),toast(){}});
  vm.runInContext(source.slice(source.indexOf('const keys={};'),source.indexOf('function toggleMap()')),ctx);
  const key=code=>events.keydown({code,target:{tagName:'CANVAS'},preventDefault(){}});
  key('ShiftLeft');assert.deepEqual(calls,[]);key('KeyR');key('Tab');assert.deepEqual(calls,['reload','map']);
@@ -108,7 +108,7 @@ test('real key and wheel handlers preserve weapon controls and defer Shift actio
 test('Shift taps dodge, holds sprint, repeats and cancelled inputs do not dodge',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),events={},calls=[];
  let now=0;
- const ctx=vm.createContext({MOBILE_DEVICE:false,...r,performance:{now:()=>now},state:r.makeState(),mode:'playing',
+ const ctx=vm.createContext({isTouchDevice:()=>false,MOBILE_DEVICE:false,...r,performance:{now:()=>now},state:r.makeState(),mode:'playing',
   canvas:{addEventListener:(k,fn)=>events[k]=fn},addEventListener:(k,fn)=>events[k]=fn,
   requestRoll:()=>calls.push('roll'),togglePause(){},toggleDebug(){},
   rollBuffered:1,jumpBuffered:1,mouseHeld:true,dragging:true,pointerLock:{release(){}}});

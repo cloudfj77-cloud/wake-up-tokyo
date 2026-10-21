@@ -5,7 +5,7 @@ import {createCombatUI} from './combat-ui.js';
 import {selectedMap} from './maps.js';
 import {canMeleeReach} from './combat-space.js';
 import {renderPixelRatio} from './render-quality.js';
-import {LOW_SPEC} from './device.js';
+import {LOW_SPEC,FORCED_QUALITY} from './device.js';
 import {createComicAbilityFX,resolveComicAim,launchComicBallistic,stepComicBallistic,stepComicNeedle,createFleshProgressHUD} from './comic-fx.js';
 import {playComicIntro} from './comic-intro.js';
 import {createTouchControls,isTouchDevice,mobileDialogCopy} from './touch-controls.js';
@@ -24,7 +24,7 @@ import {TOKYO_FOG,TOKYO_LOOK,tutorialActive,advanceTutorial,tutorialTarget,tokyo
 import {Soundtrack} from './music.js';
 import {ABILITIES,kindlingSpec,kindlingStacks,kindlingMultiplier,releaseKindlingPulses,ENEMIES,GUNS,POPULATION,STAMINA_MAX,makeState,ownedAbilities,makeUnit,resetUnit,hit,upgrade,choices,rerollChoice,hasRerollPool,stepSimulation,damageAlly,distance,threat,outcome,speed,teamCount,hurtMother,bossReady,spawnPlan,TUNE,resetTune,applyTune,setTuneValue,meleeSpec,gunInfection,guardWanted,guardMissing,levelCap,isRangedEnemy,hostileWindup,stepHostileMelee,beginShieldCharge,stepShieldCharge,shieldChargeHits,beginPurifierSpray,stepPurifierSpray,purifierConeHit,upgradeAutoGap,LAUNCHER_SLOT,launcherSpec,consumePowerCharge,recordPowerHit,canChargePower,POWER_HITS,hasLauncher,weaponSlots,allyTemplate,grenadeBlast,makeSpawnQueue,enqueueSquads,takeSquadJob,hiddenSpawn,reinforcementCandidate,stepIngress,REINFORCEMENT_LIMITS,allyMelee,allySeeksHostile,guardMoveTarget,GUARD_LEASH,tickRunClock,alertValue,ALERT_NAMES,radioBackup,AIRSTRIKE,planePhase,onStrafeLane,tankTreadKind,tankShove,isMechanical,publishWeakenTasks,completeWeaken,closeWeakenTasks,bossWeakenMods,WEAKEN_TASKS,isStreetCivilian,isStreetPatrol,shouldCullTroop,planCivilianSpot,streetStroll,collectPickup,PICKUP_CONFIG,potionMultiplier,stepSprint,civilianTarget,xpNeedFor,cityRegion,regionSpawnSpot,refreshStats,AIR_SPAWN_RANGE,AIR_CLOUD_RADIUS,FLESH_RADIUS} from './rules.js';
 const mapConfig=selectedMap(location.search);
-const MOBILE_DEVICE=isTouchDevice()||LOW_SPEC;
+const MOBILE_DEVICE=LOW_SPEC;
 const $=id=>document.getElementById(id),canvas=$('game');
 const pointerLock=createPointerLock(canvas,(message,seconds)=>toast(message,seconds));
 // 点开始、继续、关地图或选完卡时锁住鼠标，画面跟着鼠标转。选卡和暂停会先放开。
@@ -46,6 +46,7 @@ let settings={volume:.38,voiceVolume:.8,sensitivity:1,quality:MOBILE_DEVICE?'low
 const spawnQueue=makeSpawnQueue(),unitPool=[],recentSpawnPoints=[];
 let fodderTimer=10;
 try{settings={...settings,...JSON.parse(localStorage.getItem('groundzero-settings')||'{}')};}catch{}
+if(FORCED_QUALITY)settings.quality=FORCED_QUALITY;
 music.volume=settings.volume;music.setVoiceVolume(settings.voiceVolume);
 const radioCaption=document.createElement('div');radioCaption.id='radioCaption';radioCaption.hidden=true;radioCaption.setAttribute('role','status');radioCaption.style.cssText='position:fixed;left:50%;bottom:18%;transform:translateX(-50%);z-index:40;max-width:70vw;background:#131924df;color:#f3e8d4;padding:10px 18px;border-left:3px solid #d6a34f;border-radius:4px;font:15px/1.5 system-ui;pointer-events:none';document.body.append(radioCaption);music.onRadio=text=>{radioCaption.hidden=!text;radioCaption.textContent=text?'秩序电台 · '+text:'';};
 // 首次按键/点击解锁标题音乐；初始化失败时仍可进入游戏并在设置中重试。
@@ -832,7 +833,7 @@ function weaponSelect(index){
 }
 const keys={};const SHIFT_HOLD_MS=180;keys.shiftStartedAt=null;
 // 手机版：触屏用虚拟摇杆 + 按钮，直接写 keys / yaw、pitch，不碰键鼠逻辑。
-const touchMode=MOBILE_DEVICE;
+const touchMode=isTouchDevice();
 const touchMove={x:0,y:0};
 const touch=touchMode?createTouchControls(document,{
  active:()=>mode==='playing',

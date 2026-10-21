@@ -1,3 +1,4 @@
+import {LOW_SPEC_RENDER} from '../device.js';
 // Recovered from the user-supplied v0.3.0 HTML package. INKWAVE © 2026 Jayden Davis, MIT.
 import {Vector3 as DA,Color as lA,BufferGeometry as FM,Float32BufferAttribute as xM,ShapeUtils as kI,Vector2 as jM,IcosahedronGeometry as eT,BufferAttribute as dM,SphereGeometry as yN,CylinderGeometry as KN,TorusGeometry as jI,PlaneGeometry as KI,CanvasTexture as mw,SRGBColorSpace as Tj,RepeatWrapping as FN,MeshStandardMaterial as yj,DoubleSide as hj,MeshDepthMaterial as eC,RGBADepthPacking as rE,Matrix3 as Nj,Euler as nj,Quaternion as mj,Matrix4 as YM,CatmullRomCurve3 as rC,Group as oj,NoColorSpace as xN,MeshPhysicalMaterial as OI,MeshBasicMaterial as Vj,Mesh as GM,InstancedMesh as iI,WebGLArrayRenderTarget as zk,UnsignedByteType as zI,RGBAFormat as _j,LinearFilter as aj,LinearMipmapLinearFilter as SN,DataArrayTexture as uC,OrthographicCamera as uT,RawShaderMaterial as Zx,GLSL3 as AE,Scene as Cz,Vector4 as qM,Plane as pD,Box3 as ON,BoxGeometry as DN,TubeGeometry as oz,DataTexture as DI,Fog as dw,FloatType as XN,ShaderMaterial as PN,WebGLRenderTarget as YI,HalfFloatType as OD,DirectionalLight as Kw,HemisphereLight as nE,BackSide as mN,LessEqualDepth as kT,PMREMGenerator as TE,ClampToEdgeWrapping as qN,UniformsUtils as ME,UniformsLib as vM,PerspectiveCamera as NN,WebGLCubeRenderTarget as hx,CubeCamera as Gx,CustomBlending as kx,AddEquation as eD,OneFactor as Q4,SrcAlphaFactor as XO,ZeroFactor as Ux,RedFormat as sC,CircleGeometry as aT,AdditiveBlending as II,DynamicDrawUsage as D4,ConeGeometry as Zw,InstancedBufferAttribute as cT,LatheGeometry as aC,CubicBezierCurve3 as bx,TextureLoader as Sz,PointLight as xD} from 'three';
 import * as mo from 'three';
@@ -11178,13 +11179,12 @@ async function HB(j, A, { quality: M = "standard" } = {}) {
   let Q = gChunks.length ? gChunks[0].mesh : new GM(O.buildGeometry(1), g);
   if (!gChunks.length) { Q.name = "Tidewater architecture", Q.castShadow = gShadow, Q.receiveShadow = true, N.add(Q); }
   // 移动端 WebView：描边法线趟范围减半、雾外不留余量（?lowspec=1 可在桌面上验证）
-  const gLow = typeof location !== "undefined" && (new URLSearchParams(location.search).get("lowspec") === "1" || /Android|iPhone|iPad|iPod|Mobile|wv\)/i.test((navigator && navigator.userAgent) || ""));
   // 分块后就能按距离分级：主画面雾吞掉后不画，描边法线趟只画近处（远处本来就不该有描边）。
   function gApply(gPos, gMode) {
     const gf = j.fog;
     const gOff = !gf || !Number.isFinite(gf.near) || gf.near > 500;
     if (gOff) { for (const gc of gChunks) gc.mesh.visible = true; return; }
-    const gr = gMode === "outline" ? gf.near + (gf.far - gf.near) * (gLow ? 0.15 : 0.3) : gf.far + (gLow ? 0 : 10);
+    const gr = gMode === "outline" ? gf.near + (gf.far - gf.near) * LOW_SPEC_RENDER.outlineFactor : gf.far + LOW_SPEC_RENDER.cullPad;
     for (const gc of gChunks) {
       const gd = Math.sqrt(gPos.distanceToSquared(gc.center));
       gc.mesh.visible = gd < gr + gc.radius;

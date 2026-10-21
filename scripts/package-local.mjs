@@ -13,6 +13,6 @@ if(process.platform==='win32'){
  await cp(resolve(dirname(process.execPath),'LICENSE'),resolve(output,'runtime/Node-LICENSE.txt'));
 }
 await writeFile(resolve(output,'启动游戏-Windows.bat'),'@echo off\r\ncd /d "%~dp0"\r\nset "WAKE_NODE=%~dp0runtime\\node.exe"\r\nif not exist "%WAKE_NODE%" set "WAKE_NODE=node"\r\nstart "" http://127.0.0.1:5310/\r\n"%WAKE_NODE%" serve.mjs 5310 .\r\npause\r\n');
-await writeFile(resolve(output,'开始试玩.txt'),'Windows：解压完整文件夹，双击「启动游戏-Windows.bat」。已附运行环境，无需另装 Node.js。\nMac：双击「启动游戏-Mac.command」，需要 Node.js。\n浏览器打开 http://127.0.0.1:5310/。游玩期间保留启动窗口。\n默认东京地图；WASD 移动，鼠标或右键拖动转向，方向键也可转向。Esc 暂停。\n请保留整个文件夹；直接双击 index.html 无法启用游戏资源与声音。\n');
+await writeFile(resolve(output,'开始试玩.txt'),'Windows：解压完整文件夹，双击「启动游戏-Windows.bat」。已附运行环境，无需另装 Node.js。\nMac：双击「启动游戏-Mac.command」，需要 Node.js。\n浏览器打开 http://127.0.0.1:5310/。游玩期间保留启动窗口。\n默认海滨钟楼广场；WASD 移动，鼠标或右键拖动转向，方向键也可转向。Esc 暂停。\n请保留整个文件夹；直接双击 index.html 无法启用游戏资源与声音。\n');
 const compact=await compactPackage(output);
 console.log(JSON.stringify({output,sourceBytes:compact.sourceBytes,storedBytes:compact.storedBytes,reduction:compact.reduction}));

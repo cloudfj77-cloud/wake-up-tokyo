@@ -2,7 +2,7 @@
 
 Android 手机试玩版：左侧摇杆＋右侧战斗按键，支持横屏离线安装。安装、构建和验证说明见 [Android 手机试玩版](docs/android-mobile.md)。
 
-整合试玩版默认进入东京立体街区；菜单可切换海滨钟楼广场，也可通过 `?map=riverside` 直接进入东京。两张地图继续使用各自的存档。
+整合试玩版默认进入海滨钟楼广场；菜单可切换东京立体街区，也可通过 `?map=riverside` 直接进入东京。两张地图继续使用各自的存档。
 
 当前版本以 `package.json` 和游戏主菜单为准。本批试玩版本为 **Demo v0.3.61**，包含 PR29、PR30 的隐私页面、性能优化及验收修复；更新记录见 [CHANGELOG.md](CHANGELOG.md)，编号规则见 [VERSIONING.md](VERSIONING.md)。
 

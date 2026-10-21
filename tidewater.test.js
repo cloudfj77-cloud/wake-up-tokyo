@@ -14,8 +14,8 @@ const nav=createTidewaterNavigation(level);
 test('Tidewater save survives and replacement Tokyo saves are isolated',()=>{
  assert.equal(selectedMap('?map=tidewater').saveKey,'wake-up-tokyo-tidewater-v1');
  assert.equal(selectedMap('?map=riverside').saveKey,'wake-up-tokyo-cyber-v1');
- assert.equal(selectedMap('?map=bad').id,'riverside');
- assert.notEqual(selectedMap('?map=tidewater').saveKey,selectedMap('').saveKey);
+ assert.equal(selectedMap('?map=bad').id,'tidewater');
+ assert.notEqual(selectedMap('?map=riverside').saveKey,selectedMap('').saveKey);
 });
 test('clock tower, sea and roof interiors are not walkable',()=>{
  assert.equal(nav.free(0,0),false);

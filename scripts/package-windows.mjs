@@ -25,7 +25,7 @@ async function compile(out,build,payload){
  try{execFileSync(compiler,args,{stdio:'pipe'});}catch(error){throw Error(error.stdout?.toString()||error.message);}
 }
 await compile(join(folder,title+'.exe'),indexHash.slice(0,16));
-await writeFile(join(folder,'开始试玩.txt'),title+' · 电脑版\r\n\r\n双击「'+title+'.exe」即可启动，保留启动窗口即可游玩。无需另装 Node.js。\r\nHTML 入口：index.html。请连同 assets、runtime 等目录一起保留。\r\nWASD 移动，鼠标转向，Esc 暂停。\r\n本地离线运行，默认东京地图；包含地铁移动与楼梯空气墙修复。\r\n');
+await writeFile(join(folder,'开始试玩.txt'),title+' · 电脑版\r\n\r\n双击「'+title+'.exe」即可启动，保留启动窗口即可游玩。无需另装 Node.js。\r\nHTML 入口：index.html。请连同 assets、runtime 等目录一起保留。\r\nWASD 移动，鼠标转向，Esc 暂停。\r\n本地离线运行，默认海滨钟楼广场；包含地铁移动与楼梯空气墙修复。\r\n');
 const zip=join(release,title+'-HTML资源包.zip');
 const psQuote=s=>"'"+s.replaceAll("'","''")+"'";
 execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command','Compress-Archive -LiteralPath '+psQuote(folder)+' -DestinationPath '+psQuote(zip)+' -CompressionLevel Optimal -Force'],{stdio:'pipe'});

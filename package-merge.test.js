@@ -6,9 +6,9 @@ import {selectedMap} from './maps.js';
 import {createComicAbilityFX,resolveComicAim,launchComicBallistic,stepComicBallistic,stepComicNeedle,getComicFleshProgress} from './comic-fx.js';
 const ground={heightAt:()=>0,cameraBlocked:()=>false};
 test('map selection and saves stay isolated',()=>{
- assert.equal(selectedMap().id,'riverside');assert.equal(selectedMap('?map=riverside').id,'riverside');
- assert.equal(selectedMap('?map=bogus').id,'riverside');assert.equal(selectedMap('?map=tidewater').id,'tidewater');
- assert.notEqual(selectedMap().saveKey,selectedMap('?map=tidewater').saveKey);
+ assert.equal(selectedMap().id,'tidewater');assert.equal(selectedMap('?map=riverside').id,'riverside');
+ assert.equal(selectedMap('?map=bogus').id,'tidewater');assert.equal(selectedMap('?map=tidewater').id,'tidewater');
+ assert.notEqual(selectedMap().saveKey,selectedMap('?map=riverside').saveKey);
 });
 test('needle follows camera ray vertically and hits a target on the ray',()=>{
  const camera=new T.PerspectiveCamera(64,1,.1,100);camera.position.set(0,1,0);camera.lookAt(0,2,-10);

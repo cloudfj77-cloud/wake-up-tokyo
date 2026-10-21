@@ -21,7 +21,7 @@ test('approved shaders, lights and render-pass visibility changes match the veri
 });
 test('new Tokyo model has its own save key while Tidewater is unchanged',()=>{
  assert.equal(selectedMap('?map=riverside').saveKey,'wake-up-tokyo-cyber-v1');
- assert.equal(selectedMap('').saveKey,'wake-up-tokyo-cyber-v1');
+ assert.equal(selectedMap('').saveKey,'wake-up-tokyo-tidewater-v1');
 });
 test('baked routes form one connected component spanning station, plaza, street and viaduct',()=>{
  const seen=new Set([0]),q=[0];for(let i=0;i<q.length;i++)for(const j of data.nodes[q[i]][3]){assert.ok(j>=0&&j<data.nodes.length);if(!seen.has(j)){seen.add(j);q.push(j);}}
