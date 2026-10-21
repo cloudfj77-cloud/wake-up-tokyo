@@ -140,11 +140,12 @@ export class OutlineFilter {
   }
 
   // 返回叠加描边之后的画面；调用方负责把它贴到屏幕上。
-  render(scene, camera) {
+  render(scene, camera, visibility) {
     const r = this.renderer, gl = this.gl;
     const size = r.getDrawingBufferSize(new T.Vector2());
     this.resize(size.x, size.y);
 
+    visibility?.updateDetailVisibility?.(camera.position, camera);
     r.setRenderTarget(this.color);
     r.render(scene, camera);
     // 法线趟照常跑：我们自己的描边改用法线跳变出线（地面是平面，法线处处相同，不会满地密线）。
@@ -160,11 +161,16 @@ export class OutlineFilter {
     });
     scene.overrideMaterial = this.normalMaterial;
     scene.background = new T.Color(0.5, 0.5, 1);
-    r.setRenderTarget(this.normal);
-    r.render(scene, camera);
-    scene.overrideMaterial = null;
-    scene.background = background;
-    hidden.forEach(o => { o.visible = true; });
+    try {
+      visibility?.updateOutlineVisibility?.(camera.position);
+      r.setRenderTarget(this.normal);
+      r.render(scene, camera);
+    } finally {
+      scene.overrideMaterial = null;
+      scene.background = background;
+      hidden.forEach(o => { o.visible = true; });
+      visibility?.updateDetailVisibility?.(camera.position, camera);
+    }
     // 不跑原版描边 shader 时，把这一趟的画面直接交回去（深度和法线都已就绪）。
     if (!this.lines) { r.setRenderTarget(null); return this.color.texture; }
 

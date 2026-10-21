@@ -10,7 +10,7 @@ import {selectedMap} from './maps.js';
 import {TOKYO_FOG,TOKYO_LOOK,createTokyoPopulation,populationZone,advanceTutorial,tutorialActive,tutorialTarget,tokyoObjective} from './tokyo/gameplay.js';
 const data=JSON.parse(readFileSync(new URL('./assets/scenes/tokyo-navigation.json',import.meta.url))),nav=createTokyoNavigation(data);
 const sha=s=>createHash('sha256').update(s).digest('hex');
-test('Wake Up shaders, lights and passes remain unchanged; only Tokyo fog and approved color profile are adjusted',()=>{
+test('approved shaders, lights and render-pass visibility changes match the verified baseline',()=>{
  const baseline=JSON.parse(readFileSync(new URL('./verification/tokyo-render-baseline.json',import.meta.url)));
  for(const f of ['toon-filter.js','outline-filter.js','camera-cutaway.js'])assert.equal(sha(readFileSync(new URL(f,import.meta.url))),baseline.sha256[f],f);
  const main=readFileSync(new URL('./main.js',import.meta.url),'utf8');

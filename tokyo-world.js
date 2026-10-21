@@ -3,6 +3,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {block} from './world.js';
 import {WalkCollision} from './tokyo/collision.js';
 import {batchStaticScene} from './tokyo/render-batches.js';
+import {LOW_SPEC_RENDER} from './device.js';
 import {createTokyoNavigation} from './tokyo/navigation.js';
 import {createTokyoPopulation,TUTORIAL_LAYOUT} from './tokyo/gameplay.js';
 
@@ -11,7 +12,18 @@ export async function loadTokyo(scene){
  const root=gltf.scene;root.name='Tokyo Cyber District';root.scale.setScalar(.55);root.position.set(11,3.3,-28.6);root.updateMatrixWorld(true);
  // Keep Wake Up's light rig, fog and postprocessing; the asset contributes geometry and materials only.
  const lights=[];root.traverse(o=>{if(o.isLight)lights.push(o);if(o.isMesh){o.castShadow=o.receiveShadow=true;}});lights.forEach(o=>o.removeFromParent());
- const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision),batch=batchStaticScene(root);
+ // 把 scene.fog 传进去：LOD 的换挡距离要跟着雾走（雾吃掉细节的距离换代理体，雾吞掉的距离直接不画）。
+// 调参：?citylod=0.2 让建筑更早换成简化体（0 = 一起雾就换，1 = 到雾的尽头才换）；?citycull=30 放宽剔除余量。
+const cityQuery=new URLSearchParams(location.search);
+const cityLod=parseFloat(cityQuery.get('citylod')),cityCull=parseFloat(cityQuery.get('citycull'));
+const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision),batch=batchStaticScene(root,{
+ fog:scene.fog,
+ lodMeters:Number.isFinite(cityLod)?cityLod:undefined,
+ cullMeters:Number.isFinite(cityCull)?cityCull:undefined,
+ shadow:cityQuery.get('staticshadow')==='1',
+ // 移动端 WebView：LOD 更早换代理体、描边法线趟范围减半
+ ...LOW_SPEC_RENDER,
+});
  // Source meshes are retained by the collision index; only render batches and transparent meshes stay in the scene tree.
  const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
  // shortcut: Imported architecture is static; add destructible modules when building damage is required.
@@ -54,7 +66,8 @@ export async function loadTokyo(scene){
   cameraBlocked:(x,y,z,r=.16)=>nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2),
   menuCamera:{from:[38,27,36],look:[0,3,-6]},
   drawMap(ctx,px,pz){ctx.drawImage(map,px(data.bounds.minX),pz(data.bounds.maxZ),px(data.bounds.maxX)-px(data.bounds.minX),pz(data.bounds.minZ)-pz(data.bounds.maxZ));},
-  update(dt,camera){batch.updateDetailVisibility(camera.position);},
+  update(dt,camera){batch.updateDetailVisibility(camera.position,camera);},
+ updateDetailVisibility:(p,c)=>batch.updateDetailVisibility(p,c),updateOutlineVisibility:batch.updateOutlineVisibility,
   diagnostics:{model:'tokyo-district',nodes:data.nodes.length,batches:batch.batchCount},
  };
 }

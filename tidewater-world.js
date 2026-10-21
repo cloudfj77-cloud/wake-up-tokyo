@@ -30,7 +30,37 @@ export async function loadTidewater(scene,renderer,{quality='standard'}={}){
  if(level.layoutHash===lightmapMeta.hash){lightmap=await new T.TextureLoader().loadAsync(new URL('./vendor/inkwave/assets/lightmaps/tidewater.png',import.meta.url).href);lightmap.colorSpace=T.NoColorSpace;lightmap.anisotropy=4;}
  else{level.lightSize=0;for(const face of level.faces)face.light=null;}
  const material=createLevelMaterial(empty,1,murals,{texlib,lightmap});
- const mesh=new T.Mesh(level.buildGeometry(1),material);mesh.name='Tidewater architecture';mesh.castShadow=true;mesh.receiveShadow=true;root.add(mesh);
+ // 原来整座广场是「一块」合并网格：视锥剔除对它完全无效 —— 转视角时不管看向哪，232 万面全画。
+ // 按 28 米网格切成多块，镜头看不到的块被自动剔除；静态块也不再进阴影贴图，省掉一整趟投影。
+ const staticShadow=new URLSearchParams(location.search).get('staticshadow')==='1';
+ const CELL=28,cells=new Map();
+ for(const b of level.blocks){
+  if(!b.solid&&!b.render)continue;
+  const key=Math.floor(b.center.x/CELL)+','+Math.floor(b.center.z/CELL);
+  let set=cells.get(key);if(!set)cells.set(key,set=new Set());
+  set.add(b);
+ }
+ if(typeof window!=='undefined')window.__tw={blocks:level.blocks.length,cells:cells.size,keys:[...cells.keys()].slice(0,8)};
+ const chunks=[];
+ for(const set of cells.values()){
+  const geometry=level.buildGeometry(1,b=>!b.grate&&set.has(b));
+  if(!geometry.index||!geometry.index.count)continue;
+  const m=new T.Mesh(geometry,material);m.name='Tidewater architecture';
+  m.castShadow=staticShadow;m.receiveShadow=true;root.add(m);
+  geometry.computeBoundingSphere();
+  chunks.push({mesh:m,center:geometry.boundingSphere.center.clone(),radius:geometry.boundingSphere.radius});
+ }
+ // 分块之后就能按距离分级：主画面雾吞掉后不画，描边法线趟只画近处（远处本来就不该有描边）。
+ function applyChunks(position,profile){
+  const f=scene.fog;
+  const disabled=!f||!Number.isFinite(f.near)||f.near>500;   // 菜单/开场里雾被关掉
+  if(disabled){for(const c of chunks)c.mesh.visible=true;return;}
+  const range=profile==='outline'?f.near+(f.far-f.near)*.3:f.far+10;
+  for(const c of chunks){
+   const d=Math.sqrt(position.distanceToSquared(c.center));
+   c.mesh.visible=d<range+c.radius;
+  }
+ }
  const decor=new Decor(root,level);for(const pad of decor.pads){pad.g.visible=false;}
  // Environment owns its daylight, sea and sky. Disable the old city's light rig.
  for(const child of scene.children)if(child.isLight)child.visible=false;
@@ -68,7 +98,9 @@ export async function loadTidewater(scene,renderer,{quality='standard'}={}){
   waypoint:nav.waypoint,drawMap,setQuality,
   cameraBlocked:(x,y,z,r)=>nav.bodyBlocked(x,y-r,z,r,r*2),
   menuCamera:{from:layout.art.from,look:layout.art.look},
-  update(dt,camera){time+=dt;props.update(dt,time);decor.update(dt);environment.update(dt,camera);},
+  update(dt,camera){time+=dt;props.update(dt,time);decor.update(dt);environment.update(dt,camera);applyChunks(camera.position,'main');},
+ updateDetailVisibility:position=>applyChunks(position,'main'),
+ updateOutlineVisibility:position=>applyChunks(position,'outline'),
   diagnostics:{bakedAO:!!lightmap,nodes:nav.nodeCount,props:props.stats(),blocks:level.blocks.length},
  };
 }

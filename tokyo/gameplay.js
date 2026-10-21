@@ -74,9 +74,17 @@ export function createTokyoPopulation(nav,isFree=nav.free){
  function wander(u){
   if(u.stationary)return u;
   if(u.tokyoDestination&&Math.hypot(u.x-u.tokyoDestination.x,u.z-u.tokyoDestination.z)>.7)return u.tokyoDestination;
-  const zone=populationZone(u),near=spots.filter(p=>p.zone===zone&&Math.hypot(p.x-u.x,p.z-u.z)>2&&Math.hypot(p.x-u.x,p.z-u.z)<8);
-  u.tokyoDestination=near.length?{...near[Math.floor(Math.random()*near.length)]}:{x:u.x,z:u.z,floorY:u.floorY};
-  return u.tokyoDestination;
+  const zone=populationZone(u);
+  // 目的地必须在同一层：这是多层场景，跨层目标走不过去，人就会卡在原地。
+  const sameFloor=p=>Math.abs((p.floorY??0)-(u.floorY??0))<1;
+  const ring=(min,max)=>spots.filter(p=>sameFloor(p)&&Math.hypot(p.x-u.x,p.z-u.z)>min&&Math.hypot(p.x-u.x,p.z-u.z)<max);
+  // 同区域找不到落脚点时不能把自己当成目的地 —— 那样 pace 恒为 0，人就永远站在原地做动作。
+  // 逐级放宽：同区近处 → 同层近处 → 同层稍远，跟海滨「总能找到一个去处」的行为对齐。
+  let near=ring(2,8).filter(p=>p.zone===zone);
+  if(!near.length)near=ring(2,14);
+  if(!near.length)near=ring(4,999);
+  u.tokyoDestination=near.length?{...near[Math.floor(Math.random()*near.length)]}:null;
+  return u.tokyoDestination||u;
  }
  return {spawn,wander,spots};
 }
