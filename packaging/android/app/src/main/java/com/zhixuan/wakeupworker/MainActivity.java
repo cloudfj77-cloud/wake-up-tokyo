@@ -2,12 +2,18 @@ package com.zhixuan.wakeupworker;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.webkit.WebResourceRequest;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
+import java.util.Collections;
 
 /**
  * Wake up 打工人！ —— 网页版的安卓外壳。
@@ -29,9 +35,29 @@ public class MainActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         server = new AssetServer(getAssets(), 8099);
-        server.start();
+        try {
+            server.start();
+        } catch (java.io.IOException error) {
+            new AlertDialog.Builder(this).setMessage("游戏资源启动失败，请关闭其他游戏窗口后重试。")
+                .setPositiveButton("关闭", (dialog, which) -> finish()).show();
+            return;
+        }
 
         web = new WebView(this);
+        if (!WebViewFeature.isFeatureSupported(WebViewFeature.CROSS_ORIGIN_ISOLATED_ALLOWLIST) ||
+                !WebViewFeature.isFeatureSupported(WebViewFeature.MULTI_PROFILE)) {
+            new AlertDialog.Builder(this).setMessage("请先更新 Android System WebView。本游戏的音频需要较新的系统网页组件。")
+                .setPositiveButton("关闭", (dialog, which) -> finish()).show();
+            return;
+        }
+        // Only our packaged loopback origin can use shared audio memory.
+        WebViewCompat.getProfile(web).setCrossOriginIsolatedAllowlist(Collections.singleton("http://127.0.0.1:8099"));
+        web.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return !request.getUrl().toString().startsWith("http://127.0.0.1:8099/");
+            }
+        });
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);

@@ -110,6 +110,7 @@ export function batchStaticScene(root, options = {}) {
             localBox.getSize(size);
             localBox.getCenter(center);
             proxyId = proxy.addInstance(proxyGeometryId);
+            proxy.setVisibleAt(proxyId, false);
             placed.compose(center, identity, size.max(new T.Vector3(.05, .05, .05)).multiplyScalar(1.02));
             proxy.setMatrixAt(proxyId, placed);
             proxy.setColorAt(proxyId, o.material.color || color.set(0xffffff));
@@ -137,6 +138,7 @@ export function batchStaticScene(root, options = {}) {
   // 批次的包围球罩住整座城，视锥剔除对它们永远无效 —— 盯着墙看也要把 8.7 万个实例全画一遍。
   // 所以逐个实例做视锥测试：相机转了就重算，转身/贴墙时能省掉一大半三角面。
   const frustum = new T.Frustum(), projScreen = new T.Matrix4(), sphere = new T.Sphere();
+  const lastProjection = new T.Matrix4();
   const lastQuaternion = new T.Quaternion(0, 0, 0, 0);
   let frustumReady = false, cameraSeen = false;
   function syncFrustum(camera) {
@@ -146,15 +148,12 @@ export function batchStaticScene(root, options = {}) {
     frustumReady = true;
   }
   function cameraChanged(camera) {
-    if (!camera || !camera.isCamera) return false;
-    if (!cameraSeen) { cameraSeen = true; lastQuaternion.copy(camera.quaternion); return true; }
-    // 转身不改变相机位置，只改朝向 —— 必须一并检测，否则视锥结果会停留在旧的朝向上。
-    // 约 1° 以内的小幅转动不重算：视锥测试用的是包围球（带半径），边角不会漏。
-    const turned = 1 - Math.abs(camera.quaternion.dot(lastQuaternion)) > 4e-5;
-    lastQuaternion.copy(camera.quaternion);
-    return turned;
+    return !!camera?.isCamera && (!cameraSeen ||
+      1 - Math.abs(camera.quaternion.dot(lastQuaternion)) > 4e-5 ||
+      !camera.projectionMatrix.equals(lastProjection));
   }
   const lastPosition = new T.Vector3(Infinity, Infinity, Infinity);
+  let lastNear, lastFar;
 
   function ranges() {
     // 菜单和开场里雾会被临时关掉（4000/5000），那时不能跟着雾走 —— 否则整座城都按满细节画，
@@ -189,15 +188,16 @@ export function batchStaticScene(root, options = {}) {
   function updateDetailVisibility(position, camera) {
     syncFrustum(camera);
     // 相机位置或朝向变了才重算；没动就只结清状态差。
-    const moved = lastPosition.distanceToSquared(position) > 4 || cameraChanged(camera);
+    const moved = lastPosition.distanceToSquared(position) > 4 || cameraChanged(camera) || fog?.near !== lastNear || fog?.far !== lastFar;
     const r = ranges();
     if (!cacheValid || moved) {
       if (distanceCache.length < items.length) distanceCache = new Float32Array(items.length);
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        const d2 = position.distanceToSquared(item.center);
+        // Cull by the nearest surface so a large floor or wall cannot vanish under the player.
+        const d2 = Math.max(0, position.distanceTo(item.center) - item.radius) ** 2;
         distanceCache[i] = d2;
-        let state = d2 < r.lod2 ? 2 : d2 < (item.tiny ? r.tiny2 : r.cull2) ? (item.proxyId >= 0 ? 1 : 0) : 0;
+        let state = d2 < r.lod2 ? 2 : d2 < (item.tiny ? r.tiny2 : r.cull2) ? (item.proxyId >= 0 ? 1 : 2) : 0;
         // 已经超出剔除距离的实例必然不画，不必再做视锥测试 —— 八成实例走的就是这条路。
         item.inView = state !== 0 && (!frustumReady || (sphere.center.copy(item.center), sphere.radius = item.radius, frustum.intersectsSphere(sphere)));
         if (!item.inView) state = 0;
@@ -205,6 +205,8 @@ export function batchStaticScene(root, options = {}) {
         settle(item, state);
       }
       lastPosition.copy(position);
+      if (camera?.isCamera) { cameraSeen = true; lastQuaternion.copy(camera.quaternion); lastProjection.copy(camera.projectionMatrix); }
+      lastNear = fog?.near; lastFar = fog?.far;
       cacheValid = true;
     } else {
       for (let i = 0; i < items.length; i++) {

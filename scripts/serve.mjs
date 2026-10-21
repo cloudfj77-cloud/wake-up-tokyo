@@ -41,4 +41,4 @@ const server=createServer(async(req,res)=>{
   const input=createReadStream(stored);if(compressed&&!encoded)await pipeline(input,createGunzip(),res);else await pipeline(input,res);
  }catch(error){if(res.headersSent)res.destroy();else res.writeHead(500).end('Unable to serve asset');}
 });
-server.listen(port,'127.0.0.1',()=>console.log('Wake Up Tokyo: http://127.0.0.1:'+server.address().port+'/'));
+server.listen(port,'127.0.0.1',()=>console.log('Wake up 打工人！: http://127.0.0.1:'+server.address().port+'/'));

@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
+import java.net.InetAddress;
+import java.io.IOException;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -29,11 +31,11 @@ public class AssetServer {
         this.port = port;
     }
 
-    public void start() {
+    public void start() throws IOException {
+        socket = new ServerSocket(port, 0, InetAddress.getByName("127.0.0.1"));
         running = true;
         new Thread(() -> {
             try {
-                socket = new ServerSocket(port);
                 while (running) {
                     Socket client = socket.accept();
                     Thread handler = new Thread(() -> {
@@ -53,11 +55,13 @@ public class AssetServer {
     }
 
     private void serve(Socket client) throws Exception {
+        client.setSoTimeout(10000);
         InputStream in = client.getInputStream();
         StringBuilder head = new StringBuilder();
         int b;
         while ((b = in.read()) != -1) {
             head.append((char) b);
+            if (head.length() > 8192) return;
             if (head.length() > 4 && head.substring(head.length() - 4).equals("\r\n\r\n")) break;
         }
         String[] lines = head.toString().split("\r\n");
@@ -68,6 +72,7 @@ public class AssetServer {
         String path = raw.contains("?") ? raw.substring(0, raw.indexOf('?')) : raw;
         path = URLDecoder.decode(path, "UTF-8");
         if (path.equals("/") || path.endsWith("/")) path += "index.html";
+        if (!path.startsWith("/") || path.contains("..") || path.contains("\\")) return;
         String asset = "www" + path;
 
         Map<String, String> headers = new HashMap<>();
@@ -78,6 +83,7 @@ public class AssetServer {
         long start = 0, end = -1;
         String range = headers.get("range");
         boolean partial = range != null && range.startsWith("bytes=");
+        if (partial && !range.matches("bytes=[0-9]+-[0-9]*")) return;
         if (partial) {
             String spec = range.substring(6);
             int dash = spec.indexOf('-');
@@ -91,6 +97,11 @@ public class AssetServer {
         try {
             android.content.res.AssetFileDescriptor fd = assets.openFd(asset);
             total = fd.getLength();
+            if (partial && (start >= total || (end >= 0 && end < start))) {
+                out.write(("HTTP/1.1 416 Range Not Satisfiable\r\nContent-Range: bytes */" + total + "\r\nContent-Length: 0\r\nConnection: close\r\n\r\n").getBytes("UTF-8"));
+                fd.close();
+                return;
+            }
             FileInputStream fis = fd.createInputStream();
             if (start > 0) { long skipped = 0; while (skipped < start) skipped += fis.skip(start - skipped); }
             stream = null;
@@ -127,6 +138,7 @@ public class AssetServer {
         // Wwise 需要独立上下文：缺了这两个头，AudioWorklet 无法启用，音乐与音效全部静音
         h.append("Cross-Origin-Opener-Policy: same-origin\r\n");
         h.append("Cross-Origin-Embedder-Policy: require-corp\r\n");
+        h.append("Document-Isolation-Policy: isolate-and-require-corp\r\n");
         h.append("Connection: close\r\n\r\n");
         out.write(h.toString().getBytes("UTF-8"));
         byte[] buffer = new byte[64 * 1024];
@@ -149,6 +161,8 @@ public class AssetServer {
         if (p.endsWith(".json")) return "application/json; charset=utf-8";
         if (p.endsWith(".wasm")) return "application/wasm";
         if (p.endsWith(".wem") || p.endsWith(".bnk") || p.endsWith(".glb") || p.endsWith(".fbx")) return "application/octet-stream";
+        if (p.endsWith(".mp4")) return "video/mp4";
+        if (p.endsWith(".webm")) return "video/webm";
         if (p.endsWith(".png")) return "image/png";
         if (p.endsWith(".jpg") || p.endsWith(".jpeg")) return "image/jpeg";
         if (p.endsWith(".webp")) return "image/webp";

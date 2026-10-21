@@ -99,6 +99,7 @@ export async function loadTidewater(scene,renderer,{quality='standard'}={}){
   cameraBlocked:(x,y,z,r)=>nav.bodyBlocked(x,y-r,z,r,r*2),
   menuCamera:{from:layout.art.from,look:layout.art.look},
   update(dt,camera){time+=dt;props.update(dt,time);decor.update(dt);environment.update(dt,camera);applyChunks(camera.position,'main');},
+ updateDetailVisibility:position=>applyChunks(position,'main'),
  updateOutlineVisibility:position=>applyChunks(position,'outline'),
   diagnostics:{bakedAO:!!lightmap,nodes:nav.nodeCount,props:props.stats(),blocks:level.blocks.length},
  };
