@@ -12,7 +12,7 @@ import { loadShieldCopAsset, loadBatonCopAsset, loadInfectedCopAsset, loadPolice
 // 这样 Mixamo 的 Idle / Walking / Running 等命名能无缝接进原有的状态机。
 const CLIP_ALIASES = {
   idle: ['idle', 'idleLoop', 'standing', 'breathingIdle'],
-  walk: ['walk', 'walking', 'run', 'running', 'jog'],
+  walk: ['walk', 'walking', 'run', 'running', 'jog', 'zombie'],
   zombie: ['zombie', 'zombieWalk', 'shamble', 'walk'],
   jump: ['jump', 'jumping', 'jumpUp', 'leap', 'roll'],
   toyAim: ['toyAim', 'aim', 'aiming', 'holdingGun'],
@@ -238,7 +238,14 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
     // 打工人 0.55 单位/秒配 Sad Walk（1.47 秒/圈）→ 原速；
     // 觉醒者 3.8 单位/秒配 Fast Run（0.53 秒/圈，自然步幅约 1.0 单位）→ 需要 2.0 倍速。
     const scale = !moving ? 1 : visual.kind === 'human' ? 1.0 : visual.kind === 'ally' ? 2.0 : (sprinting ? 1.45 : 1.0);
-    if (action) action.setEffectiveTimeScale(scale);
+    if (action) {
+      // A missing attack clip can share the idle fallback. Restore its loop after
+      // a one-shot attack, otherwise the worker stays clamped on the final pose.
+      action.setLoop(THREE.LoopRepeat,Infinity);
+      action.clampWhenFinished=false;
+      action.paused=false;
+      action.setEffectiveTimeScale(scale);
+    }
     const landing=visual.current===resolveAction(visual,'jump');
     switchAnimation(visual, name,landing?.06:.18);
     visual.jumpPlayback=null;visual.jumpPhase=null;

@@ -46,11 +46,15 @@ export function tokyoObjective(state,alert=0){
  ];
  return {label:`站前行动 ${step+1} / 3`,...objectives[step],steps:objectives.map((s,i)=>({title:s.title,done:i<step,current:i===step}))};
 }
-// Population stays on authored public floors, never on the street deck or station roofs.
+// Public floors include the station, street, commercial bridge and viaduct.
+// Restrict heights to authored decks so decorative roofs never become spawn sites.
 export function populationZone(p){
  if(Math.abs(p.floorY)<.25&&p.x>-19&&p.x<19&&p.z>-17&&p.z<17)return 'plaza';
  if(Math.abs(p.floorY)<.25&&p.x>-15&&p.x<1&&p.z>-34&&p.z<-22)return 'hall';
  if(Math.abs(p.floorY+3.85)<.25&&p.x>-23&&p.x<23&&p.z>6.7&&p.z<9.9)return 'platform';
+ if(Math.abs(p.floorY-3.3)<.15)return 'street';
+ if(Math.abs(p.floorY-8.8)<.15)return 'skybridge';
+ if(Math.abs(p.floorY-12.1)<.15)return 'viaduct';
  return null;
 }
 export function createTokyoPopulation(nav,isFree=nav.free){
@@ -59,24 +63,51 @@ export function createTokyoPopulation(nav,isFree=nav.free){
   const p=nav.point(i),zone=populationZone(p);
   return zone&&isFree(p.x,p.z,.65,p.floorY)?[{...p,zone}]:[];
  });
- if(!spots.length)throw Error('下沉区域没有可用的人群位置');
- function spawn({region,player,units=[],random=Math.random,accept=()=>true,radius=.65}={}){
-  const start=Math.floor(random()*spots.length);
-  for(let i=0;i<spots.length;i++){
-   const p=spots[(start+i)%spots.length];
+ if(!spots.length)throw Error('东京街区没有可用的人群位置');
+ const zones=[...new Set(spots.map(p=>p.zone))],byZone=new Map(zones.map(zone=>[zone,spots.filter(p=>p.zone===zone)]));
+ const weights={plaza:3,hall:1,platform:2,street:3,skybridge:1,viaduct:2};
+ function spawn({region,player,units=[],random=Math.random,accept=()=>true,radius=.65,zone,local=false}={}){
+  const counts=new Map(zones.map(z=>[z,units.filter(u=>!u.dead&&!u.converted&&populationZone(u)===z).length]));
+  const localZone=local&&player?populationZone(player):null;
+  const ordered=(zone?[zone]:[...zones]).sort((a,b)=>(a===localZone?-1:counts.get(a)/weights[a])-(b===localZone?-1:counts.get(b)/weights[b]));
+  for(const area of ordered){
+   const candidates=byZone.get(area)||[],start=Math.floor(random()*candidates.length);
+   for(let i=0;i<candidates.length;i++){
+   const p=candidates[(start+i)%candidates.length];
    if(Number.isInteger(region)&&((p.x>=0?1:0)+(p.z>=0?2:0))!==region)continue;
-   if(player&&Math.hypot(p.x-player.x,p.z-player.z)<8)continue;
+   const distance=player?Math.hypot(p.x-player.x,p.z-player.z,p.floorY-(player.floorY??0)):Infinity;
+   if(player&&(distance<8||(local&&distance>40)))continue;
    if(units.some(u=>!u.dead&&Math.abs((u.floorY??0)-p.floorY)<1&&Math.hypot(p.x-u.x,p.z-u.z)<1.15))continue;
    if(isFree(p.x,p.z,radius,p.floorY)&&accept(p))return {...p};
+   }
   }
   return null;
  }
  function wander(u){
-  if(u.stationary)return u;
-  if(u.tokyoDestination&&Math.hypot(u.x-u.tokyoDestination.x,u.z-u.tokyoDestination.z)>.7)return u.tokyoDestination;
-  const zone=populationZone(u),near=spots.filter(p=>p.zone===zone&&Math.hypot(p.x-u.x,p.z-u.z)>2&&Math.hypot(p.x-u.x,p.z-u.z)<8);
+  // Only the first tutorial target waits in place. Older saves can retain the
+  // street-map's random stationary flag on ordinary station workers.
+  if(u.stationary&&u.tutorialWorker&&!u.converted)return u;
+  u.stationary=false;
+  const zone=populationZone(u);
+  if(u.tokyoDestination&&populationZone(u.tokyoDestination)===zone&&Math.hypot(u.x-u.tokyoDestination.x,u.z-u.tokyoDestination.z)>.7)return u.tokyoDestination;
+  const near=(byZone.get(zone)||[]).filter(p=>Math.hypot(p.x-u.x,p.z-u.z)>2&&Math.hypot(p.x-u.x,p.z-u.z)<8);
   u.tokyoDestination=near.length?{...near[Math.floor(Math.random()*near.length)]}:{x:u.x,z:u.z,floorY:u.floorY};
   return u.tokyoDestination;
  }
- return {spawn,wander,spots};
+ function rebalance(units,player,{hidden=()=>true,accept=()=>true}={}){
+  const zone=populationZone(player);if(!zone)return 0;
+  let nearby=units.filter(u=>!u.dead&&!u.converted&&populationZone(u)===zone&&Math.hypot(u.x-player.x,u.z-player.z)<32).length;
+  if(nearby>=6)return 0;
+  let moved=0;
+  for(const u of units){
+   if(moved>=4||nearby>=6)break;
+   if(!u.city||u.type>1||u.dead||u.converted||u.tutorialWorker||u.infection>0||u.aiming||u.chargePhase||u.sprayPhase||populationZone(u)===zone||!hidden(u))continue;
+   if(Math.hypot(u.x-player.x,u.z-player.z)<16)continue;
+   const p=spawn({zone,local:true,player,units,accept});if(!p)break;
+   Object.assign(u,p,{tx:p.x,tz:p.z,tokyoDestination:null,stationary:false,wander:0,stuck:0,logicWait:0,logicElapsed:0});
+   moved++;nearby++;
+  }
+  return moved;
+ }
+ return {spawn,wander,spots,rebalance};
 }

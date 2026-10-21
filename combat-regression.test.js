@@ -1,3 +1,4 @@
+import {canMeleeReach} from './combat-space.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -68,7 +69,7 @@ test('an empty magazine preserves full charge; a loaded gun spends it on one pow
 });
 function motionContext(){
  const actions=[];
- const ctx=vm.createContext({state:rules.makeState(),world:{heightAt:()=>0},mode:'playing',player:{roll:0,y:0,vy:0,crouch:false},keys:{},forward:()=>({x:0,z:1}),yaw:0,ROLL_DURATION:.72,ACTION_BUFFER:.18,JUMP_SPEED:7,GRAVITY:18,rushCd:10,rollBuffered:0,jumpBuffered:0,attackCd:.7,reloadTime:.5,playerVisual:{attackTime:0},playCharacterAttack:(v,type,duration)=>{v.attackTime=duration;actions.push(type);},playCharacterJump:v=>{v.attackTime=0;actions.push('jump');},music:{effect:noop},mouseHeld:true,dragging:true,pointerLock:{release:noop}});
+ const ctx=vm.createContext({touchMode:false,touchMove:{x:0,y:0},touch:null,state:rules.makeState(),world:{heightAt:()=>0},mode:'playing',player:{roll:0,y:0,vy:0,crouch:false},keys:{},forward:()=>({x:0,z:1}),yaw:0,ROLL_DURATION:.72,ACTION_BUFFER:.18,JUMP_SPEED:7,GRAVITY:18,rushCd:10,rollBuffered:0,jumpBuffered:0,attackCd:.7,reloadTime:.5,playerVisual:{attackTime:0},playCharacterAttack:(v,type,duration)=>{v.attackTime=duration;actions.push(type);},playCharacterJump:v=>{v.attackTime=0;actions.push('jump');},music:{effect:noop},mouseHeld:true,dragging:true,pointerLock:{release:noop}});
  vm.runInContext(section('function rush()','function reloadGun(')+source.match(/function clearInput\(\)\{[^\n]+/)[0],ctx);
  return {ctx,actions,run:code=>vm.runInContext(code,ctx)};
 }
@@ -146,7 +147,7 @@ test('Boss melee preserves base hits and scales evolution and attack potion dama
  for(const kind of ['light','heavy'])for(const buff of [false,true]){
   const state=rules.makeState();if(buff){state.level=15;state.abilities.evolve=3;state.potionTime=10;}
   const hits=[];
-  const ctx=vm.createContext({...rules,state,mode:'playing',attackCd:0,switchTime:0,reloadTime:0,
+  const ctx=vm.createContext({...rules,canMeleeReach,state,mode:'playing',attackCd:0,switchTime:0,reloadTime:0,
    player:{x:0,z:0,roll:0,knock:0},playerVisual:{holder:{rotation:{}}},yaw:0,
    boss:{active:true,dead:false,x:0,z:1},units:[],raiseAlarm:noop,playCharacterAttack:noop,
    forward:()=>({x:0,z:1}),holdingLauncher:()=>false,activeGun:()=>null,acquire:()=>null,
@@ -295,3 +296,5 @@ test('integrated hits retain both visual impact tags and Wwise hit cues',()=>{
  assert.equal(result,'hit');assert.equal(ctx.hitStyles.get(enemy.id).kind,'heavy');
  assert.deepEqual(sounds,['infectionHit']);
 });
+
+test('touch roll follows the continuous joystick direction',()=>{const {ctx,run}=motionContext();ctx.touchMode=true;ctx.touchMove={x:.3,y:-.7};run('requestRoll()');assert.ok(Math.abs(ctx.player.rollX/ctx.player.rollZ+3/7)<1e-9);});

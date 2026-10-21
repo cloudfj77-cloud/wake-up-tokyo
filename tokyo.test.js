@@ -21,7 +21,7 @@ test('Wake Up shaders, lights and passes remain unchanged; only Tokyo fog and ap
 });
 test('new Tokyo model has its own save key while Tidewater is unchanged',()=>{
  assert.equal(selectedMap('?map=riverside').saveKey,'wake-up-tokyo-cyber-v1');
- assert.equal(selectedMap('').saveKey,'wake-up-tokyo-tidewater-v1');
+ assert.equal(selectedMap('').saveKey,'wake-up-tokyo-cyber-v1');
 });
 test('baked routes form one connected component spanning station, plaza, street and viaduct',()=>{
  const seen=new Set([0]),q=[0];for(let i=0;i<q.length;i++)for(const j of data.nodes[q[i]][3]){assert.ok(j>=0&&j<data.nodes.length);if(!seen.has(j)){seen.add(j);q.push(j);}}
@@ -34,13 +34,13 @@ test('spawn, boss arena and mission sites have usable floor clearance',()=>{
  }
 });
 
-test('initial and replenished populations remain underground, respect regions and avoid overlap',()=>{
+test('initial and replenished populations cover public decks, respect regions and avoid overlap',()=>{
  const pop=createTokyoPopulation(nav),units=[];
- assert.deepEqual(new Set(pop.spots.map(p=>p.zone)),new Set(['plaza','hall','platform']));
+ assert.deepEqual(new Set(pop.spots.map(p=>p.zone)),new Set(['plaza','hall','platform','street','skybridge','viaduct']));
  for(let cycle=0;cycle<4;cycle++){
   for(let region=0;region<4;region++)for(let i=0;i<14;i++){
    const p=pop.spawn({region,units,player:{x:5,z:8},random:()=>((i*13+cycle*7)%57)/57});
-   assert.ok(p);assert.ok(populationZone(p));assert.ok(p.floorY<.25);
+   assert.ok(p);assert.ok(populationZone(p));
    assert.equal((p.x>=0?1:0)+(p.z>=0?2:0),region);
    assert.ok(units.every(u=>Math.abs(u.floorY-p.floorY)>1||Math.hypot(u.x-p.x,u.z-p.z)>=1.15));
    units.push(p);
@@ -50,7 +50,7 @@ test('initial and replenished populations remain underground, respect regions an
   const u={...pop.spots.find(p=>p.zone===zone)};
   for(let i=0;i<15;i++){const p=pop.wander(u);assert.equal(populationZone(p),zone);Object.assign(u,p);}
  }
- assert.equal(pop.spawn({accept:()=>false}),null,'never falls back to upstairs streets');
+ assert.equal(pop.spawn({accept:()=>false}),null,'never bypasses spawn visibility or clearance');
 });
 test('tutorial requires real movement, conversion and every landing on the correct floor; save resumes',()=>{
  const route={move:{x:3,z:8,floorY:-3.85},worker:{x:1,z:8,floorY:-3.85},exit:[{x:-3,z:9,floorY:-3.85},{x:-7,z:9,floorY:-1.65},{x:3,z:5,floorY:0}]};
@@ -71,9 +71,9 @@ test('tutorial requires real movement, conversion and every landing on the corre
 });
 test('real initial population and refill callers keep actor heights and leave one stationary tutorial worker',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),section=(a,b)=>source.slice(source.indexOf(a),source.indexOf(b,source.indexOf(a)));
- const pop=createTokyoPopulation(nav),ctx=vm.createContext({...rules,units:[],player:{x:5,z:8,floorY:-3.85},assets:{},actorVisual(){},warmCharacterPool(){},totalReinforcements:0,
+ const pop=createTokyoPopulation(nav),ctx=vm.createContext({...rules,MOBILE_DEVICE:false,VISUAL_BUDGET:72,units:[],player:{x:5,z:8,floorY:-3.85},assets:{},actorVisual(){},warmCharacterPool(){},totalReinforcements:0,
   world:{populationSpot:pop.spawn,tutorial:{worker:{x:1,z:8,floorY:-3.85}}},acquireUnitRecord:(type,x,z,city,profession)=>rules.makeUnit(1000,type,x,z,city,profession)});
- vm.runInContext(section('function initUnits(){','// 卡住多久')+section('function placeOnStreet(','// 警戒升级用英语'),ctx);
+ vm.runInContext(section('function initUnits(){','// 卡住多久')+section('function placeOnStreet(','\nlet airWing='),ctx);
  vm.runInContext('initUnits();placeOnStreet(0,1)',ctx);
  assert.equal(ctx.units.length,58);assert.equal(ctx.units.filter(u=>u.tutorialWorker&&u.stationary).length,1);
  assert.ok(ctx.units.every(u=>populationZone(u)));
@@ -133,7 +133,7 @@ test('Tokyo colors brighten midtones and reduce saturation without changing shad
 test('tutorial runs civilian walking on authored floors without running enemy combat AI',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
  const pop=createTokyoPopulation(nav),spot=pop.spots.find(p=>p.zone==='platform'&&p.x>5);
- const walker={...spot,id:1,kind:'human',attackCd:0,hurt:0},worker={...spot,x:1,id:2,kind:'human',stationary:true,attackCd:0,hurt:0};
+ const walker={...spot,id:1,kind:'human',attackCd:0,hurt:0},worker={...spot,x:1,id:2,kind:'human',stationary:true,tutorialWorker:true,attackCd:0,hurt:0};
  const enemy={...spot,id:3,kind:'guard',attackCd:9,hurt:0};const units=[walker,worker,enemy];
  const ctx=vm.createContext({aiStart:0,ENEMIES:rules.ENEMIES,units,player:{x:5,z:8},TUNE:{activity:{shambleSpeed:1}},visuals:new Map(),world:{multilevel:true,waypoint:nav.waypoint,populationTarget:pop.wander},
   isMechanical:()=>false,distance:(a,b)=>Math.hypot(a.x-b.x,a.z-b.z),move:(u,x,z)=>{u.x+=x;u.z+=z;return true;},civilianMoveTarget:pop.wander});

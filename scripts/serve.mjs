@@ -23,7 +23,7 @@ const server=createServer(async(req,res)=>{
   let stored=logical,compressed=false;if(!info){stored=logical+'.gz';info=await stat(stored).catch(()=>null);compressed=!!info;}
   if(!info?.isFile()){res.writeHead(404).end('not found');return;}
   const encoded=compressed&&acceptsGzip(req.headers['accept-encoding']),etag='"'+info.size.toString(16)+'-'+Math.trunc(info.mtimeMs).toString(16)+'-'+(encoded?'gzip':'identity')+'"';
-  res.setHeader('Vary','Accept-Encoding');res.setHeader('ETag',etag);res.setHeader('Cache-Control',/\/assets\/.*-[\w-]{8,}\./.test(logical)?'public, max-age=31536000, immutable':'no-cache');
+  res.setHeader('Vary','Accept-Encoding');res.setHeader('ETag',etag);res.setHeader('Cache-Control',/\/assets\/.*-[\w-]{8,}\./.test(logical.split(sep).join('/'))?'public, max-age=31536000, immutable':'no-cache');
   if(req.headers['if-none-match']===etag){res.writeHead(304).end();return;}
   res.setHeader('Content-Type',MIME[extname(logical).toLowerCase()]||'application/octet-stream');
   // Wwise streams raw .wem byte ranges. Compressed transport assets keep normal full responses.

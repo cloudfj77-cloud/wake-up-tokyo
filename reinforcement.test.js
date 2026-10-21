@@ -104,7 +104,7 @@ test('reinforcement candidates vary continuously in direction and distance aroun
 });
 test('unchanged player and camera still produce different accepted squad spawn positions',()=>{
  let seed=97;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
- const player={x:0,z:0},units=[],ctx=vm.createContext({...r,Math:Object.assign(Object.create(Math),{random}),units,player,ENEMY_VIEW:46,viewScratch:{},camera:{position:player,getWorldDirection:v=>Object.assign(v,{x:0,z:1})},world:{free:()=>true,nearest:()=>{throw Error('unexpected projection');}},separated:()=>false,rememberSpawn:noop,acquireUnitRecord:(type,x,z)=>r.makeUnit(units.length,type,x,z),totalReinforcements:0});
+ const player={x:0,z:0},units=[],ctx=vm.createContext({...r,MOBILE_DEVICE:false,VISUAL_BUDGET:72,Math:Object.assign(Object.create(Math),{random}),units,player,ENEMY_VIEW:46,viewScratch:{},camera:{position:player,getWorldDirection:v=>Object.assign(v,{x:0,z:1})},world:{free:()=>true,nearest:()=>{throw Error('unexpected projection');}},separated:()=>false,rememberSpawn:noop,acquireUnitRecord:(type,x,z)=>r.makeUnit(units.length,type,x,z),totalReinforcements:0});
  vm.runInContext(section('function placeArmyRusher(','// 行人和巡逻军队'),ctx);
  for(let i=0;i<20;i++)assert.equal(vm.runInContext('placeArmyRusher(1,{squad:{front:true,goal:{...player},anchor:null}})',ctx),true);
  assert.equal(new Set(units.map(u=>`${u.x.toFixed(4)},${u.z.toFixed(4)}`)).size,20);
@@ -114,7 +114,7 @@ test('unchanged player and camera still produce different accepted squad spawn p
 
 test('new runs have different initial patrol positions and no fixed fallback coordinates',()=>{
  let seed=23;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};let projections=0;
- const ctx=vm.createContext({...r,Math:Object.assign(Object.create(Math),{random}),units:[],player:{x:0,z:0},world:{free:()=>false,nearest:(x,z)=>{projections++;return {x,z};}},actorVisual:noop,warmCharacterPool:noop,assets:{}});
+ const ctx=vm.createContext({...r,MOBILE_DEVICE:false,VISUAL_BUDGET:72,Math:Object.assign(Object.create(Math),{random}),units:[],player:{x:0,z:0},world:{free:()=>false,nearest:(x,z)=>{projections++;return {x,z};}},actorVisual:noop,warmCharacterPool:noop,assets:{}});
  vm.runInContext(section('function initUnits(){','// 卡住多久'),ctx);
  vm.runInContext('initUnits()',ctx);const first=ctx.units.filter(u=>u.type===1).map(u=>[u.x,u.z]);
  vm.runInContext('initUnits()',ctx);const second=ctx.units.filter(u=>u.type===1).map(u=>[u.x,u.z]);

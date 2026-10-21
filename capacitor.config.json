@@ -1,0 +1,20 @@
+{
+  "appId": "com.wakeuptokyo.game",
+  "appName": "都给我醒醒！",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "appStartPath": "/?touch=1"
+  },
+  "android": {
+    "backgroundColor": "#101018",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SystemBars": {
+      "hidden": true,
+      "style": "DARK",
+      "initialViewportFitValueHint": "cover"
+    }
+  }
+}

@@ -1,0 +1,82 @@
+/* Mobile combat controls share the game's ink, paper and red stencil language. */
+#touchUI{--touch-paper:#fffdf2;--touch-ink:#0b0b0e;--touch-red:#eb2140;--touch-cut:polygon(13% 0,83% 3%,100% 22%,96% 81%,78% 100%,15% 95%,0 73%,4% 17%);display:none;position:fixed;inset:0;z-index:20;pointer-events:none;user-select:none;-webkit-user-select:none;touch-action:none}
+#touchUI.on{display:block}
+#touchUI button,#touchStick,#touchLook{pointer-events:auto;touch-action:none;-webkit-tap-highlight-color:transparent}
+#touchLook{position:absolute;inset:0 0 0 44%}
+#touchStick{position:absolute;left:max(28px,env(safe-area-inset-left));bottom:max(28px,env(safe-area-inset-bottom));width:138px;height:138px;border:2px solid #fffdf265;border-radius:48% 52% 47% 53%;background:radial-gradient(#fffdf21c 1px,transparent 1.5px) 0 0/7px 7px,#0b0b0e60;box-shadow:3px 4px 0 #0005}
+#touchStick:before{content:'';position:absolute;inset:-5px;border:3px solid transparent;border-top-color:var(--touch-red);border-bottom-color:var(--touch-red);border-radius:50%;transform:rotate(-27deg);pointer-events:none}
+.stickRing{position:absolute;inset:16px;border:1px dashed #fffdf24d;border-radius:50%;pointer-events:none}
+#touchKnob{position:absolute;left:50%;top:50%;width:50px;height:50px;margin:-25px;clip-path:var(--touch-cut);background:linear-gradient(118deg,transparent 34%,var(--touch-red) 35% 40%,transparent 41% 48%,var(--touch-red) 49% 54%,transparent 55%),var(--touch-paper);pointer-events:none}
+#touchStick small{position:absolute;bottom:-22px;left:0;width:100%;text-align:center;color:var(--touch-paper);font:800 9px system-ui;letter-spacing:1px;text-shadow:1px 2px #000;pointer-events:none}
+.touchActions{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom));width:252px;height:210px;pointer-events:none}
+#touchUI .touchBtn{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:60px;height:60px;padding:4px;border:0;border-radius:0;background:var(--touch-paper);color:var(--touch-paper);font:900 10px/1 system-ui;letter-spacing:1px;clip-path:var(--touch-cut);transform:none;box-shadow:none;isolation:isolate}
+#touchUI .touchBtn:before{content:'';position:absolute;inset:2px;background:radial-gradient(#fffdf222 1px,transparent 1.5px) 0 0/6px 6px,#0b0b0ed9;clip-path:var(--touch-cut);z-index:-1}
+#touchUI .touchBtn:after{content:'';position:absolute;bottom:4px;right:7px;width:25px;height:3px;background:var(--touch-red);transform:rotate(-9deg);pointer-events:none}
+#touchUI .touchBtn svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:square;stroke-linejoin:miter;pointer-events:none}
+#touchUI .touchBtn span{pointer-events:none;white-space:nowrap}
+#touchUI .touch-primary{right:0;bottom:0;width:86px;height:86px;font-size:13px;--touch-cut:polygon(16% 0,79% 3%,100% 24%,94% 82%,75% 100%,14% 94%,0 70%,4% 17%)}
+#touchUI .touch-primary:before{inset:3px;background:radial-gradient(#10030a55 1px,transparent 1.5px) 0 0/5px 5px,var(--touch-red)}
+#touchUI .touch-primary:after{background:var(--touch-paper);width:37px;bottom:8px;right:9px}
+#touchUI .touch-primary svg{width:36px;height:36px;stroke-width:2.6}
+.touch-heavy{right:100px;bottom:12px}.touch-roll{right:168px;bottom:70px}.touch-jump{right:91px;bottom:91px}
+#touchUI .touch-heavy:before{background:var(--touch-paper)}
+#touchUI .touch-heavy{color:var(--touch-ink);background:var(--touch-red)}
+#touchUI .touch-weapon{right:12px;bottom:112px;width:54px;height:54px;font-size:9px}
+#touchUI .touch-reload{right:172px;bottom:150px;width:48px;height:48px;font-size:9px}
+#touchUI .touch-reload svg{width:22px;height:22px}
+#touchUI .touchBtn.pressed{color:var(--touch-ink);background:var(--touch-red);translate:1px 2px}
+#touchUI .touchBtn.pressed:before{background:var(--touch-paper)}
+#touchUI .touch-heavy.pressed{color:var(--touch-paper)}
+#touchUI .touch-heavy.pressed:before{background:var(--touch-red)}
+.touchTools{position:absolute;right:max(16px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));display:flex;gap:7px}
+#touchUI .touchTools button{min-width:38px;height:32px;padding:4px 9px;background:#0b0b0ee6;color:var(--touch-paper);border:1px solid var(--touch-paper);border-bottom:3px solid var(--touch-red);border-radius:0;clip-path:polygon(6% 0,100% 0,94% 100%,0 100%);font:900 12px system-ui}
+#touchUI .touchTools button.pressed{background:var(--touch-red)}
+.touchLandscape{display:none}
+body.touch-mode{overscroll-behavior:none}
+.touch-mode .playerPanel{left:max(14px,env(safe-area-inset-left));top:38px;bottom:auto;width:175px;padding:6px 10px;transform:none;border-width:1px;border-right:5px solid var(--rebel);box-shadow:3px 3px #0008}
+.touch-mode .playerPanel .eyebrow{display:flex;align-items:center;justify-content:space-between;gap:4px;font-size:10px;white-space:nowrap;letter-spacing:0}
+.touch-mode .playerPanel #hpText{font-size:16px;line-height:1;white-space:nowrap;letter-spacing:0}
+.touch-mode .playerPanel .bar.hp{height:7px;margin-top:5px}
+.touch-mode .playerPanel .counters,.touch-mode #fleshProgress,.touch-mode .playerPanel>small{display:none}
+.touch-mode .xpPanel{top:8px;left:max(14px,env(safe-area-inset-left));width:175px;height:24px;transform:none;gap:4px}
+.touch-mode .xpPanel small,.touch-mode .xpPanel .eyebrow{display:none}
+.touch-mode .levelBadge{font-size:9px;min-width:36px;width:36px}
+.touch-mode .levelBadge b{font-size:15px}
+.touch-mode .alertPanel{top:10px;left:210px;right:auto;width:135px;padding:4px 8px;transform:none;border-left-width:3px}
+.touch-mode .alertPanel p,.touch-mode #alertLevels{display:none}
+.touch-mode #clock{top:12px;font-size:23px}
+.touch-mode #cityMap:not(.expanded){top:58px;right:max(14px,env(safe-area-inset-right));bottom:auto;width:102px;padding:5px;transform:none;border-width:1px;border-bottom:4px solid var(--rebel)}
+.touch-mode #cityMap:not(.expanded) canvas{width:90px;height:72px}
+.touch-mode .mapLegend,.touch-mode .hudTools,.touch-mode #pauseButton{display:none}
+.touch-mode .objectivePanel,.touch-mode .objectivePanel.tokyoObjectives{top:108px;left:max(14px,env(safe-area-inset-left));right:auto;bottom:auto;width:184px;max-height:65px;overflow:auto;padding:5px 8px;opacity:.9;border-top-width:3px;border-right-width:3px}
+.touch-mode .objectivePanel strong{font-size:12px;margin:2px 0}
+.touch-mode .objectivePanel>small,.touch-mode #objectiveSteps,.touch-mode #objectiveDistance,.touch-mode .weaponHeading small{display:none}
+.touch-mode #percent{font-size:13px}
+.touch-mode #abilitySlots{bottom:12px;left:50%;width:calc(100vw - 570px);max-width:310px;display:flex;flex-wrap:wrap;justify-content:center;gap:3px}
+.touch-mode #abilitySlots .slot{height:24px;min-width:24px;font-size:13px}
+.touch-mode #toast{top:80px;max-width:45vw;font-size:12px}
+.touch-mode #bossHud{top:105px;width:34vw}
+.touch-mode #infectionFeed{display:none}
+.touch-mode .dialog{max-height:90dvh;overflow:auto}
+.touch-mode .menuFooter>span{display:none}
+@media(max-height:420px){#touchStick{width:122px;height:122px}.touchActions{transform:scale(.86);transform-origin:bottom right}.touch-mode .objectivePanel{max-height:48px}.touch-mode #cityMap:not(.expanded){width:88px}.touch-mode #cityMap:not(.expanded) canvas{width:76px;height:60px}}
+@media(orientation:portrait){.touchLandscape{display:block;position:absolute;top:40%;left:50%;transform:translateX(-50%);white-space:nowrap;background:#0b0b0ecc;color:#fffdf2;padding:8px 14px;border-left:4px solid var(--rebel);font:800 12px system-ui}.touch-mode .alertPanel{display:none}.touch-mode #clock{top:83px}.touch-mode #abilitySlots{bottom:250px;width:80vw}.touchActions{transform:scale(.78);transform-origin:bottom right}#touchStick{left:14px;width:112px;height:112px}.touch-mode .objectivePanel{top:150px}}
+.touch-mode .controlTable{max-height:34dvh;overflow:auto;font-size:11px;line-height:1.7;padding:10px}.touch-mode .dialog h2{font-size:25px}.touch-mode .dialog .action{min-height:40px}
+
+/* Three choices fit together in landscape; descriptions scroll within each card. */
+.touch-mode .dialog.upgradeDialog{width:calc(100vw - 28px);max-width:960px;max-height:calc(100dvh - 24px);padding:14px 18px;display:flex;flex-direction:column;overflow:hidden}
+.touch-mode .upgradeHeading{flex:none;margin-bottom:10px}
+.touch-mode .upgradeHeading h2{font-size:25px}
+.touch-mode .upgradeHeading>span{font-size:20px}
+.touch-mode .upgradeDialog .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;min-height:0;flex:1;margin:0}
+.touch-mode .upgradeDialog .choiceSlot{display:flex;flex-direction:column;gap:7px;min-height:0}
+.touch-mode .upgradeDialog .card{display:grid;grid-template-columns:38px minmax(0,1fr);grid-template-rows:auto auto auto minmax(40px,1fr) auto;column-gap:9px;align-items:stretch;text-align:left;min-height:0;height:100%;padding:12px;border-width:2px;overflow:hidden;transform:none}
+.touch-mode .upgradeDialog .card .type{grid-column:1/-1;font-size:9px;padding:4px 7px;max-width:100%;white-space:nowrap}
+.touch-mode .upgradeDialog .card .icon{grid-row:2/4;grid-column:1;width:36px;height:36px;font-size:23px;margin:10px 0 5px}
+.touch-mode .upgradeDialog .card strong{grid-column:2;font-size:18px;line-height:1.2;margin:10px 0 2px;overflow-wrap:anywhere}
+.touch-mode .upgradeDialog .card em{grid-column:2;font-size:11px;margin:0 0 7px}
+.touch-mode .upgradeDialog .card small{grid-column:1/-1;display:block;min-height:0;overflow:auto;overscroll-behavior:contain;font-size:12px;line-height:1.5;padding:3px 0 6px;text-align:left}
+.touch-mode .upgradeDialog .cardCta{grid-column:1/-1;margin:4px 0 0;padding-top:6px;font-size:12px}
+.touch-mode .upgradeDialog .reroll{flex:none;min-height:36px;margin:0;padding:7px;font-size:12px}
+@media(orientation:landscape){.touch-mode .dialog.upgradeDialog{height:min(470px,calc(100dvh - 24px))}}
+@media(orientation:portrait){.touch-mode .dialog.upgradeDialog{overflow:auto}.touch-mode .upgradeDialog .cards{grid-template-columns:1fr;flex:none}.touch-mode .upgradeDialog .card{min-height:200px}.touch-mode .upgradeDialog .card small{max-height:120px}}

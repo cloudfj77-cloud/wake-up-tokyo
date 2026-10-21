@@ -1,5 +1,7 @@
 # 都给我醒醒！ / WAKE UP TOKYO
 
+Android 手机试玩版：左侧摇杆＋右侧战斗按键，支持横屏离线安装。安装、构建和验证说明见 [Android 手机试玩版](docs/android-mobile.md)。
+
 整合试玩版默认进入海滨钟楼广场；菜单可切换东京河畔，或通过 `?map=riverside` 打开。两张地图继续使用各自的存档。
 
 当前版本以 `package.json` 和游戏主菜单为准。当前整合试玩版本为 **Demo v0.3.55**（PR22、PR23、PR24，待整体验收）；上一团队同步节点为 Demo v0.2.3，更新记录见 [CHANGELOG.md](CHANGELOG.md)，后续编号规则见 [VERSIONING.md](VERSIONING.md)。
