@@ -4,6 +4,7 @@ import {block} from './world.js';
 import {WalkCollision} from './tokyo/collision.js';
 import {batchStaticScene,pruneEmptyStaticGroups} from './tokyo/render-batches.js';
 import {prepareStaticMaterials} from './tokyo/material-atlas.js';
+import {LOW_SPEC_RENDER} from './device.js';
 import {createTokyoNavigation} from './tokyo/navigation.js';
 import {createTokyoPopulation,TUTORIAL_LAYOUT} from './tokyo/gameplay.js';
 
@@ -14,7 +15,14 @@ export async function loadTokyo(scene,renderer){
  const lights=[];root.traverse(o=>{if(o.isLight)lights.push(o);if(o.isMesh){o.castShadow=o.receiveShadow=true;}});lights.forEach(o=>o.removeFromParent());
  const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision);
  const materialStats=prepareStaticMaterials(root,{maxSize:renderer?.capabilities.maxTextureSize??4096});
- const batch=batchStaticScene(root,{cellSize:Infinity});
+ const cityQuery=new URLSearchParams(location.search);
+ const cityLod=parseFloat(cityQuery.get('citylod')),cityCull=parseFloat(cityQuery.get('citycull'));
+ const batch=batchStaticScene(root,{
+  ...LOW_SPEC_RENDER,fog:scene.fog,
+  lodMeters:Number.isFinite(cityLod)?cityLod:undefined,
+  cullMeters:Number.isFinite(cityCull)?cityCull:undefined,
+  shadow:cityQuery.get('staticshadow')==='1',
+ });
  console.info('[TokyoRender]',JSON.stringify({...materialStats,batches:batch.batchCount}));
  // Source meshes are retained by the collision index; only render batches and transparent meshes stay in the scene tree.
  const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());pruneEmptyStaticGroups(root);root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
@@ -66,7 +74,8 @@ export async function loadTokyo(scene,renderer){
   cameraBlocked:(x,y,z,r=.16)=>nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2),
   menuCamera:{from:[38,27,36],look:[0,3,-6]},
   drawMap(ctx,px,pz){ctx.drawImage(map,px(data.bounds.minX),pz(data.bounds.maxZ),px(data.bounds.maxX)-px(data.bounds.minX),pz(data.bounds.minZ)-pz(data.bounds.maxZ));},
-  update(dt,camera){batch.updateDetailVisibility(camera.position);},
+  update(dt,camera){batch.updateDetailVisibility(camera.position,camera);},
+ updateDetailVisibility:(p,c)=>batch.updateDetailVisibility(p,c),updateOutlineVisibility:batch.updateOutlineVisibility,
   diagnostics:{model:'tokyo-district',nodes:data.nodes.length,batches:batch.batchCount},
  };
 }

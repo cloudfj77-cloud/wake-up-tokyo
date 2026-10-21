@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">都给我醒醒！</string>
-    <string name="title_activity_main">都给我醒醒！</string>
+    <string name="app_name">Wake up 打工人！</string>
+    <string name="title_activity_main">Wake up 打工人！</string>
     <string name="package_name">com.wakeuptokyo.game</string>
     <string name="custom_url_scheme">com.wakeuptokyo.game</string>
 </resources>

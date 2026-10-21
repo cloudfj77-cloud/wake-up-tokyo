@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-21",
+  "title": "Wake up 打工人！",
+  "build": "5183e7af2b128b45",
+  "indexSha256": "1c6a0e2f977d54845c24c11d4517bc02915cd50021a44d952f99466185926ff7",
+  "artifacts": {
+    "exe": {
+      "path": "release/Wake up 打工人！.exe",
+      "bytes": 244443136,
+      "sha256": "993e3d605cc33ab6ff292d7327e6229f8acc2c6447b6d64939455d1632fe05ef"
+    },
+    "html": {
+      "path": "release/Wake up 打工人！-HTML资源包.zip",
+      "bytes": 244427530,
+      "sha256": "5183e7af2b128b452a4110bf98064cb002e0f63e58bb8af73cb15d29c6487485"
+    }
+  },
+  "htmlEntry": "release/Wake up 打工人！-电脑版/index.html",
+  "launchesLocalH5": true,
+  "bundledNode": true
+}

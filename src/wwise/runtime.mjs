@@ -4,15 +4,23 @@ const LISTENER = 0xffffffff;
 const finite = (v) => { if (!Number.isFinite(v)) throw new Error('Expected finite number'); return v; };
 const idOf = (v) => { if (!Number.isInteger(v) || v < 1 || v >= LISTENER) throw new Error('Invalid game object ID'); return v; };
 let active = false;
+// 音频渲染节奏可以按机器调：?audiointerval=5 提高轮询频率、?audiopasses=6 与 ?audiobudget=4 加大单趟补渲染量。
+// 音乐还卡就往大调（更稳，代价是多占一点主线程）；游戏帧率掉了就往小调。
+const audioParam = (key, fallback) => {
+  const raw = typeof location === 'undefined' ? null : parseFloat(new URLSearchParams(location.search).get(key));
+  return Number.isFinite(raw) && raw > 0 ? raw : fallback;
+};
 
-export async function createWwiseRuntime({ createModule, wasmUrl, workletUrl, banks, streams = [], events = {}, fetchBytes }) {
+export async function createWwiseRuntime({ createModule, wasmUrl, workletUrl, banks, streams = [], events = {}, fetchBytes,
+  // 音频渲染节奏：轮询间隔、单趟最多补渲染几趟、单趟渲染的时间预算（毫秒）。
+  renderIntervalMs = audioParam('audiointerval', 7), maxFillPasses = audioParam('audiopasses', 4), fillBudgetMs = audioParam('audiobudget', 3) }) {
   if (active) throw new Error('One Wwise runtime per JS realm; dispose the previous runtime first');
   if (!globalThis.crossOriginIsolated || typeof SharedArrayBuffer === 'undefined' || typeof AudioWorkletNode === 'undefined') {
     throw new Error('Wwise requires an isolated browser document and AudioWorklet; inspect the Studio parent and Play frame');
   }
   if (!banks?.length || banks[0].name !== 'Init.bnk') throw new Error('Init.bnk must be first');
   active = true;
-  let m, streamIO, frame, disposed = false, renderCount = 0, maxRenderMs = 0, maxRenderGapMs = 0, lastRender = 0, lastError = null;
+  let m, streamIO, frame, disposed = false, renderCount = 0, maxRenderMs = 0, maxRenderGapMs = 0, lastRender = 0, lastError = null, fillPasses = 0;
   const loaded = [], objects = new Set();
   const check = (r, operation) => { if (r !== SUCCESS) { lastError = `${operation}: AKRESULT ${r}`; throw new Error(lastError); } };
   const alive = () => { if (disposed) throw new Error('Wwise runtime disposed'); };
@@ -59,11 +67,22 @@ export async function createWwiseRuntime({ createModule, wasmUrl, workletUrl, ba
       if (disposed) return;
       const t = performance.now();
       if(lastRender)maxRenderGapMs=Math.max(maxRenderGapMs,t-lastRender);lastRender=t;
-      try { check(m._fw_render(), 'render');streamIO?.pump(); } catch (e) { lastError=String(e);dispose(); return; }
-      maxRenderMs = Math.max(maxRenderMs, performance.now()-t); renderCount++;
+      try {
+        // 环形缓冲靠主线程填充，工作线程只管取：缓冲一空它就输出静音，人耳听到的是音乐断一下。
+        // 而这个定时器会被长任务拖住（实测平均 18ms 才轮到一次，峰值 183ms），所以不能只渲染一趟 ——
+        // 每趟把缓冲灌满为止，主线程再有几十毫秒的停顿，工作线程还有存货。
+        // 灌满后再调用会立刻返回，不会白烧 CPU。
+        let passes=0;
+        do { check(m._fw_render(), 'render'); passes++; }
+        while (passes < maxFillPasses && performance.now()-t < fillBudgetMs);
+        fillPasses=Math.max(fillPasses,passes);
+        renderCount += passes;
+        streamIO?.pump();
+      } catch (e) { lastError=String(e);dispose(); return; }
+      maxRenderMs = Math.max(maxRenderMs, performance.now()-t);
       // Audio is independent of a visible canvas; rAF stops in background tabs.
       // A main-thread timer is still vulnerable to long tasks / browser suspension.
-      frame = setTimeout(render, 10);
+      frame = setTimeout(render, Math.max(1, renderIntervalMs - (performance.now() - t)));
     };
     render();
   } catch (e) { dispose(); throw e; }
@@ -81,7 +100,7 @@ export async function createWwiseRuntime({ createModule, wasmUrl, workletUrl, ba
     setState(group, value) { alive(); string(group,g => string(value,v => check(m._fw_state(g,v),'state'))); },
     setPosition(id,p,forward,up) { object(id); position(id,p,forward,up); },
     setListener(p,forward,up) { position(LISTENER,p,forward,up); },
-    snapshot() { return {backend:'wwise',disposed,loadedBanks:disposed?[]:loaded.map(({name,id,bytes})=>({name,id,bytes})),objects:objects.size,heapBytes:m.HEAPU8.byteLength,streaming:streamIO?.snapshot()??null,renderCount,maxRenderMs,maxRenderGapMs,starvations:disposed?null:m._fw_starvations(),lastError}; },
+    snapshot() { return {backend:'wwise',disposed,loadedBanks:disposed?[]:loaded.map(({name,id,bytes})=>({name,id,bytes})),objects:objects.size,heapBytes:m.HEAPU8.byteLength,streaming:streamIO?.snapshot()??null,renderCount,maxRenderMs,maxRenderGapMs,fillPasses,starvations:disposed?null:m._fw_starvations(),lastError}; },
     dispose,
   };
 }

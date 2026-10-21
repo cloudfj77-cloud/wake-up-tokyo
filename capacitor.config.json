@@ -1,6 +1,6 @@
 {
   "appId": "com.wakeuptokyo.game",
-  "appName": "都给我醒醒！",
+  "appName": "Wake up 打工人！",
   "webDir": "dist",
   "server": {
     "androidScheme": "https",

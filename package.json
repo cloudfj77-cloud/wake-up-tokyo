@@ -1,6 +1,6 @@
 {
   "name": "wake-up-tokyo",
-  "version": "0.3.60",
+  "version": "0.3.61",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5200 --strictPort",
@@ -8,7 +8,7 @@
     "serve": "node scripts/serve.mjs 5310 dist",
     "local": "npm run build && node scripts/serve.mjs 5310 dist",
     "build:single": "vite build --config vite.config.single.js && node scripts/inline-single.mjs",
-    "test": "node --test rules.test.js characters.test.js character-loading.test.mjs package-performance.test.mjs wwise-stream.test.mjs terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js music.test.js music-director.test.mjs sfx-director.test.mjs design-regression.test.js package-merge.test.js pr19-regression.test.js launcher.test.js tidewater.test.js kindling.test.js reinforcement.test.js combat-ui.test.js hit-response.test.js feedback-visibility.test.js camera-cutaway.test.js police-props.test.js comic-intro.test.js tokyo.test.js tokyo-crowd-regression.test.js japanese-radio.test.js objective-feedback.test.js syringe.test.js native-audio-package.test.mjs mobile-regression.test.js",
+    "test": "node --test rules.test.js characters.test.js character-loading.test.mjs package-performance.test.mjs wwise-stream.test.mjs terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js music.test.js music-director.test.mjs sfx-director.test.mjs design-regression.test.js package-merge.test.js pr19-regression.test.js launcher.test.js tidewater.test.js kindling.test.js reinforcement.test.js combat-ui.test.js hit-response.test.js feedback-visibility.test.js camera-cutaway.test.js police-props.test.js comic-intro.test.js tokyo.test.js tokyo-crowd-regression.test.js japanese-radio.test.js objective-feedback.test.js syringe.test.js native-audio-package.test.mjs mobile-regression.test.js render-visibility.test.js",
     "package:local": "npm run build && node scripts/package-local.mjs",
     "predev": "node scripts/wwise/runtime-catalog.mjs",
     "wwise:sync": "node scripts/wwise/sync-runtime.mjs",
@@ -19,7 +19,8 @@
     "test:mobile": "node --test touch-controls.test.js mobile-audio.test.js",
     "mobile:audio": "node scripts/mobile-audio.mjs",
     "mobile:sync": "npm run mobile:audio && npm run build && npx cap sync android",
-    "mobile:apk": "npm run mobile:sync && cd android && gradlew.bat assembleDebug"
+    "mobile:apk": "npm run mobile:sync && cd android && gradlew.bat assembleDebug",
+    "package:windows": "npm run package:local && node scripts/package-windows.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
@@ -28,7 +29,7 @@
     "vite": "^7.1.7"
   },
   "game": {
-    "title": "都给我醒醒！",
+    "title": "Wake up 打工人！",
     "stage": "demo"
   },
   "devDependencies": {

@@ -90,7 +90,11 @@ export function createTokyoPopulation(nav,isFree=nav.free){
   u.stationary=false;
   const zone=populationZone(u);
   if(u.tokyoDestination&&populationZone(u.tokyoDestination)===zone&&Math.hypot(u.x-u.tokyoDestination.x,u.z-u.tokyoDestination.z)>.7)return u.tokyoDestination;
-  const near=(byZone.get(zone)||[]).filter(p=>Math.hypot(p.x-u.x,p.z-u.z)>2&&Math.hypot(p.x-u.x,p.z-u.z)<8);
+  const sameFloor=p=>Math.abs((p.floorY??0)-(u.floorY??0))<1;
+  const ring=(min,max)=>(byZone.get(zone)||[]).filter(p=>sameFloor(p)&&Math.hypot(p.x-u.x,p.z-u.z)>min&&Math.hypot(p.x-u.x,p.z-u.z)<max);
+  let near=ring(2,8);
+  if(!near.length)near=ring(2,14);
+  if(!near.length)near=ring(1,Infinity);
   u.tokyoDestination=near.length?{...near[Math.floor(Math.random()*near.length)]}:{x:u.x,z:u.z,floorY:u.floorY};
   return u.tokyoDestination;
  }

@@ -32,6 +32,10 @@ test('ranged target selection checks the best forward candidate first and uses a
  const units=[{id:1,x:0,z:-1},{id:2,x:1,z:3},{id:3,x:0,z:2}],checked=[];
  const ctx=vm.createContext({...rules,units,player:{x:0,z:0},forward:()=>({x:0,z:1}),world:{combatClear:(a,b)=>{checked.push(b.id);return true;},clear(){throw Error('expensive walkability scan for ranged aim');}}});
 
+ vm.runInContext(source.split('\n').find(s=>s.startsWith('function acquire(range'))+';result=acquire(20)',ctx);
+ assert.equal(ctx.result.id,3);assert.deepEqual(checked,[3]);
+});
+
 test('combat rays pass below an overpass but stop at walls, upper floors and living towers',()=>{
  const root=new T.Group(),floor=new T.Mesh(new T.PlaneGeometry(12,12),new T.MeshBasicMaterial());floor.rotation.x=-Math.PI/2;floor.position.y=3.3;root.add(floor);
  const wall=new T.Mesh(new T.PlaneGeometry(4,4),floor.material);wall.position.set(4,1,1.5);root.add(wall);
@@ -45,9 +49,6 @@ test('combat rays pass below an overpass but stop at walls, upper floors and liv
  towers.push({x:0,z:1.5,floorY:0,w:1,d:1,h:2,dead:false});assert.equal(ctx.clear(player,{x:0,z:3,floorY:0}),false);
  towers[0].dead=true;assert.equal(ctx.clear(player,{x:0,z:3,floorY:0}),true);
 });
- vm.runInContext(source.split('\n').find(s=>s.startsWith('function acquire(range'))+';result=acquire(20)',ctx);
- assert.equal(ctx.result.id,3);assert.deepEqual(checked,[3]);
-});
 
 test('mobile distant AI advances elapsed time while reducing per-frame navigation work',()=>{
  const actor={...rules.makeUnit(1,0,20,0),floorY:0},units=[actor];let moves=0;
@@ -56,6 +57,22 @@ test('mobile distant AI advances elapsed time while reducing per-frame navigatio
  vm.runInContext(section('const CROWD_CELL=','function civilianMoveTarget')+section('function runAI(','function dropActorVisual'),ctx);
  for(let i=0;i<120;i++)vm.runInContext('runAI(.04,true)',ctx);
  assert.ok(actor.x>24.4&&actor.x<24.9);assert.ok(moves<45,'distant workers should not navigate every frame');
+});
+
+test('visible throttled workers animate every frame without advancing animation time twice',()=>{
+ const actor={...rules.makeUnit(1,0,20,0),floorY:0},visual={holder:{rotation:{},visible:true}};
+ let animationTime=0,frames=0,moves=0;
+ const ctx=vm.createContext({...rules,units:[actor],player:{x:0,z:0},aiStart:0,ALLY_VIEW:18,
+  visuals:new Map([[actor.id,{v:visual}]]),world:{mobile:true,waypoint:()=>({x:40,z:0})},TUNE:{activity:{shambleSpeed:1}},
+  actorViewLimit:()=>34,actorInFront:()=>true,civilianMoveTarget:()=>({x:40,z:0}),
+  updateCharacterVisual:(v,moving,dt)=>{v.holder.visible=true;frames++;animationTime+=dt;},
+  move:(u,x,z)=>{moves++;u.x+=x;u.z+=z;return true;}});
+ vm.runInContext(section('const CROWD_CELL=','function civilianMoveTarget')+section('function runAI(','function dropActorVisual'),ctx);
+ for(let i=0;i<120;i++)vm.runInContext('runAI(.04,true)',ctx);
+ assert.equal(frames,120);assert.ok(Math.abs(animationTime-4.8)<1e-8);assert.ok(moves<45);assert.equal(visual.holder.visible,true);
+ actor.x=80;actor.logicWait=.2;visual.accumulated=1;
+ vm.runInContext('runAI(.04,true)',ctx);
+ assert.equal(visual.holder.visible,false);assert.equal(visual.accumulated,0);assert.equal(frames,120);
 });
 
 test('real light and heavy attacks reject lower decks and walls, but reach adjacent stair treads',()=>{
@@ -117,7 +134,11 @@ test('spatial render batches retain every source transform and cull distant sect
  root.updateMatrixWorld(true);for(const m of section.children)expected.push(new T.Vector3().setFromMatrixPosition(m.matrixWorld).toArray().map(n=>n.toFixed(4)).join(','));
  const batch=batchStaticScene(root,{cellSize:24}),actual=[];root.updateMatrixWorld(true);
  // Single-source cells remain ordinary meshes and multi-source cells are batched.
- root.traverse(o=>{if(o.isMesh&&o.visible&&!o.isBatchedMesh)actual.push(new T.Vector3().setFromMatrixPosition(o.matrixWorld).toArray().map(n=>n.toFixed(4)).join(','));if(o.isBatchedMesh){const m=new T.Matrix4();for(let i=0;i<o.maxInstanceCount;i++){o.getMatrixAt(i,m);m.premultiply(o.matrixWorld);actual.push(new T.Vector3().setFromMatrixPosition(m).toArray().map(n=>n.toFixed(4)).join(','));}}});
+ root.traverse(o=>{if(o.isMesh&&o.visible&&!o.isBatchedMesh)actual.push(new T.Vector3().setFromMatrixPosition(o.matrixWorld).toArray().map(n=>n.toFixed(4)).join(','));if(o.name==='Static_Material_Batch'){const m=new T.Matrix4();for(let i=0;i<o.instanceCount;i++){o.getMatrixAt(i,m);m.premultiply(o.matrixWorld);actual.push(new T.Vector3().setFromMatrixPosition(m).toArray().map(n=>n.toFixed(4)).join(','));}}});
+
+ assert.deepEqual(actual.sort(),expected.sort());assert.ok(batch.batchCount<16);
+ const empty=new T.Group();section.add(empty);assert.ok(pruneEmptyStaticGroups(root)>0);assert.ok(!section.children.includes(empty));
+});
 
 test('sign atlases keep original pixel dimensions, UV orientation and per-instance colors',()=>{
  const root=new T.Group(),section=new T.Group();root.add(section);const draws=[];
@@ -134,11 +155,8 @@ test('sign atlases keep original pixel dimensions, UV orientation and per-instan
  assert.equal(original[0].material.map.flipY,false);assert.equal(draws[0].length,3,'image must be copied at original size');
  const uv=original[0].geometry.attributes.uv;assert.ok(uv.getY(0)>uv.getY(2));
  const batch=batchStaticScene(root);assert.equal(batch.batchCount,1);
- const mesh=section.children.find(o=>o.name==='Render_Batches_Exclude_From_Export').children[0],color=new T.Color();
+ const mesh=section.children.find(o=>o.name==='Render_Batches_Exclude_From_Export').children.find(o=>o.name==='Static_Material_Batch'),color=new T.Color();
  mesh.getColorAt(0,color);assert.equal(color.getHex(),0xff0000);mesh.getColorAt(1,color);assert.equal(color.getHex(),0x0000ff);
-});
- assert.deepEqual(actual.sort(),expected.sort());assert.ok(batch.batchCount<16);
- const empty=new T.Group();section.add(empty);assert.ok(pruneEmptyStaticGroups(root)>0);assert.ok(!section.children.includes(empty));
 });
 
 test('local paths move a crowd around a corner without waiting for a whole-map flood field',()=>{

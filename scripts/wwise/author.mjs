@@ -61,7 +61,7 @@ try {
  const bank=await create('\\SoundBanks\\Default Work Unit','SoundBank','TokyoMusic');
  await c.call('ak.wwise.core.soundbank.setInclusions',{soundbank:bank,operation:'replace',inclusions:Object.values(events).map(object=>({object,filter:['events','structures','media']}))});
  await set(info.id,'GenerateSoundBankJSON',true);await set(info.id,'GenerateSoundBankXML',true);
- await c.call('ak.wwise.core.undo.endGroup',{displayName:'Wake Up Tokyo：街头反抗音乐与游戏状态'});grouped=false;
+ await c.call('ak.wwise.core.undo.endGroup',{displayName:'Wake up 打工人！：街头反抗音乐与游戏状态'});grouped=false;
  await c.call('ak.wwise.core.project.save');
  const receipt={project:'wwise/WakeUpTokyo/WakeUpTokyo.wproj',projectId:info.id,authoringVersion:'2025.1.10.9233',createdAt:new Date().toISOString(),bus,root,events,sounds};
  await writeFile('audio/wwise/authoring.json',JSON.stringify(receipt,null,2)+'\n');

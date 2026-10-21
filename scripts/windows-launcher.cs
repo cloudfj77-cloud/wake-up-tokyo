@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
-[assembly: AssemblyTitle("都给我醒醒！")]
-[assembly: AssemblyProduct("都给我醒醒！")]
-[assembly: AssemblyVersion("0.3.60.5")]
+[assembly: AssemblyTitle("__GAME_TITLE__")]
+[assembly: AssemblyProduct("__GAME_TITLE__")]
+[assembly: AssemblyVersion("__GAME_VERSION__")]
 
 internal static class WakeLauncher {
-    const string Title = "都给我醒醒！";
+    const string Title = "__GAME_TITLE__";
     const string BuildId = "__BUILD_ID__";
     const string ExpectedIndexHash = "__INDEX_HASH__";
     static Process server;
