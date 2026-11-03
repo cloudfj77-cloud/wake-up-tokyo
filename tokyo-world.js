@@ -11,9 +11,11 @@ export async function loadTokyo(scene){
  const root=gltf.scene;root.name='Tokyo Cyber District';root.scale.setScalar(.55);root.position.set(11,3.3,-28.6);root.updateMatrixWorld(true);
  // Keep Wake Up's light rig, fog and postprocessing; the asset contributes geometry and materials only.
  const lights=[];root.traverse(o=>{if(o.isLight)lights.push(o);if(o.isMesh){o.castShadow=o.receiveShadow=true;}});lights.forEach(o=>o.removeFromParent());
- const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision),batch=batchStaticScene(root);
+ const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision),batch=batchStaticScene(root);scene.userData.staticNormalPass=batch.normalPass;
  // Source meshes are retained by the collision index; only render batches and transparent meshes stay in the scene tree.
- const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
+ const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());
+ // 合批后空下来的静态层级已没有渲染或碰撞职责，避免每个绘制趟继续遍历空节点。
+ const prune=o=>{for(const child of [...o.children])prune(child);if(o!==root&&!o.isMesh&&!o.children.length)o.removeFromParent();};prune(root);root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
  // shortcut: Imported architecture is static; add destructible modules when building damage is required.
  const towers=[],destructibles=[],buildings=[];
  const towerBlocked=(x,z,r=.16,hint=0)=>towers.some(o=>!o.dead&&Math.abs(nav.heightAt(x,z,hint)-o.floorY)<o.h&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r);
@@ -55,6 +57,7 @@ export async function loadTokyo(scene){
   menuCamera:{from:[38,27,36],look:[0,3,-6]},
   drawMap(ctx,px,pz){ctx.drawImage(map,px(data.bounds.minX),pz(data.bounds.maxZ),px(data.bounds.maxX)-px(data.bounds.minX),pz(data.bounds.minZ)-pz(data.bounds.maxZ));},
   update(dt,camera){batch.updateDetailVisibility(camera.position);},
+  updateRenderVisibility:batch.updateVisibility,
   diagnostics:{model:'tokyo-district',nodes:data.nodes.length,batches:batch.batchCount},
  };
 }

@@ -1,3 +1,4 @@
+import {prepareCharacterDetails,setCharacterDetail} from './character-detail.js';
 import {restoreCharacterFlash,stepCharacterFlash} from './hit-response.js';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -81,7 +82,7 @@ const CHARACTER_MODEL_FILES = {
 
 export async function loadCharacterAssets() {
   const optional=(load,label)=>async()=>{try{return prepareCharacterAsset(await load());}catch(error){console.warn('[characters] 未启用'+label+'：',error.message);return null;}};
-  return resolveCharacterAssets({
+  return prepareCharacterDetails(await resolveCharacterAssets({
     worker:optional(loadWorkerAsset,'打工人模型'),
     player:optional(loadMixamoCharacter,'Mixamo 主角'),
     shieldCop:optional(loadShieldCopAsset,'持盾特警模型'),
@@ -90,7 +91,7 @@ export async function loadCharacterAssets() {
     props:()=>loadPoliceProps().catch(error=>{console.warn('[characters] 未启用警察配件：',error.message);return null;}),
     awakened:async()=>{try{return (await loadAwakenedAssets()).map(prepareCharacterAsset);}catch(error){console.warn('[characters] 未启用觉醒形态：',error.message);return []; }},
     fallback:async key=>prepareCharacterAsset(await new GLTFLoader().loadAsync(CHARACTER_MODEL_FILES[key])),
-  });
+  }));
 }
 
 // 单个资产（旧写法）直接透传；资产集按主人公、觉醒者、警卫和打工人选择专属模型。
@@ -220,7 +221,9 @@ export function playCharacterJump(visual, duration = 7 / 9) {
   action.time=jumpClipTime(action.getClip(),0);
 }
 
-export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false) {
+export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false, groundSpeed) {
+  setCharacterDetail(visual,distance);
+  visual.groundSpeed=groundSpeed;
   stepCharacterFlash(visual,dt);
   if (visual.attackTime > 0) visual.attackTime -= dt;
   if (visual.airborne) {
@@ -229,15 +232,19 @@ export function updateCharacterVisual(visual, moving, dt, distance = 0, sprintin
     const playback=visual.jumpPlayback;
     if(playback){playback.elapsed+=dt;visual.current.time=jumpClipTime(visual.current.getClip(),visual.jumpPhase??playback.elapsed/playback.duration);}
   } else if (visual.attackTime <= 0) {
+    // 抵达后的厘米级避让不播放慢动作跑步，保留脚下站稳的待机姿态。
+    const locomoting=moving&&(!Number.isFinite(groundSpeed)||groundSpeed>.12);
     // 端着枪移动用 Strafing，徒手移动用跑步（Fast Run），未感染的打工人走蹒跚步。
-    const name = moving
+    const name = locomoting
       ? (visual.kind === 'human' ? 'zombie' : visual.holdingGun ? 'strafe' : 'walk')
       : (visual.holdingGun ? 'toyAim' : 'idle');
     const action = resolveAction(visual, name);
-    // 步频要跟实际位移对上，否则脚在原地磨、人在飘，就是滑步。
-    // 打工人 0.55 单位/秒配 Sad Walk（1.47 秒/圈）→ 原速；
-    // 觉醒者 3.8 单位/秒配 Fast Run（0.53 秒/圈，自然步幅约 1.0 单位）→ 需要 2.0 倍速。
-    const scale = !moving ? 1 : visual.kind === 'human' ? 1.0 : visual.kind === 'ally' ? 2.0 : (sprinting ? 1.45 : 1.0);
+    // 以真实位移而非期望速度驱动步频，窄道减速、转弯和被挡住时不会继续高速空跑。
+    // 根位移速度来自原 FBX，再换算到当前模型大小；旧模型没有该数据时使用原步幅兜底。
+    const legacyScale=visual.kind==='human'?1:visual.kind==='ally'?2:sprinting?1.45:1;
+    const fallbackSpeed=visual.kind==='human'?.55:visual.kind==='ally'?1.9:2;
+    const naturalSpeed=(action?.getClip().userData?.rootMotionSpeed||0)*visual.model.scale.x||fallbackSpeed;
+    const scale=!locomoting?1:Number.isFinite(groundSpeed)?THREE.MathUtils.clamp(Math.max(0,groundSpeed)/naturalSpeed,0,4):legacyScale;
     if (action) action.setEffectiveTimeScale(scale);
     const landing=visual.current===resolveAction(visual,'jump');
     switchAnimation(visual, name,landing?.06:.18);
@@ -276,6 +283,7 @@ function parkPooledVisual(visual){
  visual.jumpPlayback=null;visual.jumpPhase=null;
  visual.attackTime=0;
  visual.accumulated=0;
+ visual.groundSpeed=undefined;
  visual.mixer.stopAllAction();
  visual.current=null;
 }

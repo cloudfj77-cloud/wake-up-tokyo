@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {combatDelta,combatAmount,combatPopupPosition,combatFeedbackScale} from './combat-ui.js';
-import {makeState,makeUnit,hit,damageAlly,hurtMother} from './rules.js';
+import {makeState,makeUnit,hit,damageAlly,hurtMother,stepSimulation} from './rules.js';
 const snapshot=u=>({...u});
 test('feedback reports actual mitigated HP loss and applied pollution',()=>{
  const s=makeState(),u=makeUnit(1,3,0,0),before=snapshot(u);
@@ -43,7 +43,7 @@ function feedbackFixture(onImpact=()=>{},project=()=>({x:100,y:100}),tone){
  const doc={createElement:()=>new Node(),getElementById:id=>ids.get(id),querySelector:()=>panel};
  return {ui:createCombatUI(doc,project,onImpact,tone),hud};
 }
-test('suppressed continuous-infection impacts still show every pollution increment and preserve later direct hits',()=>{
+test('disabling an impact alone preserves explicit pollution popups and later direct hits',()=>{
  let direct=false;const {ui,hud}=feedbackFixture(()=>direct?'heavy':false),host=hud.children[0],s=makeState(),p={x:0,z:0},b={active:false},u={id:1,hp:100,infection:0};
  ui.baseline([u],s,p,b);
  for(let i=0;i<10;i++){u.infection+=.2;ui.observe([u],s,p,b);ui.tick(.03,true,s);}
@@ -76,7 +76,7 @@ test('frame baseline preserves a single input-event strike and never reports it 
  assert.equal(popups.length,2);assert.equal(impacts.length,1);
  assert.deepEqual(popups.map(n=>n.children[1].textContent),['−16','+8']);
 });
-test('persistent pollution throttles impact flashes while preserving all increments',()=>{
+test('explicit infection events throttle impact flashes while preserving all increments',()=>{
  let flashes=0;const {ui,hud}=feedbackFixture(()=>flashes++),s=makeState(),p={x:0,z:0},b={active:false},u=makeUnit(1,5,0,1);
  ui.baseline([u],s,p,b);
  for(let i=0;i<20;i++){u.infection+=.2;ui.baseline([u],s,p,b);ui.observe([u],s,p,b);ui.tick(.02,true,s);}
@@ -134,4 +134,35 @@ test('damage and infection from the same strike show together without a pre-disp
  ui.baseline([u],s,p,b);hit(s,u,10,20);ui.observe([u],s,p,b);ui.tick(.016,true,s);
  const pops=hud.children[0].children.filter(n=>n.className.startsWith('combatPop'));
  assert.deepEqual(pops.map(n=>n.children[1].textContent),['−20','+10']);
+});
+
+test('DOT, airborne aura and air clouds accumulate infection without floating UI or impact callbacks',()=>{
+ for(const source of ['dot','air','cloud']){
+  let impacts=0;const {ui,hud}=feedbackFixture(()=>impacts++),s=makeState(),p={x:0,z:0},b={active:false},u=makeUnit(1,5,source==='air'?1:30,0);
+  if(source==='dot'){s.abilities.dot=1;u.infection=1;u.tagged='player';}
+  else{s.abilities.air=source==='air'?1:3;if(source==='cloud')s.airClouds=[{x:u.x,z:u.z,time:3}];}
+  const before=u.infection;ui.baseline([u],s,p,b);
+  for(let i=0;i<20;i++){
+   stepSimulation(s,[u],p,.05,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.05,true,s);
+  }
+  assert.ok(u.infection>before,`${source} must still infect`);assert.equal(impacts,0,source);assert.equal(hud.children[0].children.length,0,source);
+ }
+});
+
+test('a direct strike still shows its exact infection and damage when passive infection ticks in the same frame',()=>{
+ const {ui,hud}=feedbackFixture(),s=makeState(),p={x:0,z:0},b={active:false},u=makeUnit(1,5,1,0);s.abilities.air=1;s.abilities.dot=1;
+ ui.baseline([u],s,p,b);hit(s,u,10,20);stepSimulation(s,[u],p,.1,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.016,true,s);
+ const pops=()=>hud.children[0].children.filter(n=>n.className.startsWith('combatPop'));
+ assert.deepEqual(pops().map(n=>n.children[1].textContent),['−20','+10']);
+ // 后续被动感染不能续期、放大或累加到这张直接命中的爆贴上。
+ for(let i=0;i<30;i++){stepSimulation(s,[u],p,.05,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.05,true,s);}
+ assert.equal(pops().length,0);
+ hit(s,u,8,0);ui.observe([u],s,p,b);ui.tick(.016,true,s);
+ assert.equal(pops()[0].children[1].textContent,'+8');
+});
+
+test('quiet passive infection still reports a successful awakening',()=>{
+ const {ui,hud}=feedbackFixture(),s=makeState(),p={x:0,z:0},b={active:false},u=makeUnit(1,0,1,0);s.abilities.air=1;u.infection=u.threshold-1;
+ ui.baseline([u],s,p,b);stepSimulation(s,[u],p,.5,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.016,true,s);
+ assert.equal(u.converted,true);assert.deepEqual(hud.children[0].children.filter(n=>n.className.startsWith('combatPop')).map(n=>n.children[1].textContent),['觉醒']);
 });

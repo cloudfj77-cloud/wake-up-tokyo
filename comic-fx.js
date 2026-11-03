@@ -135,11 +135,12 @@ function createComicAbilityFX(T, scene, { height = .935, reducedMotion = false, 
   }
   function glyph(shape, index = 2, outline = true) {
     const g = new T.Group(); g.userData.colorIndex = index; g.userData.band = -1;
+    const flat=!['octahedron','projectileCore','projectileShell','spore','rangeNet','cometTail','helix'].includes(shape);
     if (outline) {
       const ink = new T.Mesh(geometry[shape], mat(0)); ink.scale.set(1.15,1.15,1); ink.position.z = -.003 * H; ink.renderOrder = 21;
-      g.add(ink); g.userData.ink = ink;
+      ink.userData.comicBatch=flat;g.add(ink); g.userData.ink = ink;
     }
-    const fill = new T.Mesh(geometry[shape], mat(index)); fill.renderOrder = 22; g.add(fill); g.userData.fill = fill;
+    const fill = new T.Mesh(geometry[shape], mat(index)); fill.renderOrder = 22;fill.userData.comicBatch=flat; g.add(fill); g.userData.fill = fill;
     return g;
   }
   function paint(g, index, band = 0) {
@@ -430,7 +431,8 @@ function createComicAbilityFX(T, scene, { height = .935, reducedMotion = false, 
     return {style:'pastel ink / segmented polygons',active:active.length,limit:LIMIT,pooled,auras:auras.size,auraPool:auraPool.length,
       geometries:ownedGeometry.length,materials:ownedMaterial.length,time:elapsed,airDropHeight:AIR_DROP_HEIGHT,airDropFlight:AIR_DROP_FLIGHT,pendingImpactCallbacks:pendingImpacts.length,projectileForward:'+Z',...stats};
   }
-  return {burst,wave,melee,shot,pulse,airDrop,powerImpact,aura,removeAura,updateAura,projectile,updateProjectile,update,clear,dispose:()=>clear(true),diagnostics};
+  function batchMeshes(){const meshes=[];root.traverseVisible(o=>{if(o.isMesh&&o.userData.comicBatch)meshes.push(o);});return meshes;}
+  return {burst,wave,melee,shot,pulse,airDrop,powerImpact,aura,removeAura,updateAura,projectile,updateProjectile,update,clear,batchMeshes,dispose:()=>clear(true),diagnostics};
 }
 
 /* Camera-ray aiming, straight infection needles and empowered ballistic movement. */

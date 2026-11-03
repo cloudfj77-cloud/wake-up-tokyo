@@ -7,9 +7,64 @@ import * as rules from './rules.js';
 import * as T from 'three';
 import {createTokyoNavigation} from './tokyo/navigation.js';
 import {selectedMap} from './maps.js';
-import {TOKYO_FOG,TOKYO_LOOK,createTokyoPopulation,populationZone,advanceTutorial,tutorialActive,tutorialTarget,tokyoObjective} from './tokyo/gameplay.js';
+import {OutlineFilter} from './outline-filter.js';
+import {batchStaticScene} from './tokyo/render-batches.js';
+import {createRenderBudget} from './runtime-performance.js';
+import {TOKYO_FOG,TOKYO_LOOK,createTokyoPopulation,populationZone,populationSector,advanceTutorial,tutorialActive,tutorialTarget,tokyoObjective} from './tokyo/gameplay.js';
 const data=JSON.parse(readFileSync(new URL('./assets/scenes/tokyo-navigation.json',import.meta.url))),nav=createTokyoNavigation(data);
 const sha=s=>createHash('sha256').update(s).digest('hex');
+test('static normal batches preserve every transform, merge different materials and restore color-pass visibility',()=>{
+ const root=new T.Group(),section=new T.Group();root.add(section);section.position.set(2,3,4);const geometry=new T.BoxGeometry(1,2,1),meshes=[];
+ for(let i=0;i<3;i++){const mesh=new T.Mesh(geometry,new T.MeshStandardMaterial({color:i+1}));mesh.position.set(i*2,0,-i);section.add(mesh);meshes.push(mesh);}
+ root.updateMatrixWorld(true);const expected=meshes.map(m=>m.matrix.clone()),batches=batchStaticScene(root),normal=section.getObjectByName('Static_Normal_Pass');
+ assert.equal(normal.children.length,1,'normal rendering must not retain one draw group per color material');
+ const batch=normal.children[0];assert.equal(batch.instanceCount,meshes.length);
+ for(let i=0;i<meshes.length;i++)assert.ok(batch.getMatrixAt(i,new T.Matrix4()).elements.every((value,j)=>Math.abs(value-expected[i].elements[j])<1e-6));
+ assert.equal(normal.visible,false);batches.normalPass.begin();assert.equal(normal.visible,true);assert.ok(meshes.every(m=>!m.visible));
+ batches.normalPass.end();assert.equal(normal.visible,false);assert.ok(meshes.every(m=>m.visible));
+ batches.updateDetailVisibility(new T.Vector3(1000,1000,1000));for(let i=0;i<3;i++)assert.equal(batch.getVisibleAt(i),false);
+});
+test('60 FPS render budget adapts during sustained very slow combat frames without reacting to a tab stall',()=>{
+ const budget=createRenderBudget(1.5,.85),changes=[];
+ for(let i=0;i<150;i++){const ratio=budget.sample(120);if(ratio!=null)changes.push(ratio);}
+ assert.deepEqual(changes,[1.25,1,.85]);
+ for(let i=0;i<5;i++)assert.equal(budget.sample(1000),null);
+ const moderate=createRenderBudget(1.25,.85),smaller=[];for(let i=0;i<350;i++){const r=moderate.sample(21);if(r!=null)smaller.push(r);}
+ assert.ok(smaller.length>0,'a persistent 48 FPS must still adapt toward the 60 FPS target');
+ const busy=createRenderBudget(1.5,.85);for(let i=0;i<400;i++)busy.sample(30,25);const floor=[];for(let i=0;i<1800;i++){const r=busy.sample(16.67,15);if(r!=null)floor.push(r);}assert.equal(floor.length,0,'60 FPS without spare drawing time must not raise resolution and cause another slowdown');
+});
+test('render budget reacts to sustained slow frames, keeps native resolution and ignores startup or tab stalls',()=>{
+ const budget=createRenderBudget(1.5),changes=[];
+ for(let i=0;i<50;i++)assert.equal(budget.sample(1000),null);
+ for(let i=0;i<80;i++)assert.equal(budget.sample(33),null);
+ for(let i=0;i<240;i++){const ratio=budget.sample(33);if(ratio!=null)changes.push(ratio);}
+ assert.deepEqual(changes,[1.25,1]);
+ for(let i=0;i<1400;i++){const ratio=budget.sample(16.67);if(ratio!=null)changes.push(ratio);}
+ assert.equal(changes.at(-1),1.125,'quality only recovers after a long smooth interval');
+ const native=createRenderBudget(1);for(let i=0;i<400;i++)assert.equal(native.sample(40),null);
+});
+test('normal rendering reuses color-pass shadows and transforms, restoring state even after a failed pass',()=>{
+ for(const fail of [false,true]){
+  const transparent={isSprite:true,visible:true},original=new T.MeshStandardMaterial(),opaque=new T.Mesh(new T.BoxGeometry(),[original,original]),scene={matrixWorldAutoUpdate:true,background:'original',overrideMaterial:null,traverse(fn){fn(transparent);fn(opaque);}};
+  let renders=0,shadows=0,transforms=0;
+  const renderer={shadowMap:{autoUpdate:true,needsUpdate:true},getContext:()=>({}),getDrawingBufferSize:v=>v.set(1280,720),setRenderTarget(){},render(s){renders++;if(this.shadowMap.autoUpdate||this.shadowMap.needsUpdate)shadows++;if(s.matrixWorldAutoUpdate)transforms++;if(renders===2){assert.equal(transparent.visible,false);if(fail)throw Error('normal pass failed');}}};
+  const filter=new OutlineFilter(renderer);filter.resize=()=>{};filter.color={texture:{}};filter.normal={};
+  if(fail)assert.throws(()=>filter.render(scene,{}),/normal pass failed/);else assert.equal(filter.render(scene,{}),filter.color.texture);
+  assert.equal(renders,2);assert.equal(shadows,1);assert.equal(transforms,1);
+  assert.deepEqual(renderer.shadowMap,{autoUpdate:true,needsUpdate:true});assert.equal(scene.matrixWorldAutoUpdate,true);assert.equal(scene.overrideMaterial,null);assert.equal(scene.background,'original');assert.equal(transparent.visible,true);assert.deepEqual(opaque.material,[original,original]);
+ }
+});
+
+test('static glass keeps transparent sorting and stays out of normal batches',()=>{
+ const root=new T.Group(),section=new T.Group();root.add(section);const geometry=new T.PlaneGeometry(1,2),material=new T.MeshStandardMaterial({transparent:true,opacity:.25,side:T.DoubleSide});for(let i=0;i<20;i++){const mesh=new T.Mesh(geometry,material);mesh.position.z=-i;section.add(mesh);}const result=batchStaticScene(root),batch=section.getObjectByName('Static_Material_Batch');assert.ok(batch.isBatchedMesh);assert.equal(batch.sortObjects,true);assert.equal(batch.material,material);assert.equal(result.sourceCount,20);assert.equal(section.getObjectByName('Static_Normal_Pass').children.length,0);result.normalPass.begin();assert.equal(batch.visible,false);result.normalPass.end();assert.equal(batch.visible,true);
+});
+
+test('opaque street visibility reuses draw lists and retains off-camera shadow casters',()=>{
+ const root=new T.Group(),section=new T.Group();root.add(section);const geometry=new T.BoxGeometry(),material=new T.MeshStandardMaterial();for(const x of [1,2,100,101,-100,-101]){const m=new T.Mesh(geometry,material);m.position.set(x,0,-10);section.add(m);}const result=batchStaticScene(root),normals=section.getObjectByName('Static_Normal_Pass').children;assert.equal(normals.length,1);const b=normals[0];assert.equal(b.instanceCount,6);assert.equal(b.perObjectFrustumCulled,false);assert.equal(b.sortObjects,false);
+ const camera=new T.PerspectiveCamera();camera.updateMatrixWorld(true);result.updateVisibility(camera);const visible=Array.from({length:6},(_,i)=>b.getVisibleAt(i));assert.deepEqual(visible,[true,true,false,false,false,false]);b.onBeforeRender({},null,camera,b.geometry,b.material);const version=b._indirectTexture.version;result.updateVisibility(camera);b.onBeforeRender({},null,camera,b.geometry,b.material);assert.equal(b._indirectTexture.version,version,'unchanged static commands must be reused');
+ b.onBeforeShadow({},null,camera,camera,b.geometry,b.material);assert.ok(Array.from({length:6},(_,i)=>b.getVisibleAt(i)).every(Boolean));b.onAfterShadow({},null,camera,camera,b.geometry,b.material);assert.deepEqual(Array.from({length:6},(_,i)=>b.getVisibleAt(i)),visible);
+ camera.position.x=100;camera.updateMatrixWorld(true);result.updateVisibility(camera);assert.equal(b.getVisibleAt(2),true);assert.equal(b.getVisibleAt(0),false);
+});
 test('Wake Up shaders, lights and passes remain unchanged; only Tokyo fog and approved color profile are adjusted',()=>{
  const baseline=JSON.parse(readFileSync(new URL('./verification/tokyo-render-baseline.json',import.meta.url)));
  for(const f of ['toon-filter.js','outline-filter.js','camera-cutaway.js'])assert.equal(sha(readFileSync(new URL(f,import.meta.url))),baseline.sha256[f],f);
@@ -34,23 +89,23 @@ test('spawn, boss arena and mission sites have usable floor clearance',()=>{
  }
 });
 
-test('initial and replenished populations remain underground, respect regions and avoid overlap',()=>{
+test('initial and replenished populations cover public streets and underground floors without overlaps',()=>{
  const pop=createTokyoPopulation(nav),units=[];
- assert.deepEqual(new Set(pop.spots.map(p=>p.zone)),new Set(['plaza','hall','platform']));
+ assert.deepEqual(new Set(pop.spots.map(p=>p.zone)),new Set(['plaza','hall','platform','street']));
  for(let cycle=0;cycle<4;cycle++){
   for(let region=0;region<4;region++)for(let i=0;i<14;i++){
    const p=pop.spawn({region,units,player:{x:5,z:8},random:()=>((i*13+cycle*7)%57)/57});
-   assert.ok(p);assert.ok(populationZone(p));assert.ok(p.floorY<.25);
+   assert.ok(p);assert.ok(populationZone(p));assert.ok(p.floorY<3.7);
    assert.equal((p.x>=0?1:0)+(p.z>=0?2:0),region);
    assert.ok(units.every(u=>Math.abs(u.floorY-p.floorY)>1||Math.hypot(u.x-p.x,u.z-p.z)>=1.15));
    units.push(p);
   }units.length=0;
  }
- for(const zone of ['plaza','hall','platform']){
+ for(const zone of ['plaza','hall','platform','street']){
   const u={...pop.spots.find(p=>p.zone===zone)};
   for(let i=0;i<15;i++){const p=pop.wander(u);assert.equal(populationZone(p),zone);Object.assign(u,p);}
  }
- assert.equal(pop.spawn({accept:()=>false}),null,'never falls back to upstairs streets');
+ assert.equal(pop.spawn({accept:()=>false}),null,'never ignores spawn acceptance or uses roofs');
 });
 test('tutorial requires real movement, conversion and every landing on the correct floor; save resumes',()=>{
  const route={move:{x:3,z:8,floorY:-3.85},worker:{x:1,z:8,floorY:-3.85},exit:[{x:-3,z:9,floorY:-3.85},{x:-7,z:9,floorY:-1.65},{x:3,z:5,floorY:0}]};
@@ -78,7 +133,7 @@ test('real initial population and refill callers keep actor heights and leave on
  assert.equal(ctx.units.length,58);assert.equal(ctx.units.filter(u=>u.tutorialWorker&&u.stationary).length,1);
  assert.ok(ctx.units.every(u=>populationZone(u)));
 });
-test('legacy saves retain progression but migrate people and player to underground floors',()=>{
+test('legacy saves retain progression and valid street populations',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),saved={version:11,state:rules.makeState(),player:{x:40,z:20,floorY:3.3,y:0},units:[rules.makeUnit(1,0,40,20,true),rules.makeUnit(2,1,42,20)] ,objects:[]};
  saved.units[1].converted=true;saved.units.forEach(u=>u.floorY=3.3);saved.state.infected=9;
  const pop=createTokyoPopulation(nav),ctx=vm.createContext({...rules,T,populationZone,saved,world:{tutorial:{},populationSpot:pop.spawn,nearest:nav.nearest},sprayMarkers:new Map(),chargeMarkers:new Map(),visuals:new Map(),spawnQueue:{jobs:[]},recentSpawnPoints:[]});
@@ -132,11 +187,12 @@ test('Tokyo colors brighten midtones and reduce saturation without changing shad
 
 test('tutorial runs civilian walking on authored floors without running enemy combat AI',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
- const pop=createTokyoPopulation(nav),spot=pop.spots.find(p=>p.zone==='platform'&&p.x>5);
+ const testNav=createTokyoNavigation(data),pop=createTokyoPopulation(testNav),spot=pop.spots.find(p=>p.zone==='platform'&&p.x>5),wander=u=>pop.wander(u,{random:()=>.5});
  const walker={...spot,id:1,kind:'human',attackCd:0,hurt:0},worker={...spot,x:1,id:2,kind:'human',stationary:true,attackCd:0,hurt:0};
  const enemy={...spot,id:3,kind:'guard',attackCd:9,hurt:0};const units=[walker,worker,enemy];
- const ctx=vm.createContext({aiStart:0,ENEMIES:rules.ENEMIES,units,player:{x:5,z:8},TUNE:{activity:{shambleSpeed:1}},visuals:new Map(),world:{multilevel:true,waypoint:nav.waypoint,populationTarget:pop.wander},
-  isMechanical:()=>false,distance:(a,b)=>Math.hypot(a.x-b.x,a.z-b.z),move:(u,x,z)=>{u.x+=x;u.z+=z;return true;},civilianMoveTarget:pop.wander});
+ // 使用独立导航预算和固定目的地种子，避免上一个用例的预算、随机短路线影响本用例。
+ const ctx=vm.createContext({aiStart:0,ENEMIES:rules.ENEMIES,units,player:{x:5,z:8},TUNE:{activity:{shambleSpeed:1}},visuals:new Map(),world:{multilevel:true,waypoint:testNav.waypoint,beginNavigationFrame:testNav.beginNavigationFrame,populationTarget:wander},
+  isMechanical:()=>false,distance:(a,b)=>Math.hypot(a.x-b.x,a.z-b.z),move:(u,x,z)=>{u.x+=x;u.z+=z;return true;},civilianMoveTarget:wander});
  vm.runInContext(source.slice(source.indexOf('const CROWD_CELL='),source.indexOf('function civilianMoveTarget'))+source.slice(source.indexOf('function runAI('),source.indexOf('function dropActorVisual')),ctx);
  const start={...walker};for(let i=0;i<60;i++)vm.runInContext('runAI(1/60,true)',ctx);
  assert.ok(Math.hypot(walker.x-start.x,walker.z-start.z)>.2);assert.equal(walker.floorY,-3.85);
@@ -153,4 +209,147 @@ test('navigation budget rotates fairly across the whole crowd instead of freezin
  vm.runInContext(source.slice(source.indexOf('const CROWD_CELL='),source.indexOf('function civilianMoveTarget'))+source.slice(source.indexOf('function runAI('),source.indexOf('function dropActorVisual')),ctx);
  for(let i=0;i<108;i++)vm.runInContext('runAI(.04,true)',ctx);
  assert.ok(units.every(u=>u.z>.03),'each actor must receive navigation time, including the end of the list');
+});
+
+test('converted actors keep their own target selection, chase speed and attack during the tutorial',()=>{
+ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),ally=rules.makeUnit(99,0,0,8,false);
+ Object.assign(ally,{kind:'ally',converted:true,floorY:-3.85});
+ const near=rules.makeUnit(10,1,8,8),far=rules.makeUnit(11,1,15,8);near.floorY=far.floorY=-3.85;
+ const attacks=[],targets=[],ctx=vm.createContext({...rules,ALLY_VIEW:22,units:[ally,near,far],player:{x:-12,z:8,floorY:-3.85},boss:{active:false},state:{hp:100,maxHp:100},squadIds:new Set(),visuals:new Map(),
+  world:{multilevel:true,towers:[],clear:()=>true,populationTarget:u=>u,waypoint(u,x,z,floorY){if(u===ally)targets.push({x,z,floorY});return {x,z,floorY};}},
+  move:(u,x,z)=>{u.x+=x;u.z+=z;return true;},tickPurifier:()=>null,showHostilePose(){},allyFire:(u,spec,victim)=>attacks.push(victim.id)});
+ vm.runInContext(source.slice(source.indexOf('const CROWD_CELL='),source.indexOf('function dropActorVisual(')),ctx);
+ vm.runInContext('runAI(.05,true)',ctx);
+ assert.equal(targets[0].x,near.x,'nearest valid hostile must win over the player position');
+ assert.ok(Math.abs(ally.x-rules.TUNE.activity.chaseSpeed*.05)<.001,'configured chase speed must be preserved');
+ for(let i=0;i<120&&!attacks.length;i++)vm.runInContext('runAI(.05,true)',ctx);
+ assert.equal(attacks[0],near.id,'tutorial must not suppress the converted actor attack state machine');
+ assert.ok(ally.x>0,'ordinary infected actor must not follow the player behind it');
+});
+
+test('conversion clears civilian stationary flags and stale wander destinations',()=>{
+ const state=rules.makeState(),u=rules.makeUnit(1,0,5,8);
+ u.stationary=true;u.tokyoDestination={x:5,z:8,floorY:-3.85};u.roamFloor=0;u.roamStillTime=3;
+ assert.equal(rules.convert(state,u),true);assert.equal(u.stationary,false);assert.equal(u.tokyoDestination,undefined);
+ assert.equal(u.wander,0);assert.equal(u.roamFloor,undefined);assert.equal(u.roamStillTime,0);
+});
+
+test('awakened wander ignores old civilian zones and stationary records',()=>{
+ const pop=createTokyoPopulation(nav);
+ for(const p of [{x:5,z:8,floorY:-3.85},{x:-19.4,z:-8.4,floorY:0},{x:-7.15,z:9.35,floorY:-1.65}]){
+  const u={...p,kind:'ally',converted:true,stationary:true,tokyoDestination:{x:p.x,z:p.z,floorY:p.floorY}};
+  const goal=pop.wander(u,{radius:34,random:()=>.37});
+  assert.equal(u.stationary,false);assert.ok(Math.hypot(goal.x-u.x,goal.z-u.z)>1,'must find a destination even outside the old civilian zone');
+  assert.equal(goal.freeRoam,true);assert.ok(populationZone(goal));
+ }
+});
+
+test('idle roam replaces a blocked destination instead of waiting forever',()=>{
+ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),u=rules.makeUnit(99,0,0,0,false);
+ u.converted=true;u.kind='ally';let picks=0;
+ const ctx=vm.createContext({...rules,ALLY_VIEW:22,units:[u],player:{x:-10,z:0},boss:{active:false},state:{hp:100,maxHp:100},squadIds:new Set(),visuals:new Map(),
+  world:{multilevel:true,towers:[],populationTarget(u){if(!u.tokyoDestination)u.tokyoDestination={x:4+(picks++%3),z:0,floorY:0,freeRoam:true};return u.tokyoDestination;},waypoint:u=>u}});
+ vm.runInContext(source.slice(source.indexOf('const CROWD_CELL='),source.indexOf('function dropActorVisual(')),ctx);
+ for(let i=0;i<70;i++)vm.runInContext('runAI(.05)',ctx);
+ assert.ok(picks>=2,'blocked wander destination must be abandoned and replaced');
+});
+
+test('idle roam keeps its speed while routes warm up and crosses short waypoints in the same frame',()=>{
+ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
+ for(const pending of [true,false]){
+  const u={id:99,x:0,z:0,floorY:0,facingYaw:0};
+  const ctx=vm.createContext({world:{waypoint:u=>pending?u:{x:u.x,z:u.z+.03},canMove:(u,x,z)=>x>=-.2&&x<=.2},
+   move(u,x,z){u.x+=x;u.z+=z;return true;}});
+  vm.runInContext(source.slice(source.indexOf('function moveAwakeTravel('),source.indexOf('function attackHasLine(')),ctx);
+  ctx.u=u;
+  // 每帧都检查真实位移，不能仅凭最终走远了判断连续运动。
+  for(let i=0;i<60;i++){
+   const z=u.z;assert.equal(vm.runInContext('moveAwakeTravel(u,{x:0,z:30,floorY:0},3.8,.04)',ctx),true);
+   assert.ok(Math.abs(u.z-z-3.8*.04)<.00001,'route preparation or a short waypoint must not insert an idle frame');
+  }
+ }
+});
+
+test('continuous roam turns away from real walls while waiting for navigation',()=>{
+ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),u={id:99,x:0,z:0,floorY:0,facingYaw:0};
+ const canMove=(u,x,z)=>Math.abs(x)<2&&z<=.1;
+ const ctx=vm.createContext({u,world:{waypoint:u=>u,canMove},move(u,x,z){assert.ok(canMove(u,u.x+x,u.z+z),'cannot cross the wall to keep moving');u.x+=x;u.z+=z;return true;}});
+ vm.runInContext(source.slice(source.indexOf('function moveAwakeTravel('),source.indexOf('function attackHasLine(')),ctx);
+ assert.equal(vm.runInContext('moveAwakeTravel(u,{x:0,z:10,floorY:0},3.8,.04)',ctx),true);
+ assert.ok(Math.abs(u.x)>.1,'must turn into open space instead of waiting against the wall');assert.ok(u.z<=.1);
+});
+
+test('a blocked pursuit waypoint leaves movement time available for a safe turn',()=>{
+ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),u={id:99,x:0,z:0,floorY:0,facingYaw:0};
+ const ctx=vm.createContext({u,world:{waypoint:()=>({x:0,z:5}),canMove:(u,x,z)=>z<=.01},
+  move(u,x,z){if(z>0)return false;u.x+=x;u.z+=z;return Math.hypot(x,z)>.001;}});
+ vm.runInContext(source.slice(source.indexOf('function moveAwakeTravel('),source.indexOf('function attackHasLine(')),ctx);
+ assert.equal(vm.runInContext('moveAwakeTravel(u,{x:0,z:5,floorY:0},3.6,.04)',ctx),true);
+ assert.ok(Math.hypot(u.x,u.z)>.14,'a blocked step must not consume the frame without moving');
+});
+
+test('all four outer roads receive both civilians and patrols at normal population quotas',()=>{
+ const pop=createTokyoPopulation(nav),units=[];let seed=17;const random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
+ for(let region=0;region<4;region++)for(const [type,count]of [[0,rules.TUNE.difficulty.civiliansPerRegion],[1,rules.TUNE.difficulty.patrolsPerRegion]])for(let i=0;i<count;i++){
+  const p=pop.spawn({region,type,units,player:{x:5,z:8,floorY:-3.85},random});assert.ok(p);units.push({...p,type});
+ }
+ for(const side of ['north','south','east','west'])for(const type of [0,1])assert.ok(units.some(u=>u.type===type&&populationSector(u)==='street-'+side),`missing ${type} at ${side}`);
+ assert.ok(units.some(u=>u.zone==='plaza'));assert.ok(units.some(u=>u.zone==='platform'));
+ assert.ok(pop.spots.every(p=>p.floorY<3.7));
+});
+test('street reinforcements appear near the player on their deck instead of in the underground plaza',()=>{
+ const pop=createTokyoPopulation(nav);
+ for(const [x,z]of [[-50,-30],[68,25],[20,-50],[25,45]]){
+  const player=nav.nearest(x,z,.65,3.3),p=pop.spawn({type:2,nearPlayer:true,player,random:()=>.23});assert.ok(p);
+  assert.ok(Math.hypot(p.x-player.x,p.z-player.z)>=8&&Math.hypot(p.x-player.x,p.z-player.z)<=34);assert.ok(Math.abs(p.floorY-player.floorY)<.5);
+ }
+ const player=nav.nearest(5,8,.65,-3.85),p=pop.spawn({type:1,nearPlayer:true,player,random:()=>.23});assert.ok(p);assert.ok(Math.abs(p.floorY-player.floorY)<.5,'rushing soldiers can spawn on the platform too');
+});
+test('unrelated frame work cannot expire navigation before the first actor query',t=>{
+ let now=0;t.mock.method(performance,'now',()=>now);
+ const local=createTokyoNavigation({bounds:{minX:0,maxX:4,minZ:0,maxZ:1},step:1,width:4,depth:1,nodes:[[0,0,0,[1]],[1,0,0,[0,2]],[2,0,0,[1,3]],[3,0,0,[2]]]});
+ local.beginNavigationFrame();now+=12;
+ const p=local.waypoint({x:.5,z:.5,floorY:0},2.5,.5,0);assert.ok(p.x>.5,'actor froze because collision/animation work used the wall-clock deadline');
+});
+test('a cached ground-floor destination is not reused for an overlapping upper-floor target',t=>{
+ let now=0;t.mock.method(performance,'now',()=>now);
+ const local=createTokyoNavigation({bounds:{minX:0,maxX:4,minZ:0,maxZ:1},step:1,width:4,depth:1,nodes:[[0,0,0,[1]],[1,0,0,[0]],[1,0,3,[]]]}),u={x:.5,z:.5,floorY:0};
+ local.beginNavigationFrame();assert.ok(local.waypoint(u,1.5,.5,0).x>.5);
+ assert.equal(local.waypoint(u,1.5,.5,3).x,.5,'different deck must not reuse a straight ground-floor route');
+});
+test('busy-frame enemies can climb from the platform and navigate to an outer street',t=>{
+ let now=0;t.mock.method(performance,'now',()=>now);const local=createTokyoNavigation(data),u=local.nearest(5,8,.2,-3.85),goal=local.nearest(40,25,.2,3.3);
+ let distance=Infinity;
+ for(let i=0;i<6000;i++){
+  now+=16;local.beginNavigationFrame();now+=8;const p=local.waypoint(u,goal.x,goal.z,goal.floorY),d=Math.hypot(p.x-u.x,p.z-u.z);
+  if(d>.001){const step=Math.min(.12,d),x=u.x+(p.x-u.x)/d*step,z=u.z+(p.z-u.z)/d*step;assert.ok(local.canMove(u,x,z));u.floorY=local.heightAt(x,z,u.floorY);u.x=x;u.z=z;}
+  distance=Math.hypot(u.x-goal.x,u.z-goal.z);if(distance<.4&&Math.abs(u.floorY-goal.floorY)<.3)break;
+ }
+ assert.ok(distance<.4&&Math.abs(u.floorY-goal.floorY)<.3,`stalled ${distance} m away on ${u.floorY}`);
+});
+
+test('outer-road patrols persist when far away while rush troops still recycle',()=>{
+ const source=readFileSync(new URL('./main.js',import.meta.url),'utf8');
+ const patrol=rules.makeUnit(1,1,75,40,true),rusher=rules.makeUnit(2,1,70,40,false),civilian=rules.makeUnit(3,0,72,42,true);patrol.rush=false;rusher.rush=true;
+ const ctx=vm.createContext({...rules,world:{multilevel:true},units:[patrol,rusher,civilian],player:{x:-50,z:-30},releaseActor(){}});
+ vm.runInContext(source.slice(source.indexOf('function cullFarTroops(){'),source.indexOf('function rememberSpawn('))+'cullFarTroops();',ctx);
+ assert.deepEqual(ctx.units.map(u=>u.id),[1,3]);
+});
+
+test('moving targets within the same reachable area reuse navigation fields',t=>{
+ let now=0;t.mock.method(performance,'now',()=>now);const local=createTokyoNavigation(data),u=local.nearest(5,8,.2,-3.85);
+ for(let i=0;i<20;i++){now+=16;local.beginNavigationFrame();const p=local.nearest(39+(i%4)*.3,25,.2,3.3);local.waypoint(u,p.x,p.z,p.floorY);}
+ assert.ok(local.navigationStats().fields<5,'small target movement should not fill all 12 map-wide fields');
+});
+
+test('patrols chasing across region boundaries do not create endless replacement patrols',()=>{
+ const state=rules.makeState(),units=[];
+ for(let region=0;region<4;region++)for(const [type,count]of [[0,rules.TUNE.difficulty.civiliansPerRegion],[1,rules.TUNE.difficulty.patrolsPerRegion]])for(let i=0;i<count;i++){
+  const u=rules.makeUnit(units.length,type,10,10,true);u.populationRegion=region;units.push(u);
+ }
+ const plan=rules.spawnPlan(state,units,()=>.5,{x:10,z:10},{includeThreat:false});assert.equal(plan.jobs.length,0);
+});
+test('recycled actor records drop old floor destinations and population bookkeeping',()=>{
+ const u=rules.makeUnit(1,1,-40,-40,true);u.populationRegion=0;u.tokyoDestination={x:-45,z:-40,floorY:3.3};u.tutorialWorker=true;
+ rules.resetUnit(u,2,0,65,45,true);assert.equal(u.populationRegion,undefined);assert.equal(u.tokyoDestination,undefined);assert.equal(u.tutorialWorker,undefined);
 });

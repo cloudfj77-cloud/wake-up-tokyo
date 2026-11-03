@@ -1,6 +1,6 @@
 {
   "name": "wake-up-tokyo",
-  "version": "0.3.60",
+  "version": "0.3.70",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5200 --strictPort",
@@ -8,7 +8,7 @@
     "serve": "node scripts/serve.mjs 5310 dist",
     "local": "npm run build && node scripts/serve.mjs 5310 dist",
     "build:single": "vite build --config vite.config.single.js && node scripts/inline-single.mjs",
-    "test": "node --test rules.test.js characters.test.js character-loading.test.mjs package-performance.test.mjs wwise-stream.test.mjs terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js music.test.js music-director.test.mjs sfx-director.test.mjs design-regression.test.js package-merge.test.js pr19-regression.test.js launcher.test.js tidewater.test.js kindling.test.js reinforcement.test.js combat-ui.test.js hit-response.test.js feedback-visibility.test.js camera-cutaway.test.js police-props.test.js comic-intro.test.js tokyo.test.js objective-feedback.test.js syringe.test.js native-audio-package.test.mjs",
+    "test": "node --test rules.test.js characters.test.js character-loading.test.mjs package-performance.test.mjs wwise-stream.test.mjs terrain.test.js pointer-lock.test.js mixamo.test.js pr11-regression.test.js combat-regression.test.js music.test.js music-director.test.mjs sfx-director.test.mjs design-regression.test.js package-merge.test.js pr19-regression.test.js launcher.test.js tidewater.test.js kindling.test.js reinforcement.test.js combat-ui.test.js hit-response.test.js feedback-visibility.test.js camera-cutaway.test.js police-props.test.js comic-intro.test.js tokyo.test.js tokyo-physical.test.js objective-feedback.test.js syringe.test.js native-audio-package.test.mjs character-detail.test.js static-shadow-cache.test.js rigid-detail.test.js actor-render-batches.test.js render-resources.test.mjs",
     "package:local": "npm run build && node scripts/package-local.mjs",
     "predev": "node scripts/wwise/runtime-catalog.mjs",
     "wwise:sync": "node scripts/wwise/sync-runtime.mjs",
@@ -18,6 +18,7 @@
     "test:audio:native": "node --test native-audio-package.test.mjs"
   },
   "dependencies": {
+    "meshoptimizer": "^1.3.0",
     "three": "^0.180.0",
     "vite": "^7.1.7"
   },

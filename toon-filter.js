@@ -56,19 +56,20 @@ out vec4 o0;
 
 vec3 fetch(vec2 uv){ return texture(tColor, clamp(uv, vec2(0.0), vec2(1.0))).rgb; }
 
-// 一个象限的均值与方差（用亮度方差衡量更稳，这里用三通道和近似）
-void quadrant(vec2 uv, int x0, int x1, int y0, int y1, out vec3 mean, out float sigma){
-  vec3 s = vec3(0.0), s2 = vec3(0.0);
-  float n = 0.0;
-  for (int y = y0; y <= y1; y++) {
-    for (int x = x0; x <= x1; x++) {
-      vec3 c = fetch(uv + vec2(float(x), float(y)) * uTexel);
-      s += c; s2 += c * c; n += 1.0;
-    }
-  }
-  mean = s / n;
-  vec3 v = abs(s2 / n - mean * mean);
-  sigma = v.r + v.g + v.b;
+// 四个象限共享中心行列的采样；采样位置和各象限累加顺序保持一致，37 次颜色读取降为 25 次。
+void quadrants(vec2 uv,vec3 center,out vec3 m0,out vec3 m1,out vec3 m2,out vec3 m3,out float v0,out float v1,out float v2,out float v3){
+ vec3 a0=vec3(0.0),a1=vec3(0.0),a2=vec3(0.0),a3=vec3(0.0);
+ vec3 b0=vec3(0.0),b1=vec3(0.0),b2=vec3(0.0),b3=vec3(0.0);
+ for(int y=-R;y<=R;y++)for(int x=-R;x<=R;x++){
+  vec3 c=(x==0&&y==0)?center:fetch(uv+vec2(float(x),float(y))*uTexel),c2=c*c;
+  if(x>=0&&y<=0){a0+=c;b0+=c2;}
+  if(x<=0&&y<=0){a1+=c;b1+=c2;}
+  if(x<=0&&y>=0){a2+=c;b2+=c2;}
+  if(x>=0&&y>=0){a3+=c;b3+=c2;}
+ }
+ float n=float((R+1)*(R+1));m0=a0/n;m1=a1/n;m2=a2/n;m3=a3/n;
+ vec3 s0=abs(b0/n-m0*m0),s1=abs(b1/n-m1*m1),s2=abs(b2/n-m2*m2),s3=abs(b3/n-m3*m3);
+ v0=s0.r+s0.g+s0.b;v1=s1.r+s1.g+s1.b;v2=s2.r+s2.g+s2.b;v3=s3.r+s3.g+s3.b;
 }
 
 vec3 nrm(vec2 uv){ return texture(tNormal, uv).xyz * 2.0 - 1.0; }
@@ -86,10 +87,7 @@ void main(){
   vec3 src = fetch(uv);
 
   vec3 m0, m1, m2, m3; float s0, s1, s2, s3;
-  quadrant(uv,  0,  R, -R,  0, m0, s0);
-  quadrant(uv, -R,  0, -R,  0, m1, s1);
-  quadrant(uv, -R,  0,  0,  R, m2, s2);
-  quadrant(uv,  0,  R,  0,  R, m3, s3);
+  quadrants(uv,src,m0,m1,m2,m3,s0,s1,s2,s3);
 
   // 取方差最小的象限：平坦处直接抹平，边缘处保留跳变，块面感就出来了
   vec3 painted = m0; float best = s0;

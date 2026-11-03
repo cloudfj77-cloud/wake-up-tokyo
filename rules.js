@@ -359,6 +359,9 @@ export function resetUnit(u,id,type,x,z,city=true,profession=0){
  const t=ENEMIES[type];
  u.id=id;u.type=type;u.x=x;u.z=z;u.city=city;u.profession=profession;
  u.kind=type===0?'human':'guard';
+ // 回收的人物可能换了区域与身份，不能带着上一轮的巡逻归属和散步目标。
+ u.populationRegion=undefined;u.tokyoDestination=undefined;u.tutorialWorker=undefined;
+ u.roamFloor=undefined;u.roamGoalValid=false;u.roamStillTime=0;u.roamAvoid=undefined;
  u.hp=t.hp;u.maxHp=t.hp;u.infection=0;u.threshold=t.threshold;
  u.corpseTime=0;u.dead=false;u.converted=false;u.tagged=false;u.explosionPending=false;
  u.attackCd=Math.random();u.wander=0;u.tx=x;u.tz=z;u.purified=0;u.hurt=0;
@@ -425,6 +428,8 @@ export function convert(j, A) {
     D !== A.type && (A.type = D, A.threshold = ENEMIES[D].threshold, N = true);
   }
   const I = allyTemplate(A.type);
+  // 觉醒后清除普通行人的驻留和旧路线；空闲时从当前位置重新开始自主游走。
+  A.stationary=false;A.tokyoDestination=undefined;A.roamFloor=undefined;A.roamGoalValid=false;A.roamStillTime=0;A.roamAvoid=undefined;
   return A.ingressTime = 0, A.ingressGoal = null, A.ingressCull = 0, A.converted = true, A.kind = "ally", A.maxHp = I.hp, A.hp = M ? Math.ceil(I.hp * 0.6) : I.hp, A.atk = I.atk, A.aiming = false, A.aim = 0, A.sprayPhase = "", A.chargePhase = "", A.knock = 0, A.attackCd = 0.15, A.hurt = 0, A.corpseTime = 0, A.infection = A.threshold, A.wander = 0, A.tagged = false, A.root = 0, A.parasite = false, A.slow = false, A.logicWait = 0, A.logicElapsed = 0, A.mistTick = 0, A.promoted = N, j.abilities.evolve >= 3 && !N && applyRankBoost(A), j.abilities.evolve >= 3 && (A.surge = 5), true;
 }
 export function hit(s,u,infection,damage,fromFront=false,fromArmy=false){
@@ -491,7 +496,7 @@ const DOT_RATE=[0,1,2,3];
 // 同类净化光环不叠加：旁边站几个净化士兵，也只按其中最强的一个清感染。
 // 单个是每 0.5 秒 2 点，也就是每秒 4 点。再多几个也不会把空气传播整段抵消掉。
 export const PURIFY_MAX=4;
-export function tickInfection(j, A, M, N) {
+export function tickInfection(j, A, M, N, onPassiveInfection) {
   let converted = 0;
   const fireBonus=kindlingMultiplier(j,M);
   const aura = AIR[j.abilities.air] || AIR[0], purifiers = A.filter((u) => !u.dead && u.kind !== "corpse" && u.type === 4);
@@ -540,7 +545,10 @@ export function tickInfection(j, A, M, N) {
     u.slow = !!(j.abilities.dot >= 2 && !corpse && (playerTag || armyTag) && u.infection > 0);
     if (u.root > 0) u.root = Math.max(0, u.root - N);
     if (corpse && !aura.corpse && j.abilities.dot < 2) rate = 0;
+    const beforeInfection=u.infection;
     u.infection = Math.max(0, Math.min(u.threshold, u.infection + (rate - drain) * N + mistGain));
+    // 持续感染、空气光环和气雾照常结算，只把这部分增量交给表现层静默处理。
+    if(u.infection>beforeInfection)onPassiveInfection?.(u,u.infection-beforeInfection);
     u.purified = drain;
     if (u.infection >= u.threshold) {
       if (u.playerInfection) u.fromArmy = false;
@@ -957,7 +965,8 @@ export function spawnPlan(s,units,random=Math.random,origin=null,options={}){
  const civilians=[],patrol=[],rush=[],jobs=[];
  let refillBudget=Math.max(1,Math.floor((civilianTarget+patrolTarget)*d.fodderWaveRatio));
  if(!alert.lost&&options.includeFodder!==false){
-  const stock=(type,region)=>units.filter(u=>live(u)&&u.type===type&&cityRegion(u)===region).length
+  // 立体街区按生成时的归属统计；追击跨区不会凭空产生新的补兵名额。
+  const stock=(type,region)=>units.filter(u=>live(u)&&u.type===type&&(u.populationRegion??cityRegion(u))===region).length
    +queued.filter(j=>j.type===type&&(j.region??cityRegion(origin||{x:0,z:0}))===region).length;
   const needs=[];
   for(let region=0;region<regions;region++){
@@ -1031,7 +1040,7 @@ export function guardMissing(s,units){
  if(!want.count)return 0;
  return Math.max(0,want.count-guardRoster(units));
 }
-export function stepSimulation(s,units,player,dt,mode){
+export function stepSimulation(s,units,player,dt,mode,onPassiveInfection){
  if(mode!=='playing')return;
  s.kindlingTime=Math.max(0,(s.kindlingTime||0)-dt);if(!s.kindlingTime)s.kindlingStacks=0;
  s.time+=dt;s.potionTime=Math.max(0,(s.potionTime||0)-dt);
@@ -1043,7 +1052,7 @@ export function stepSimulation(s,units,player,dt,mode){
  for(const drop of s.airDrops){drop.remaining-=dt;if(drop.remaining<=0)s.airClouds.push({x:drop.x,z:drop.z,time:3});}
  s.airDrops=s.airDrops.filter(d=>d.remaining>0);
  if(s.abilities.air>=3){s.airPulse=(s.airPulse||0)+dt;while(s.airPulse+1e-9>=.5){s.airPulse=Math.max(0,s.airPulse-.5);spawnAirDrop(s,units,player);}}
- tickInfection(s,units,player,dt);
+ tickInfection(s,units,player,dt,onPassiveInfection);
  if(s.abilities.evolve>=2)refreshStats(s);
  releaseFleshTide(s,units,player);
 }
