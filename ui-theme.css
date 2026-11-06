@@ -176,14 +176,26 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 .combatPop.infection b{font-size:32px}.combatPop.infection small{font-size:10px;letter-spacing:1px}
 .combatPop.awaken b{font-size:34px}.combatPop.awaken:before{background:#c58aff}
 .combatImpact.pollutionImpact{width:96px;height:96px}.combatImpact.pollutionImpact.heavy{width:130px;height:130px}
-#infectionFeedback{display:block;top:26%;left:50%;right:auto;bottom:auto;width:min(340px,76vw);padding:24px 20px 18px;transform:translate(-50%,-50%) rotate(-4deg);text-align:center;border:3px solid var(--paper);background:linear-gradient(145deg,#672b87f2,#22112ef2);box-shadow:8px 9px #09090c;clip-path:polygon(3% 4%,96% 0,100% 92%,6% 100%,0 12%);z-index:15}
-#infectionFeedback>.infectionSeal{display:grid;width:100px;height:100px;margin:0 auto 13px;border:3px solid #e7c5ff;background:radial-gradient(circle,#c55bff80 0 38%,#381044 39% 59%,transparent 60%);box-shadow:0 0 20px #c36fff,0 0 48px #8c25d999}
-#infectionFeedback .infectionSeal i{font-size:72px;line-height:1;color:#fff3ff;text-shadow:3px 4px #13071d,0 0 14px #e9b2ff}
-#infectionFeedback>b{font-size:32px;line-height:1.15;letter-spacing:2px;color:var(--paper);text-shadow:3px 4px #0b0610}
-#infectionFeedback>small{display:block;margin-top:7px;font-size:12px;letter-spacing:3px;color:#f0dcff}
-#infectionFeedback.active{animation:awakening-stamp .38s cubic-bezier(.16,1.45,.35,1)}
-@keyframes awakening-stamp{0%{transform:translate(-50%,-50%) rotate(-14deg) scale(.45);filter:brightness(1.8)}55%{transform:translate(-50%,-50%) rotate(2deg) scale(1.12)}100%{transform:translate(-50%,-50%) rotate(-4deg) scale(1);filter:brightness(1)}}
-@media(max-height:600px),(max-width:760px){#infectionFeedback{display:block;top:29%;width:min(280px,70vw);padding:17px 14px 13px}#infectionFeedback>.infectionSeal{width:70px;height:70px;margin-bottom:9px}#infectionFeedback .infectionSeal i{font-size:50px}#infectionFeedback>b{font-size:26px}#infectionFeedback>small{font-size:10px;letter-spacing:2px}}
-@media(prefers-reduced-motion:reduce){#infectionFeedback.active{animation:none}}
+/* 透明圆徽章避开准星；六尖逐个点亮，不再用整块印章遮挡画面。 */
+#infectionFeedback{display:flex;position:absolute;top:73%;left:50%;right:auto;bottom:auto;width:144px;padding:0;transform:translate(-50%,-50%);flex-direction:column;align-items:center;gap:3px;text-align:center;border:0;border-radius:50%;background:none;box-shadow:none;clip-path:none;pointer-events:none;z-index:5;transition:opacity .06s linear}
+#infectionFeedback .conversionSeal{display:block;width:112px;height:112px;overflow:visible;filter:drop-shadow(0 1px 3px #09071066)}
+.conversionSeal .sealDisc{fill:#20152922;stroke:#fff5d07a;stroke-width:1.4}.conversionSeal .sealRim{fill:none;stroke:#d8b7ef38;stroke-width:1}
+.conversionSeal .sealPoint{fill:#e8dbbb14;stroke:#fff4d52e;stroke-width:.8;transition:fill .09s,stroke .09s}
+.conversionSeal .sealPoint .sealFacet{fill:#fff9d00a;stroke:none}
+.conversionSeal .sealPoint.lit{fill:#efd08199;stroke:#fff0b9cc}.conversionSeal .sealPoint.lit .sealFacet{fill:#fff2b44d}
+.conversionSeal .sealCore{fill:#fff1b7a6;stroke:#29202b55;stroke-width:1}
+#infectionFeedback>b{display:block;font-size:15px;line-height:1.2;letter-spacing:2px;color:#fff4d9cc;text-shadow:0 1px 3px #100b18}
+#infectionFeedback>small{display:block;margin:0;font-size:10px;letter-spacing:2px;color:#fff4d999}
+#infectionFeedback.active .conversionSeal{animation:conversion-seal-pop .18s ease-out}
+@keyframes conversion-seal-pop{from{transform:scale(.78) rotate(-12deg);opacity:.25}to{transform:scale(1) rotate(0);opacity:1}}
+#infectionFeed{display:flex;position:absolute;top:210px;right:auto;left:24px;bottom:auto;flex-direction:column;gap:5px;width:194px;max-width:24vw;max-height:min(230px,max(40px,calc(100dvh - 410px)));overflow:hidden;pointer-events:none;text-align:left;font-size:11px}
+#infectionFeed:empty{display:none}
+#infectionFeed>.infectionEntry{box-sizing:border-box;display:grid;gap:3px;flex:none;margin:0;padding:7px 10px;border:0;border-left:2px solid #b478f199;border-radius:0;background:#19121d80;box-shadow:none;animation:conversion-feed-in .18s ease-out}
+#infectionFeed>.infectionEntry.personal{border-left-color:#efd081bb}
+.infectionEntry b{font-size:11px;line-height:1.2;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fffdf2cf}.infectionEntry small{font-size:9px;line-height:1.2;letter-spacing:1px;color:#d5c1dfb3}
+@keyframes conversion-feed-in{from{max-height:0;opacity:0;transform:translateX(14px);padding-top:0;padding-bottom:0}to{max-height:48px;opacity:1;transform:translateX(0)}}
+@media(max-height:600px),(max-width:760px){#infectionFeedback{top:77%;width:108px}#infectionFeedback .conversionSeal{width:76px;height:76px}#infectionFeedback>b{font-size:12px}#infectionFeedback>small{font-size:9px}#infectionFeed{left:12px;width:164px}}
+@media(prefers-reduced-motion:reduce){#infectionFeedback.active .conversionSeal,#infectionFeed>.infectionEntry{animation:none}#infectionFeedback,.conversionSeal .sealPoint{transition:none}}
+
 
 #hud.holdingGun .weaponHeading{display:block}#hud.holdingGun #primaryLabel{display:block;white-space:nowrap}

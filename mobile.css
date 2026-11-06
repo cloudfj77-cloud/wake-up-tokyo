@@ -56,7 +56,7 @@ body.touch-mode{overscroll-behavior:none}
 .touch-mode #abilitySlots .slot{height:24px;min-width:24px;font-size:13px}
 .touch-mode #toast{top:80px;max-width:45vw;font-size:12px}
 .touch-mode #bossHud{top:105px;width:34vw}
-.touch-mode #infectionFeed{display:none}
+.touch-mode #infectionFeed{display:flex;top:84px;left:210px;right:auto;width:140px;max-width:24vw;max-height:min(56px,max(28px,calc(50dvh - 140px)))}.touch-mode #infectionFeed:empty{display:none}
 .touch-mode .dialog{max-height:90dvh;overflow:auto}
 .touch-mode .menuFooter>span{display:none}
 @media(max-height:420px){#touchStick{width:122px;height:122px}.touchActions{transform:scale(.86);transform-origin:bottom right}.touch-mode .objectivePanel{max-height:48px}.touch-mode #cityMap:not(.expanded){width:88px}.touch-mode #cityMap:not(.expanded) canvas{width:76px;height:60px}}
@@ -80,3 +80,7 @@ body.touch-mode{overscroll-behavior:none}
 .touch-mode .upgradeDialog .reroll{flex:none;min-height:36px;margin:0;padding:7px;font-size:12px}
 @media(orientation:landscape){.touch-mode .dialog.upgradeDialog{height:min(470px,calc(100dvh - 24px))}}
 @media(orientation:portrait){.touch-mode .dialog.upgradeDialog{overflow:auto}.touch-mode .upgradeDialog .cards{grid-template-columns:1fr;flex:none}.touch-mode .upgradeDialog .card{min-height:200px}.touch-mode .upgradeDialog .card small{max-height:120px}}
+
+@media(orientation:portrait){.touch-mode #infectionFeed{top:222px;left:max(14px,env(safe-area-inset-left));max-width:42vw;max-height:108px}}
+
+.touch-mode #infectionFeed>.infectionEntry{display:flex;align-items:center;gap:5px;padding:4px 6px}.touch-mode .infectionEntry b{min-width:0;flex:1;font-size:10px}.touch-mode .infectionEntry small{font-size:8px;white-space:nowrap}

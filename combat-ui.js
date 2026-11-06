@@ -27,7 +27,7 @@ export function combatPopupPosition(point,kind,width=Infinity,age=0){
 }
 export const combatAmount=amount=>String(Number(Math.max(.1,amount).toFixed(1)));
 const sample=u=>({hp:u.hp,shieldHp:u.shieldHp,infection:u.infection,converted:u.converted,dead:u.dead,kind:u.kind});
-export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,side)=>side==='ally') {
+export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,side)=>side==='ally',onAwaken=()=>{}) {
  const host=doc.createElement('div');host.id='combatFeedback';host.setAttribute('aria-hidden','true');doc.getElementById('hud').append(host);
  const snapshots=new Map(), impactTimes=new Map(), pending=new Map(), active=[], impacts=[];
  let now=0,hpHold=0,trail=1;
@@ -50,7 +50,10 @@ export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,si
   for(const descriptor of descriptors(units,state,player,boss)){
    const d={...descriptor,subdued:feedbackTone(descriptor.anchor,descriptor.side,descriptor.key)};
    const current=sample(d.entity),before=snapshots.get(d.key);
-   const events=combatDelta(before,current),canShow=events.length&&!!project(d.anchor,d.key==='boss'?2.2:null);
+   const events=combatDelta(before,current);
+   // 侧栏记录不受镜头和遮挡限制，重复 observe 不会重复通知。
+   if(events.some(event=>event.kind==='awaken'))onAwaken(d.entity);
+   const canShow=events.some(event=>event.kind!=='awaken')&&!!project(d.anchor,d.key==='boss'?2.2:null);
    if(canShow&&now-(impactTimes.get(d.key)??-Infinity)>=(events.some(e=>e.kind==='damage'||e.kind==='shield')?.1:.28)){
     const impactKind=onImpact(d.anchor,d.side,events,d.key,d.subdued);
     if(impactKind!==false){

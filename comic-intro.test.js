@@ -88,7 +88,7 @@ function startFixture(){
  const intro=new Promise(resolve=>{finishIntro=resolve;});
  const calls={intro:0,music:0},menu={hidden:false},hud={hidden:true};
  const context=vm.createContext({
-  objectiveFeedback:{reset(){}},objectiveFeedbackKey:null,tutorialActive,assets:{},starting:false,state:{time:0,infected:0,pending:0},conversionCount:0,
+  objectiveFeedback:{reset(){}},objectiveFeedbackKey:null,tutorialActive,assets:{},starting:false,state:{time:0,infected:0,pending:0},conversionFeedback:{reset(){}},
   touchMode:false,document:{},pointerLock:{release(){}},captureView(){},playComicIntro:()=>{calls.intro++;return intro;},
   loadSaved:()=>null,music:{start:async()=>{calls.music++;}},
   playerVisual:{holder:{rotation:{y:0}}},yaw:0,

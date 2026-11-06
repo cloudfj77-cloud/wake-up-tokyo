@@ -6,6 +6,7 @@ import {createFeedbackVisibility} from './feedback-visibility.js';
 import {createCameraCutaway} from './camera-cutaway.js';
 import {HIT_RESPONSE,flashCharacter,stepHitStop} from './hit-response.js';
 import {createCombatUI} from './combat-ui.js';
+import {createConversionFeedback} from './conversion-feedback.js';
 import {selectedMap} from './maps.js';
 import {canMeleeReach} from './combat-space.js';
 import {renderPixelRatio} from './render-quality.js';
@@ -46,7 +47,7 @@ function maxLookDown(){
  return Math.atan(camY/((cameraDistance||2.7)+.65));
 }
 // 中枢改到出生点同岸后，旧存档的物件坐标已不兼容。
-let settings={volume:.38,voiceVolume:.8,sensitivity:1,quality:MOBILE_DEVICE?'low':'standard'};const SAVE_KEY=mapConfig.saveKey,SAVE_VERSION=11;const debugQuery=new URLSearchParams(location.search);const profilePopulationSeed=import.meta.env.DEV&&debugQuery.has('profile')?12345:null;let showDebug=debugQuery.has('debug');let alerted=false,switchTime=0,nextWeapon=-1,reloadTime=0,conversionCount=0,conversionTimer=0,missionTimer=0,policeAlertTimer=0,bossVictoryHold=0,bossMissionTimer=0,nextActorId=100,ramTimer=0;let alarmSurge=0;let rollBuffered=0,jumpBuffered=0;let squadIds=new Set(),choiceRerolls=[false,false,false],choiceSeen=new Set();
+let settings={volume:.38,voiceVolume:.8,sensitivity:1,quality:MOBILE_DEVICE?'low':'standard'};const SAVE_KEY=mapConfig.saveKey,SAVE_VERSION=11;const debugQuery=new URLSearchParams(location.search);const profilePopulationSeed=import.meta.env.DEV&&debugQuery.has('profile')?12345:null;let showDebug=debugQuery.has('debug');let alerted=false,switchTime=0,nextWeapon=-1,reloadTime=0,missionTimer=0,policeAlertTimer=0,bossVictoryHold=0,bossMissionTimer=0,nextActorId=100,ramTimer=0;let alarmSurge=0;let rollBuffered=0,jumpBuffered=0;let squadIds=new Set(),choiceRerolls=[false,false,false],choiceSeen=new Set();
 const spawnQueue=makeSpawnQueue(),unitPool=[],recentSpawnPoints=[];
 let fodderTimer=10;
 try{settings={...settings,...JSON.parse(localStorage.getItem('groundzero-settings')||'{}')};}catch{}
@@ -153,6 +154,7 @@ try{world=mapConfig.id==='tidewater'?await (await import('./vendor/tidewater-pac
 // 注射枪按 2.25 身高做的，人物缩小后武器跟着缩。
 syringe.g.scale.setScalar(PLAYER_HEIGHT/2.25);
 const weaponPivot=new T.Group();scene.add(weaponPivot);weaponPivot.add(firearms.root);scene.add(syringe.g);
+const conversionFeedback=createConversionFeedback(document,u=>unitName(u),()=>music.effect('convert'));
 const objectiveFeedback=createObjectiveFeedback();let objectiveFeedbackKey=null,updateSyringeGrip,updateFirearmGrip;
 const visuals=new Map(),particles=[],waves=[],tracers=[],auraVisuals=new Map();let playerVisual;
 let comicBatchMeshes=()=>[];
@@ -737,7 +739,7 @@ function flushKindlingPulses(){
  }
 }
 function facingFront(u,origin=player){const vis=visuals.get(u.id)?.v;const ang=Number.isFinite(u.chargeYaw)&&u.chargePhase?u.chargeYaw:vis?vis.holder.rotation.y:Number.isFinite(u.facingYaw)?u.facingYaw:Math.atan2((u.tx??player.x)-u.x,(u.tz??player.z)-u.z);const fx=Math.sin(ang),fz=Math.cos(ang);const dx=origin.x-u.x,dz=origin.z-u.z,len=Math.hypot(dx,dz)||1;return (dx*fx+dz*fz)/len>.2;}
-function applyHit(u,inf,damage,fromArmy=false,origin=player,attacker=fromArmy?origin:player,impactKind='light'){const beforeInfection=u.infection,beforeParasite=u.parasite;const bonus=kindlingMultiplier(state,player,attacker);damage*=bonus;inf*=bonus;const result=hit(state,u,inf,damage,ENEMIES[u.type].shield&&facingFront(u,origin),fromArmy);if(result!=='none')hitStyles.set(u.id,{kind:fromArmy?'ally':impactKind,at:performance.now()});if(result==='converted'){burst(u.x,STANDING_CHEST,u.z,0xc781ff,15);if(u.surge>0)worldSfx('abilityEvolve',u);toast(`${u.type===0?PROFESSIONS[u.profession]:(ENEMIES[u.type].allyName||ENEMIES[u.type].name)} 已觉醒 · 满状态加入`,1.8);}else if(result==='hit'){burst(u.x,STANDING_CHEST,u.z,inf?0xb376e9:0xebc5a6,fromArmy?2:4);worldSfx(ENEMIES[u.type].shield&&facingFront(u,origin)||isMechanical(u)?'hitArmor':u.infection>beforeInfection?'infectionHit':'hitBody',u);if(!beforeParasite&&u.parasite)worldSfx('abilityParasite',u);}else if(result==='killed'&&u.type>0)spawnPickup(u.x,u.z,['health','factor','potion'][Math.floor(Math.random()*3)],u.floorY);return result;}
+function applyHit(u,inf,damage,fromArmy=false,origin=player,attacker=fromArmy?origin:player,impactKind='light'){const beforeInfection=u.infection,beforeParasite=u.parasite;const bonus=kindlingMultiplier(state,player,attacker);damage*=bonus;inf*=bonus;const result=hit(state,u,inf,damage,ENEMIES[u.type].shield&&facingFront(u,origin),fromArmy);if(result!=='none')hitStyles.set(u.id,{kind:fromArmy?'ally':impactKind,at:performance.now()});if(result==='converted'){if(!fromArmy)conversionFeedback.markPersonal(u);burst(u.x,STANDING_CHEST,u.z,0xc781ff,15);if(u.surge>0)worldSfx('abilityEvolve',u);}else if(result==='hit'){burst(u.x,STANDING_CHEST,u.z,inf?0xb376e9:0xebc5a6,fromArmy?2:4);worldSfx(ENEMIES[u.type].shield&&facingFront(u,origin)||isMechanical(u)?'hitArmor':u.infection>beforeInfection?'infectionHit':'hitBody',u);if(!beforeParasite&&u.parasite)worldSfx('abilityParasite',u);}else if(result==='killed'&&u.type>0)spawnPickup(u.x,u.z,['health','factor','potion'][Math.floor(Math.random()*3)],u.floorY);return result;}
 function playerHurt(damage,source,attacker){
  const before=state.hp;const dead=hurtMother(state,damage,source,!!state.sprinting);invincible=.35;shake=Math.max(shake,.12);if(state.hp<before)music.effect('hurt');if(state.lastReflect?.reflected>0)music.effect('hitArmor');
  const r=state.lastReflect;
@@ -1043,7 +1045,7 @@ async function start(continuing=false){
  try{
   if(continuing){const s=loadSaved();if(s)restore(s);}
   else if(state.time>0){location.reload();return;}
-  conversionCount=state.infected;objectiveFeedback.reset(state);objectiveFeedbackKey=null;
+  conversionFeedback.reset();objectiveFeedback.reset(state);objectiveFeedbackKey=null;
   // 新开局播放三页中文分镜，可点击按钮或按 Esc 跳过；读档继续不重播。
   if(!continuing&&!((import.meta.env.DEV||import.meta.env.MODE==='qa')&&debugQuery.has('test'))){introPlaying=true;pointerLock.release();try{await playComicIntro(document,{pages:['./comic/page1.json','./comic/page2.json','./comic/page3.json']});captureView();}finally{introPlaying=false;}}
   await music.start();
@@ -2202,7 +2204,7 @@ const combatUI=createCombatUI(document,(anchor,height)=>{
  const mark=hitStyles.get(key);
  if(mark&&performance.now()-mark.at<250)return mark.kind==='ally';
  return side==='ally'||anchor.tagged==='army';
-});
+},unit=>conversionFeedback.record(unit));
 function updateHitReactions(dt){
  for(const [id,mark] of hitStyles)if(performance.now()-mark.at>250)hitStyles.delete(id);
  for(const [id,reaction] of hitReactions){
@@ -2250,21 +2252,21 @@ function frame(now){requestAnimationFrame(frame);
 // 配件调参面板的「静止」开关：整个跳过 AI（不是传 dt=0，那样会让 AI 内部计时停在半路、
 // 恢复后接不回去）；动画推进量在后面的 updateVisuals 处给 0。
 const teaching=tutorialActive(state),frozen=(typeof window!=='undefined'&&!!window.__propFreeze);
- const aim=holdingLauncher()?launcherSpec(state):gun;target=acquire(aim?aim.range:3.2);if(mouseHeld||keys.KeyJ)primary();ensureGuards();const before=state.infected;stepSimulation(state,units,player,dt,mode,combatUI.silenceInfection);if(!state.aftermath&&!teaching){const clock=tickRunClock(state,dt);if(clock.started){publishWeakenTasks(state);world.spawnWeakenSites();syncWeakenTasks();flashPoliceAlert('<strong>镇</strong><small>警戒 500</small><b>秩序方开始倒计时</b><em>从 2:00 开始。三座削弱设施现在出现，可做可不做。</em>','upgrade',3.6);}for(const mark of clock.warnings)toast(`镇压倒计时剩余 ${mark} 秒`,2.4);}if(state.infected>before){toast(`感染扩散 · ${state.infected-before} 人觉醒`,1.5);state.maxChain=Math.max(state.maxChain,state.infected-before);}runtimeProfiler?.mark('simulation');if(!frozen)runAI(dt,teaching);runtimeProfiler?.mark('ai');updateEffects(dt);flushKindlingPulses();updatePickups(dt);
+ const aim=holdingLauncher()?launcherSpec(state):gun;target=acquire(aim?aim.range:3.2);if(mouseHeld||keys.KeyJ)primary();ensureGuards();const before=state.infected;stepSimulation(state,units,player,dt,mode,combatUI.silenceInfection);if(!state.aftermath&&!teaching){const clock=tickRunClock(state,dt);if(clock.started){publishWeakenTasks(state);world.spawnWeakenSites();syncWeakenTasks();flashPoliceAlert('<strong>镇</strong><small>警戒 500</small><b>秩序方开始倒计时</b><em>从 2:00 开始。三座削弱设施现在出现，可做可不做。</em>','upgrade',3.6);}for(const mark of clock.warnings)toast(`镇压倒计时剩余 ${mark} 秒`,2.4);}if(state.infected>before){state.maxChain=Math.max(state.maxChain,state.infected-before);}runtimeProfiler?.mark('simulation');if(!frozen)runAI(dt,teaching);runtimeProfiler?.mark('ai');updateEffects(dt);flushKindlingPulses();updatePickups(dt);
  state.towers=world.towers.filter(o=>o.dead).length;state.destroyed=world.destructibles.filter(o=>o.dead&&o.type!=='tower').length;updateMissions();updateBoss(dt);const next=teaching?state.alert:threat(state);if(next>state.alert){state.alert=next;state.peakAlert=Math.max(state.peakAlert,next);alarmSurge=3.2;if(!boss.active){toast(`警戒升级 · ${ALERT_NAMES[next]}`,2.4);music.effect('alertUp');callBackup(next);}}
  combatUI.observe(units,state,player,boss);
  recycleSpentActors();cullFarTroops();
  runtimeProfiler?.mark('combat');updateCamera(dt);cameraUpdated=true;runtimeProfiler?.mark('camera');updateVisuals(frozen?0:dt);updateHitReactions(frozen?0:dt);runtimeProfiler?.mark('actors');
  if(!teaching){updateReinforcements(dt);updateAirstrike(dt);}
  updateTokyoTutorial();combatUI.observe(units,state,player,boss);
- if(state.infected>conversionCount){conversionTimer=1.35;$('infectionFeedback').innerHTML=`<span class="infectionSeal"><i>☣</i></span><b>觉醒成功 ×${state.infected-conversionCount}</b><small>加入反抗群落</small>`;$('infectionFeedback').classList.remove('active');void $('infectionFeedback').offsetWidth;$('infectionFeedback').classList.add('active');conversionCount=state.infected;music.effect('convert');}bossVictoryHold=Math.max(0,bossVictoryHold-dt);const result=outcome(state);if(result==='won'&&bossVictoryHold>0){}else if(result)finish(result);else if(!tutorialActive(state)&&!boss.active&&state.pending&&state.time-state.lastPick>=upgradeAutoGap(state))chooseUpgrade();saveTimer+=dt;if(saveTimer>5){saveRun();saveTimer=0;}if(lastHp!==null&&state.hp<lastHp)hurtTimer=.6;lastHp=state.hp;
+ bossVictoryHold=Math.max(0,bossVictoryHold-dt);const result=outcome(state);if(result==='won'&&bossVictoryHold>0){}else if(result)finish(result);else if(!tutorialActive(state)&&!boss.active&&state.pending&&state.time-state.lastPick>=upgradeAutoGap(state))chooseUpgrade();saveTimer+=dt;if(saveTimer>5){saveRun();saveTimer=0;}if(lastHp!==null&&state.hp<lastHp)hurtTimer=.6;lastHp=state.hp;
  }else if(mode==='levelup'||mode==='upgrade'){
   if(mode==='upgrade'&&upgradeLock>0){upgradeLock=Math.max(0,upgradeLock-dt);if(upgradeLock<=0)$('dialog')?.classList.remove('choiceLock');}
   try{updateEffects(dt);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}catch{}
  }else if(mode==='menu'){for(const {v}of visuals.values())updateCharacterVisual(v,false,dt,0);if(playerVisual)updateCharacterVisual(playerVisual,false,dt,0);}
  if(playerVisual&&holdingLauncher()){updateSyringeGrip??=createSyringeGrip(playerVisual,syringe,PLAYER_HEIGHT);updateSyringeGrip();syringe.g.visible=playerVisual.holder.visible&&player.roll<=0&&mode!=='menu';}else if(playerVisual&&activeGun()){updateFirearmGrip??=createFirearmGrip(playerVisual,weaponPivot,PLAYER_HEIGHT);updateFirearmGrip();}
  runtimeProfiler?.mark('remainingAI');music.update({mode,state,boss,emitters:activeAudioEmitters(),spots:activeAudioSpots(),walkers:units.filter(u=>!ENEMIES[u.type]?.tank&&distance(player,u)<12).map(u=>({id:u.id,kind:u.kind,dead:u.dead,x:u.x,y:world.heightAt(u.x,u.z,u.floorY),z:u.z,surface:mapConfig.id==='tidewater'?'stepStone':world.heightAt(u.x,u.z,u.floorY)>8?'stepMetal':'stepRoad'})),hidden:document.hidden,map:mapConfig.id,player:{x:player.x,y:world.heightAt(player.x,player.z,player.floorY)+player.y,z:player.z},listener:{x:player.x,y:world.heightAt(player.x,player.z,player.floorY)+STANDING_CHEST+player.y,z:player.z},forward:forward(),grounded:player.y===0&&player.roll<=0&&!(player.knock>0),crouch:player.crouch,surface:mapConfig.id==='tidewater'?'stepStone':world.heightAt(player.x,player.z,player.floorY)>8?'stepMetal':'stepRoad'});
- runtimeProfiler?.mark('audio');updateAlertEffect(dt);updateAuras(dt);conversionTimer=Math.max(0,conversionTimer-dt);$('infectionFeedback').style.opacity=conversionTimer>0?1:0;if(conversionTimer<=0)$('infectionFeedback').classList.remove('active');hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;policeAlertTimer=Math.max(0,policeAlertTimer-dt);if(!policeAlertTimer)$('policeAlert').classList.remove('active','upgrade','boss','win','quest','radio');if(!cameraUpdated&&dt>0)updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}if(touchMode&&touch){if(mode==='playing')touch.show();else touch.hide();}combatUI.tick(realDt,mode==='playing',state);cameraCutaway.update(camera,player,world.heightAt(player.x,player.z,player.floorY),PLAYER_HEIGHT*(player.crouch?.7:1),renderer.getDrawingBufferSize(cameraBufferSize),realDt,!['menu','loading'].includes(mode)&&!(import.meta.env.DEV&&debugQuery.has('cutawayOff')));
+ runtimeProfiler?.mark('audio');updateAlertEffect(dt);updateAuras(dt);conversionFeedback.tick(mode==='playing');hurtTimer=Math.max(0,hurtTimer-dt);$('hurtVignette').style.opacity=hurtTimer>0?Math.min(.9,hurtTimer/.55):0;$('damageVignette').style.opacity=shake>0?.7:0;policeAlertTimer=Math.max(0,policeAlertTimer-dt);if(!policeAlertTimer)$('policeAlert').classList.remove('active','upgrade','boss','win','quest','radio');if(!cameraUpdated&&dt>0)updateCamera(dt);if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').style.opacity=0;}hudTimer-=dt;if(hudTimer<=0&&assets){hudTimer=.1;hud();}if(touchMode&&touch){if(mode==='playing')touch.show();else touch.hide();}combatUI.tick(realDt,mode==='playing',state);cameraCutaway.update(camera,player,world.heightAt(player.x,player.z,player.floorY),PLAYER_HEIGHT*(player.crouch?.7:1),renderer.getDrawingBufferSize(cameraBufferSize),realDt,!['menu','loading'].includes(mode)&&!(import.meta.env.DEV&&debugQuery.has('cutawayOff')));
  runtimeProfiler?.mark('uiAndOcclusion');
  updateMs=performance.now()-frameBegan;renderBegan=performance.now();
  // 镜头和战斗界面沿用本地逻辑。画面最后才走描边和厚涂，关掉时仍直接画场景。
