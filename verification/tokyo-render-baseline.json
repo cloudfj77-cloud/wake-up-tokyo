@@ -2,12 +2,16 @@
   "baseCommit": "2d94d62",
   "baseVersion": "0.3.56",
   "sha256": {
-    "toon-filter.js": "87a6af4538fa572d6eb74564ffe3e9b089096a118192a601c255dfffb107a9b7",
-    "outline-filter.js": "9ecb6f4d11c610a935533fef64277452e2c901fc521753fa44b8ca21f89dbc80",
+    "toon-filter.js": "4e3e43e0be54a692eb873e7a8c7da166c46abea0e25a1063fd77df365eb1afa6",
+    "outline-filter.js": "df3f36f7e1cfe7e8affd913a17431a6941987fef0f35cdae1347cb0d2f4e79b0",
     "camera-cutaway.js": "e170819f386ce2be14a15a59d7522745766a7f9e09f38e3162231aaf5a8cf59d",
     "renderInit": "1b2309b6c7b25e261d0cd420b8709ddcab634c2d172dfacdc2f42ccc47e8c088",
     "renderPass": "6f3240330105c0b1c12fe6a5807c592900ac37acef9eba66818bf14d19cd580a"
   },
-  "integrationBase": "1f654f0",
-  "integrationVersion": "0.3.61"
+  "performanceNote": "v0.3.71：整合人物／静态合批、原分辨率图集、阴影缓存和手机画质；海滨恢复颜色趟可见性与异常恢复。此文件记录整合后的源码，不代替帧率实测。",
+  "integrationBase": [
+    "889d4fd",
+    "0bc5551"
+  ],
+  "integrationVersion": "0.3.71"
 }

@@ -51,10 +51,10 @@ function tidewaterVisible(config,distance,mode,bundled){
 }
 function tokyoVisible(config,distance,outline){
  const root=new T.Group(),section=new T.Group();root.add(section);
- const m=new T.Mesh(new T.BoxGeometry(1,1,1),new T.MeshStandardMaterial());m.position.z=-distance;section.add(m);
+ const material=new T.MeshStandardMaterial();for(const x of [0,.1]){const m=new T.Mesh(new T.BoxGeometry(1,1,1),material);m.position.set(x,0,-distance);section.add(m);}
  const api=batchStaticScene(root,{...config,fog:new T.Fog(0,16,52)}),position=new T.Vector3();
- api.updateDetailVisibility(position);if(outline)api.updateOutlineVisibility(position);
- let visible=false;root.traverse(o=>{if(o.name==='Static_Material_Batch')visible=o.visible&&o.getVisibleAt(0);});
+ const camera=new T.PerspectiveCamera(64,1,.1,100);camera.updateMatrixWorld(true);api.updateDetailVisibility(position);api.updateVisibility(camera);
+ let visible=false;root.traverse(o=>{if(o.name===(outline?'Static_Normal_Batch':'Static_Material_Batch'))visible=o.visible&&o.getVisibleAt(0);});
  return visible;
 }
 test('Tokyo and both Tidewater loaders share full/low main and outline ranges on Android',async()=>{

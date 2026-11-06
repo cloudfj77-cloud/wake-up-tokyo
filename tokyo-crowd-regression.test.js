@@ -90,7 +90,7 @@ for(const mobile of [false,true])test(`${mobile?'mobile':'desktop'} station crow
  let seed=123;
  const seededMath=Object.create(Math);seededMath.random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
  const ctx=vm.createContext({...rules,Math:seededMath,units,player:{x:5,z:8,floorY:-3.85},aiStart:0,ALLY_VIEW:18,STUCK_LIMIT:Infinity,frameDelta:1/30,visuals:new Map(),
-  world:{...nav,mobile,multilevel:true,populationTarget:pop.wander,beginNavigationFrame(){nav.beginNavigationFrame();now+=8;}},TUNE:{activity:{shambleSpeed:1}}});
+  world:{...nav,mobile,multilevel:true,populationTarget:pop.wander,towers:[],beginNavigationFrame(){nav.beginNavigationFrame();now+=8;}},TUNE:{...rules.TUNE,activity:{...rules.TUNE.activity,shambleSpeed:1}},boss:{active:false},squadIds:new Set(),state:rules.makeState(),tickPurifier:()=>undefined,attackHasLine:()=>false,showHostilePose(){},allyFire(){},enemyFire(){},toast(){}});
  // Population wander also uses seeded random, without modifying the real game.
  t.mock.method(Math,'random',seededMath.random);
  vm.runInContext(section('function move(u,','function forward()')+section('const CROWD_CELL=','function attackHasLine(')+section('function runAI(','function dropActorVisual('),ctx);

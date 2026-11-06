@@ -40,6 +40,11 @@ export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,si
   const live=new Set();for(const d of descriptors(units,state,player,boss)){live.add(d.key);if(!snapshots.has(d.key))snapshots.set(d.key,sample(d.entity));}
   for(const key of snapshots.keys())if(!live.has(key)){snapshots.delete(key);impactTimes.delete(key);}
  }
+ // 只抵消本次被动感染增量，不能吞掉同一帧的直接攻击、扣血或最终觉醒反馈。
+ function silenceInfection(unit,amount){
+  const before=snapshots.get(unit.id);
+  if(before&&amount>0)before.infection=(before.infection||0)+amount;
+ }
  function observe(units,state,player,boss){
   for(const descriptor of descriptors(units,state,player,boss)){
    const d={...descriptor,subdued:feedbackTone(descriptor.anchor,descriptor.side,descriptor.key)};
@@ -119,5 +124,5 @@ export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,si
    if(point){const placed=combatPopupPosition({...point,sideOffset:(point.sideOffset||64)+Math.max(0,(combatFeedbackScale(item.amount,item.kind)-.8)*44)},item.kind,doc.defaultView?.innerWidth??Infinity,age);item.node.style.left=`${placed.x}px`;item.node.style.top=`${placed.y}px`;item.node.style.opacity=Math.min(1,((item.subdued?.65:1.05)-age)*4)*(item.subdued?.38:1);}
   }
  }
- return {baseline,observe,tick};
+ return {baseline,observe,tick,silenceInfection};
 }

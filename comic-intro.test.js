@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {comicReadingOrder,comicIntroSequence,comicIntroTimeline,COMIC_INTRO_BASE_FILL,COMIC_INTRO_MIN_GAP,COMIC_INTRO_SIZE_GAP} from './comic-intro.js';
+import {comicReadingOrder,comicIntroSequence,comicIntroTimeline,playComicIntro,resetComicIntro,comicIntroPlayed,COMIC_INTRO_BASE_FILL,COMIC_INTRO_LEAD,COMIC_INTRO_MIN_GAP,COMIC_INTRO_SIZE_GAP} from './comic-intro.js';
 
 const panel=(src,x,y,w=40,h=30,fill=.9)=>({src,x,y,w,h,fill,cx:x+w/2,cy:y+h/2});
 
@@ -120,4 +120,56 @@ test('继续存档直接进入游戏，不等待新开局漫画',async()=>{
  assert.equal(f.calls.intro,0);
  assert.equal(f.calls.music,1);
  assert.equal(f.context.mode,'playing');
+});
+
+test('all three opening pages have Chinese replacements for narrative captions and headings',async()=>{
+ const {COMIC_ZH,comicChineseLabels}=await import('./comic-zh.js');
+ for(let n=1;n<=3;n++){
+  const data=JSON.parse(readFileSync(new URL(`./public/comic/page${n}.json`,import.meta.url)));
+  assert.ok(COMIC_ZH[data.source.split('/').pop()]?.length);
+  const labels=data.pieces.flatMap(p=>comicChineseLabels(data,p));assert.equal(labels.length,COMIC_ZH[data.source.split('/').pop()].length);
+  for(const l of labels){assert.match(l.text,/[\u4e00-\u9fff]/);assert.doesNotMatch(l.text,/[A-Za-z]/);assert.ok(Number.isFinite(l.left)&&Number.isFinite(l.top)&&l.width>0&&l.height>0);}
+ }
+});
+
+// 只模拟播放器需要的 DOM，检查完整播放与动图回收。
+function playbackFixture(t,loadImages=true){
+ const listeners=new Map(),videos=[];
+ const element=tag=>{
+  const el={tag,children:[],style:{},className:'',classList:{add(){},remove(){}},offsetWidth:0,
+   appendChild(child){child.parent=this;this.children.push(child);return child;},
+   insertBefore(child,before){child.parent=this;this.children.splice(this.children.indexOf(before),0,child);},
+   remove(){if(this.parent)this.parent.children=this.parent.children.filter(c=>c!==this);},
+   setAttribute(){},removeAttribute(){},pause(){this.pauses=(this.pauses||0)+1;},load(){},play(){this.plays=(this.plays||0)+1;return Promise.resolve();},
+   querySelectorAll(selector){const all=this.children.flatMap(c=>[c,...c.querySelectorAll('*')]);return selector==='*'?all:all.filter(c=>selector.split(',').some(s=>s.trim().startsWith('.')?c.className===s.trim().slice(1):c.tag===s.trim()));},
+   querySelector(selector){return this.querySelectorAll(selector)[0];},
+   getContext(){return {drawImage(){},getImageData:()=>({data:new Uint8Array(48*48*4).fill(255)})};},
+  };
+  Object.defineProperty(el,'innerHTML',{set(html){const stage=element('div');stage.className='comicStage';const lines=element('div');lines.className='comicLines';stage.appendChild(lines);el.appendChild(stage);if(html.includes('comicSkip')){const button=element('button');button.className='comicSkip';el.appendChild(button);}}});
+  if(tag==='video')videos.push(el);return el;
+ };
+ const doc={body:element('body'),head:element('head'),createElement:element,getElementById:()=>null,
+  addEventListener:(name,fn)=>listeners.set(name,fn),removeEventListener:(name,fn)=>{if(listeners.get(name)===fn)listeners.delete(name);}};
+ const oldImage=globalThis.Image,oldDocument=globalThis.document;
+ globalThis.document=doc;globalThis.Image=class{naturalWidth=48;naturalHeight=48;set src(value){if(loadImages)queueMicrotask(()=>this.onload());}};
+ resetComicIntro();t.after(()=>{globalThis.Image=oldImage;globalThis.document=oldDocument;resetComicIntro();});
+ return {doc,listeners,videos,root:()=>doc.body.children[0]};
+}
+const flushPlayback=async()=>{for(let i=0;i<12;i++)await Promise.resolve();};
+const playbackPage={width:100,height:100,pieces:[{src:'panel.png',x:0,y:0,w:100,h:100}],clips:[{src:'panel.mp4',x:0,y:0,w:100,h:100}]};
+
+test('new games have no skip control and Escape cannot finish any remaining comic page',async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});const f=playbackFixture(t);let panels=0,finished=false;
+ const playing=playComicIntro(f.doc,{pages:[playbackPage,playbackPage,playbackPage],skip:true,onPanel:()=>panels++}).then(value=>{finished=true;return value;});await flushPlayback();
+ assert.equal(f.root().querySelector('.comicSkip'),undefined);assert.equal(finished,false);
+ const escape=f.listeners.get('keydown');escape?.({code:'Escape',preventDefault(){},stopImmediatePropagation(){}});await flushPlayback();assert.equal(finished,false);
+ for(let i=0;i<12;i++){t.mock.timers.tick(10000);await flushPlayback();}
+ assert.equal(await playing,true);assert.equal(panels,3);assert.equal(f.videos.length,3);assert.ok(f.videos.every(v=>v.pauses===1));assert.equal(f.listeners.size,0);
+});
+
+test('comic plays every page naturally and releases each video',async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});const f=playbackFixture(t);let panels=0;
+ const playing=playComicIntro(f.doc,{pages:[playbackPage,playbackPage],onPanel:()=>panels++});await flushPlayback();
+ for(let i=0;i<8;i++){t.mock.timers.tick(10000);await flushPlayback();}
+ assert.equal(await playing,true);assert.equal(panels,2);assert.equal(f.videos.length,2);assert.ok(f.videos.every(v=>v.pauses===1));assert.equal(f.listeners.size,0);
 });

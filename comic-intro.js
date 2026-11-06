@@ -1,3 +1,4 @@
+import {comicChineseLabels} from './comic-zh.js';
 /* 开场分镜过场：点「开始觉醒」后，把漫画按切好的格子一格一格落出来。
    支持多页连播，每页用自己的画面比例；格子越大停留越久，节奏不再一刀切。
    切片由 comic-intro/cut.html 手工切出，导出到 public/comic/；纯逻辑部分可在 Node 里直接测。 */
@@ -104,9 +105,17 @@ const COMIC_INTRO_CSS = `
 /* 高度撑满浏览器视口，宽度按原画比例自动算；窗口太窄时由 max-width 收住，仍然等比 */
 .comicStage{position:relative;height:100vh;height:100dvh;width:auto;max-width:100vw;
   background:#f2eee4;overflow:hidden;transition:opacity .32s ease;
-  box-shadow:0 30px 80px rgba(0,0,0,.55)}
+  box-shadow:0 30px 80px rgba(0,0,0,.55);container-type:inline-size}
 .comicStage.turning{opacity:0}
 .comicPiece{position:absolute;opacity:0}
+.comicPiece>img{display:block;width:100%;height:100%}
+.comicChinese{position:absolute;display:flex;align-items:center;justify-content:center;box-sizing:border-box;white-space:pre-line;font-family:'PingFang SC','Microsoft YaHei',sans-serif;font-weight:900;line-height:1.12;letter-spacing:0;pointer-events:none;z-index:3;color:#101014;text-align:center}
+.comicChinese.header,.comicChinese.footer{background:#eeeae1;justify-content:space-between;padding:0 1.2%;text-align:left}
+.comicChinese.screen{color:#9fc8df;background:#243c4d;justify-content:flex-start}
+.comicChinese.note{background:#eed27d;box-shadow:0 0 0 2px #eed27d;font-style:italic}
+.comicChinese.speech{background:#f5f4ee;border-radius:25%}
+.comicChinese.burst{background:#151019;color:#ffcf21;-webkit-text-stroke:1px #fff1d1;text-shadow:5px 6px #000;transform:rotate(-8deg);clip-path:polygon(0 22%,12% 18%,6% 10%,30% 14%,42% 0,53% 12%,96% 0,89% 18%,100% 30%,94% 51%,100% 72%,79% 80%,85% 98%,57% 88%,43% 100%,30% 90%,7% 100%,12% 74%,0 81%,7% 50%)}
+.comicChinese.ink{background:#050505;color:#e335d5;text-shadow:2px 2px #00c8d8;font-style:italic}
 .comicIntro.done .comicPiece{opacity:1}
 .comicClip{position:absolute;opacity:0;pointer-events:none;overflow:hidden}
 .comicClip video{position:absolute;object-fit:cover}
@@ -136,8 +145,8 @@ export async function playComicIntro(doc = document, options = {}) {
 
   const loaded = [];
   for (const url of pages) {
-    const data = await fetch(url).then(r => r.ok ? r.json() : null).catch(() => null);
     if (typeof url === 'object' && url) { loaded.push(url); continue; }
+    const data = await fetch(url).then(r => r.ok ? r.json() : null).catch(() => null);
     if (data && Array.isArray(data.pieces) && data.pieces.length) loaded.push(data);
   }
   if (!loaded.length) { introPlayed = false; return false; }
@@ -157,11 +166,14 @@ export async function playComicIntro(doc = document, options = {}) {
   host.appendChild(root);
 
   const timers = [];
+  const releaseVideos=()=>root.querySelectorAll('video').forEach(video=>{video.pause();video.removeAttribute('src');video.load();});
+  try {
   for (let pageIndex = 0; pageIndex < loaded.length; pageIndex++) {
     const data = loaded[pageIndex];
     // 每页用自己的画面比例
     stageEl.style.aspectRatio = `${data.width || 1080} / ${data.height || 905}`;
     // 翻页时动图和这一页的格子一起清掉，不留到下一页
+    releaseVideos();
     stageEl.querySelectorAll('.comicPiece, .comicClip').forEach(el => el.remove());
 
     const sequence = comicIntroSequence(await measureComicFill(data.pieces, assetBase));
@@ -169,16 +181,15 @@ export async function playComicIntro(doc = document, options = {}) {
     const panels = applyComicOrder(sequence.panels, data.order);
     const { steps, total } = comicIntroTimeline(panels, { lead, minGap, sizeGap });
     const mount = (piece, z) => {
-      const img = doc.createElement('img');
-      img.className = 'comicPiece';
-      img.src = comicAssetUrl(piece.src, assetBase);
-      img.style.left = piece.x + '%';
-      img.style.top = piece.y + '%';
-      img.style.width = piece.w + '%';
-      img.style.height = piece.h + '%';
-      img.style.zIndex = String(z);
-      stageEl.insertBefore(img, lines);
-      return img;
+      // 中文文字跟随所属格子一起进场，按原画坐标覆盖英文，不改变动态片段和播放节奏。
+      const wrapper=doc.createElement('div');wrapper.className='comicPiece';
+      const img=doc.createElement('img');img.src=comicAssetUrl(piece.src,assetBase);img.alt='';wrapper.appendChild(img);
+      wrapper.style.left=piece.x+'%';wrapper.style.top=piece.y+'%';wrapper.style.width=piece.w+'%';wrapper.style.height=piece.h+'%';wrapper.style.zIndex=String(z);
+      for(const label of comicChineseLabels(data,piece)){
+       const el=doc.createElement('span');el.className='comicChinese '+label.kind;el.lang='zh-CN';el.textContent=label.text;
+       Object.assign(el.style,{left:label.left+'%',top:label.top+'%',width:label.width+'%',height:label.height+'%',fontSize:label.size+'cqw'});wrapper.appendChild(el);
+      }
+      stageEl.insertBefore(wrapper,lines);return wrapper;
     };
     base.forEach((p, i) => { p.el = mount(p, 10 + i); p.el.style.animation = 'comicBaseIn .45s ease-out forwards'; });
     panels.forEach((p, i) => { p.el = mount(p, 10 + base.length + i); });
@@ -248,7 +259,9 @@ export async function playComicIntro(doc = document, options = {}) {
     }
   }
 
-  timers.forEach(clearTimeout);
+  } finally {
+    timers.forEach(clearTimeout);releaseVideos();
+  }
   root.classList.add('done');
   root.classList.add('closing');
   setTimeout(() => root.remove(), 380);

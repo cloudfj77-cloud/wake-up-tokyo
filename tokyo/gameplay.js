@@ -40,63 +40,87 @@ export function tokyoObjective(state,alert=0){
  const count=state.infected;
  const step=count<5?0:count<15?1:2;
  const objectives=[
-  {title:'在下沉广场集结同伴',detail:`唤醒打工人 ${Math.min(count,5)} / 5。靠近后连续轻击；觉醒者会帮助你战斗。`,progress:count/5},
-  {title:'扩大站前行动',detail:`累计唤醒 ${Math.min(count,15)} / 15 人。探索广场和站厅，击退赶来的巡逻队。`,progress:count/15},
-  {title:'突破站前封锁',detail:`警戒 ${Math.floor(alert)} / 500。继续唤醒人群、击退增援。达到 500 后，摧毁削弱设施，迎战镇压巨像。`,progress:Math.min(1,alert/500)},
+  {title:'在街区集结同伴',detail:`唤醒打工人 ${Math.min(count,5)} / 5。靠近后连续轻击；觉醒者会帮助你战斗。`,progress:count/5},
+  {title:'扩大街区行动',detail:`累计唤醒 ${Math.min(count,15)} / 15 人。探索道路、广场和站厅，击退赶来的巡逻队。`,progress:count/15},
+  {title:'突破街区封锁',detail:`警戒 ${Math.floor(alert)} / 500。继续唤醒人群、击退增援。达到 500 后，摧毁削弱设施，迎战镇压巨像。`,progress:Math.min(1,alert/500)},
  ];
- return {label:`站前行动 ${step+1} / 3`,...objectives[step],steps:objectives.map((s,i)=>({title:s.title,done:i<step,current:i===step}))};
+ return {label:`街区行动 ${step+1} / 3`,...objectives[step],steps:objectives.map((s,i)=>({title:s.title,done:i<step,current:i===step}))};
 }
-// Public floors include the station, street, commercial bridge and viaduct.
-// Restrict heights to authored decks so decorative roofs never become spawn sites.
+// 日常人口分布在街面与地下；玩家登上公共高层后可补充该层人口，装饰屋顶不参与。
 export function populationZone(p){
  if(Math.abs(p.floorY)<.25&&p.x>-19&&p.x<19&&p.z>-17&&p.z<17)return 'plaza';
  if(Math.abs(p.floorY)<.25&&p.x>-15&&p.x<1&&p.z>-34&&p.z<-22)return 'hall';
  if(Math.abs(p.floorY+3.85)<.25&&p.x>-23&&p.x<23&&p.z>6.7&&p.z<9.9)return 'platform';
- if(Math.abs(p.floorY-3.3)<.15)return 'street';
+ if(p.floorY>2.95&&p.floorY<3.7&&p.x>-58&&p.x<78&&p.z>-60&&p.z<55)return 'street';
  if(Math.abs(p.floorY-8.8)<.15)return 'skybridge';
  if(Math.abs(p.floorY-12.1)<.15)return 'viaduct';
  return null;
+}
+export function populationSector(p){
+ if(populationZone(p)!=='street')return populationZone(p);
+ const x=(p.x-10)/68,z=(p.z+2.5)/57.5;
+ if(Math.max(Math.abs(x),Math.abs(z))<.5)return 'street-inner';
+ return Math.abs(x)>Math.abs(z)?(x<0?'street-west':'street-east'):(z<0?'street-north':'street-south');
 }
 export function createTokyoPopulation(nav,isFree=nav.free){
  const spots=nav.nodes.flatMap((n,i)=>{
   if(n[0]%4||n[1]%4)return [];
   const p=nav.point(i),zone=populationZone(p);
-  return zone&&isFree(p.x,p.z,.65,p.floorY)?[{...p,zone}]:[];
+  return zone&&isFree(p.x,p.z,.65,p.floorY)?[{...p,zone,sector:populationSector(p)}]:[];
  });
- if(!spots.length)throw Error('东京街区没有可用的人群位置');
- const zones=[...new Set(spots.map(p=>p.zone))],byZone=new Map(zones.map(zone=>[zone,spots.filter(p=>p.zone===zone)]));
- const weights={plaza:3,hall:1,platform:2,street:3,skybridge:1,viaduct:2};
- function spawn({region,player,units=[],random=Math.random,accept=()=>true,radius=.65,zone,local=false}={}){
-  const counts=new Map(zones.map(z=>[z,units.filter(u=>!u.dead&&!u.converted&&populationZone(u)===z).length]));
-  const localZone=local&&player?populationZone(player):null;
-  const ordered=(zone?[zone]:[...zones]).sort((a,b)=>(a===localZone?-1:counts.get(a)/weights[a])-(b===localZone?-1:counts.get(b)/weights[b]));
-  for(const area of ordered){
-   const candidates=byZone.get(area)||[],start=Math.floor(random()*candidates.length);
-   for(let i=0;i<candidates.length;i++){
-   const p=candidates[(start+i)%candidates.length];
-   if(Number.isInteger(region)&&((p.x>=0?1:0)+(p.z>=0?2:0))!==region)continue;
-   const distance=player?Math.hypot(p.x-player.x,p.z-player.z,p.floorY-(player.floorY??0)):Infinity;
-   if(player&&(distance<8||(local&&distance>40)))continue;
-   if(units.some(u=>!u.dead&&Math.abs((u.floorY??0)-p.floorY)<1&&Math.hypot(p.x-u.x,p.z-u.z)<1.15))continue;
-   if(isFree(p.x,p.z,radius,p.floorY)&&accept(p))return {...p};
+  if(!spots.length)throw Error('东京街区没有可用的人群位置');
+ // 将四侧街道与地下公共区域分开配额，避免大面积街面挤掉站台人群。
+ const buckets=new Map();for(const p of spots){const key=p.sector+':'+((p.x>=0?1:0)+(p.z>=0?2:0));if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push(p);}
+ function spawn({region,player,units=[],random=Math.random,accept=()=>true,radius=.65,type,nearPlayer=false,zone,local=false}={}){
+  nearPlayer ||= local;
+  const playerZone=nearPlayer&&player?populationZone(player):null;
+  const upper=z=>z==='skybridge'||z==='viaduct';
+  let pools=[...buckets.values()].filter(list=>(!Number.isInteger(region)||((list[0].x>=0?1:0)+(list[0].z>=0?2:0))===region)&&(zone?list[0].zone===zone:upper(playerZone)?list[0].zone===playerZone:!upper(list[0].zone)));
+  if(type===1&&!nearPlayer){const outer=pools.filter(list=>list[0].zone==='street'&&list[0].sector!=='street-inner');if(outer.length)pools=outer;}
+  const occupied=new Map();
+  for(const u of units)if(!u.dead&&u.kind!=='corpse'&&(type===undefined||u.type===type)){const key=populationSector(u)+':'+((u.x>=0?1:0)+(u.z>=0?2:0));occupied.set(key,(occupied.get(key)||0)+1);}
+  const offset=Math.floor(random()*Math.max(1,pools.length));pools=pools.slice(offset).concat(pools.slice(0,offset));
+  pools.sort((a,b)=>(occupied.get(a[0].sector+':'+((a[0].x>=0?1:0)+(a[0].z>=0?2:0)))||0)-(occupied.get(b[0].sector+':'+((b[0].x>=0?1:0)+(b[0].z>=0?2:0)))||0));
+  // 作战增援优先落在玩家所在楼层附近，避免隔着楼板或从地图另一端赶来。
+  for(const sameFloor of nearPlayer&&player?[true,false]:[false])for(const list of pools){
+   const start=Math.floor(random()*list.length);
+   for(let i=0;i<list.length;i++){
+    const p=list[(start+i)%list.length],distance=player?Math.hypot(p.x-player.x,p.z-player.z):0;
+    if(player&&(distance<8||(nearPlayer&&distance>34)))continue;
+    if(sameFloor&&Math.abs(p.floorY-(player.floorY??0))>.5)continue;
+    if(units.some(u=>!u.dead&&Math.abs((u.floorY??0)-p.floorY)<1&&Math.hypot(p.x-u.x,p.z-u.z)<1.15))continue;
+    if(isFree(p.x,p.z,radius,p.floorY)&&accept(p))return {...p};
    }
   }
   return null;
  }
- function wander(u){
-  // Only the first tutorial target waits in place. Older saves can retain the
-  // street-map's random stationary flag on ordinary station workers.
-  if(u.stationary&&u.tutorialWorker&&!u.converted)return u;
+ function wander(u,{radius=8,random=Math.random}={}){
+  const awake=!!u.converted||u.kind==='ally';
+  if(u.stationary&&u.tutorialWorker&&!awake)return u;
   u.stationary=false;
-  const zone=populationZone(u);
-  if(u.tokyoDestination&&populationZone(u.tokyoDestination)===zone&&Math.hypot(u.x-u.tokyoDestination.x,u.z-u.tokyoDestination.z)>.7)return u.tokyoDestination;
-  const sameFloor=p=>Math.abs((p.floorY??0)-(u.floorY??0))<1;
-  const ring=(min,max)=>(byZone.get(zone)||[]).filter(p=>sameFloor(p)&&Math.hypot(p.x-u.x,p.z-u.z)>min&&Math.hypot(p.x-u.x,p.z-u.z)<max);
-  let near=ring(2,8);
-  if(!near.length)near=ring(2,14);
-  if(!near.length)near=ring(1,Infinity);
-  u.tokyoDestination=near.length?{...near[Math.floor(Math.random()*near.length)]}:{x:u.x,z:u.z,floorY:u.floorY};
-  return u.tokyoDestination;
+  const maxRadius=Math.max(.5,radius),old=u.tokyoDestination;
+  if(old&&!!old.freeRoam===awake&&Math.hypot(u.x-old.x,u.z-old.z)>.7&&Math.hypot(u.x-old.x,u.z-old.z)<=maxRadius)return old;
+  // 驻留区只约束未感染者；觉醒者在广场边缘、楼梯或战斗结束的位置也必须能取得新目的地。
+  const zone=populationZone(u),near=spots.filter(p=>{
+   const d=Math.hypot(p.x-u.x,p.z-u.z);
+   return (awake||p.zone===zone)&&d>Math.min(2,maxRadius*.5)&&d<maxRadius&&(!u.roamAvoid||Math.hypot(p.x-u.roamAvoid.x,p.z-u.roamAvoid.z)>.7);
+  });
+  let p;
+  if(awake){
+   // 优先采用附近同层的可直达路点，让无目标时立即迈步；其他候选仍交给正常寻路处理。
+   const local=near.filter(q=>Math.abs(q.floorY-(u.floorY??0))<.4&&Math.hypot(q.x-u.x,q.z-u.z)<=8),start=Math.floor(random()*Math.max(1,local.length));
+   for(let i=0;i<Math.min(4,local.length);i++){const q=local[(start+i)%local.length];if(isFree(q.x,q.z,.22,q.floorY)&&nav.clear(u,q)){p=q;break;}}
+   p??=near.length?near[Math.floor(random()*near.length)]:null;
+   // 可走地面已延伸到旧人口采样区外时，就近取真实路面，不把出生区当作行动边界。
+   if(!p)for(let i=0;i<8;i++){
+    const a=(i/8+random())*Math.PI*2,d=Math.min(maxRadius,2+random()*4),x=u.x+Math.cos(a)*d,z=u.z+Math.sin(a)*d;
+    if(!isFree(x,z,.22,u.floorY))continue;
+    const q={x,z,floorY:nav.heightAt(x,z,u.floorY)};if(nav.clear(u,q)){p=q;break;}
+   }
+  }else p=near.length?near[Math.floor(random()*near.length)]:null;
+  u.roamAvoid=undefined;
+  u.tokyoDestination=p?{...p,freeRoam:awake}:undefined;
+  return u.tokyoDestination||u;
  }
  function rebalance(units,player,{hidden=()=>true,accept=()=>true}={}){
   const zone=populationZone(player);if(!zone)return 0;

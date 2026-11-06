@@ -24,6 +24,13 @@ test('root-motion cleanup preserves jump height and prunes absent bones',()=>{
  stripRootMotion(clip);clipToSkeleton(clip,new Set(['mixamorigHips']));
  assert.equal(clip.tracks.length,1);assert.deepEqual([...clip.tracks[0].values],[1,2,3,1,5,3]);
 });
+test('real running clip retains its natural travel speed after root motion is removed',async()=>{
+ const buffer=await readFile(publicFile('mixamo/run.fbx'));
+ const clip=new FBXLoader().parse(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'').animations[0];
+ stripRootMotion(clip);const speed=clip.userData.rootMotionSpeed;
+ assert.ok(speed>2.4&&speed<2.6);stripRootMotion(clip);assert.equal(clip.userData.rootMotionSpeed,speed);
+ const hips=clip.tracks.find(t=>/hips.position$/i.test(t.name));assert.equal(hips.values[2],hips.values.at(-1));
+});
 
 test('real jump asset skips anticipation and removes duplicated vertical root travel',async()=>{
  const {prepareJumpClip,jumpClipTime}=await import('./mixamo.js');

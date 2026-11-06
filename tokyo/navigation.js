@@ -7,19 +7,23 @@ export function createTokyoNavigation(data,collision){
  const key=(x,z)=>Math.floor((x-bounds.minX)/step)+','+Math.floor((z-bounds.minZ)/step);
  nodes.forEach((n,i)=>{const p=point(i),k=key(p.x,p.z);if(!cells.has(k))cells.set(k,[]);cells.get(k).push(i);});
  function nodeAt(x,z,hint=0){let best=-1,d=Infinity;for(const i of cells.get(key(x,z))||[]){const v=Math.abs(nodes[i][2]-hint);if(v<d){best=i;d=v;}}return best;}
+ // 有真实碰撞时由场景地面的尽头限制通行，旧网格矩形不能截断仍然延伸的道路。
+ function inside(x,z,r=0){return !!collision||(x>=bounds.minX+r&&x<=bounds.maxX-r&&z>=bounds.minZ+r&&z<=bounds.maxZ-r);}
  function heightAt(x,z,hint=0){
+  if(!inside(x,z))return -99;
   if(!collision){const i=nodeAt(x,z,hint);return i<0?-99:nodes[i][2];}
-  // The grid guides routes, but the actual treads support feet. A cell beside a
-  // stair can contain only its upper landing even though the platform continues
-  // underneath it. Never snap a walker to that unrelated deck.
-  const cacheKey=x+','+z+','+hint;if(heightCache.has(cacheKey))return heightCache.get(cacheKey);
-  const i=nodeAt(x,z,hint),anchor=i>=0&&Math.abs(nodes[i][2]-hint)<.36?nodes[i][2]:hint;
-  let value=-99;
-  for(const [dx,dz]of [[0,0],[.03,0],[-.03,0],[0,.03],[0,-.03]]){
-   const hit=collision.raycast(new T.Vector3(x+dx,anchor+.24,z+dz),down,.6,true);
-   if(hit){value=hit.point.y;break;}
+  // 导航网格缺格不能充当空气墙。实际能否落脚以脚下场景三角面为准。
+  // 射线只在当前楼层附近取地面，不能吸到头顶街面或隔着楼板换层。
+  const i=nodeAt(x,z,hint),base=i>=0&&Math.abs(nodes[i][2]-hint)<.38?nodes[i][2]:hint;
+  // 静态场景中相同坐标与射线高度的结果不变；精确缓存重复查询，不取整，避免重新引入空气墙。
+  const cacheKey=x+','+z+','+base;if(heightCache.has(cacheKey))return heightCache.get(cacheKey);
+  if(heightCache.size>=16384)heightCache.clear();
+  for(const [dx,dz]of [[0,0],[.025,0],[-.025,0],[0,.025],[0,-.025]]){
+   const hit=collision.raycast(new T.Vector3(x+dx,base+.24,z+dz),down,.6,true);
+   if(hit){heightCache.set(cacheKey,hit.point.y);return hit.point.y;}
   }
-  if(heightCache.size>8192)heightCache.clear();heightCache.set(cacheKey,value);return value;
+  heightCache.set(cacheKey,-99);
+  return -99;
  }
  function bodyBlocked(x,y,z,r=.16,h=1.0){
   if(!collision)return false;
@@ -28,20 +32,20 @@ export function createTokyoNavigation(data,collision){
   collision.resolve(cap);return cap.start.distanceTo(start)>.025;
  }
  function free(x,z,r=.45,hint=0){
-  if(x<bounds.minX+r||x>bounds.maxX-r||z<bounds.minZ+r||z>bounds.maxZ-r)return false;
+  if(!inside(x,z,r))return false;
   const i=nodeAt(x,z,hint);if(i<0)return false;const y=nodes[i][2];
   for(let k=0;k<8;k++){const a=k*Math.PI/4,j=nodeAt(x+Math.cos(a)*r,z+Math.sin(a)*r,y);if(j<0||Math.abs(nodes[j][2]-y)>.35)return false;}
   return !bodyBlocked(x,y,z,Math.min(r,.22));
  }
  function nearest(x,z,r=.7,hint=0){
-  if(free(x,z,r,hint))return {x,z,floorY:heightAt(x,z,nodes[nodeAt(x,z,hint)][2])};
+  if(free(x,z,r,hint))return {x,z,floorY:heightAt(x,z,hint)};
   let best=null,score=Infinity;for(let i=0;i<nodes.length;i++){
    const p=point(i),d=(p.x-x)**2+(p.z-z)**2+(p.floorY-hint)**2;
    if(d<score&&free(p.x,p.z,r,p.floorY)){score=d;best=p;}
   }if(!best)throw Error('东京街区没有可用出生位置');return best;
  }
  function walk(from,x,z,r=.16){
-  if(x<bounds.minX||x>bounds.maxX||z<bounds.minZ||z>bounds.maxZ)return null;
+  if(!inside(x,z,r))return null;
   let y=heightAt(from.x,from.z,from.floorY);
   if(y===-99||Math.abs(y-(from.floorY??y))>.36)return null;
   const n=Math.max(1,Math.ceil(Math.hypot(x-from.x,z-from.z)/.12));
@@ -96,8 +100,12 @@ export function createTokyoNavigation(data,collision){
    for(const n of nodes[i][3])if(f.next[n]<0&&edgeCache.get(i<n?i+','+n:n+','+i)!==false){f.next[n]=i;f.queue.push(n);}
   }
  }
- function beginNavigationFrame(){heightCache.clear();stepsLeft=4096;queriesLeft=24;timeLeft=2;deadline=performance.now()+.5;pumpFields();deadline=Infinity;}
+ function beginNavigationFrame(){stepsLeft=4096;queriesLeft=24;timeLeft=2;deadline=performance.now()+.5;pumpFields();deadline=Infinity;}
  function field(goal){
+  if(!fields.has(goal)){
+   const target=point(goal);
+   for(const [id,f]of fields){const p=point(id);if(Math.abs(p.floorY-target.floorY)<.35&&Math.hypot(p.x-target.x,p.z-target.z)<2.4&&clear(p,target)){pumpFields();return f.next;}}
+  }
   if(!fields.has(goal)){
    if(fields.size>=12){const done=[...fields].find(([,f])=>f.head===f.queue.length);if(!done)return null;fields.delete(done[0]);}
    const next=new Int32Array(nodes.length).fill(-1);next[goal]=goal;fields.set(goal,{next,queue:[goal],head:0});
@@ -163,5 +171,5 @@ export function createTokyoNavigation(data,collision){
   routes.set(u,{x,z,hint,p,until:now+280});return p;
   }finally{timeLeft-=performance.now()-started;deadline=Infinity;}
  }
- return {bounds,nodes,point,beginNavigationFrame,heightAt,bodyBlocked,free,nearest,canMove,movePoint,clear,waypoint};
+ return {bounds,nodes,point,beginNavigationFrame,heightAt,bodyBlocked,free,nearest,canMove,movePoint,clear,waypoint,navigationStats:()=>({fields:fields.size,workMs:2-timeLeft,stepsLeft,closedEdges:[...edgeCache.values()].filter(open=>!open).length})};
 }

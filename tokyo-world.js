@@ -15,17 +15,13 @@ export async function loadTokyo(scene,renderer){
  const lights=[];root.traverse(o=>{if(o.isLight)lights.push(o);if(o.isMesh){o.castShadow=o.receiveShadow=true;}});lights.forEach(o=>o.removeFromParent());
  const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision);
  const materialStats=prepareStaticMaterials(root,{maxSize:renderer?.capabilities.maxTextureSize??4096});
- const cityQuery=new URLSearchParams(location.search);
- const cityLod=parseFloat(cityQuery.get('citylod')),cityCull=parseFloat(cityQuery.get('citycull'));
- const batch=batchStaticScene(root,{
-  ...LOW_SPEC_RENDER,fog:scene.fog,
-  lodMeters:Number.isFinite(cityLod)?cityLod:undefined,
-  cullMeters:Number.isFinite(cityCull)?cityCull:undefined,
-  shadow:cityQuery.get('staticshadow')==='1',
- });
+ const query=new URLSearchParams(location.search),cityCull=parseFloat(query.get('citycull'));
+ const batch=batchStaticScene(root,{...LOW_SPEC_RENDER,fog:scene.fog,cullMeters:Number.isFinite(cityCull)?cityCull:undefined});scene.userData.staticNormalPass=batch.normalPass;
  console.info('[TokyoRender]',JSON.stringify({...materialStats,batches:batch.batchCount}));
  // Source meshes are retained by the collision index; only render batches and transparent meshes stay in the scene tree.
- const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());pruneEmptyStaticGroups(root);root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
+ const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());
+ // 合批后空下来的静态层级已没有渲染或碰撞职责，避免每个绘制趟继续遍历空节点。
+ pruneEmptyStaticGroups(root);root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
  // shortcut: Imported architecture is static; add destructible modules when building damage is required.
  const towers=[],destructibles=[],buildings=[];
  const towerBlocked=(x,z,r=.16,hint=0)=>towers.some(o=>!o.dead&&Math.abs(nav.heightAt(x,z,hint)-o.floorY)<o.h&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r);
@@ -74,8 +70,8 @@ export async function loadTokyo(scene,renderer){
   cameraBlocked:(x,y,z,r=.16)=>nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2),
   menuCamera:{from:[38,27,36],look:[0,3,-6]},
   drawMap(ctx,px,pz){ctx.drawImage(map,px(data.bounds.minX),pz(data.bounds.maxZ),px(data.bounds.maxX)-px(data.bounds.minX),pz(data.bounds.minZ)-pz(data.bounds.maxZ));},
-  update(dt,camera){batch.updateDetailVisibility(camera.position,camera);},
- updateDetailVisibility:(p,c)=>batch.updateDetailVisibility(p,c),updateOutlineVisibility:batch.updateOutlineVisibility,
+  update(dt,camera){batch.updateDetailVisibility(camera.position);},
+  updateRenderVisibility:batch.updateVisibility,
   diagnostics:{model:'tokyo-district',nodes:data.nodes.length,batches:batch.batchCount},
  };
 }

@@ -1,0 +1,155 @@
+{
+  "version": "0.3.70",
+  "scene": "tokyo plaza, 120 initial combat actors plus normal refill, normal movement and combat",
+  "before": {
+    "samples": 120,
+    "fps": 9.206386470294449,
+    "frameP95": 142.18499999999767,
+    "cpu": 60.09616666634877,
+    "phases": {
+      "scene": 1.3809583332389592,
+      "simulation": 0.2310833333991468,
+      "ai": 3.5917083331073325,
+      "combat": 0.2578333335618178,
+      "camera": 0.10875000006829699,
+      "actors": 0.5854583332004647,
+      "remainingAI": 0.02912499997764826,
+      "audio": 0.16900000000993412,
+      "uiAndOcclusion": 0.8254166665797432,
+      "render": 52.91341666659961
+    },
+    "calls": 3237.1666666666665,
+    "triangles": 32841224.733333334,
+    "actors": 72,
+    "pixelRatio": 1
+  },
+  "afterSamples": [
+    {
+      "samples": 120,
+      "fps": 60.3492714082753,
+      "frameP95": 26.104999999995925,
+      "cpu": 13.282875000002484,
+      "phases": {
+        "scene": 0.4061249996225039,
+        "simulation": 0.16850000048677127,
+        "ai": 2.068333333482345,
+        "combat": 0.09999999968955914,
+        "camera": 0.07287500035017729,
+        "actors": 0.24429166683306297,
+        "remainingAI": 0.02162499980380138,
+        "audio": 0.07258333327869575,
+        "uiAndOcclusion": 0.28041666677842536,
+        "render": 9.84216666650027
+      },
+      "calls": 371.03333333333336,
+      "triangles": 2577058.4833333334,
+      "actors": 72,
+      "pixelRatio": 1.25,
+      "staticShadows": {
+        "bakes": 1,
+        "seeds": 3806
+      },
+      "actorBatches": {
+        "groups": 27,
+        "instances": 477,
+        "rigs": 177,
+        "boneUploadBytes": 524288
+      }
+    },
+    {
+      "samples": 120,
+      "fps": 62.29656278714762,
+      "frameP95": 26.304999999993015,
+      "cpu": 12.609625000568728,
+      "phases": {
+        "scene": 0.40320833356430136,
+        "simulation": 0.16279166632642347,
+        "ai": 1.7732916671161851,
+        "combat": 0.08774999988575777,
+        "camera": 0.06770833314706882,
+        "actors": 0.23400000017136335,
+        "remainingAI": 0.015416666803260645,
+        "audio": 0.06420833294590314,
+        "uiAndOcclusion": 0.25945833331594864,
+        "render": 9.537375000119209
+      },
+      "calls": 375.21666666666664,
+      "triangles": 2577196.7333333334,
+      "actors": 72,
+      "pixelRatio": 0.85,
+      "staticShadows": {
+        "bakes": 1,
+        "seeds": 10986
+      },
+      "actorBatches": {
+        "groups": 27,
+        "instances": 487,
+        "rigs": 180,
+        "boneUploadBytes": 524288
+      }
+    }
+  ],
+  "people": [
+    146,
+    148
+  ],
+  "observedSeconds": 115.72,
+  "checks": 363,
+  "note": "120-frame rolling samples; not a guarantee of locked 60 FPS. Damage and movement rules, AI frequency and visible actor budget unchanged.",
+  "ordinaryBefore": {
+    "samples": 120,
+    "fps": 34.994145771030496,
+    "frameP95": 33.420000000012806,
+    "cpu": 27.377166666618237,
+    "phases": {
+      "scene": 0.009625000258286795,
+      "simulation": 0.11295833317562938,
+      "ai": 2.001583333530774,
+      "combat": 0.14541666644314924,
+      "camera": 0.23329166655118266,
+      "actors": 0.15216666677345833,
+      "remainingAI": 0.013750000049670537,
+      "audio": 0.06558333334202568,
+      "uiAndOcclusion": 0.47379166667039196,
+      "render": 24.164458333297322
+    },
+    "calls": 1574.6666666666667,
+    "triangles": 2127027.7333333334,
+    "actors": 10,
+    "pixelRatio": 1,
+    "population": 57
+  },
+  "ordinaryAfter": {
+    "samples": 120,
+    "fps": 62.11035457248672,
+    "frameP95": 24.760000000009313,
+    "cpu": 4.82950000030299,
+    "phases": {
+      "scene": 0.0058333336065212885,
+      "simulation": 0.06220833286643028,
+      "ai": 1.6068750003973642,
+      "combat": 0.06404166612774134,
+      "camera": 0.1785000005736947,
+      "actors": 0.04312499966472387,
+      "remainingAI": 0.006916667024294536,
+      "audio": 0.02624999973922968,
+      "uiAndOcclusion": 0.11258333331594865,
+      "render": 2.7201250002409023
+    },
+    "calls": 264.78333333333336,
+    "triangles": 1345584.65,
+    "actors": 10,
+    "pixelRatio": 1.5,
+    "staticShadows": {
+      "bakes": 1,
+      "seeds": 5509
+    },
+    "actorBatches": {
+      "groups": 1,
+      "instances": 9,
+      "rigs": 9,
+      "boneUploadBytes": 524288
+    },
+    "population": 57
+  }
+}

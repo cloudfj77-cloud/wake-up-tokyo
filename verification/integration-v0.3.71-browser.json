@@ -1,0 +1,178 @@
+{
+  "production": {
+    "title": "Wake up 打工人！ · Demo v0.3.71",
+    "version": {
+      "version": "0.3.71",
+      "stage": "demo",
+      "title": "Wake up 打工人！",
+      "label": "Demo v0.3.71"
+    },
+    "map": "tidewater",
+    "introMs": 38959,
+    "pages": [
+      1,
+      2,
+      3
+    ],
+    "escapeCannotSkip": true,
+    "moved": 1.0732950000000088,
+    "jumpY": 0.5949754991000128,
+    "settingsEscapeReturnsToPause": true,
+    "continueMs": 194,
+    "coldStartDiagnostic": {
+      "note": "Taken immediately after continuing the save; two startup frames are insufficient for an FPS conclusion.",
+      "mode": "playing",
+      "samples": 2,
+      "fps": 12,
+      "medianMs": 116.66500000000087,
+      "p95Ms": 116.66500000000087,
+      "updateMs": 6.08,
+      "renderMs": 56.23,
+      "width": 1280,
+      "height": 800,
+      "models": 4,
+      "drawCalls": 218,
+      "triangles": 2225999,
+      "people": 54
+    }
+  },
+  "quality": [
+    {
+      "name": "android-tidewater-0",
+      "map": "tidewater",
+      "touchMode": true,
+      "lowSpec": false,
+      "settings": {
+        "volume": 0,
+        "voiceVolume": 0,
+        "sensitivity": 1.6,
+        "quality": "standard"
+      },
+      "pixelRatio": 1.5,
+      "shadows": true,
+      "normalPass": false,
+      "actorBatches": {
+        "groups": 13,
+        "instances": 19,
+        "rigs": 11,
+        "boneUploadBytes": 524288
+      },
+      "stickTravel": 1.054873839999999,
+      "jumpY": 0.41665749980000477
+    },
+    {
+      "name": "android-riverside-0",
+      "map": "riverside",
+      "touchMode": true,
+      "lowSpec": false,
+      "settings": {
+        "volume": 0,
+        "voiceVolume": 0,
+        "sensitivity": 1.6,
+        "quality": "standard"
+      },
+      "pixelRatio": 1.5,
+      "shadows": true,
+      "renderStats": {
+        "signTextures": 137,
+        "atlasTextures": 10,
+        "remapped": 351,
+        "materials": 103,
+        "batches": 68
+      },
+      "normalPass": true,
+      "staticShadows": {
+        "bakes": 1,
+        "seeds": 35
+      },
+      "actorBatches": {
+        "groups": 1,
+        "instances": 8,
+        "rigs": 8,
+        "boneUploadBytes": 524288
+      },
+      "stickTravel": 4.905865040000016,
+      "jumpY": 0.4166849996499904
+    },
+    {
+      "name": "android-tidewater-1",
+      "map": "tidewater",
+      "touchMode": true,
+      "lowSpec": true,
+      "settings": {
+        "volume": 0,
+        "voiceVolume": 0,
+        "sensitivity": 1.6,
+        "quality": "low"
+      },
+      "pixelRatio": 0.9375,
+      "shadows": false,
+      "normalPass": false,
+      "actorBatches": {
+        "groups": 13,
+        "instances": 30,
+        "rigs": 14,
+        "boneUploadBytes": 524288
+      },
+      "stickTravel": 1.0548738400000097,
+      "jumpY": 0.41662999904999914
+    },
+    {
+      "name": "android-riverside-1",
+      "map": "riverside",
+      "touchMode": true,
+      "lowSpec": true,
+      "settings": {
+        "volume": 0,
+        "voiceVolume": 0,
+        "sensitivity": 1.6,
+        "quality": "low"
+      },
+      "pixelRatio": 0.9375,
+      "shadows": false,
+      "renderStats": {
+        "signTextures": 137,
+        "atlasTextures": 10,
+        "remapped": 351,
+        "materials": 103,
+        "batches": 68
+      },
+      "normalPass": true,
+      "staticShadows": {
+        "bakes": 0,
+        "seeds": 0
+      },
+      "actorBatches": {
+        "groups": 1,
+        "instances": 8,
+        "rigs": 8,
+        "boneUploadBytes": 524288
+      },
+      "stickTravel": 5.2867133000000015,
+      "jumpY": 0.5949754995500038
+    }
+  ],
+  "errors": [],
+  "success": true,
+  "verification": {
+    "date": "2026-11-06",
+    "version": "0.3.71",
+    "pr31": "889d4fd89855d6afd4ee2332b2cf52e92fbf76e4",
+    "pr32": "0bc555162d8b6d2d21abef15a2de704770424174",
+    "automatedTests": {
+      "passed": 410,
+      "failed": 0
+    },
+    "mobileTests": {
+      "passed": 6,
+      "failed": 0
+    },
+    "productionBuild": "passed",
+    "mobileEnvironment": "Chrome Android UA + touch emulation; not a physical APK",
+    "nativeInstallersRebuilt": false,
+    "steadyStateFrameRateMeasured": false
+  },
+  "nonGameDiagnostics": [
+    "Production Chrome requested favicon.ico twice and received 404; game assets and scripts completed successfully."
+  ]
+}
