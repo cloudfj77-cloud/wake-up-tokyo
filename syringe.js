@@ -1,26 +1,37 @@
 import {createHeldArmPose} from './held-arm-pose.js';
-import {createWeaponGrip} from './weapon-grip.js';
 import * as T from 'three';
-export function createSyringe(){const g=new T.Group(),geo=new T.BoxGeometry(1,1,1);function box(w,h,d,c,x,y,z,glow=false){const mat=new T.MeshStandardMaterial({color:c,roughness:.6,metalness:glow?0:.5,emissive:glow?c:0,emissiveIntensity:glow?.7:0});const m=new T.Mesh(geo,mat);m.scale.set(w,h,d);m.position.set(x,y,z);g.add(m);return m;}
-// Long weapon axis +Z; transparent squared reservoir, visible purple liquid and steel cage.
-box(.25,.27,1.75,0xb9abcc,0,0,0);box(.18,.25,.35,0x645572,0,.05,-.8);box(.16,.17,.06,0xb75af5,0,.05,-.99,true);box(.15,.5,.18,0x38313e,0,-.27,-.5);box(.12,.36,.16,0x3a3345,0,-.3,.45);
-const glass=new T.Mesh(new T.BoxGeometry(.76,.58,.9),new T.MeshStandardMaterial({color:0xab80c5,transparent:true,opacity:.38,depthWrite:false,roughness:.1}));glass.position.set(-.42,.03,.32);g.add(glass);const liquid=box(.64,.42,.78,0xc14dff,-.38,.015,.32,true);
-for(const z of [-.15,.82])box(.76,.6,.09,0x75717f,-.42,.03,z);for(const x of [-.76,-.08])for(const y of [-.25,.31])box(.05,.05,1.03,0x585061,x,y,.32);
-box(.24,.26,.27,0x8b8297,0,.02,.92);box(.10,.10,.7,0xdaa9ff,0,.02,1.38,true);box(.28,.32,.14,0xb563f2,0,.04,1.08,true);box(.3,.14,.1,0x77717e,0,.18,-.1);box(.22,.1,.11,0xc18aee,0,.18,-.04,true);box(.45,.08,.08,0xb9abcc,-.21,.02,-.13);box(.45,.08,.08,0xb9abcc,-.21,.02,.80);const muzzle=new T.Object3D();muzzle.position.set(0,.02,1.76);g.add(muzzle);g.visible=false;return{g,liquid,muzzle};}
-
-export function createSyringeGrip(visual,syringe,height,orientation){
- const pose=createHeldArmPose(visual),grip=createWeaponGrip(visual,syringe.g,new T.Vector3(0,-.27,-.5),height*.48,orientation??(q=>visual.holder.getWorldQuaternion(q)));
- return()=>{pose();grip();};
+const SHOULDER_REST=new T.Vector3(0,-.34,-.45);
+export function createSyringe(){
+ const g=new T.Group();g.name='Shoulder bio-injector';const boxGeometry=new T.BoxGeometry(),silver=new T.MeshStandardMaterial({color:0xe5dced,roughness:.35,metalness:.55}),dark=new T.MeshStandardMaterial({color:0x30263b,roughness:.5}),purple=new T.MeshStandardMaterial({color:0xbb36f5,emissive:0x941cdb,emissiveIntensity:.65,roughness:.16});
+ function box(w,h,d,material,x,y,z){const m=new T.Mesh(boxGeometry,material);m.scale.set(w,h,d);m.position.set(x,y,z);g.add(m);return m;}
+ function cylinder(radius,length,material,z){const m=new T.Mesh(new T.CylinderGeometry(radius,radius,length,20).rotateX(Math.PI/2),material);m.position.z=z;g.add(m);return m;}
+ cylinder(.35,1.38,new T.MeshStandardMaterial({color:0xe8d6ff,transparent:true,opacity:.35,depthWrite:false,roughness:.12}),.08);
+ const liquid=cylinder(.29,1.22,purple,.08);liquid.name='Purple reservoir';
+ for(const z of [-.66,.82])cylinder(.39,.13,silver,z);
+ for(let i=0;i<6;i++){const z=-.45+i*.19;box(.08,.025,.02,dark,-.345,.12,z);box(.08,.025,.02,dark,.345,.12,z);}
+ cylinder(.095,.87,silver,-1.16);cylinder(.24,.09,silver,-1.63);box(.62,.09,.10,silver,0,0,-1.7);
+ cylinder(.19,.27,dark,1.02);cylinder(.1,.75,silver,1.51);cylinder(.15,.12,purple,1.88);
+ box(.56,.16,.68,dark,0,-.34,-.45);box(.12,.48,.16,dark,0,-.49,-.05);box(.15,.31,.15,silver,0,-.42,.70);
+ const muzzle=new T.Object3D();muzzle.position.set(0,0,1.99);g.add(muzzle);const shoulderRest=new T.Object3D();shoulderRest.position.copy(SHOULDER_REST);g.add(shoulderRest);
+ g.visible=false;return{g,liquid,muzzle,shoulderRest,recoil:0};
 }
-
+export function kickSyringe(syringe){syringe.recoil=1;}
+export function stepSyringeRecoil(syringe,dt){syringe.recoil=Math.max(0,syringe.recoil-Math.max(0,dt)/.24);}
+export function createSyringeGrip(visual,syringe,height,orientation){
+ const shoulder=visual.root.getObjectByName('mixamorigRightArm')||visual.root.getObjectByName('bone_shoulderR');
+ const pose=createHeldArmPose(visual),baseScale=visual.model.scale.x,anchor=new T.Vector3(),center=new T.Vector3(),side=new T.Vector3(),forward=new T.Vector3(),offset=new T.Vector3(),rightHand=new T.Vector3(),leftHand=new T.Vector3(),rotation=new T.Quaternion(),kick=new T.Quaternion(),axis=new T.Vector3(1,0,0);
+ return()=>{
+  visual.holder.updateMatrixWorld(true);visual.holder.getWorldPosition(center);visual.holder.getWorldQuaternion(rotation);forward.set(0,0,1).applyQuaternion(rotation);
+  if(shoulder)shoulder.getWorldPosition(anchor);else anchor.copy(center).add(new T.Vector3(-height*.16,height*.72,0).applyQuaternion(rotation));
+  side.subVectors(anchor,center);side.y=0;side.addScaledVector(forward,-side.dot(forward));if(side.lengthSq()<1e-6)side.set(-1,0,0).applyQuaternion(rotation);side.normalize();
+  const size=height*visual.model.scale.x/baseScale,recoil=Math.sin(syringe.recoil*Math.PI/2);anchor.addScaledVector(side,size*.18);anchor.y+=size*.055;
+  if(orientation)orientation(syringe.g.quaternion);else syringe.g.quaternion.copy(rotation);
+  syringe.g.quaternion.multiply(kick.setFromAxisAngle(axis,-.23*recoil));syringe.g.scale.setScalar(size*.39);
+  offset.copy(SHOULDER_REST).multiply(syringe.g.scale).applyQuaternion(syringe.g.quaternion);syringe.g.position.copy(anchor).sub(offset).addScaledVector(forward,-size*.045*recoil);syringe.g.updateMatrixWorld(true);
+  rightHand.set(0,-.49,-.05);leftHand.set(0,-.42,.70);syringe.g.localToWorld(rightHand);syringe.g.localToWorld(leftHand);pose(rightHand,leftHand);
+ };
+}
 export function syringeShotOrigin(syringe,chest,solid){
- const muzzle=syringe.muzzle.getWorldPosition(new T.Vector3()),origin=chest.clone(),probe=new T.Vector3();
- const steps=Math.max(1,Math.ceil(chest.distanceTo(muzzle)/.08));
- // A held weapon can poke through a wall; never start its projectile on the other side.
- for(let i=1;i<=steps;i++){
-  probe.lerpVectors(chest,muzzle,i/steps);
-  if(solid(probe.x,probe.z,.04,probe.y))break;
-  origin.copy(probe);
- }
- return origin;
+ const muzzle=syringe.muzzle.getWorldPosition(new T.Vector3()),origin=chest.clone(),probe=new T.Vector3();const steps=Math.max(1,Math.ceil(chest.distanceTo(muzzle)/.08));
+ for(let i=1;i<=steps;i++){probe.lerpVectors(chest,muzzle,i/steps);if(solid(probe.x,probe.z,.04,probe.y))break;origin.copy(probe);}return origin;
 }

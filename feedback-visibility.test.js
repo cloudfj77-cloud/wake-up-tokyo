@@ -28,3 +28,10 @@ test('visibility checks are bounded and deferred units get checked on the next f
  assert.equal(v.visible(point(-3),point(-1),anchors[6]),false);
  v.beginFrame();assert.equal(v.visible(point(-3),point(-1),anchors[6]),true);
 });
+
+test('a known visible head label stays visible when combat exhausts the ray budget',t=>{
+ let now=0;t.mock.method(performance,'now',()=>now);const v=createFeedbackVisibility({root:new T.Group(),destructibles:[]}),actor={};
+ const head=(from,to)=>v.labelVisible?v.labelVisible(from,to,actor):v.visible(from,to,actor);
+ assert.equal(head(point(-3),point(-1)),true);now=100;v.beginFrame();for(let i=0;i<6;i++)v.visible(point(-4),point(-2),{});
+ assert.equal(head(point(-3),point(-1)),true,'pending visibility must not blink an already visible health bar off');
+});

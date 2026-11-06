@@ -5,7 +5,7 @@ import {WalkCollision} from './tokyo/collision.js';
 import {batchStaticScene,pruneEmptyStaticGroups} from './tokyo/render-batches.js';
 import {prepareStaticMaterials} from './tokyo/material-atlas.js';
 import {LOW_SPEC_RENDER} from './device.js';
-import {createMetroTrains} from './tokyo/metro-trains.js';
+import {createMetroTrains,inMetroArea} from './tokyo/metro-trains.js';
 import {createTokyoNavigation} from './tokyo/navigation.js';
 import {createTokyoPopulation,TUTORIAL_LAYOUT} from './tokyo/gameplay.js';
 
@@ -72,7 +72,7 @@ export async function loadTokyo(scene,renderer){
   cameraBlocked:(x,y,z,r=.16)=>metro.solid(x,y,z,r)||nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2),
   menuCamera:{from:[38,27,36],look:[0,3,-6]},
   drawMap(ctx,px,pz){ctx.drawImage(map,px(data.bounds.minX),pz(data.bounds.maxZ),px(data.bounds.maxX)-px(data.bounds.minX),pz(data.bounds.minZ)-pz(data.bounds.maxZ));},
-  update(dt,camera,mode){batch.updateDetailVisibility(camera.position);metro.update(['paused','map','upgrade','levelup'].includes(mode)?0:dt);},
+  update(dt,camera,mode,actor=spawn){batch.updateDetailVisibility(camera.position);metro.update(['paused','map','upgrade','levelup'].includes(mode)?0:dt,inMetroArea(actor));},
   updateRenderVisibility:batch.updateVisibility,
   diagnostics:{model:'tokyo-district',nodes:data.nodes.length,batches:batch.batchCount},
  };

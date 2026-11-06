@@ -29,10 +29,10 @@ export class SfxDirector{
   const a=this.bind();if(!a)return 0;key=key==='chargeTick'?'charge'+Math.max(1,Math.min(3,Math.round(step/2))):aliases[key]??key;const c=catalog.get(key);if(!c){this.stats.unknown++;return 0;}
   const isUI=key.startsWith('ui');if(this.muted||(this.paused&&!isUI)){this.stats.dropped++;return 0;}
   const time=this.now(),gate=key+':'+scope;if(time-(this.last.get(gate)??-Infinity)<c.cooldown){this.stats.dropped++;return 0;}this.last.set(gate,time);
-  const p=position??this.view?.player;const id=this.allocate(p);if(key==='convert')a.setRTPC('SFX_GainDb',this.conversionGain(),id,0);if(key==='land')a.setRTPC('Impact_Strength',Math.max(0,Math.min(1,step)),id,0);const playing=a.postEvent('sfx.'+key,id);
+  const event=key==='convert'?'explosion':key,effect=catalog.get(event)??c,p=key==='convert'?(this.view?.listener??this.view?.player):position??this.view?.player;const id=this.allocate(p);if(key==='convert')a.setRTPC('SFX_GainDb',this.conversionGain(),id,0);if(key==='land')a.setRTPC('Impact_Strength',Math.max(0,Math.min(1,step)),id,0);const playing=a.postEvent('sfx.'+event,id);
   // 各发弹体独立位置，尾音播放期间不挪给后续事件；超时只回收已播完对象。
-  const duration=Math.max(...c.clips.map(x=>x.seconds));this.oneshots.push({id,playing,key,until:time+duration+.3});
-  this.stats.posted++;this.history.push({key,playing,position:p?{x:p.x,y:p.y??0,z:p.z}:null,time});if(this.history.length>80)this.history.shift();return playing;
+  const duration=Math.max(...effect.clips.map(x=>x.seconds));this.oneshots.push({id,playing,key,until:time+duration+.3});
+  this.stats.posted++;this.history.push({key,event,playing,position:p?{x:p.x,y:p.y??0,z:p.z}:null,time});if(this.history.length>80)this.history.shift();return playing;
  }
  stopKey(key,fade=80){if(!this.audio)return;for(const shot of this.oneshots)if(shot.key===key){this.audio.stopPlaying(shot.playing,fade);shot.until=this.now()+fade/1000+.1;}}
  loop(key,token,position){

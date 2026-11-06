@@ -200,19 +200,24 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 
 #hud.holdingGun .weaponHeading{display:block}#hud.holdingGun #primaryLabel{display:block;white-space:nowrap}
 
-/* Launcher sights keep the center open; three bars replace nested charge circles. */
-#crosshair{width:112px;height:112px;color:#f4dcff}
-#crosshair.locked{color:#d991ff}#crosshair.ready{color:#fff0ff}
-#crosshair .aimRing,#crosshair .aimDot{display:none}
-.rocketReticle{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:square;filter:drop-shadow(0 1px 1px #120b1b) drop-shadow(0 0 2px #120b1b)}
-.reticleCenter{stroke:#fff2ff;stroke-width:2}.reticleTicks{stroke-width:1.7;opacity:.85}
-#chargeRings{transform:none}.chargeTrack path{fill:none;stroke:#e8caff55;stroke-width:5;stroke-linecap:square}
-.chargeFill path{fill:none;stroke:#cc7aff;stroke-width:5;stroke-linecap:square;opacity:0;transition:opacity .1s}
-.chargeFill path.filled{opacity:1}#crosshair.ready .chargeFill path{stroke:#ffe3ff;filter:drop-shadow(0 0 3px #b84dff)}
-#crosshair.ready .reticleCorners{stroke-width:3.6;filter:drop-shadow(0 0 4px #c263ff)}
-#crosshair.ready #chargeStatus{background:#7d24b7;color:#fff2ff;border:1px solid #dfa1ff}
-#chargeStatus{font-size:10px;letter-spacing:1px;color:#f2daff}
-@media(max-height:600px),(max-width:760px){#crosshair{width:96px;height:96px}}
+/* Thin instrument dial; the center tip remains at the exact screen center. */
+#crosshair{width:200px;height:200px;color:#f5f3eb}
+#crosshair.locked,#crosshair.ready{color:#fffdf5}
+.scopeReticle{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1;filter:drop-shadow(0 1px 1px #09090d) drop-shadow(0 0 1px #09090d)}
+.reticleDial{opacity:.82}.reticleScale,.reticleGauge{opacity:.65;stroke-width:.8}
+.reticleAxes{stroke-width:1.2;opacity:.9}.reticleCenter{stroke-width:1.7;stroke-linejoin:round}.reticlePoint{fill:currentColor;stroke:none}
+#chargeRings{transform:none;filter:drop-shadow(0 1px 1px #09090d);animation:none}
+.chargeTrack path{fill:none;stroke:#f5f3eb33;stroke-width:4;stroke-linecap:butt}
+.chargeFill path{fill:none;stroke:#c46bff;stroke-width:4;stroke-linecap:butt;opacity:0;transition:opacity .1s}
+.chargeFill path.filled{opacity:1}
+#crosshair.ready #chargeRings{animation:none}
+#crosshair.ready .chargeFill path{stroke:#e3abff;filter:drop-shadow(0 0 3px #b84dff)}
+#crosshair.ready .reticleDial{stroke:#d89bff;filter:drop-shadow(0 0 2px #a24ce0)}
+#crosshair.ready .reticleCenter,#crosshair.ready .reticlePoint{color:#e3abff}
+#chargeStatus{left:8.5%;top:16%;font-size:9px;letter-spacing:0;color:#f5f3eb}
+#crosshair.ready #chargeStatus{left:50%;top:calc(100% - 10px);padding:3px 7px;border-radius:0;background:#6f229b;color:#fff2ff;border:1px solid #dfa1ff}
+#targetHint,#hud.charging #targetHint{top:calc(50% + 118px)}
+@media(max-height:600px),(max-width:760px){#crosshair{width:156px;height:156px}#targetHint,#hud.charging #targetHint{top:calc(50% + 93px);font-size:9px}#chargeStatus{font-size:8px}#crosshair.ready #chargeStatus{font-size:9px;padding:2px 5px}}
 
 /* 阵营生命条使用实色；玩家与同伴同绿，敌方统一红。 */
 .unitLabel,.unitLabel.friendly,.allyDot{opacity:1}
@@ -221,3 +226,5 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 .unitLabel.hostile .name{color:#fff4f4;border-color:var(--enemy)}.unitLabel.friendly .name{color:var(--friend)}
 .bar.hp #hpBar{background:var(--friend);opacity:1}.bar.hp #hpTrail{background:#1d9c46;opacity:1}.bar.hp{background:#111416}
 #bossHp{background:var(--enemy)}
+
+.unitLabel,.unitLabel .health,.unitLabel .health i{animation:none!important}.unitLabel.recentHit .health{box-shadow:none}
