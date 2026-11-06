@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 const source=readFileSync(new URL('./main.js',import.meta.url),'utf8').split('\n').find(line=>line.startsWith('function drawLabels()'));
-function labels(units,height=800){
+function labels(units,height=800,{pickups=[],floorY=0}={}){
  const host={innerHTML:''};
- class Vector3{set(){return this;}project(){this.x=0;this.y=0;this.z=0;return this;}}
- const ctx=vm.createContext({units,mode:'playing',player:{x:0,z:0},target:null,distance:()=>2,world:{heightAt:()=>0},T:{Vector3},feedbackVisibility:{labelVisible:()=>true},camera:{position:{}},combatBodyHeight:()=>1,innerWidth:1280,innerHeight:height,state:{abilities:{}},unitName:u=>u.name||'测试角色',$:()=>host});
+ class Vector3{copy(){return this;}set(){return this;}project(){this.x=0;this.y=0;this.z=0;return this;}}
+ const ctx=vm.createContext({units,pickups,mode:'playing',player:{x:0,z:0,floorY},target:null,distance:()=>2,world:{heightAt:()=>0,multilevel:true},T:{Vector3},feedbackVisibility:{labelVisible:()=>true},camera:{position:{}},combatBodyHeight:()=>1,innerWidth:1280,innerHeight:height,state:{abilities:{}},unitName:u=>u.name||'测试角色',$:()=>host});
  vm.runInContext(source+';drawLabels();',ctx);return host.innerHTML;
 }
 test('nearby friendly actors keep a health bar when they are not hurt',()=>{
@@ -34,4 +34,8 @@ test('players and both patrol factions use opaque red/green health bars',()=>{
 test('landscape phone keeps enemy head bars around the aiming point',()=>{
  const html=labels([{id:1,kind:'guard',type:1,hp:50,maxHp:100,hurt:0}],390);
  assert.match(html,/unitLabel hostile/);assert.match(html,/class="health"/);
+});
+
+test('the cafe weapon label stays on its own floor instead of covering the metro HUD',()=>{
+ const pickups=[{type:'launcher',x:0,z:0,floorY:.05}];assert.doesNotMatch(labels([],800,{pickups,floorY:-3.85}),/weaponPickupLabel/);assert.match(labels([],800,{pickups,floorY:0}),/weaponPickupLabel/);
 });

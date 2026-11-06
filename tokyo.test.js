@@ -136,7 +136,7 @@ test('real initial population and refill callers keep actor heights and leave on
 test('legacy saves retain progression and valid street populations',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),saved={version:11,state:rules.makeState(),player:{x:40,z:20,floorY:3.3,y:0},units:[rules.makeUnit(1,0,40,20,true),rules.makeUnit(2,1,42,20)] ,objects:[]};
  saved.units[1].converted=true;saved.units.forEach(u=>u.floorY=3.3);saved.state.infected=9;
- const pop=createTokyoPopulation(nav),ctx=vm.createContext({...rules,T,populationZone,saved,world:{tutorial:{},populationSpot:pop.spawn,nearest:nav.nearest},sprayMarkers:new Map(),chargeMarkers:new Map(),visuals:new Map(),spawnQueue:{jobs:[]},recentSpawnPoints:[]});
+ const pop=createTokyoPopulation(nav),ctx=vm.createContext({...rules,T,surfacePaint:{restore(){}},populationZone,saved,world:{tutorial:{},populationSpot:pop.spawn,nearest:nav.nearest},sprayMarkers:new Map(),chargeMarkers:new Map(),visuals:new Map(),spawnQueue:{jobs:[]},recentSpawnPoints:[]});
  vm.runInContext(source.slice(source.indexOf('function restore(saved)'),source.indexOf('let starting=false;'))+'restore(saved);',ctx);
  assert.equal(ctx.state.infected,9);assert.equal(ctx.state.tokyoTutorial.stage,3);assert.ok(populationZone(ctx.player));assert.ok(ctx.units.every(u=>populationZone(u)));
 });

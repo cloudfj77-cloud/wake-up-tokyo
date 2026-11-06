@@ -1103,6 +1103,10 @@ export const PICKUP_CONFIG={radius:1.5,healRatio:.3,factorRatio:.1,potionDuratio
 export const SPRINT_CONFIG={drain:20,recover:14};
 export function potionMultiplier(s,kind){return s.potionTime>0?1+(PICKUP_CONFIG[kind+'Bonus']||0):1;}
 export function collectPickup(s,type){
+ if(type==='launcher'){
+  const unlocked=!hasLauncher(s);if(unlocked){s.abilities.launcher=1;s.history.push({id:'launcher',level:1,time:s.time,pickup:true});}
+  const held=GUNS[s.weapon];if(held)s.mags[held.id]=s.clip;rememberWeapon(s,'launcher');s.weapon=LAUNCHER_SLOT;s.gunId=null;s.cafeSyringeCollected=true;return {type,unlocked};
+ }
  if(type==='health'){
   if(s.hp>=s.maxHp)return null;
   const amount=Math.min(s.maxHp-s.hp,s.maxHp*PICKUP_CONFIG.healRatio);s.hp+=amount;

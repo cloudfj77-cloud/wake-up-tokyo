@@ -2,13 +2,13 @@ export const TOKYO_LOOK={saturation:1.03,exposure:1.24,contrast:1.02,shadow:.65,
 export const TOKYO_FOG={near:28,far:145};
 // x, z, floor height: station platform → switchback landing → sunken plaza.
 export const TUTORIAL_LAYOUT={
- spawn:[5,8,-3.85],move:[3,8,-3.85],worker:[1,8,-3.85],
+ syringe:[-3.2,.5,0],spawn:[5,8,-3.85],move:[3,8,-3.85],worker:[1,8,-3.85],
  exit:[[-2.75,9.35,-3.85],[-7.15,9.35,-1.65],[-8.25,7.15,-1.65],[-7.15,4.95,-1.65],[-2.75,4.95,0]],
 };
 export const TUTORIAL_STEPS=[
- {title:'沿站台向前走',detail:'WASD 移动，方向键或右键拖动观察。走到白色菱形标记。'},
+ {title:'沿站台向前走',detail:'WASD 移动，方向键或右键拖动观察。走到黄色光圈。'},
  {title:'唤醒第一位打工人',detail:'靠近标记中的打工人，面向他，左键 / J 连续轻击两次。'},
- {title:'走出地铁站',detail:'跟随白色菱形，沿楼梯上行，前往下沉广场。'},
+ {title:'走出地铁站',detail:'跟随黄色光圈，沿楼梯上行，前往下沉广场。'},
 ];
 export const tutorialActive=state=>!!state.tokyoTutorial&&state.tokyoTutorial.stage<3;
 export function advanceTutorial(state,player,route,worker){

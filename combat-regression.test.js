@@ -117,7 +117,7 @@ test('restoring old cast-based charge starts empty, while new hit-based progress
   const state=rules.makeState();state.abilities.launcher=3;state.launcherCharge=6;
   if(current===undefined)delete state.powerCharge;else state.powerCharge=current;
   const saved={state,units:[],player:{x:0,z:0},cameraDistance:2.7,objects:[]};
-  const ctx=vm.createContext({...rules,T,saved,state:rules.makeState(),sprayMarkers:new Map(),chargeMarkers:new Map(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:noop,world:{destructibles:[],spawnWeakenSites:noop}});
+  const ctx=vm.createContext({...rules,T,surfacePaint:{restore:noop},saved,state:rules.makeState(),sprayMarkers:new Map(),chargeMarkers:new Map(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:noop,world:{destructibles:[],spawnWeakenSites:noop}});
   vm.runInContext(section('function restore(saved)','async function start('),ctx);
   vm.runInContext('restore(saved)',ctx);
   assert.equal(ctx.state.powerCharge,current??0);assert.equal('launcherCharge' in ctx.state,false);
@@ -128,7 +128,7 @@ test('format 10 checkpoint clamps base level, preserves owned abilities and earn
  const state=rules.makeState();state.level=19;state.xp=4;state.pending=3;state.xpEarned=900;
  state.abilities.launcher=3;state.history=Array.from({length:18},()=>({id:'launcher',level:3,time:0}));
  const saved={version:10,state,units:[],player:{x:0,z:0,roll:.4,vy:2},objects:[]};
- const ctx=vm.createContext({...rules,T,saved,state:rules.makeState(),sprayMarkers:new Map(),chargeMarkers:new Map(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:noop,world:{destructibles:[],spawnWeakenSites:noop}});
+ const ctx=vm.createContext({...rules,T,surfacePaint:{restore:noop},saved,state:rules.makeState(),sprayMarkers:new Map(),chargeMarkers:new Map(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:noop,world:{destructibles:[],spawnWeakenSites:noop}});
  vm.runInContext(section('function restore(saved)','async function start('),ctx);
  vm.runInContext('restore(saved)',ctx);
  assert.equal(ctx.state.level,15);assert.equal(ctx.state.need,rules.xpNeedFor(15));assert.equal(ctx.state.xp,0);
@@ -221,7 +221,7 @@ test('save restore repairs duplicate IDs and guards and reinforcements share a s
  const state=rules.makeState();state.abilities.command=2;
  const units=[800,801,800].map(id=>Object.assign(rules.makeUnit(id,1,0,0),{guard:true,converted:true,kind:'ally'}));
  const saved={version:11,state,units,player:{x:0,z:0},objects:[],totalReinforcements:700};
- const ctx=vm.createContext({...rules,T,saved,state:rules.makeState(),units:[],player:{x:0,z:0},
+ const ctx=vm.createContext({...rules,T,surfacePaint:{restore:noop},saved,state:rules.makeState(),units:[],player:{x:0,z:0},
   nextActorId:100,unitPool:[],visuals:new Map(),squadIds:new Set(),sprayMarkers:new Map(),chargeMarkers:new Map(),
   spawnQueue:{jobs:[]},recentSpawnPoints:[],world:{nearest:()=>({x:0,z:0}),destructibles:[]},actorVisual:noop});
  vm.runInContext(section('function acquireUnitRecord(','function ensureGuards(')+section('function restore(saved)','async function start('),ctx);
@@ -237,7 +237,7 @@ test('warning meshes are released on actor recycle, skill completion, and restor
  const mesh=()=>{const m=new T.Mesh(new T.PlaneGeometry(),new T.MeshBasicMaterial());
   m.geometry.addEventListener('dispose',()=>geometries++);m.material.addEventListener('dispose',()=>materials++);scene.add(m);return m;};
  sprayMarkers.set(1,mesh());chargeMarkers.set(1,mesh());
- const ctx=vm.createContext({...rules,T,scene,sprayMarkers,chargeMarkers,visuals:new Map(),squadIds:new Set(),unitPool:[],
+ const ctx=vm.createContext({...rules,T,surfacePaint:{restore:noop},scene,sprayMarkers,chargeMarkers,visuals:new Map(),squadIds:new Set(),unitPool:[],
   units:[],player:{x:0,z:0},state:rules.makeState(),auraVisuals:new Map(),world:{heightAt:()=>0},
   syncActorPresence:noop,actorVisual:noop});
  vm.runInContext(section('function disposeActorWarning(','function spawnGuard(')+section('function updateVisuals(','function updateEffects('),ctx);
@@ -274,7 +274,7 @@ test('destroyed tanks explode once on release, never convert, and recycle withou
 test('large checkpoints restore logic without synchronously cloning every actor model',()=>{
  const saved={state:rules.makeState(),units:Array.from({length:200},(_,i)=>rules.makeUnit(i,1,i%20,i%10)),player:{x:0,z:0},objects:[]};
  let clones=0;
- const ctx=vm.createContext({...rules,T,saved,state:rules.makeState(),sprayMarkers:new Map(),chargeMarkers:new Map(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:()=>clones++,world:{destructibles:[],spawnWeakenSites:noop}});
+ const ctx=vm.createContext({...rules,T,surfacePaint:{restore:noop},saved,state:rules.makeState(),sprayMarkers:new Map(),chargeMarkers:new Map(),spawnQueue:{jobs:[],wait:0},recentSpawnPoints:[],visuals:new Map(),actorVisual:()=>clones++,world:{destructibles:[],spawnWeakenSites:noop}});
  vm.runInContext(section('function restore(saved)','async function start('),ctx);vm.runInContext('restore(saved)',ctx);
  assert.equal(ctx.units.length,200);assert.equal(clones,0,'visibility budget must build models as needed after resuming');
 });

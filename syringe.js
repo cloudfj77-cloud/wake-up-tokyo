@@ -6,10 +6,10 @@ export function createSyringe(){
  function box(w,h,d,material,x,y,z){const m=new T.Mesh(boxGeometry,material);m.scale.set(w,h,d);m.position.set(x,y,z);g.add(m);return m;}
  function cylinder(radius,length,material,z){const m=new T.Mesh(new T.CylinderGeometry(radius,radius,length,20).rotateX(Math.PI/2),material);m.position.z=z;g.add(m);return m;}
  cylinder(.35,1.38,new T.MeshStandardMaterial({color:0xe8d6ff,transparent:true,opacity:.35,depthWrite:false,roughness:.12}),.08);
- const liquid=cylinder(.29,1.22,purple,.08);liquid.name='Purple reservoir';
- for(const z of [-.66,.82])cylinder(.39,.13,silver,z);
+ const liquid=cylinder(.29,1.22,purple,.08);liquid.name='Purple reservoir';liquid.scale.y=.78;liquid.position.y=-.055;
+ cylinder(.39,.13,silver,.82);const rear=new T.Mesh(new T.TorusGeometry(.32,.055,8,24),silver);rear.position.z=-.66;g.add(rear);
  for(let i=0;i<6;i++){const z=-.45+i*.19;box(.08,.025,.02,dark,-.345,.12,z);box(.08,.025,.02,dark,.345,.12,z);}
- cylinder(.095,.87,silver,-1.16);cylinder(.24,.09,silver,-1.63);box(.62,.09,.10,silver,0,0,-1.7);
+ cylinder(.045,.87,silver,-1.16);cylinder(.14,.07,silver,-1.63);box(.42,.065,.10,silver,0,0,-1.7);
  cylinder(.19,.27,dark,1.02);cylinder(.1,.75,silver,1.51);cylinder(.15,.12,purple,1.88);
  box(.56,.16,.68,dark,0,-.34,-.45);box(.12,.48,.16,dark,0,-.49,-.05);box(.15,.31,.15,silver,0,-.42,.70);
  const muzzle=new T.Object3D();muzzle.position.set(0,0,1.99);g.add(muzzle);const shoulderRest=new T.Object3D();shoulderRest.position.copy(SHOULDER_REST);g.add(shoulderRest);

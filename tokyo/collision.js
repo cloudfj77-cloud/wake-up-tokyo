@@ -37,7 +37,7 @@ export class WalkCollision {
    const triangles=this.triangles(item);
    for(const triangle of floorOnly?item.floors:triangles){
     if(ray.intersectTriangle(triangle.a,triangle.b,triangle.c,false,point)){
-     const d=point.distanceTo(origin);if(d<=distance&&(!result||d<result.distance))result={point:point.clone(),distance:d};
+     const d=point.distanceTo(origin);if(d<=distance&&(!result||d<result.distance)){const normal=triangle.getNormal(new T.Vector3());if(normal.dot(direction)>0)normal.negate();result={point:point.clone(),distance:d,normal,geometry:item.geometry,matrix:item.matrix};}
     }
    }
   }return result;

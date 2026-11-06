@@ -7,7 +7,7 @@ import * as rules from './rules.js';
 import {loadTokyoCollisionScene} from './scripts/tokyo/load-collision-scene.mjs';
 import {WalkCollision} from './tokyo/collision.js';
 import {createTokyoNavigation} from './tokyo/navigation.js';
-import {createTokyoPopulation} from './tokyo/gameplay.js';
+import {createTokyoPopulation,TUTORIAL_LAYOUT} from './tokyo/gameplay.js';
 
 // 用游戏交付的 GLB，而非仅检查旧导航文件内部是否连通。
 const data=JSON.parse(readFileSync(new URL('./assets/scenes/tokyo-navigation.json',import.meta.url)));
@@ -163,4 +163,9 @@ test('newly converted tutorial worker starts pursuing immediately with the compl
   assert.ok(pursuitFrames>20);assert.equal(blockedFrames,0,`pursuit inserted ${blockedFrames} idle frames, seed ${initialSeed}`);
   assert.ok(attacks>0,'continuous travel must still stop to attack when it reaches a real target');
  }
+});
+
+test('the cafe injector point is inside the cafe and has full player clearance on the correct floor',()=>{
+ const nav=createTokyoNavigation(data,collision),[x,z,floor]=TUTORIAL_LAYOUT.syringe,p=nav.nearest(x,z,.55,floor);
+ assert.ok(p.x>-5.5&&p.x<0&&p.z>-2.5&&p.z<2);assert.ok(Math.abs(p.floorY)<.1);assert.ok(nav.free(p.x,p.z,.55,p.floorY));assert.ok(Math.hypot(p.x-x,p.z-z)<.1);
 });

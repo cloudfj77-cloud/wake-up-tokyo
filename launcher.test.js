@@ -40,3 +40,9 @@ for(const layout of ['repository','forgeax','distributed'])test(`Mac launcher se
   child.kill();await exited;child=null;
  }finally{child?.kill();await rm(root,{recursive:true,force:true});}
 });
+
+test('cafe pickup equips the injector without spending a choice or upgrading an owned one',async()=>{
+ const {makeState,collectPickup,LAUNCHER_SLOT,weaponSlots,ownedAbilities}=await import('./rules.js');const s=makeState(),pending=s.pending;
+ assert.equal(collectPickup(s,'launcher').unlocked,true);assert.equal(s.pending,pending);assert.equal(s.weapon,LAUNCHER_SLOT);assert.equal(s.abilities.launcher,1);assert.equal(weaponSlots(s).filter(w=>w.id==='launcher').length,1);assert.equal(ownedAbilities(s).filter(a=>a.id==='launcher').length,1);assert.equal(s.cafeSyringeCollected,true);
+ s.abilities.launcher=3;s.weapon=0;s.clip=3;s.mags.pistol=12;assert.equal(collectPickup(s,'launcher').unlocked,false);assert.equal(s.mags.pistol,3);assert.equal(s.abilities.launcher,3);assert.equal(s.pending,pending);assert.equal(weaponSlots(s).filter(w=>w.id==='launcher').length,1);
+});

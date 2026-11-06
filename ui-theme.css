@@ -228,3 +228,5 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 #bossHp{background:var(--enemy)}
 
 .unitLabel,.unitLabel .health,.unitLabel .health i{animation:none!important}.unitLabel.recentHit .health{box-shadow:none}
+
+.weaponPickupLabel{position:absolute;transform:translate(-50%,-100%);padding:7px 10px;border:1px solid #e5b1ff;border-left:4px solid #bb4dff;background:#22112e;box-shadow:2px 2px #000;white-space:nowrap;text-align:center;font-size:12px;color:#f6e7ff}.weaponPickupLabel b{display:block}.weaponPickupLabel small{display:block;margin-top:3px;font-size:10px;color:#e5b1ff}

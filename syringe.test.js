@@ -54,3 +54,7 @@ test('each injector shot kicks the shoulder barrel upward and returns smoothly',
  kickSyringe(syringe);update();assert.ok(syringe.g.quaternion.angleTo(rest)>.12);assert.ok(syringe.muzzle.getWorldPosition(new T.Vector3()).y>height+.03);
  stepSyringeRecoil(syringe,.1);update();assert.ok(syringe.g.quaternion.angleTo(rest)>.01);kickSyringe(syringe);assert.equal(syringe.recoil,1);stepSyringeRecoil(syringe,.3);update();assert.ok(syringe.g.quaternion.angleTo(rest)<1e-6);
 });
+
+test('the rear sightline reaches purple liquid through the open reservoir collar',()=>{
+ const s=createSyringe();s.g.visible=true;s.g.updateMatrixWorld(true);const ray=new T.Raycaster(new T.Vector3(.2,-.05,-3),new T.Vector3(0,0,1));const hit=ray.intersectObject(s.g,true).find(h=>!h.object.material.transparent);assert.ok(hit);assert.equal(hit.object,s.liquid);
+});

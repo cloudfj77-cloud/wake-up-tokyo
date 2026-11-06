@@ -45,12 +45,12 @@ export async function loadTokyo(scene,renderer){
   exit:TUTORIAL_LAYOUT.exit.map(p=>tutorialPoint(...p)),
  };
  const spawn=tutorialPoint(...TUTORIAL_LAYOUT.spawn),bossSpawn=nearest(10,-9,3.5,0),entries=[[-13,-16],[16,-16],[-16,16],[16,16]].map(([x,z])=>{const p=nearest(x,z,1);return[p.x,p.z];});
- const marker=new T.Group(),markerMaterial=new T.MeshBasicMaterial({color:0xfff3cf,toneMapped:false});
+ const marker=new T.Group(),markerMaterial=new T.MeshBasicMaterial({color:0xffd62e,toneMapped:false});
  const ring=new T.Mesh(new T.RingGeometry(.55,.65,32),markerMaterial);ring.rotation.x=-Math.PI/2;ring.position.y=.06;marker.add(ring);
- const diamond=new T.Mesh(new T.OctahedronGeometry(.19),markerMaterial);diamond.position.y=1.7;marker.add(diamond);marker.visible=false;scene.add(marker);
+ marker.name='Yellow tutorial halo';marker.visible=false;scene.add(marker);
  const map=document.createElement('canvas');map.width=Math.ceil((data.bounds.maxX-data.bounds.minX)*2);map.height=Math.ceil((data.bounds.maxZ-data.bounds.minZ)*2);const ctx=map.getContext('2d');ctx.fillStyle='#283d49';ctx.fillRect(0,0,map.width,map.height);
  for(let i=0;i<data.nodes.length;i++){const p=nav.point(i);ctx.fillStyle=p.floorY>8?'#8c9ba3':p.floorY>2?'#a9a99f':'#c9b8a0';ctx.fillRect((p.x+58)*2,(55-p.z)*2,1,1);}
- return {root,metro,renderStats:{...materialStats,batches:batch.batchCount},multilevel:true,buildings,obstacles:[],destructibles,towers,spawn,bossSpawn,entries,spawnWeakenSites,breakAt,tutorial,
+ return {root,metro,renderStats:{...materialStats,batches:batch.batchCount},multilevel:true,buildings,obstacles:[],destructibles,towers,spawn,bossSpawn,entries,spawnWeakenSites,breakAt,tutorial,syringePickup:tutorialPoint(...TUTORIAL_LAYOUT.syringe),traceSurface:(origin,direction,distance)=>collision.raycast(origin,direction,distance),
   populationSpot:population.spawn,populationTarget:population.wander,rebalancePopulation:population.rebalance,
   combatClear(a,b){
    const origin=new T.Vector3(a.x,nav.heightAt(a.x,a.z,a.floorY)+.55+(a.y||0),a.z),end=new T.Vector3(b.x,nav.heightAt(b.x,b.z,b.floorY)+.55+(b.y||0),b.z),direction=end.clone().sub(origin),distance=direction.length();
