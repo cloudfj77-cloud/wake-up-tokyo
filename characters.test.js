@@ -194,3 +194,22 @@ test('jump poses follow physical ascent and descent instead of advancing through
  v.jumpPhase=.8;updateCharacterVisual(v,false,.016);assert.ok(v.current.time>peak);
  v.airborne=false;updateCharacterVisual(v,false,.016);assert.equal(v.jumpPlayback,null);assert.notEqual(v.current.getClip().name,'jump');
 });
+
+test('converted allies match cadence to measured ground travel and stop running when blocked',()=>{
+ const clips=asset.clips.map(c=>c.clone()),walk=clips.find(c=>c.name==='walk');walk.userData={rootMotionSpeed:2.4};
+ const v=createCharacterVisual({...asset,clips},'ally'),natural=2.4*v.model.scale.x;
+ updateCharacterVisual(v,true,.05,0,false,natural*.6);assert.ok(Math.abs(v.current.getEffectiveTimeScale()-.6)<.001);
+ updateCharacterVisual(v,true,.05,0,false,natural*1.2);assert.ok(Math.abs(v.current.getEffectiveTimeScale()-1.2)<.001);
+ updateCharacterVisual(v,true,.05,0,false,.02);assert.equal(v.current.getClip().name,'idle','tiny arrival corrections must not look like frozen running');
+ updateCharacterVisual(v,false,.05,0,false,0);assert.equal(v.current.getClip().name,'idle');
+ assert.equal(v.groundSpeed,0);
+ releaseCharacterVisual(v);assert.equal(v.groundSpeed,undefined);clearCharacterPool();
+});
+
+
+test('cancel animation lets an air roll replace jump until the player switches back',()=>{
+ const a=createCharacterVisual(asset,'player');a.airborne=true;playCharacterJump(a,.78);updateCharacterVisual(a,true,.1);
+ playCharacterAttack(a,'rush',.72);updateCharacterVisual(a,true,.1);
+ assert.ok(a.attackTime>.5,'jump playback must not overwrite the new roll');assert.equal(a.rolling,true);assert.ok(a.current.getEffectiveTimeScale()>0);
+ playCharacterJump(a,.78);updateCharacterVisual(a,true,.016);assert.equal(a.rolling,false);assert.equal(a.attackTime,0);assert.equal(a.current.getEffectiveTimeScale(),0);
+});

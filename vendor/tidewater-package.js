@@ -1,3 +1,4 @@
+import {LOW_SPEC_RENDER} from '../device.js';
 // Recovered from the user-supplied v0.3.0 HTML package. INKWAVE © 2026 Jayden Davis, MIT.
 import {Vector3 as DA,Color as lA,BufferGeometry as FM,Float32BufferAttribute as xM,ShapeUtils as kI,Vector2 as jM,IcosahedronGeometry as eT,BufferAttribute as dM,SphereGeometry as yN,CylinderGeometry as KN,TorusGeometry as jI,PlaneGeometry as KI,CanvasTexture as mw,SRGBColorSpace as Tj,RepeatWrapping as FN,MeshStandardMaterial as yj,DoubleSide as hj,MeshDepthMaterial as eC,RGBADepthPacking as rE,Matrix3 as Nj,Euler as nj,Quaternion as mj,Matrix4 as YM,CatmullRomCurve3 as rC,Group as oj,NoColorSpace as xN,MeshPhysicalMaterial as OI,MeshBasicMaterial as Vj,Mesh as GM,InstancedMesh as iI,WebGLArrayRenderTarget as zk,UnsignedByteType as zI,RGBAFormat as _j,LinearFilter as aj,LinearMipmapLinearFilter as SN,DataArrayTexture as uC,OrthographicCamera as uT,RawShaderMaterial as Zx,GLSL3 as AE,Scene as Cz,Vector4 as qM,Plane as pD,Box3 as ON,BoxGeometry as DN,TubeGeometry as oz,DataTexture as DI,Fog as dw,FloatType as XN,ShaderMaterial as PN,WebGLRenderTarget as YI,HalfFloatType as OD,DirectionalLight as Kw,HemisphereLight as nE,BackSide as mN,LessEqualDepth as kT,PMREMGenerator as TE,ClampToEdgeWrapping as qN,UniformsUtils as ME,UniformsLib as vM,PerspectiveCamera as NN,WebGLCubeRenderTarget as hx,CubeCamera as Gx,CustomBlending as kx,AddEquation as eD,OneFactor as Q4,SrcAlphaFactor as XO,ZeroFactor as Ux,RedFormat as sC,CircleGeometry as aT,AdditiveBlending as II,DynamicDrawUsage as D4,ConeGeometry as Zw,InstancedBufferAttribute as cT,LatheGeometry as aC,CubicBezierCurve3 as bx,TextureLoader as Sz,PointLight as xD} from 'three';
 import * as mo from 'three';
@@ -11154,8 +11155,41 @@ async function HB(j, A, { quality: M = "standard" } = {}) {
     O.lightSize = 0;
     for (const wA of O.faces) wA.light = null;
   }
-  const g = d7(E, 1, C, { texlib: z, lightmap: P }), Q = new GM(O.buildGeometry(1), g);
-  Q.name = "Tidewater architecture", Q.castShadow = true, Q.receiveShadow = true, N.add(Q);
+  const g = d7(E, 1, C, { texlib: z, lightmap: P });
+  // 整座广场原先是"一块"合并网格：视锥剔除对它完全无效，转视角时 232 万面全画。
+  // 按 28 米网格切成多块：镜头看不到的块被自动剔除；静态块也不再进阴影贴图，省掉一整趟投影。
+  const gShadow = typeof location !== "undefined" && new URLSearchParams(location.search).get("staticshadow") === "1";
+  const gCell = 28, gGroups = new Map();
+  for (const wA of O.blocks) {
+    if (!wA.solid && !wA.render) continue;
+    const gKey = Math.floor(wA.center.x / gCell) + "," + Math.floor(wA.center.z / gCell);
+    let gSet = gGroups.get(gKey);
+    if (!gSet) gGroups.set(gKey, gSet = new Set());
+    gSet.add(wA);
+  }
+  const gChunks = [];
+  for (const gSet of gGroups.values()) {
+    const gg = O.buildGeometry(1, (wA) => !wA.grate && gSet.has(wA));
+    if (!gg.index || !gg.index.count) continue;
+    const gm = new GM(gg, g);
+    gm.name = "Tidewater architecture", gm.castShadow = gShadow, gm.receiveShadow = true, N.add(gm);
+    gg.computeBoundingSphere();
+    gChunks.push({ mesh: gm, center: gg.boundingSphere.center.clone(), radius: gg.boundingSphere.radius });
+  }
+  let Q = gChunks.length ? gChunks[0].mesh : new GM(O.buildGeometry(1), g);
+  if (!gChunks.length) { Q.name = "Tidewater architecture", Q.castShadow = gShadow, Q.receiveShadow = true, N.add(Q); }
+  // 移动端 WebView：描边法线趟范围减半、雾外不留余量（?lowspec=1 可在桌面上验证）
+  // 分块后就能按距离分级：主画面雾吞掉后不画，描边法线趟只画近处（远处本来就不该有描边）。
+  function gApply(gPos, gMode) {
+    const gf = j.fog;
+    const gOff = !gf || !Number.isFinite(gf.near) || gf.near > 500;
+    if (gOff) { for (const gc of gChunks) gc.mesh.visible = true; return; }
+    const gr = gMode === "outline" ? gf.near + (gf.far - gf.near) * LOW_SPEC_RENDER.outlineFactor : gf.far + LOW_SPEC_RENDER.cullPad;
+    for (const gc of gChunks) {
+      const gd = Math.sqrt(gPos.distanceToSquared(gc.center));
+      gc.mesh.visible = gd < gr + gc.radius;
+    }
+  }
   const x = new rB(N, O);
   for (const wA of x.pads) wA.g.visible = false;
   for (const wA of j.children) wA.isLight && (wA.visible = false);
@@ -11215,9 +11249,11 @@ async function HB(j, A, { quality: M = "standard" } = {}) {
   }
   PA(M);
   let MA = 0;
-  return { root: N, pillarData: [{name: Q.name, pillars: O.blocks.filter(b=>!b.hidden && b.axes[1].y>.999 && b.half.y*2>.7 && Math.max(b.half.x,b.half.z)*2<1.8 && b.half.y>Math.max(b.half.x,b.half.z)*1.6).map(b=>({min:b.aabbMin.toArray(),max:b.aabbMax.toArray()}))}], buildings: q, obstacles: [], destructibles: S, towers: v, spawn: f, bossSpawn: h, entries: X, spawnWeakenSites: t, breakAt: p, bossCanTarget: (wA, xA) => Math.hypot(xA.x - wA.x, xA.z - wA.z) <= 28, heightAt: s.heightAt, free: G, nearest: r, solid: (wA, xA, YA) => !G(wA, xA, YA), canMove: (wA, xA, YA, eA = 0.4) => s.canMove(wA, xA, YA, eA) && !c(xA, YA, eA), clear: (wA, xA, YA = 0.1) => s.clear(wA, xA, YA) && !v.some((eA) => !eA.dead && fB(wA, xA, eA, YA)), waypoint: s.waypoint, beginNavigationFrame: s.beginNavigationFrame, navigationStats: s.navigationStats, drawMap: W, setQuality: PA, cameraBlocked: (wA, xA, YA, eA) => s.bodyBlocked(wA, xA - eA, YA, eA, eA * 2), menuCamera: { from: w.art.from, look: w.art.look }, update(wA, xA) {
-    MA += wA, I.update(wA, MA), x.update(wA), k.update(wA, xA);
-  }, diagnostics: { bakedAO: !!P, nodes: s.nodeCount, props: I.stats(), blocks: O.blocks.length } };
+  return { root: N, pillarData: [{name: Q.name, pillars: O.blocks.filter(b=>!b.hidden && b.axes[1].y>.999 && b.half.y*2>.7 && Math.max(b.half.x,b.half.z)*2<1.8 && b.half.y>Math.max(b.half.x,b.half.z)*1.6).map(b=>({min:b.aabbMin.toArray(),max:b.aabbMax.toArray()}))}], buildings: q, obstacles: [], destructibles: S, towers: v, spawn: f, bossSpawn: h, entries: X, spawnWeakenSites: t, breakAt: p, bossCanTarget: (wA, xA) => Math.hypot(xA.x - wA.x, xA.z - wA.z) <= 28, heightAt: s.heightAt, free: G, nearest: r, solid: (wA, xA, YA) => !G(wA, xA, YA), canMove: (wA, xA, YA, eA = 0.4) => s.canMove(wA, xA, YA, eA) && !c(xA, YA, eA), clear: (wA, xA, YA = 0.1) => s.clear(wA, xA, YA) && !v.some((eA) => !eA.dead && fB(wA, xA, eA, YA)), waypoint: s.waypoint, beginNavigationFrame: s.beginNavigationFrame, navigationStats: s.navigationStats, drawMap: W, setQuality: PA, cameraBlocked: (wA, xA, YA, eA) => s.bodyBlocked(wA, xA - eA, YA, eA, eA * 2), menuCamera: { from: w.art.from, look: w.art.look },   update(wA, xA) {
+    MA += wA, I.update(wA, MA), x.update(wA), k.update(wA, xA), gApply(xA.position, "main");
+  },
+  updateDetailVisibility: (wA) => gApply(wA, "main"),
+  updateOutlineVisibility: (wA) => gApply(wA, "outline"), diagnostics: { bakedAO: !!P, nodes: s.nodeCount, props: I.stats(), blocks: O.blocks.length } };
 }
 function fB(j, A, M, N) {
   const I = Math.max(1, Math.ceil(Math.hypot(A.x - j.x, A.z - j.z) / 0.4));

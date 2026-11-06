@@ -15,7 +15,7 @@ export class Soundtrack {
  speak(stage,text){return this.sfx.queueVoice('radio'+stage,text);}
  hush(){this.sfx.stopRadio();}
  stopBed(){this.director.stop();}
- effect(type,step=0,position){return this.sfx.emit(type,{step,position});}
+ effect(type,step=0,position){const playing=this.sfx.emit(type,{step,position});if(type==='convert'&&playing)this.director.accent?.();return playing;}
  pause(){this.director.pause();this.sfx.setPaused(true);}
  resume(){this.director.resume();this.sfx.setPaused(false);}
  dispose(){this.sfx.dispose();this.director.dispose();this.enabled=false;}

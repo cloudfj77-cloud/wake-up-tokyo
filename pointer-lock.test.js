@@ -15,7 +15,7 @@ test('native success becomes locked and blur releases capture', async()=>{
 });
 test('failed native capture never claims a lock',async()=>{
  const s=setup(async()=>{throw new Error('capture rejected');});
- await s.lock.request();assert.equal(s.lock.locked(),false);assert.match(s.messages[0],/capture rejected/);
+ await s.lock.request();assert.equal(s.lock.locked(),false);assert.equal(s.messages[0],'右键拖动转动视角');
 });
 test('release during pending native request releases late success',async()=>{
  let resolve;const calls=[];const s=setup((_,args)=>{calls.push(args.capture);return args.capture?new Promise(r=>resolve=r):Promise.resolve();});
@@ -30,6 +30,11 @@ test('web builds retain real browser pointer-lock state',async()=>{
 });
 test('quiet capture hides the success toast',async()=>{
  const s=setup(undefined,async()=>{s.doc.pointerLockElement=s.canvas;s.doc.dispatchEvent(new Event('pointerlockchange'));});
+
+test('quiet capture failure leaves drag and arrow-key controls available without raw browser errors',async()=>{
+ const s=setup(undefined,async()=>{throw Error('browser internals');});await s.lock.request({quiet:true});
+ assert.equal(s.lock.locked(),false);assert.deepEqual(s.messages,[]);
+});
  await s.lock.request({quiet:true});
  assert.equal(s.lock.locked(),true);
  assert.deepEqual(s.messages,[]);

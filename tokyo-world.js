@@ -2,23 +2,33 @@ import * as T from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {block} from './world.js';
 import {WalkCollision} from './tokyo/collision.js';
-import {batchStaticScene} from './tokyo/render-batches.js';
+import {batchStaticScene,pruneEmptyStaticGroups} from './tokyo/render-batches.js';
+import {prepareStaticMaterials} from './tokyo/material-atlas.js';
+import {LOW_SPEC_RENDER} from './device.js';
+import {createMetroTrains,inMetroArea} from './tokyo/metro-trains.js';
 import {createTokyoNavigation} from './tokyo/navigation.js';
 import {createTokyoPopulation,TUTORIAL_LAYOUT} from './tokyo/gameplay.js';
 
-export async function loadTokyo(scene){
+export async function loadTokyo(scene,renderer){
  const [gltf,data]=await Promise.all([new GLTFLoader().loadAsync(new URL('./assets/scenes/tokyo-district.glb',import.meta.url).href),fetch(new URL('./assets/scenes/tokyo-navigation.json',import.meta.url)).then(r=>{if(!r.ok)throw Error('东京通路加载失败');return r.json();})]);
  const root=gltf.scene;root.name='Tokyo Cyber District';root.scale.setScalar(.55);root.position.set(11,3.3,-28.6);root.updateMatrixWorld(true);
  // Keep Wake Up's light rig, fog and postprocessing; the asset contributes geometry and materials only.
  const lights=[];root.traverse(o=>{if(o.isLight)lights.push(o);if(o.isMesh){o.castShadow=o.receiveShadow=true;}});lights.forEach(o=>o.removeFromParent());
- const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision),batch=batchStaticScene(root);
+ const metro=createMetroTrains(root,scene);
+ const collision=new WalkCollision(root),nav=createTokyoNavigation(data,collision);
+ const materialStats=prepareStaticMaterials(root,{maxSize:renderer?.capabilities.maxTextureSize??4096});
+ const query=new URLSearchParams(location.search),cityCull=parseFloat(query.get('citycull'));
+ const batch=batchStaticScene(root,{...LOW_SPEC_RENDER,fog:scene.fog,cullMeters:Number.isFinite(cityCull)?cityCull:undefined});scene.userData.staticNormalPass=batch.normalPass;
+ console.info('[TokyoRender]',JSON.stringify({...materialStats,batches:batch.batchCount}));
  // Source meshes are retained by the collision index; only render batches and transparent meshes stay in the scene tree.
- const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
+ const hidden=[];root.traverse(o=>{if(o.isMesh&&!o.visible)hidden.push(o);});hidden.forEach(o=>o.removeFromParent());
+ // 合批后空下来的静态层级已没有渲染或碰撞职责，避免每个绘制趟继续遍历空节点。
+ pruneEmptyStaticGroups(root);root.updateMatrixWorld(true);root.traverse(o=>{o.matrixAutoUpdate=false;});scene.add(root);
  // shortcut: Imported architecture is static; add destructible modules when building damage is required.
  const towers=[],destructibles=[],buildings=[];
- const towerBlocked=(x,z,r=.16,hint=0)=>towers.some(o=>!o.dead&&Math.abs(nav.heightAt(x,z,hint)-o.floorY)<o.h&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r);
- const free=(x,z,r=.45,hint=0)=>nav.free(x,z,r,hint)&&!towerBlocked(x,z,r,hint);
- function nearest(x,z,r=.7,hint=0){const p=nav.nearest(x,z,r,hint);if(!towerBlocked(p.x,p.z,r,p.floorY))return p;for(let d=1;d<12;d++)for(let k=0;k<8;k++){const q=nav.nearest(x+Math.cos(k*Math.PI/4)*d,z+Math.sin(k*Math.PI/4)*d,r,hint);if(!towerBlocked(q.x,q.z,r,q.floorY))return q;}throw Error('东京出生位置被占用');}
+ const walkBlocked=(x,z,r=.16,hint=0)=>metro.trackBlocked(x,z,r,hint)||towers.some(o=>!o.dead&&Math.abs(nav.heightAt(x,z,hint)-o.floorY)<o.h&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r);
+ const free=(x,z,r=.45,hint=0)=>nav.free(x,z,r,hint)&&!walkBlocked(x,z,r,hint);
+ function nearest(x,z,r=.7,hint=0){const p=nav.nearest(x,z,r,hint);if(!walkBlocked(p.x,p.z,r,p.floorY))return p;for(let d=1;d<12;d++)for(let k=0;k<8;k++){const q=nav.nearest(x+Math.cos(k*Math.PI/4)*d,z+Math.sin(k*Math.PI/4)*d,r,hint);if(!walkBlocked(q.x,q.z,r,q.floorY))return q;}throw Error('东京出生位置被占用');}
  function spawnWeakenSites(){
   if(towers.length)return towers;
   for(const [weaken,x0,z0,color]of [['shield',-9,-8,0xffcf21],['fire',11,10,0xff7a3c],['reinforce',-15,15,0xc56cff]]){
@@ -35,26 +45,35 @@ export async function loadTokyo(scene){
   exit:TUTORIAL_LAYOUT.exit.map(p=>tutorialPoint(...p)),
  };
  const spawn=tutorialPoint(...TUTORIAL_LAYOUT.spawn),bossSpawn=nearest(10,-9,3.5,0),entries=[[-13,-16],[16,-16],[-16,16],[16,16]].map(([x,z])=>{const p=nearest(x,z,1);return[p.x,p.z];});
- const marker=new T.Group(),markerMaterial=new T.MeshBasicMaterial({color:0xfff3cf,toneMapped:false});
+ const marker=new T.Group(),markerMaterial=new T.MeshBasicMaterial({color:0xffd62e,toneMapped:false});
  const ring=new T.Mesh(new T.RingGeometry(.55,.65,32),markerMaterial);ring.rotation.x=-Math.PI/2;ring.position.y=.06;marker.add(ring);
- const diamond=new T.Mesh(new T.OctahedronGeometry(.19),markerMaterial);diamond.position.y=1.7;marker.add(diamond);marker.visible=false;scene.add(marker);
+ marker.name='Yellow tutorial halo';marker.visible=false;scene.add(marker);
  const map=document.createElement('canvas');map.width=Math.ceil((data.bounds.maxX-data.bounds.minX)*2);map.height=Math.ceil((data.bounds.maxZ-data.bounds.minZ)*2);const ctx=map.getContext('2d');ctx.fillStyle='#283d49';ctx.fillRect(0,0,map.width,map.height);
  for(let i=0;i<data.nodes.length;i++){const p=nav.point(i);ctx.fillStyle=p.floorY>8?'#8c9ba3':p.floorY>2?'#a9a99f':'#c9b8a0';ctx.fillRect((p.x+58)*2,(55-p.z)*2,1,1);}
- return {root,multilevel:true,buildings,obstacles:[],destructibles,towers,spawn,bossSpawn,entries,spawnWeakenSites,breakAt,tutorial,
-  populationSpot:population.spawn,populationTarget:population.wander,
+ return {root,metro,renderStats:{...materialStats,batches:batch.batchCount},multilevel:true,buildings,obstacles:[],destructibles,towers,spawn,bossSpawn,entries,spawnWeakenSites,breakAt,tutorial,syringePickup:tutorialPoint(...TUTORIAL_LAYOUT.syringe),traceSurface:(origin,direction,distance)=>collision.raycast(origin,direction,distance),
+  populationSpot:population.spawn,populationTarget:population.wander,rebalancePopulation:population.rebalance,
+  combatClear(a,b){
+   const origin=new T.Vector3(a.x,nav.heightAt(a.x,a.z,a.floorY)+.55+(a.y||0),a.z),end=new T.Vector3(b.x,nav.heightAt(b.x,b.z,b.floorY)+.55+(b.y||0),b.z),direction=end.clone().sub(origin),distance=direction.length();
+   if(distance<.001)return true;direction.multiplyScalar(1/distance);
+   const ray=new T.Ray(origin,direction),point=new T.Vector3();
+   for(const o of towers)if(!o.dead&&ray.intersectBox(new T.Box3(new T.Vector3(o.x-o.w/2,o.floorY,o.z-o.d/2),new T.Vector3(o.x+o.w/2,o.floorY+o.h,o.z+o.d/2)),point)&&point.distanceTo(origin)<distance-.1)return false;
+   return !metro.raycast(origin,direction,Math.max(0,distance-.1))&&!collision.raycast(origin,direction,Math.max(0,distance-.1));
+  },
   guideTo(p){marker.visible=!!p;if(p)marker.position.set(p.x,p.floorY,p.z);},
-  free,nearest,heightAt:nav.heightAt,groundAt:(x,y,z)=>collision.raycast(new T.Vector3(x,y+.05,z),new T.Vector3(0,-1,0),Math.max(.1,y+5),true)?.point.y??-99,solid:(x,z,r=.1,y)=>y===undefined?!free(x,z,r):nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2)||towers.some(o=>!o.dead&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r&&y>=o.floorY&&y<=o.floorY+o.h),
-  canMove:(u,x,z,r=.16)=>nav.canMove(u,x,z,r)&&!towerBlocked(x,z,r,u.floorY),clear:(a,b,r=.16)=>{
+  free,nearest,heightAt:nav.heightAt,groundAt:(x,y,z)=>collision.raycast(new T.Vector3(x,y+.05,z),new T.Vector3(0,-1,0),Math.max(.1,y+5),true)?.point.y??-99,solid:(x,z,r=.1,y)=>y===undefined?!free(x,z,r):metro.solid(x,y,z,r)||nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2)||towers.some(o=>!o.dead&&Math.abs(x-o.x)<o.w/2+r&&Math.abs(z-o.z)<o.d/2+r&&y>=o.floorY&&y<=o.floorY+o.h),
+  movePoint:(u,x,z,r=.16)=>{const p=nav.movePoint(u,x,z,r);return p&&!walkBlocked(x,z,r,p.floorY)?p:null;},
+  canMove:(u,x,z,r=.16)=>nav.canMove(u,x,z,r)&&!walkBlocked(x,z,r,u.floorY),clear:(a,b,r=.16)=>{
    if(!nav.clear(a,b,r))return false;
    const steps=Math.ceil(Math.hypot(b.x-a.x,b.z-a.z)/.2);
-   for(let i=0;i<=steps;i++){const t=steps?i/steps:0;if(towerBlocked(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t,r,a.floorY))return false;}return true;
+   for(let i=0;i<=steps;i++){const t=steps?i/steps:0;if(walkBlocked(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t,r,a.floorY))return false;}return true;
   },waypoint:nav.waypoint,
   beginNavigationFrame:nav.beginNavigationFrame,
   bossCanTarget:(b,p)=>Math.hypot(b.x-p.x,b.z-p.z)<40,
-  cameraBlocked:(x,y,z,r=.16)=>nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2),
+  cameraBlocked:(x,y,z,r=.16)=>metro.solid(x,y,z,r)||nav.bodyBlocked(x,y-.18-r,z,r,2*r+.2),
   menuCamera:{from:[38,27,36],look:[0,3,-6]},
   drawMap(ctx,px,pz){ctx.drawImage(map,px(data.bounds.minX),pz(data.bounds.maxZ),px(data.bounds.maxX)-px(data.bounds.minX),pz(data.bounds.minZ)-pz(data.bounds.maxZ));},
-  update(dt,camera){batch.updateDetailVisibility(camera.position);},
+  update(dt,camera,mode,actor=spawn){batch.updateDetailVisibility(camera.position);metro.update(['paused','map','upgrade','levelup'].includes(mode)?0:dt,inMetroArea(actor));},
+  updateRenderVisibility:batch.updateVisibility,
   diagnostics:{model:'tokyo-district',nodes:data.nodes.length,batches:batch.batchCount},
  };
 }

@@ -2,12 +2,29 @@ import * as T from 'three';
 import {Capsule} from 'three/addons/math/Capsule.js';
 
 export function createTokyoNavigation(data,collision){
- const {bounds,step,width,depth,nodes}=data,cells=new Map(),down=new T.Vector3(0,-1,0),routes=new WeakMap(),fields=new Map();
+ const {bounds,step,width,depth,nodes}=data,cells=new Map(),down=new T.Vector3(0,-1,0),routes=new WeakMap(),fields=new Map(),heightCache=new Map(),edgeCache=new Map(),goalCache=new Map();
  const point=i=>({x:bounds.minX+(nodes[i][0]+.5)*step,z:bounds.minZ+(nodes[i][1]+.5)*step,floorY:nodes[i][2]});
  const key=(x,z)=>Math.floor((x-bounds.minX)/step)+','+Math.floor((z-bounds.minZ)/step);
  nodes.forEach((n,i)=>{const p=point(i),k=key(p.x,p.z);if(!cells.has(k))cells.set(k,[]);cells.get(k).push(i);});
  function nodeAt(x,z,hint=0){let best=-1,d=Infinity;for(const i of cells.get(key(x,z))||[]){const v=Math.abs(nodes[i][2]-hint);if(v<d){best=i;d=v;}}return best;}
- function heightAt(x,z,hint=0){const i=nodeAt(x,z,hint);if(i<0)return -99;const y=nodes[i][2];if(!collision)return y;return collision.raycast(new T.Vector3(x,y+.24,z),down,.5,true)?.point.y??y;}
+ // 有真实碰撞时由场景地面的尽头限制通行，旧网格矩形不能截断仍然延伸的道路。
+ function inside(x,z,r=0){return !!collision||(x>=bounds.minX+r&&x<=bounds.maxX-r&&z>=bounds.minZ+r&&z<=bounds.maxZ-r);}
+ function heightAt(x,z,hint=0){
+  if(!inside(x,z))return -99;
+  if(!collision){const i=nodeAt(x,z,hint);return i<0?-99:nodes[i][2];}
+  // 导航网格缺格不能充当空气墙。实际能否落脚以脚下场景三角面为准。
+  // 射线只在当前楼层附近取地面，不能吸到头顶街面或隔着楼板换层。
+  const i=nodeAt(x,z,hint),base=i>=0&&Math.abs(nodes[i][2]-hint)<.38?nodes[i][2]:hint;
+  // 静态场景中相同坐标与射线高度的结果不变；精确缓存重复查询，不取整，避免重新引入空气墙。
+  const cacheKey=x+','+z+','+base;if(heightCache.has(cacheKey))return heightCache.get(cacheKey);
+  if(heightCache.size>=16384)heightCache.clear();
+  for(const [dx,dz]of [[0,0],[.025,0],[-.025,0],[0,.025],[0,-.025]]){
+   const hit=collision.raycast(new T.Vector3(x+dx,base+.24,z+dz),down,.6,true);
+   if(hit){heightCache.set(cacheKey,hit.point.y);return hit.point.y;}
+  }
+  heightCache.set(cacheKey,-99);
+  return -99;
+ }
  function bodyBlocked(x,y,z,r=.16,h=1.0){
   if(!collision)return false;
   // A small capsule checks walls above the tread clearance without snapping onto furniture.
@@ -15,7 +32,7 @@ export function createTokyoNavigation(data,collision){
   collision.resolve(cap);return cap.start.distanceTo(start)>.025;
  }
  function free(x,z,r=.45,hint=0){
-  if(x<bounds.minX+r||x>bounds.maxX-r||z<bounds.minZ+r||z>bounds.maxZ-r)return false;
+  if(!inside(x,z,r))return false;
   const i=nodeAt(x,z,hint);if(i<0)return false;const y=nodes[i][2];
   for(let k=0;k<8;k++){const a=k*Math.PI/4,j=nodeAt(x+Math.cos(a)*r,z+Math.sin(a)*r,y);if(j<0||Math.abs(nodes[j][2]-y)>.35)return false;}
   return !bodyBlocked(x,y,z,Math.min(r,.22));
@@ -27,45 +44,132 @@ export function createTokyoNavigation(data,collision){
    if(d<score&&free(p.x,p.z,r,p.floorY)){score=d;best=p;}
   }if(!best)throw Error('东京街区没有可用出生位置');return best;
  }
- function canMove(from,x,z,r=.16){
+ function walk(from,x,z,r=.16){
+  if(!inside(x,z,r))return null;
   let y=heightAt(from.x,from.z,from.floorY);
+  if(y===-99||Math.abs(y-(from.floorY??y))>.36)return null;
   const n=Math.max(1,Math.ceil(Math.hypot(x-from.x,z-from.z)/.12));
   for(let i=1;i<=n;i++){
-   const xx=from.x+(x-from.x)*i/n,zz=from.z+(z-from.z)*i/n,to=nodeAt(xx,zz,y);
-   if(to<0||Math.abs(nodes[to][2]-y)>.36)return false;
-   y=heightAt(xx,zz,y);if(bodyBlocked(xx,y,zz,r))return false;
-  }return true;
+   const xx=from.x+(x-from.x)*i/n,zz=from.z+(z-from.z)*i/n,nextY=heightAt(xx,zz,y);
+   if(nextY===-99||Math.abs(nextY-y)>.36||bodyBlocked(xx,nextY,zz,r))return null;
+   y=nextY;
+  }return y;
  }
+ function canMove(from,x,z,r=.16){return walk(from,x,z,r)!==null;}
+ function movePoint(from,x,z,r=.16){const floorY=walk(from,x,z,r);return floorY===null?null:{x,z,floorY};}
  function clear(a,b,r=.16){
-  const n=Math.max(1,Math.ceil(Math.hypot(a.x-b.x,a.z-b.z)/.15));let p={...a,floorY:heightAt(a.x,a.z,a.floorY)};
-  for(let i=1;i<=n;i++){const x=a.x+(b.x-a.x)*i/n,z=a.z+(b.z-a.z)*i/n;if(!canMove(p,x,z,r))return false;p={x,z,floorY:heightAt(x,z,p.floorY)};}
-  return b.floorY===undefined||Math.abs(p.floorY-b.floorY)<.4;
+  const y=walk(a,b.x,b.z,r);return y!==null&&(b.floorY===undefined||Math.abs(y-b.floorY)<.4);
  }
- let stepsLeft=4096,queriesLeft=24,deadline=Infinity;
+ function edgeOpen(i,j){
+  if(!collision)return true;
+  const key=i<j?i+','+j:j+','+i;
+  if(!edgeCache.has(key)){
+   const open=clear(point(i),point(j));edgeCache.set(key,open);
+   if(!open)fields.clear();
+  }
+  return edgeCache.get(key);
+ }
+ function routeStart(u){
+  const direct=nodeAt(u.x,u.z,u.floorY);
+  if(direct>=0&&clear(u,point(direct)))return direct;
+  let best=-1,distance=Infinity;
+  for(let dz=-2;dz<=2;dz++)for(let dx=-2;dx<=2;dx++)for(const i of cells.get(key(u.x+dx*step,u.z+dz*step))||[]){
+   const p=point(i),d=Math.hypot(p.x-u.x,p.z-u.z);
+   if(d<distance&&Math.abs(p.floorY-u.floorY)<.4&&clear(u,p)){best=i;distance=d;}
+  }
+  return best;
+ }
+ function routeGoal(x,z,hint){
+  const cacheKey=x+','+z+','+hint;
+  if(goalCache.has(cacheKey))return goalCache.get(cacheKey);
+  const direct=nodeAt(x,z,hint);
+  if(direct>=0&&Math.abs(nodes[direct][2]-hint)<.4&&!bodyBlocked(x,heightAt(x,z,hint),z))return direct;
+  let best=-1,distance=Infinity;
+  for(let dz=-6;dz<=6;dz++)for(let dx=-6;dx<=6;dx++)for(const i of cells.get(key(x+dx*step,z+dz*step))||[]){
+   const p=point(i),d=Math.hypot(p.x-x,p.z-z);
+   if(d<distance&&Math.abs(p.floorY-hint)<.4&&!bodyBlocked(p.x,p.floorY,p.z)){best=i;distance=d;}
+  }
+  if(goalCache.size>=512)goalCache.delete(goalCache.keys().next().value);
+  goalCache.set(cacheKey,best);return best;
+ }
+ let stepsLeft=4096,queriesLeft=24,timeLeft=2,deadline=Infinity;
  function pumpFields(){
   for(const f of fields.values())while(f.head<f.queue.length&&stepsLeft>0){
    if(performance.now()>deadline)return;
    const i=f.queue[f.head++];stepsLeft--;
-   for(const n of nodes[i][3])if(f.next[n]<0){f.next[n]=i;f.queue.push(n);}
+   for(const n of nodes[i][3])if(f.next[n]<0&&edgeCache.get(i<n?i+','+n:n+','+i)!==false){f.next[n]=i;f.queue.push(n);}
   }
  }
- function beginNavigationFrame(){stepsLeft=4096;queriesLeft=24;deadline=performance.now()+2;pumpFields();}
+ function beginNavigationFrame(){stepsLeft=4096;queriesLeft=24;timeLeft=2;deadline=performance.now()+.5;pumpFields();deadline=Infinity;}
  function field(goal){
+  if(!fields.has(goal)){
+   const target=point(goal);
+   for(const [id,f]of fields){const p=point(id);if(Math.abs(p.floorY-target.floorY)<.35&&Math.hypot(p.x-target.x,p.z-target.z)<2.4&&clear(p,target)){pumpFields();return f.next;}}
+  }
   if(!fields.has(goal)){
    if(fields.size>=12){const done=[...fields].find(([,f])=>f.head===f.queue.length);if(!done)return null;fields.delete(done[0]);}
    const next=new Int32Array(nodes.length).fill(-1);next[goal]=goal;fields.set(goal,{next,queue:[goal],head:0});
   }pumpFields();return fields.get(goal).next;
  }
- function waypoint(u,x,z,hint=0){
-  const now=performance.now(),old=routes.get(u);if(old&&now<old.until&&Math.hypot(old.x-x,old.z-z)<1&&Math.hypot(old.p.x-u.x,old.p.z-u.z)>.15)return old.p;
-  if(queriesLeft--<=0||performance.now()>deadline)return old?.p||{x:u.x,z:u.z};
-  let p={x,z,floorY:heightAt(x,z,hint)};
-  if(!clear(u,p)){
-   const start=nodeAt(u.x,u.z,u.floorY),goal=nodeAt(Math.round(x),Math.round(z),hint)>=0?nodeAt(Math.round(x),Math.round(z),hint):nodeAt(x,z,hint);if(start<0||goal<0)return {x:u.x,z:u.z};
-   const next=field(goal);if(!next||next[start]<0)return old?.p||{x:u.x,z:u.z};let at=start;p=point(start);
-   for(let k=0;k<10;k++){const n=next[at];if(n<0||n===at)break;const q=point(n);if(!clear(u,q))break;at=n;p=q;}
+ // Short civilian walks should not build a flood field over all 169k floor nodes.
+ // Keep the finished path so actors continue walking while other queries use the budget.
+ function localPath(start,goal){
+  const cost=new Map([[start,0]]),parent=new Map(),open=[[start,0]],closed=new Set(),target=point(goal);
+  const heuristic=i=>{const p=point(i);return Math.hypot(p.x-target.x,p.z-target.z,p.floorY-target.floorY);};
+  let visited=0;
+  while(open.length&&visited++<2048){
+   if(visited%16===0&&performance.now()>deadline)return null;
+   let best=0;for(let k=1;k<open.length;k++)if(open[k][1]<open[best][1])best=k;
+   const [i]=open.splice(best,1)[0];if(closed.has(i))continue;
+   if(i===goal){const path=[];for(let n=goal;n!==start;n=parent.get(n))path.push(point(n));return path.reverse();}
+   closed.add(i);const p=point(i);
+   for(const n of nodes[i][3]){if(closed.has(n)||!edgeOpen(i,n))continue;const q=point(n),next=cost.get(i)+Math.hypot(p.x-q.x,p.z-q.z,p.floorY-q.floorY);if(next>=(cost.get(n)??Infinity))continue;cost.set(n,next);parent.set(n,i);open.push([n,next+heuristic(n)]);}
   }
-  routes.set(u,{x,z,p,until:now+280});return p;
+  return null;
  }
- return {bounds,nodes,point,beginNavigationFrame,heightAt,bodyBlocked,free,nearest,canMove,clear,waypoint};
+ function waypoint(u,x,z,hint=0){
+  const now=performance.now(),old=routes.get(u);
+  const sameGoal=old&&Math.abs((old.hint??0)-hint)<.4;
+  if(sameGoal&&old.path&&Math.hypot(old.x-x,old.z-z)<.6){
+   while(old.at<old.path.length-1&&Math.hypot(old.p.x-u.x,old.p.z-u.z)<.23&&Math.abs((u.floorY??old.p.floorY)-old.p.floorY)<.4){old.p=old.path[++old.at];old.until=0;}
+   const remaining=Math.hypot(old.p.x-u.x,old.p.z-u.z);
+   if(remaining>.15&&remaining<4&&(now<old.until||clear(u,old.p))){if(now>=old.until)old.until=now+280;return old.p;}
+  }
+  const reusable=sameGoal&&now<old.until&&Math.hypot(old.p.x-u.x,old.p.z-u.z)>.15;
+  if(reusable&&Math.hypot(old.x-x,old.z-z)<1)return old.p;
+  if(queriesLeft--<=0||timeLeft<=0)return reusable?old.p:{x:u.x,z:u.z};
+  // Charge only navigation work. Crowd separation, animation and combat between
+  // calls must not consume the budget before an actor gets its first route.
+  const started=performance.now();deadline=started+timeLeft;
+  try{
+  let p={x,z,floorY:heightAt(x,z,hint)};
+  const goal=routeGoal(x,z,hint);
+  if(goal<0)return {x:u.x,z:u.z};
+  if(Math.abs(p.floorY-hint)>.4||bodyBlocked(x,p.floorY,z))p=point(goal);
+  if(!clear(u,p)){
+   const start=routeStart(u);if(start<0)return {x:u.x,z:u.z};
+   if(Math.hypot(x-u.x,z-u.z)<12){
+    const path=localPath(start,goal);
+    if(path?.length){const route={x,z,hint,path,at:0,p:path[0],until:now+280};routes.set(u,route);return route.p;}
+   }
+   const next=field(goal);if(!next||next[start]<0)return reusable?old.p:{x:u.x,z:u.z};let at=start;p=point(start);
+   for(let k=0;k<10;k++){
+    const n=next[at];if(n<0||n===at)break;const q=point(n);
+    if(!clear(u,q)){
+     // Repair a stale baked edge around the real obstacle. Keeping the current
+     // node as a waypoint used to leave an entire following squad waiting forever.
+     if(at===start){
+      let ahead=n;for(let j=0;j<8&&next[ahead]>=0&&next[ahead]!==ahead;j++)ahead=next[ahead];
+      const path=localPath(start,ahead);
+      if(path?.length){const route={x,z,hint,path,at:0,p:path[0],until:now+280};routes.set(u,route);return route.p;}
+     }
+     break;
+    }
+    at=n;p=q;
+   }
+  }
+  routes.set(u,{x,z,hint,p,until:now+280});return p;
+  }finally{timeLeft-=performance.now()-started;deadline=Infinity;}
+ }
+ return {bounds,nodes,point,beginNavigationFrame,heightAt,bodyBlocked,free,nearest,canMove,movePoint,clear,waypoint,navigationStats:()=>({fields:fields.size,workMs:2-timeLeft,stepsLeft,closedEdges:[...edgeCache.values()].filter(open=>!open).length})};
 }

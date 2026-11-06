@@ -93,37 +93,30 @@ test('civilian path stays fixed when infection rises and reverses at its endpoin
  u.x=target.x;u.z=target.z;assert.deepEqual(r.civilianTarget(u,[],()=>.99),{x:0,z:0});
  r.resetUnit(u,2,0,3,3);assert.equal(u.route,null);
 });
-test('real key and wheel handlers preserve weapon controls and defer Shift action until release',()=>{
+test('real key and wheel handlers preserve weapon controls with Shift jump and Space roll',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),events={},calls=[];
  const state=r.makeState();state.pending=1;state.abilities.guns=1;state.weaponOrder=['pistol','shotgun'];
- const ctx=vm.createContext({...r,performance:{now:()=>0},state,mode:'playing',player:{roll:0},units:[],switchTime:0,squadIds:new Set(),canvas:{addEventListener:(k,fn)=>events[k]=fn},addEventListener:(k,fn)=>events[k]=fn,reloadGun:()=>calls.push('reload'),toggleMap:()=>calls.push('map'),togglePause(){},toggleDebug(){},primary(){},heavy(){},requestJump(){},requestRoll:()=>calls.push('roll'),weaponSelect:w=>calls.push(w),toast(){}});
+ const ctx=vm.createContext({isTouchDevice:()=>false,MOBILE_DEVICE:false,...r,performance:{now:()=>0},state,mode:'playing',player:{roll:0},units:[],switchTime:0,squadIds:new Set(),canvas:{addEventListener:(k,fn)=>events[k]=fn},addEventListener:(k,fn)=>events[k]=fn,reloadGun:()=>calls.push('reload'),toggleMap:()=>calls.push('map'),togglePause(){},toggleDebug(){},primary(){},heavy(){},requestJump:()=>calls.push('jump'),requestRoll:()=>calls.push('roll'),weaponSelect:w=>calls.push(w),toast(){}});
  vm.runInContext(source.slice(source.indexOf('const keys={};'),source.indexOf('function toggleMap()')),ctx);
  const key=code=>events.keydown({code,target:{tagName:'CANVAS'},preventDefault(){}});
- key('ShiftLeft');assert.deepEqual(calls,[]);key('KeyR');key('Tab');assert.deepEqual(calls,['reload','map']);
+ key('ShiftLeft');assert.deepEqual(calls,['jump']);calls.length=0;key('KeyR');key('Tab');assert.deepEqual(calls,['reload','map']);
  key('KeyE');assert.equal(calls.length,2);
  events.wheel({deltaY:1,preventDefault(){}});assert.equal(calls.at(-1),0);
  events.wheel({deltaY:-1,preventDefault(){}});assert.equal(calls.at(-1),1);
 });
 
-test('Shift taps dodge, holds sprint, repeats and cancelled inputs do not dodge',()=>{
+test('Space rolls on the first keydown while moving; Shift jumps, E sprints and keyup never starts an action',()=>{
  const source=readFileSync(new URL('./main.js',import.meta.url),'utf8'),events={},calls=[];
- let now=0;
- const ctx=vm.createContext({...r,performance:{now:()=>now},state:r.makeState(),mode:'playing',
+ const ctx=vm.createContext({isTouchDevice:()=>false,...r,performance:{now:()=>0},state:r.makeState(),mode:'playing',player:{roll:0},
   canvas:{addEventListener:(k,fn)=>events[k]=fn},addEventListener:(k,fn)=>events[k]=fn,
-  requestRoll:()=>calls.push('roll'),togglePause(){},toggleDebug(){},
+  requestRoll:()=>calls.push('roll'),requestJump:()=>calls.push('jump'),togglePause(){},toggleDebug(){},
   rollBuffered:1,jumpBuffered:1,mouseHeld:true,dragging:true,pointerLock:{release(){}}});
- vm.runInContext(source.slice(source.indexOf('const keys={};'),source.indexOf('function toggleMap()'))+
-  source.match(/function clearInput\(\)\{[^\n]+/)[0],ctx);
- const press=(code='ShiftLeft',repeat=false,tagName='CANVAS')=>events.keydown({code,repeat,target:{tagName},preventDefault(){}});
- const release=(code='ShiftLeft')=>events.keyup({code});
- const held=()=>vm.runInContext('shiftHeld()',ctx);
- press();assert.equal(held(),false);now=179;release();assert.deepEqual(calls,['roll']);
- now=200;press('ShiftRight');now=380;assert.equal(held(),true);
- press('ShiftRight',true);now=800;release('ShiftRight');assert.equal(calls.length,1);assert.equal(held(),false);
- now=900;press();now=930;press('ShiftRight');now=940;release();assert.equal(calls.length,1);
- now=960;release('ShiftRight');assert.equal(calls.length,2);
- now=1000;press();vm.runInContext('clearInput()',ctx);now=1050;release();assert.equal(calls.length,2);
- press('ShiftLeft',false,'INPUT');now=1100;release();assert.equal(calls.length,2);
- press();ctx.mode='paused';now=1150;release();assert.equal(calls.length,2);
- release();assert.equal(calls.length,2);
+ vm.runInContext(source.slice(source.indexOf('const keys={};'),source.indexOf('function toggleMap()'))+source.match(/function clearInput\(\)\{[^\n]+/)[0],ctx);
+ const press=(code,repeat=false,tagName='CANVAS')=>events.keydown({code,repeat,target:{tagName},preventDefault(){}}),release=code=>events.keyup({code});
+ press('KeyW');press('Space');assert.deepEqual(calls,['roll']);release('Space');assert.equal(calls.length,1);
+ press('Space');assert.deepEqual(calls,['roll','roll']);press('Space',true);assert.equal(calls.length,2);
+ press('ShiftLeft');assert.equal(calls.at(-1),'jump');release('ShiftLeft');assert.equal(calls.length,3);
+ press('KeyE');assert.equal(vm.runInContext('sprintHeld()',ctx),true);release('KeyE');assert.equal(vm.runInContext('sprintHeld()',ctx),false);
+ press('Space',false,'INPUT');assert.equal(calls.length,3);ctx.mode='paused';press('Space');press('ShiftRight');assert.equal(calls.length,3);
+ vm.runInContext('clearInput()',ctx);ctx.mode='playing';release('Space');release('ShiftRight');assert.equal(calls.length,3);
 });

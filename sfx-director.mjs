@@ -1,6 +1,7 @@
 // 声音选择、距离衰减、循环与复音由 Wwise 工程负责；这里管理玩法生命周期。
 import cues from './audio/wwise/sfx-runtime.json' with {type:'json'};
-const catalog=new Map(cues.map(c=>[c.key,c]));
+import japaneseRadio from './japanese-radio.json' with {type:'json'};
+const catalog=new Map(cues.map(c=>{const line=japaneseRadio.lines[c.key];return [c.key,line?{...c,text:line.text,caption:line.caption,clips:[{seconds:line.seconds}]}:c];}));
 const aliases={infect:'meleeLight',attack:'meleeHeavy',hit:'hitBody',shoot:'syringe',powerThrow:'power',break:'breakStone',defeat:'defeatSfx'};
 export class SfxDirector{
  constructor({getAudio,now=()=>performance.now()/1000,onRadio=()=>{}}={}){
@@ -10,7 +11,8 @@ export class SfxDirector{
  supports(key){return catalog.has(key==='chargeTick'?'charge1':aliases[key]??key);}
  bind(){const a=this.getAudio?.();if(!a){if(this.audio){this.clearState();this.audio=null;}return null;}if(a!==this.audio){this.clearState();this.audio=a;a.registerGameObject(90,'TokyoSfxLifecycle');this.gainSent=null;this.mix();}return a;}
  clearState(){this.last.clear();this.oneshots=[];this.loops.clear();this.free=[];this.serial=1000;this.paused=false;this.walkAnchor=null;this.walkDistance=0;this.previousState=null;this.nextLowHp=0;this.clouds=new WeakSet();this.gameState=null;this.tide=null;this.spotTimers=new Map();this.walkers=new Map();this.radio=null;this.radioQueue=[];this.voiceGainSent=null;this.onRadio(null);}
- mix(){if(!this.audio)return;const db=this.muted||!this.volume?-96:20*Math.log10(this.volume);if(db!==this.gainSent){this.audio.setRTPC('SFX_GainDb',db,undefined,50);this.audio.setRTPC('Ambience_GainDb',db,undefined,250);this.gainSent=db;}const voice=this.muted||!this.volume||!this.voiceVolume?-96:20*Math.log10(this.volume*this.voiceVolume);if(voice!==this.voiceGainSent){this.audio.setRTPC('Voice_GainDb',voice,undefined,50);this.voiceGainSent=voice;}}
+ mix(){if(!this.audio)return;const db=this.muted||!this.volume?-96:20*Math.log10(this.volume);if(db!==this.gainSent){this.audio.setRTPC('SFX_GainDb',db,undefined,50);this.audio.setRTPC('Ambience_GainDb',db,undefined,250);this.gainSent=db;for(const shot of this.oneshots)if(shot.key==='convert')this.audio.setRTPC('SFX_GainDb',this.conversionGain(),shot.id,30);}const voice=this.muted||!this.volume||!this.voiceVolume?-96:20*Math.log10(this.volume*this.voiceVolume);if(voice!==this.voiceGainSent){this.audio.setRTPC('Voice_GainDb',voice,undefined,50);this.voiceGainSent=voice;}}
+ conversionGain(){return this.muted||!this.volume?-96:Math.min(0,20*Math.log10(this.volume)+8);}
  setVolume(v){this.volume=Math.max(0,Math.min(1,Number(v)||0));this.mix();}
  setVoiceVolume(v){this.voiceVolume=Math.max(0,Math.min(1,Number(v)||0));this.mix();}
  setMuted(v){this.muted=!!v;if(this.muted)this.stopRadio();this.mix();}
@@ -27,10 +29,14 @@ export class SfxDirector{
   const a=this.bind();if(!a)return 0;key=key==='chargeTick'?'charge'+Math.max(1,Math.min(3,Math.round(step/2))):aliases[key]??key;const c=catalog.get(key);if(!c){this.stats.unknown++;return 0;}
   const isUI=key.startsWith('ui');if(this.muted||(this.paused&&!isUI)){this.stats.dropped++;return 0;}
   const time=this.now(),gate=key+':'+scope;if(time-(this.last.get(gate)??-Infinity)<c.cooldown){this.stats.dropped++;return 0;}this.last.set(gate,time);
-  const p=position??this.view?.player;const id=this.allocate(p);if(key==='land')a.setRTPC('Impact_Strength',Math.max(0,Math.min(1,step)),id,0);const playing=a.postEvent('sfx.'+key,id);
-  // 各发弹体独立位置，尾音播放期间不挪给后续事件；超时只回收已播完对象。
-  const duration=Math.max(...c.clips.map(x=>x.seconds));this.oneshots.push({id,playing,key,until:time+duration+.3});
-  this.stats.posted++;this.history.push({key,playing,position:p?{x:p.x,y:p.y??0,z:p.z}:null,time});if(this.history.length>80)this.history.shift();return playing;
+  const event=key==='convert'?'explosion':key,effect=catalog.get(event)??c,p=key==='convert'?(this.view?.listener??this.view?.player):position??this.view?.player;
+  const layers=key==='convert'?2:1,duration=Math.max(...effect.clips.map(x=>x.seconds));let playing=0;
+  // Two authored explosion variants add body to personal success without raising other effects.
+  for(let layer=0;layer<layers;layer++){
+   const id=this.allocate(p);if(key==='convert')a.setRTPC('SFX_GainDb',this.conversionGain(),id,0);if(key==='land')a.setRTPC('Impact_Strength',Math.max(0,Math.min(1,step)),id,0);
+   const voice=a.postEvent('sfx.'+event,id);if(!playing)playing=voice;this.oneshots.push({id,playing:voice,key,until:time+duration+.3});this.stats.posted++;
+  }
+  this.history.push({key,event,layers,playing,position:p?{x:p.x,y:p.y??0,z:p.z}:null,time});if(this.history.length>80)this.history.shift();return playing;
  }
  stopKey(key,fade=80){if(!this.audio)return;for(const shot of this.oneshots)if(shot.key===key){this.audio.stopPlaying(shot.playing,fade);shot.until=this.now()+fade/1000+.1;}}
  loop(key,token,position){

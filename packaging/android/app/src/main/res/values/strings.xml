@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 安装后桌面上显示的名字 -->
+    <string name="app_name">Wake up 打工人！</string>
+</resources>

@@ -62,6 +62,7 @@ export class OutlineFilter {
     // 法线趟必须关掉雾：场景有 Fog 的话，远处几何的法线会被雾色混进去，描边会整片飘掉。
     this.normalMaterial = new T.MeshNormalMaterial();
     this.normalMaterial.fog = false;
+    this.normalGeometryCoverage=new WeakMap();
   }
 
   async init() {
@@ -140,11 +141,12 @@ export class OutlineFilter {
   }
 
   // 返回叠加描边之后的画面；调用方负责把它贴到屏幕上。
-  render(scene, camera) {
+  render(scene, camera, visibility) {
     const r = this.renderer, gl = this.gl;
     const size = r.getDrawingBufferSize(new T.Vector2());
     this.resize(size.x, size.y);
 
+    visibility?.updateDetailVisibility?.(camera.position, camera);
     r.setRenderTarget(this.color);
     r.render(scene, camera);
     // 法线趟照常跑：我们自己的描边改用法线跳变出线（地面是平面，法线处处相同，不会满地密线）。
@@ -152,19 +154,32 @@ export class OutlineFilter {
     // Sprite 不吃 overrideMaterial（three 的特例），烟雾片会带着自己的半透明紫色纹理渲染进法线缓冲，
     // 法线一解读是乱值，和周围一比就是一条贯穿画面的「法线跳变」→ 被描成一条跟着烟飘的线。
     // 法线趟把透明物体（烟雾、漫画特效）全部藏起来 —— 它们本来就不该有描边。
-    const hidden = [];
+    const hidden = [],normalMaterials=[],override=scene.overrideMaterial;
+    scene.userData?.staticNormalPass?.begin();
     scene.traverse(o => {
       if (!o.visible) return;
       const m = o.material;
-      if (o.isSprite || (m && (m.transparent || (Array.isArray(m) && m.some(x => x.transparent))))) { o.visible = false; hidden.push(o); }
+      if (o.isSprite || (m && (m.transparent || (Array.isArray(m) && m.some(x => x.transparent))))) { o.visible = false; hidden.push(o);return; }
+      if(!o.isMesh||!m||m.visible===false)return;
+      normalMaterials.push([o,m]);
+      if(Array.isArray(m)){
+        const g=o.geometry;let covered=this.normalGeometryCoverage.get(g);
+        if(covered===undefined){let end=0;covered=true;for(const group of g.groups){if(group.start!==end){covered=false;break;}end+=group.count;}covered=covered&&end===(g.index?.count||g.attributes.position.count);this.normalGeometryCoverage.set(g,covered);}
+        // 法线不区分衣服、皮肤和配件材质。组覆盖完整网格时整块绘制，骨骼和几何仍用原件。
+        o.material=covered&&m.every(x=>x.visible)?this.normalMaterial:m.map(x=>x.visible?this.normalMaterial:x);
+      }else o.material=this.normalMaterial;
     });
-    scene.overrideMaterial = this.normalMaterial;
+    // 每个批次的法线材质需要独立骨骼调色板；全局覆盖会把所有人的姿势变成第一个人。
+    scene.overrideMaterial = null;
     scene.background = new T.Color(0.5, 0.5, 1);
     r.setRenderTarget(this.normal);
-    r.render(scene, camera);
-    scene.overrideMaterial = null;
-    scene.background = background;
-    hidden.forEach(o => { o.visible = true; });
+    // 颜色趟刚更新过同一帧的阴影和世界矩阵，法线材质不使用光照，不能再重画整张阴影图。
+    const shadowAuto=r.shadowMap.autoUpdate,shadowDirty=r.shadowMap.needsUpdate,worldAuto=scene.matrixWorldAutoUpdate;
+    r.shadowMap.autoUpdate=false;r.shadowMap.needsUpdate=false;scene.matrixWorldAutoUpdate=false;
+    try{visibility?.updateOutlineVisibility?.(camera.position);r.render(scene,camera);}finally{
+      r.shadowMap.autoUpdate=shadowAuto;r.shadowMap.needsUpdate=shadowDirty;scene.matrixWorldAutoUpdate=worldAuto;
+      scene.overrideMaterial=override;scene.background=background;hidden.forEach(o=>{o.visible=true;});for(const [o,m]of normalMaterials)o.material=m;scene.userData?.staticNormalPass?.end();visibility?.updateDetailVisibility?.(camera.position,camera);
+    }
     // 不跑原版描边 shader 时，把这一趟的画面直接交回去（深度和法线都已就绪）。
     if (!this.lines) { r.setRenderTarget(null); return this.color.texture; }
 
@@ -200,8 +215,8 @@ export function createFilterBlitter() {
   const material = new T.MeshBasicMaterial({ toneMapped: false, depthTest: false, depthWrite: false });
   scene.add(new T.Mesh(new T.PlaneGeometry(2, 2), material));
   return (renderer, texture) => {
-    material.map = texture;
-    material.needsUpdate = true;
+    // 同一张后处理纹理每帧都在更新内容，无须每帧重新检查材质程序。
+    if(material.map!==texture){material.map=texture;material.needsUpdate=true;}
     renderer.render(scene, camera);
   };
 }

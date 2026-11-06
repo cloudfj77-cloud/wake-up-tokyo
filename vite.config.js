@@ -22,5 +22,5 @@ export default defineConfig({
   build:{rollupOptions:{input:{main:'index.html',viewer:'fbx-viewer.html'}}},
   // 保留团队 Cloud Agent 通过代理域名访问开发服务的配置。
   preview:{headers:audioHeaders},
-  server:{headers:audioHeaders,host:'0.0.0.0',port:5200,strictPort:true,allowedHosts:true},
+  server:{headers:audioHeaders,host:'0.0.0.0',port:5200,strictPort:true,allowedHosts:true,watch:{ignored:['**/android/**','**/release/**','**/reports/**','**/verification/**']}},
 });

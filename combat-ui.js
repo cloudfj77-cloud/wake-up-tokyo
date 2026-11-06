@@ -13,7 +13,8 @@ export function combatDelta(before, after) {
 }
 // 整张爆贴按数值缓慢放大，底板、标签和数字使用同一个倍率；大伤害有上限。
 export function combatFeedbackScale(amount,kind='damage'){
- if(kind==='awaken')return .85;
+ if(kind==='awaken')return 1.25;
+ if(kind==='infection')return Math.min(1.6,1+.2*Math.log2(1+Math.max(0,amount)/10));
  return Math.min(1.24,.58+.16*Math.log2(1+Math.max(0,amount)/10));
 }
 // 数字避开身体投影；接近屏幕边缘时换到另一侧，保留可读空间。
@@ -26,13 +27,13 @@ export function combatPopupPosition(point,kind,width=Infinity,age=0){
 }
 export const combatAmount=amount=>String(Number(Math.max(.1,amount).toFixed(1)));
 const sample=u=>({hp:u.hp,shieldHp:u.shieldHp,infection:u.infection,converted:u.converted,dead:u.dead,kind:u.kind});
-export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,side)=>side==='ally') {
+export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,side)=>side==='ally',onAwaken=()=>{}) {
  const host=doc.createElement('div');host.id='combatFeedback';host.setAttribute('aria-hidden','true');doc.getElementById('hud').append(host);
  const snapshots=new Map(), impactTimes=new Map(), pending=new Map(), active=[], impacts=[];
  let now=0,hpHold=0,trail=1;
  const descriptors=(units,state,player,boss)=>[
   {key:'player',entity:state,anchor:player,side:'player'},
-  ...units.map(u=>({key:u.id,entity:u,anchor:u,side:u.converted?'ally':'enemy'})),
+  ...units.map(u=>({key:u.id,entity:u,anchor:u,side:(u.converted||u.kind==='ally')?'ally':'enemy'})),
   ...(boss.active?[{key:'boss',entity:boss,anchor:boss,side:'enemy'}]:[])
  ];
  function baseline(units,state,player,boss){
@@ -40,11 +41,19 @@ export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,si
   const live=new Set();for(const d of descriptors(units,state,player,boss)){live.add(d.key);if(!snapshots.has(d.key))snapshots.set(d.key,sample(d.entity));}
   for(const key of snapshots.keys())if(!live.has(key)){snapshots.delete(key);impactTimes.delete(key);}
  }
+ // 只抵消本次被动感染增量，不能吞掉同一帧的直接攻击、扣血或最终觉醒反馈。
+ function silenceInfection(unit,amount){
+  const before=snapshots.get(unit.id);
+  if(before&&amount>0)before.infection=(before.infection||0)+amount;
+ }
  function observe(units,state,player,boss){
   for(const descriptor of descriptors(units,state,player,boss)){
    const d={...descriptor,subdued:feedbackTone(descriptor.anchor,descriptor.side,descriptor.key)};
    const current=sample(d.entity),before=snapshots.get(d.key);
-   const events=combatDelta(before,current),canShow=events.length&&!!project(d.anchor,d.key==='boss'?2.2:null);
+   const events=combatDelta(before,current);
+   // 侧栏记录不受镜头和遮挡限制，重复 observe 不会重复通知。
+   if(events.some(event=>event.kind==='awaken'))onAwaken(d.entity);
+   const canShow=events.some(event=>event.kind!=='awaken')&&!!project(d.anchor,d.key==='boss'?2.2:null);
    if(canShow&&now-(impactTimes.get(d.key)??-Infinity)>=(events.some(e=>e.kind==='damage'||e.kind==='shield')?.1:.28)){
     const impactKind=onImpact(d.anchor,d.side,events,d.key,d.subdued);
     if(impactKind!==false){
@@ -102,7 +111,7 @@ export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,si
    if(active.length>=32){const i=Math.max(0,active.findIndex(a=>a.subdued));active.splice(i,1)[0].node.remove();}
    const node=doc.createElement('div');node.className=`combatPop ${item.kind} ${item.side} ${item.subdued?'subdued':''}`;
    const tag=doc.createElement('small'),number=doc.createElement('b');
-   tag.textContent=item.kind==='infection'?'污染':item.kind==='awaken'?'WAKE UP!':item.kind==='shield'?'护盾':item.side==='player'?'受击':item.side==='ally'?'同伴受击':'HIT';
+   tag.textContent=item.kind==='infection'?'☣ 污染':item.kind==='awaken'?'WAKE UP!':item.kind==='shield'?'护盾':item.side==='player'?'受击':item.side==='ally'?'同伴受击':'HIT';
    number.textContent=item.kind==='awaken'?'觉醒':`${item.kind==='infection'?'+':'−'}${combatAmount(item.amount)}`;
    node.style.setProperty('--combat-scale',combatFeedbackScale(item.amount,item.kind)*(item.subdued?.7:1));
    node.append(tag,number);host.append(node);active.push({...item,node,born:now,started:now});
@@ -119,5 +128,5 @@ export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,si
    if(point){const placed=combatPopupPosition({...point,sideOffset:(point.sideOffset||64)+Math.max(0,(combatFeedbackScale(item.amount,item.kind)-.8)*44)},item.kind,doc.defaultView?.innerWidth??Infinity,age);item.node.style.left=`${placed.x}px`;item.node.style.top=`${placed.y}px`;item.node.style.opacity=Math.min(1,((item.subdued?.65:1.05)-age)*4)*(item.subdued?.38:1);}
   }
  }
- return {baseline,observe,tick};
+ return {baseline,observe,tick,silenceInfection};
 }

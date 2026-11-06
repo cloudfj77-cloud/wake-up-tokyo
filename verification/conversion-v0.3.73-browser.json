@@ -1,0 +1,297 @@
+{
+  "version": "0.3.73",
+  "cases": [
+    {
+      "name": "desktop-sea",
+      "elapsedMs": 698,
+      "layout": {
+        "emblem": {
+          "x": 568,
+          "y": 509,
+          "width": 144,
+          "height": 150,
+          "bottom": 659,
+          "right": 712
+        },
+        "crosshair": {
+          "x": 592,
+          "y": 352,
+          "width": 96,
+          "height": 96,
+          "bottom": 448,
+          "right": 688
+        },
+        "feed": {
+          "x": 24,
+          "y": 210,
+          "width": 194,
+          "height": 224.921875,
+          "bottom": 434.921875,
+          "right": 218
+        },
+        "panels": [
+          {
+            "id": "playerPanel panel",
+            "x": 24,
+            "y": 636,
+            "width": 256,
+            "height": 140,
+            "bottom": 776,
+            "right": 280
+          },
+          {
+            "id": "alertPanel panel",
+            "x": 24,
+            "y": 72,
+            "width": 216,
+            "height": 119,
+            "bottom": 191,
+            "right": 240
+          },
+          {
+            "id": "cityMap",
+            "x": 1052,
+            "y": 115,
+            "width": 204,
+            "height": 219.5,
+            "bottom": 334.5,
+            "right": 1256
+          },
+          {
+            "id": "objectivePanel panel",
+            "x": 1014,
+            "y": 601,
+            "width": 242,
+            "height": 175,
+            "bottom": 776,
+            "right": 1256
+          }
+        ],
+        "feedDisplay": "flex",
+        "fill": "rgba(239, 208, 129, 0.6)",
+        "pointerEvents": "none",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "final": {
+        "mode": "playing",
+        "points": "1",
+        "lit": 1,
+        "opacity": 0,
+        "feed": "厨师友军感染厨师你亲自感染厨师你亲自感染厨师你亲自感染厨师你亲自感染",
+        "entries": 5,
+        "requested": 7,
+        "posted": 4
+      }
+    },
+    {
+      "name": "touch-sea",
+      "elapsedMs": 688,
+      "layout": {
+        "emblem": {
+          "x": 368,
+          "y": 245.6015625,
+          "width": 108,
+          "height": 109.390625,
+          "bottom": 354.9921875,
+          "right": 476
+        },
+        "crosshair": {
+          "x": 374,
+          "y": 147,
+          "width": 96,
+          "height": 96,
+          "bottom": 243,
+          "right": 470
+        },
+        "feed": {
+          "x": 210,
+          "y": 84,
+          "width": 140,
+          "height": 55,
+          "bottom": 139,
+          "right": 350
+        },
+        "panels": [
+          {
+            "id": "playerPanel panel",
+            "x": 14,
+            "y": 38,
+            "width": 175,
+            "height": 61,
+            "bottom": 99,
+            "right": 189
+          },
+          {
+            "id": "alertPanel panel",
+            "x": 210,
+            "y": 10,
+            "width": 135,
+            "height": 63,
+            "bottom": 73,
+            "right": 345
+          },
+          {
+            "id": "cityMap",
+            "x": 742,
+            "y": 58,
+            "width": 88,
+            "height": 114,
+            "bottom": 172,
+            "right": 830
+          },
+          {
+            "id": "objectivePanel panel",
+            "x": 14,
+            "y": 108,
+            "width": 184,
+            "height": 48,
+            "bottom": 156,
+            "right": 198
+          },
+          {
+            "id": "touchStick",
+            "x": 28,
+            "y": 240,
+            "width": 122,
+            "height": 122,
+            "bottom": 362,
+            "right": 150
+          },
+          {
+            "id": "touchActions",
+            "x": 605.280029296875,
+            "y": 187.39999389648438,
+            "width": 216.719970703125,
+            "height": 180.60000610351562,
+            "bottom": 368,
+            "right": 822
+          }
+        ],
+        "feedDisplay": "flex",
+        "fill": "rgba(239, 208, 129, 0.6)",
+        "pointerEvents": "none",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "final": {
+        "mode": "playing",
+        "points": "1",
+        "lit": 1,
+        "opacity": 0,
+        "feed": "厨师友军感染厨师你亲自感染厨师你亲自感染厨师你亲自感染厨师你亲自感染",
+        "entries": 5,
+        "requested": 7,
+        "posted": 3
+      }
+    },
+    {
+      "name": "desktop-tokyo",
+      "elapsedMs": 686,
+      "layout": {
+        "emblem": {
+          "x": 568,
+          "y": 509,
+          "width": 144,
+          "height": 150,
+          "bottom": 659,
+          "right": 712
+        },
+        "crosshair": {
+          "x": 592,
+          "y": 352,
+          "width": 96,
+          "height": 96,
+          "bottom": 448,
+          "right": 688
+        },
+        "feed": {
+          "x": 24,
+          "y": 210,
+          "width": 194,
+          "height": 224.609375,
+          "bottom": 434.609375,
+          "right": 218
+        },
+        "panels": [
+          {
+            "id": "playerPanel panel",
+            "x": 24,
+            "y": 636,
+            "width": 256,
+            "height": 140,
+            "bottom": 776,
+            "right": 280
+          },
+          {
+            "id": "alertPanel panel",
+            "x": 24,
+            "y": 72,
+            "width": 216,
+            "height": 119,
+            "bottom": 191,
+            "right": 240
+          },
+          {
+            "id": "cityMap",
+            "x": 1052,
+            "y": 115,
+            "width": 204,
+            "height": 219.5,
+            "bottom": 334.5,
+            "right": 1256
+          },
+          {
+            "id": "objectivePanel panel tokyoObjectives objectiveComplete",
+            "x": 956,
+            "y": 528.78125,
+            "width": 300,
+            "height": 247.21875,
+            "bottom": 776,
+            "right": 1256
+          }
+        ],
+        "feedDisplay": "flex",
+        "fill": "rgba(239, 208, 129, 0.6)",
+        "pointerEvents": "none",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "final": {
+        "mode": "playing",
+        "points": "1",
+        "lit": 1,
+        "opacity": 0,
+        "feed": "厨师友军感染厨师你亲自感染厨师你亲自感染厨师你亲自感染厨师你亲自感染",
+        "entries": 5,
+        "requested": 7,
+        "posted": 3
+      }
+    }
+  ],
+  "errors": [],
+  "production": {
+    "version": {
+      "version": "0.3.73",
+      "stage": "demo",
+      "title": "Wake up 打工人！",
+      "label": "Demo v0.3.73"
+    },
+    "mode": "menu",
+    "map": "tidewater"
+  },
+  "success": true,
+  "verification": {
+    "date": "2026-11-06",
+    "baseCommit": "805ea30",
+    "mainTests": {
+      "pass": 428,
+      "fail": 0
+    },
+    "mobileTests": {
+      "pass": 6,
+      "fail": 0
+    },
+    "webBuild": "passed",
+    "touchDevice": "Chrome Android UA and touch emulation",
+    "nativeInstallersRebuilt": false,
+    "scope": "Conversion feed and six-point personal feedback; keyboard bindings, trains and crosshair remain unchanged in this update."
+  }
+}

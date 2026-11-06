@@ -132,3 +132,101 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 @keyframes objectivePunch{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-8px) scale(1.035)}100%{transform:translateY(0) scale(1)}}
 @keyframes objectiveReveal{from{opacity:.15;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
 @media(prefers-reduced-motion:reduce){.objectivePanel.objectiveComplete,.objectiveNext #objective,.objectiveNext #objectiveSteps{animation:none}}
+
+/* Pause is a compact action menu shared by desktop and touch. */
+.dialog.settingsDialog,.touch-mode .dialog.settingsDialog{width:min(400px,calc(100vw - 32px));max-width:400px;padding:22px 26px;border:2px solid var(--paper);border-top:6px solid var(--rebel);box-shadow:7px 7px #000}
+.dialog.settingsDialog:before,.dialog.settingsDialog:after{display:none}
+.settingsHeading,.upgradeHeading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 18px}
+.dialog .settingsHeading h2,.dialog .upgradeHeading h2{margin:0;font-size:30px;line-height:1.1}
+.settingsHeading>span,.upgradeHeading>span{color:var(--rebel);font-size:24px;font-weight:900;font-style:italic}
+.settingsRows{display:grid;gap:0;margin-bottom:18px}
+.settingsRows .setting{display:grid;grid-template-columns:70px minmax(0,1fr);align-items:center;gap:20px;min-height:50px;margin:0;padding:8px 0;border-bottom:1px solid #fff3;font-size:15px;color:var(--paper)}
+.settingsRows input[type=range],.settingsRows select{width:100%;min-width:0;margin:0;accent-color:var(--rebel)}
+.settingsRows select{min-height:32px;padding:4px 8px;border:1px solid #fff7;border-radius:0;background:var(--ui-black);color:var(--paper);font:inherit}
+.settingsDialog>.action{display:block;width:100%;margin:10px 0 0;min-height:44px;box-shadow:none}
+.settingsDialog>.action[hidden]{display:none}
+.dialog.upgradeDialog{width:min(960px,calc(100vw - 32px))}
+.upgradeDialog .cards{margin-top:0}
+@media(max-height:460px){.dialog.settingsDialog,.touch-mode .dialog.settingsDialog{padding:16px 22px}.settingsHeading{margin-bottom:8px}.settingsRows{margin-bottom:10px}.settingsRows .setting{min-height:40px;padding:5px 0}.dialog .settingsHeading h2{font-size:26px}}
+.dialog.pauseDialog,.touch-mode .dialog.pauseDialog{width:min(340px,calc(100vw - 36px));max-width:340px;padding:25px 25px 22px;overflow:visible;border:2px solid var(--paper);border-top:6px solid var(--rebel);box-shadow:7px 7px #000}
+.dialog.pauseDialog:before,.dialog.pauseDialog:after{display:none}
+.pauseMenu header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:26px}
+.dialog.pauseDialog h2,.touch-mode .dialog.pauseDialog h2{margin:0;color:var(--paper);font-size:32px;line-height:1.15;letter-spacing:1px;text-shadow:2px 2px #000}
+.pauseMark{display:block;transform:skew(-10deg);color:var(--rebel);font:900 36px/1 system-ui}
+.pauseActions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pauseActions .action{width:100%;margin:0;min-height:46px;padding:11px 10px;font-size:14px;letter-spacing:1px;box-shadow:none}
+.pauseActions .pauseResume{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;min-height:54px;margin-bottom:2px;font-size:18px;padding:12px 17px}
+.pauseResume span{font-size:24px;line-height:1}
+.pauseActions .pauseEnd{border-color:#fffdf270;color:var(--ui-secondary)}
+@media(max-height:420px){.dialog.pauseDialog,.touch-mode .dialog.pauseDialog{padding:18px 22px 20px}.pauseMenu header{margin-bottom:20px}.dialog.pauseDialog h2,.touch-mode .dialog.pauseDialog h2{font-size:28px}.pauseActions .action{min-height:42px}.pauseActions .pauseResume{min-height:50px}}
+
+
+/* 阵营同时使用文字、形状与颜色，友军不再只靠小菱形辨认。 */
+:root{--friend:#3be870;--enemy:#ef3048}
+.unitLabel.friendly .name{color:var(--friend);border-color:var(--friend)}
+.unitLabel.friendly .health{border-color:var(--friend)}
+.unitLabel.friendly .health i{background:var(--friend)}
+.unitLabel.hostile .name{border-color:var(--rebel)}
+.unitLabel.neutral .name{color:#e1dfd8;border-color:#aaa9a2}
+.unitLabel.neutral .health i{background:#aaa9a2}
+.unitLabel.compact{width:110px}.unitLabel.compact .name{font-size:9px;padding:3px 5px}.unitLabel.compact .health{height:6px}
+.allyDot,.allyDot small{color:var(--friend)}.mapLegend .ally{background:var(--friend)}
+#hud.holdingGun #primaryLabel{font-size:19px;color:var(--paper);border-left:4px solid var(--purple);padding-left:8px}
+/* 直接感染和觉醒更有冲击，持续感染仍沿用静默与遮挡规则。 */
+.combatPop.infection b{font-size:32px}.combatPop.infection small{font-size:10px;letter-spacing:1px}
+.combatPop.awaken b{font-size:34px}.combatPop.awaken:before{background:#c58aff}
+.combatImpact.pollutionImpact{width:96px;height:96px}.combatImpact.pollutionImpact.heavy{width:130px;height:130px}
+/* 紫色圆徽章避开准星；六尖逐个点亮，不再用整块印章遮挡画面。 */
+#infectionFeedback{display:flex;position:absolute;top:73%;left:50%;right:auto;bottom:auto;width:144px;padding:0;transform:translate(-50%,-50%);flex-direction:column;align-items:center;gap:3px;text-align:center;border:0;border-radius:50%;background:none;box-shadow:none;clip-path:none;pointer-events:none;z-index:5;transition:opacity .06s linear}
+#infectionFeedback .conversionSeal{display:block;width:112px;height:112px;overflow:visible;filter:drop-shadow(0 2px 0 #160921) drop-shadow(0 0 8px #ad45ff88)}
+.conversionSeal .sealDisc{fill:#29103f;stroke:#f2d5ff;stroke-width:2}.conversionSeal .sealRim{fill:none;stroke:#bc7bed;stroke-width:1}
+.conversionSeal .sealPoint{fill:#563070;stroke:#ac78ce;stroke-width:.8;transition:fill .09s,stroke .09s}
+.conversionSeal .sealPoint .sealFacet{fill:#6a3b8a;stroke:none}
+.conversionSeal .sealPoint.lit{fill:#bb4dff;stroke:#fff1ff}.conversionSeal .sealPoint.lit .sealFacet{fill:#edb0ff}
+.conversionSeal .sealCore{fill:#fff4ff;stroke:#7c2bb0;stroke-width:1}
+#infectionFeedback>b{display:block;font-size:23px;font-weight:1000;line-height:1.2;letter-spacing:3px;color:#f0c1ff;text-shadow:2px 2px #1c082b,-1px -1px #1c082b,0 0 9px #a73fff}
+#infectionFeedback>small{display:block;margin:0;font-size:10px;letter-spacing:2px;color:#efd6ff}
+#infectionFeedback.active .conversionSeal{animation:conversion-seal-pop .18s ease-out}
+@keyframes conversion-seal-pop{0%{transform:scale(1.4) rotate(-12deg)}45%{transform:scale(.9) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+#infectionFeed{display:flex;position:absolute;top:210px;right:auto;left:24px;bottom:auto;flex-direction:column;gap:5px;width:194px;max-width:24vw;max-height:min(230px,max(40px,calc(100dvh - 410px)));overflow:hidden;pointer-events:none;text-align:left;font-size:11px}
+#infectionFeed:empty{display:none}
+#infectionFeed>.infectionEntry{box-sizing:border-box;display:grid;gap:3px;flex:none;margin:0;padding:7px 10px;border:0;border-left:2px solid #b478f199;border-radius:0;background:#19121d80;box-shadow:none;animation:conversion-feed-in .18s ease-out}
+#infectionFeed>.infectionEntry.personal{border-left-color:#efd081bb}
+.infectionEntry b{font-size:11px;line-height:1.2;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fffdf2cf}.infectionEntry small{font-size:9px;line-height:1.2;letter-spacing:1px;color:#d5c1dfb3}
+@keyframes conversion-feed-in{from{max-height:0;opacity:0;transform:translateX(14px);padding-top:0;padding-bottom:0}to{max-height:48px;opacity:1;transform:translateX(0)}}
+@media(max-height:600px),(max-width:760px){#infectionFeedback{top:77%;width:108px}#infectionFeedback .conversionSeal{width:76px;height:76px}#infectionFeedback>b{font-size:16px}#infectionFeedback>small{font-size:9px}#infectionFeed{left:12px;width:164px}}
+@media(prefers-reduced-motion:reduce){#infectionFeedback.active .conversionSeal,#infectionFeed>.infectionEntry{animation:none}#infectionFeedback,.conversionSeal .sealPoint{transition:none}}
+
+
+#hud.holdingGun .weaponHeading{display:block}#hud.holdingGun #primaryLabel{display:block;white-space:nowrap}
+
+/* Thin instrument dial; the center tip remains at the exact screen center. */
+#crosshair{width:200px;height:200px;color:#f5f3eb}
+#crosshair.locked,#crosshair.ready{color:#fffdf5}
+.scopeReticle{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1;filter:drop-shadow(0 1px 1px #09090d) drop-shadow(0 0 1px #09090d)}
+.reticleDial{opacity:.82}.reticleScale,.reticleGauge{opacity:.65;stroke-width:.8}
+.reticleAxes{stroke-width:1.2;opacity:.9}.reticleCenter{stroke-width:1.7;stroke-linejoin:round}.reticlePoint{fill:currentColor;stroke:none}
+#chargeRings{transform:none;filter:drop-shadow(0 1px 1px #09090d);animation:none}
+.chargeTrack path{fill:none;stroke:#f5f3eb33;stroke-width:4;stroke-linecap:butt}
+.chargeFill path{fill:none;stroke:#c46bff;stroke-width:4;stroke-linecap:butt;opacity:0;transition:opacity .1s}
+.chargeFill path.filled{opacity:1}
+#crosshair.ready #chargeRings{animation:none}
+#crosshair.ready .chargeFill path{stroke:#e3abff;filter:drop-shadow(0 0 3px #b84dff)}
+#crosshair.ready .reticleDial{stroke:#d89bff;filter:drop-shadow(0 0 2px #a24ce0)}
+#crosshair.ready .reticleCenter,#crosshair.ready .reticlePoint{color:#e3abff}
+#chargeStatus{left:8.5%;top:16%;font-size:9px;letter-spacing:0;color:#f5f3eb}
+#crosshair.ready #chargeStatus{left:50%;top:calc(100% - 10px);padding:3px 7px;border-radius:0;background:#6f229b;color:#fff2ff;border:1px solid #dfa1ff}
+#targetHint,#hud.charging #targetHint{top:calc(50% + 118px)}
+@media(max-height:600px),(max-width:760px){#crosshair{width:156px;height:156px}#targetHint,#hud.charging #targetHint{top:calc(50% + 93px);font-size:9px}#chargeStatus{font-size:8px}#crosshair.ready #chargeStatus{font-size:9px;padding:2px 5px}}
+
+/* 阵营生命条使用实色；玩家与同伴同绿，敌方统一红。 */
+.unitLabel,.unitLabel.friendly,.allyDot{opacity:1}
+.unitLabel .name{background:#15151b;opacity:1}.unitLabel .health{background:#111416;opacity:1}.unitLabel .health i{opacity:1}
+.unitLabel.hostile .health i{background:var(--enemy)}.unitLabel.friendly .health i{background:var(--friend)}
+.unitLabel.hostile .name{color:#fff4f4;border-color:var(--enemy)}.unitLabel.friendly .name{color:var(--friend)}
+.bar.hp #hpBar{background:var(--friend);opacity:1}.bar.hp #hpTrail{background:#1d9c46;opacity:1}.bar.hp{background:#111416}
+#bossHp{background:var(--enemy)}
+
+.unitLabel,.unitLabel .health,.unitLabel .health i{animation:none!important}.unitLabel.recentHit .health{box-shadow:none}
+
+.weaponPickupLabel{position:absolute;transform:translate(-50%,-100%);padding:7px 10px;border:1px solid #e5b1ff;border-left:4px solid #bb4dff;background:#22112e;box-shadow:2px 2px #000;white-space:nowrap;text-align:center;font-size:12px;color:#f6e7ff}.weaponPickupLabel b{display:block}.weaponPickupLabel small{display:block;margin-top:3px;font-size:10px;color:#e5b1ff}

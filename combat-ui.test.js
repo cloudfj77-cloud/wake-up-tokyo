@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {combatDelta,combatAmount,combatPopupPosition,combatFeedbackScale} from './combat-ui.js';
-import {makeState,makeUnit,hit,damageAlly,hurtMother} from './rules.js';
+import {makeState,makeUnit,hit,damageAlly,hurtMother,stepSimulation} from './rules.js';
 const snapshot=u=>({...u});
 test('feedback reports actual mitigated HP loss and applied pollution',()=>{
  const s=makeState(),u=makeUnit(1,3,0,0),before=snapshot(u);
@@ -32,7 +32,7 @@ test('fractional pollution is displayed without becoming a full point',()=>{asse
 
 // 小型 DOM 替身只模拟反馈所需的节点操作，验证连射合并、数量上限与暂停清理。
 import {createCombatUI} from './combat-ui.js';
-function feedbackFixture(onImpact=()=>{},project=()=>({x:100,y:100}),tone){
+function feedbackFixture(onImpact=()=>{},project=()=>({x:100,y:100}),tone,onAwaken){
  class Node {
   constructor(){this.children=[];this.style={setProperty(key,value){this[key]=value;}};this.classList={add(){},remove(){},toggle(){}};this.offsetWidth=1;}
   setAttribute(){} append(...nodes){for(const n of nodes){n.parent=this;this.children.push(n);}}
@@ -41,9 +41,9 @@ function feedbackFixture(onImpact=()=>{},project=()=>({x:100,y:100}),tone){
  }
  const hud=new Node(),panel=new Node(),ids=new Map([['hud',hud],['hpTrail',new Node()],['playerHit',new Node()]]);
  const doc={createElement:()=>new Node(),getElementById:id=>ids.get(id),querySelector:()=>panel};
- return {ui:createCombatUI(doc,project,onImpact,tone),hud};
+ return {ui:createCombatUI(doc,project,onImpact,tone,onAwaken),hud};
 }
-test('suppressed continuous-infection impacts still show every pollution increment and preserve later direct hits',()=>{
+test('disabling an impact alone preserves explicit pollution popups and later direct hits',()=>{
  let direct=false;const {ui,hud}=feedbackFixture(()=>direct?'heavy':false),host=hud.children[0],s=makeState(),p={x:0,z:0},b={active:false},u={id:1,hp:100,infection:0};
  ui.baseline([u],s,p,b);
  for(let i=0;i<10;i++){u.infection+=.2;ui.observe([u],s,p,b);ui.tick(.03,true,s);}
@@ -76,7 +76,7 @@ test('frame baseline preserves a single input-event strike and never reports it 
  assert.equal(popups.length,2);assert.equal(impacts.length,1);
  assert.deepEqual(popups.map(n=>n.children[1].textContent),['−16','+8']);
 });
-test('persistent pollution throttles impact flashes while preserving all increments',()=>{
+test('explicit infection events throttle impact flashes while preserving all increments',()=>{
  let flashes=0;const {ui,hud}=feedbackFixture(()=>flashes++),s=makeState(),p={x:0,z:0},b={active:false},u=makeUnit(1,5,0,1);
  ui.baseline([u],s,p,b);
  for(let i=0;i<20;i++){u.infection+=.2;ui.baseline([u],s,p,b);ui.observe([u],s,p,b);ui.tick(.02,true,s);}
@@ -134,4 +134,51 @@ test('damage and infection from the same strike show together without a pre-disp
  ui.baseline([u],s,p,b);hit(s,u,10,20);ui.observe([u],s,p,b);ui.tick(.016,true,s);
  const pops=hud.children[0].children.filter(n=>n.className.startsWith('combatPop'));
  assert.deepEqual(pops.map(n=>n.children[1].textContent),['−20','+10']);
+});
+
+test('DOT, airborne aura and air clouds accumulate infection without floating UI or impact callbacks',()=>{
+ for(const source of ['dot','air','cloud']){
+  let impacts=0;const {ui,hud}=feedbackFixture(()=>impacts++),s=makeState(),p={x:0,z:0},b={active:false},u=makeUnit(1,5,source==='air'?1:30,0);
+  if(source==='dot'){s.abilities.dot=1;u.infection=1;u.tagged='player';}
+  else{s.abilities.air=source==='air'?1:3;if(source==='cloud')s.airClouds=[{x:u.x,z:u.z,time:3}];}
+  const before=u.infection;ui.baseline([u],s,p,b);
+  for(let i=0;i<20;i++){
+   stepSimulation(s,[u],p,.05,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.05,true,s);
+  }
+  assert.ok(u.infection>before,`${source} must still infect`);assert.equal(impacts,0,source);assert.equal(hud.children[0].children.length,0,source);
+ }
+});
+
+test('a direct strike still shows its exact infection and damage when passive infection ticks in the same frame',()=>{
+ const {ui,hud}=feedbackFixture(),s=makeState(),p={x:0,z:0},b={active:false},u=makeUnit(1,5,1,0);s.abilities.air=1;s.abilities.dot=1;
+ ui.baseline([u],s,p,b);hit(s,u,10,20);stepSimulation(s,[u],p,.1,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.016,true,s);
+ const pops=()=>hud.children[0].children.filter(n=>n.className.startsWith('combatPop'));
+ assert.deepEqual(pops().map(n=>n.children[1].textContent),['−20','+10']);
+ // 后续被动感染不能续期、放大或累加到这张直接命中的爆贴上。
+ for(let i=0;i<30;i++){stepSimulation(s,[u],p,.05,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.05,true,s);}
+ assert.equal(pops().length,0);
+ hit(s,u,8,0);ui.observe([u],s,p,b);ui.tick(.016,true,s);
+ assert.equal(pops()[0].children[1].textContent,'+8');
+});
+
+test('passive awakening reports to the side feed without a second floating success stamp',()=>{
+ const recorded=[],{ui,hud}=feedbackFixture(()=>{},()=>({x:100,y:100}),undefined,u=>recorded.push(u.id)),s=makeState(),p={x:0,z:0},b={active:false},u=makeUnit(1,0,1,0);s.abilities.air=1;u.infection=u.threshold-1;
+ ui.baseline([u],s,p,b);stepSimulation(s,[u],p,.5,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.016,true,s);
+ assert.equal(u.converted,true);assert.deepEqual(recorded,[1]);assert.equal(hud.children[0].children.length,0);
+});
+
+
+test('personal infection and awakening feedback is larger than ordinary damage but remains bounded',()=>{
+ for(const value of [1,10,50,10000])assert.ok(combatFeedbackScale(value,'infection')>combatFeedbackScale(value,'damage'));
+ assert.ok(combatFeedbackScale(0,'awaken')>=1.1);assert.ok(combatFeedbackScale(1e9,'infection')<=1.6);
+});
+
+
+test('conversion notifications include offscreen passive successes, without replaying on observe or continue',()=>{
+ const recorded=[],{ui}=feedbackFixture(()=>{},()=>null,undefined,u=>recorded.push(u.id));
+ const s=makeState(),p={},b={active:false},u=makeUnit(600,0,0,0);
+ ui.baseline([u],s,p,b);hit(s,u,u.threshold,0,false,true);ui.observe([u],s,p,b);ui.observe([u],s,p,b);
+ assert.deepEqual(recorded,[600]);
+ const restored=makeUnit(601,0,0,0);hit(s,restored,restored.threshold,0);ui.baseline([u,restored],s,p,b);ui.observe([u,restored],s,p,b);
+ assert.deepEqual(recorded,[600]);
 });

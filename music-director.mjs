@@ -1,4 +1,5 @@
 // 游戏只提交场景和混音意图；循环、淡变、暂停与尾声衔接由 Wwise 事件执行。
+import {withJapaneseRadio} from './japanese-radio.js';
 export const MUSIC_SCENES=Object.freeze(['menu','street','pressure','countdown','boss','victory','defeat','aftermath']);
 export function selectMusicScene({mode,state={},boss={}}={}){
  if(mode==='loading'||mode==='menu')return 'menu';
@@ -9,13 +10,13 @@ export function selectMusicScene({mode,state={},boss={}}={}){
  if(state.bossCountdown!=null&&!state.bossSpawned)return 'countdown';
  return state.alert>=3?'pressure':'street';
 }
-const backend=async()=>{const {createWwiseAudio}=await import('./src/wwise/index.mjs');return createWwiseAudio();};
+const backend=async()=>{if(globalThis.Capacitor?.isNativePlatform?.()||new URLSearchParams(globalThis.location?.search??'').get('mobileAudio')==='1'){const {createMobileAudio}=await import('./mobile-audio.js');return withJapaneseRadio(await createMobileAudio());}const {createWwiseAudio}=await import('./src/wwise/index.mjs');return withJapaneseRadio(await createWwiseAudio());};
 const loopingScenes=new Set(['menu','street','pressure','countdown','boss','aftermath']);
 export class MusicDirector{
  constructor({createAudio=backend,onStatus=()=>{},now=()=>performance.now()}={}){
   this.createAudio=createAudio;this.onStatus=onStatus;this.audio=null;this.loading=null;this.epoch=0;
   this.scene='menu';this.posted=null;this.paused=false;this.pauseSent=false;this.volume=.38;this.muted=false;
-  this.radio=false;this.focus=false;this.gainSent=null;this.duckSent=null;this.status='idle';this.error=null;this.playingId=null;
+  this.radio=false;this.focus=false;this.accentUntil=0;this.gainSent=null;this.duckSent=null;this.status='idle';this.error=null;this.playingId=null;
   this.now=now;this.healthTimer=null;this.healthAfter=0;this.lastPosition=null;this.positionAt=0;this.stableSince=0;this.recoveryAttempts=0;this.recoveries=[];
  }
  notify(status,error=null){this.status=status;this.error=error?.message??error;this.onStatus(this.snapshot());}
@@ -41,6 +42,7 @@ export class MusicDirector{
  }
  setVolume(value){this.volume=Math.max(0,Math.min(1,Number(value)||0));this.safeFlush();}
  setMuted(value){this.muted=!!value;this.safeFlush();}
+ accent(){this.accentUntil=this.now()+500;this.safeFlush();}
  duck(value){this.radio=!!value;this.safeFlush();}
  pause(){this.paused=true;this.safeFlush();}
  resume(){this.paused=false;this.resetHealth();this.safeFlush();}
@@ -66,9 +68,9 @@ export class MusicDirector{
  flush(){
   const a=this.audio;if(!a)return;
   const gain=this.muted||!this.volume?-96:Math.max(-96,20*Math.log10(this.volume*.5));
-  const duck=this.radio?-9:this.focus?-4:0;
+  const accent=this.now()<this.accentUntil;const duck=Math.min(this.radio?-9:0,this.focus?-4:0,accent?-12:0);
   if(gain!==this.gainSent){a.setRTPC('Music_GainDb',gain,undefined,80);this.gainSent=gain;}
-  if(duck!==this.duckSent){a.setRTPC('Music_DuckDb',duck,undefined,this.radio?120:550);this.duckSent=duck;}
+  if(duck!==this.duckSent){a.setRTPC('Music_DuckDb',duck,undefined,accent?20:this.radio?120:550);this.duckSent=duck;}
   // 暂停期间只记录新意图，恢复时再切换；否则新曲会绕过已暂停的旧声部。
   if(!this.paused&&this.scene!==this.posted){
    if(this.pauseSent){a.postEvent('resume',77);this.pauseSent=false;}

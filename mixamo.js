@@ -16,6 +16,9 @@ export function stripRootMotion(clip) {
     const values = track.values;
     const baseX = values[0];
     const baseZ = values[2];
+    // 清除根位移前保留原动作的自然行进速度，播放时才能按人物实际位移匹配步频。
+    const travel=Math.hypot(values[values.length-3]-baseX,values[values.length-1]-baseZ);
+    if(travel>.05&&clip.duration>0&&!clip.userData?.rootMotionSpeed)clip.userData={...clip.userData,rootMotionSpeed:travel/clip.duration};
     for (let i = 0; i < values.length; i += 3) {
       values[i] = baseX;
       values[i + 2] = baseZ;

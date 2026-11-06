@@ -277,4 +277,4 @@ body.awakened .dialog{background:#241a30;border-color:var(--paper);box-shadow:8p
 /* 同伴攻击和受击作为次要信息：整体更小、更淡，减少尖角爆贴的存在感。 */
 .combatPop.subdued{filter:saturate(.45)}.combatPop.subdued small{display:none}.combatPop.subdued:before{inset:-3px -6px;clip-path:polygon(5% 0,100% 5%,95% 100%,0 94%)}.combatPop.subdued:after{display:none}
 .combatImpact.subdued{width:30px;height:30px}.combatImpact.subdued:before{filter:none}
-.unitLabel.friendly,.allyDot{opacity:.55}
+.unitLabel.friendly,.allyDot{opacity:1}

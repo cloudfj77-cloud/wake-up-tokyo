@@ -2,6 +2,7 @@ import * as T from 'three';
 // 仅检测地图实体，先用包围盒筛选，再检查真实表面；透明特效和人物不参与遮挡。
 export function createFeedbackVisibility(world){
  const records=new Map(),cache=new WeakMap(),raycaster=new T.Raycaster(),direction=new T.Vector3(),cross=new T.Vector3();
+ const labelAnchors=new WeakMap();
  let count=-1,budget=6;const deferred=new Map();
  function collect(){
   const register=(mesh,owner=null)=>{
@@ -50,6 +51,12 @@ export function createFeedbackVisibility(world){
   if(anchor)deferred.set(anchor,{from:from.clone(),to:to.clone(),at:now});
   return false;
  }
+ function labelVisible(from,to,unit){
+  let anchor=labelAnchors.get(unit);if(!anchor){anchor={};labelAnchors.set(unit,anchor);}
+  const result=visible(from,to,anchor),old=cache.get(anchor);
+  // A pending head-label check is not an occlusion; keep its last answer for a short bounded interval.
+  return deferred.has(anchor)&&old&&performance.now()-old.at<250?old.visible:result;
+ }
  function beginFrame(){
   budget=6;const now=performance.now();
   for(const [anchor,r] of deferred){
@@ -57,5 +64,5 @@ export function createFeedbackVisibility(world){
    if(!budget)break;budget--;deferred.delete(anchor);check(r.from,r.to,anchor);
   }
  }
- return {visible,beginFrame};
+ return {visible,labelVisible,beginFrame};
 }

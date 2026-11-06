@@ -309,7 +309,7 @@ test('tune console can move alert gates without infection',()=>{
  finally{resetTune();}
 });
 test('sprint multiplies walk speed; haste adds fifteen then thirty',()=>{
- const s=makeState();assert.equal(speed(s),WALK_SPEED);assert.equal(speed(s,true),WALK_SPEED*SPRINT_MULT);
+ const s=makeState();assert.equal(speed(s),2.3);assert.equal(speed(s,true),2.3*SPRINT_MULT);
  s.pending=3;upgrade(s,'haste');assert.equal(speed(s),WALK_SPEED*1.15);
  upgrade(s,'haste');upgrade(s,'haste');assert.equal(speed(s),WALK_SPEED*1.3);
 });

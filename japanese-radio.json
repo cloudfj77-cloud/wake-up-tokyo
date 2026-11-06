@@ -1,0 +1,42 @@
+{
+  "language": "ja-JP",
+  "voice": "ja-JP-KeitaNeural",
+  "provider": "Microsoft Edge TTS via edge-tts",
+  "lines": {
+    "radio2": {
+      "text": "各隊へ。異常事態を確認。ただちに応援を要請する。",
+      "caption": "各单位注意，发现异常。立即请求支援。",
+      "file": "/radio-ja/radio2.ogg",
+      "seconds": 6.006666666666667,
+      "sha256": "ba0577ed01d6e506181f9a308b48a82891cc28eda0216fca0e5e5d7c8ba56867"
+    },
+    "radio3": {
+      "text": "市街地を封鎖せよ。該当区域へ増援を急行させろ。",
+      "caption": "封锁城市。立即向本区域增援。",
+      "file": "/radio-ja/radio3.ogg",
+      "seconds": 5.452,
+      "sha256": "bfba8406a0f0f9e0e154f7d66702ef6d7fbd17a2a3e13c3143852f45877237fc"
+    },
+    "radio4": {
+      "text": "軍の介入を許可する。全隊、出動せよ。",
+      "caption": "军事介入已获批准。所有单位出动。",
+      "file": "/radio-ja/radio4.ogg",
+      "seconds": 4.916,
+      "sha256": "cfec3ca7380b2bb9b0f873a1c4ec1501f62bcc46f08a288c69e6bc5136da5db9"
+    },
+    "radio5": {
+      "text": "鎮圧作戦のカウントダウンを開始。包囲網をただちに強化せよ。",
+      "caption": "镇压倒计时启动。立即加强封锁线。",
+      "file": "/radio-ja/radio5.ogg",
+      "seconds": 5.689333333333333,
+      "sha256": "aab1c2c7527d33ba7705d8a2611fb39f796136a64e9c5fe752ce161c6f9a4567"
+    },
+    "radio6": {
+      "text": "全面鎮圧を開始する。全隊、目標地点に集結せよ。",
+      "caption": "全面镇压。所有可用单位向目标集结。",
+      "file": "/radio-ja/radio6.ogg",
+      "seconds": 5.934666666666667,
+      "sha256": "8ee01aad3acf4e4cd55856af5f07f1b626ec21619d86db03ad8b994a5f51db3f"
+    }
+  }
+}
