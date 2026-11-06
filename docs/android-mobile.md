@@ -1,10 +1,10 @@
 # 手机和 Windows 构建
 
-本分支整合 PR31 手机／电脑版与 PR32 东京 v0.3.70 更新，游戏源码版本为 v0.3.71。展示名称沿用最新版本的 **Wake up 打工人！**；默认地图为海滨钟楼广场，主菜单可切换东京立体街区。
+本分支整合 PR31 手机／电脑版与 PR32 东京 v0.3.70 更新，游戏源码版本为 v0.3.72。展示名称沿用最新版本的 **Wake up 打工人！**；默认地图为海滨钟楼广场，主菜单可切换东京立体街区。
 
 ## Android
 
-手机包使用根目录 `android/` 的 Capacitor 工程。应用 ID 保持 `com.wakeuptokyo.game`，版本为 `0.3.71-mobile.7`（versionCode 7，需重新构建与实机验收），保留旧 APK 的存档命名空间。覆盖安装仍需相同签名；仓库不包含交付者的签名私钥。
+手机包使用根目录 `android/` 的 Capacitor 工程。应用 ID 保持 `com.wakeuptokyo.game`，版本为 `0.3.72-mobile.8`（versionCode 8，需重新构建与实机验收），保留旧 APK 的存档命名空间。覆盖安装仍需相同签名；仓库不包含交付者的签名私钥。
 
 环境：Node.js 22+、JDK 21、Android SDK API 36。配置 `JAVA_HOME` 和 `ANDROID_HOME`，或在本机 `android/local.properties` 中填写 `sdk.dir`。
 

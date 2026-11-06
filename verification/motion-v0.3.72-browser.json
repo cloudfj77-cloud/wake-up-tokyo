@@ -1,0 +1,461 @@
+{
+  "version": "0.3.72",
+  "production": [
+    {
+      "input": "button",
+      "title": "Wake up 打工人！ · Demo v0.3.72",
+      "map": "tidewater",
+      "version": {
+        "version": "0.3.72",
+        "stage": "demo",
+        "title": "Wake up 打工人！",
+        "label": "Demo v0.3.72"
+      },
+      "skipAndChoiceMs": 2009,
+      "mode": "playing"
+    },
+    {
+      "input": "Escape",
+      "title": "Wake up 打工人！ · Demo v0.3.72",
+      "map": "tidewater",
+      "version": {
+        "version": "0.3.72",
+        "stage": "demo",
+        "title": "Wake up 打工人！",
+        "label": "Demo v0.3.72"
+      },
+      "skipAndChoiceMs": 2007,
+      "mode": "playing"
+    }
+  ],
+  "motion": [
+    {
+      "name": "desktop-sea",
+      "walkMeasured": 2.3000000000000016,
+      "sprintMeasured": 3.1739999999999897,
+      "airChain": {
+        "jump": {
+          "mode": "playing",
+          "map": "tidewater",
+          "time": 2.0565849999999988,
+          "position": {
+            "x": -20,
+            "z": -10,
+            "y": 0.41665749980000477,
+            "vy": 5.800029999999984,
+            "crouch": false,
+            "roll": 0,
+            "rollX": 0,
+            "rollZ": 1,
+            "floorY": 0,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": false,
+          "airborne": true,
+          "attackTime": 0,
+          "clip": "jump",
+          "clipTime": 0.8399990044279615,
+          "timeScale": 0,
+          "groundSpeed": 0,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": [
+            {
+              "id": "kindling",
+              "name": "薪火"
+            },
+            {
+              "id": "evolve",
+              "name": "生存与进化"
+            },
+            {
+              "id": "tough",
+              "name": "皮糙肉厚"
+            }
+          ]
+        },
+        "roll": {
+          "mode": "playing",
+          "map": "tidewater",
+          "time": 2.0565849999999988,
+          "position": {
+            "x": -20,
+            "z": -10,
+            "y": 0.41665749980000477,
+            "vy": 5.800029999999984,
+            "crouch": false,
+            "roll": 0.72,
+            "rollX": 0,
+            "rollZ": 1,
+            "floorY": 0,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": true,
+          "airborne": true,
+          "attackTime": 0.72,
+          "clip": "roll",
+          "clipTime": 0,
+          "timeScale": 3.2870368825064764,
+          "groundSpeed": 0,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": [
+            {
+              "id": "kindling",
+              "name": "薪火"
+            },
+            {
+              "id": "evolve",
+              "name": "生存与进化"
+            },
+            {
+              "id": "tough",
+              "name": "皮糙肉厚"
+            }
+          ]
+        },
+        "resumed": {
+          "mode": "playing",
+          "map": "tidewater",
+          "time": 2.123244999999999,
+          "position": {
+            "x": -20,
+            "z": -9.843555966433334,
+            "y": 0.7532974991000031,
+            "vy": 4.600149999999985,
+            "crouch": false,
+            "roll": 0,
+            "rollX": 0,
+            "rollZ": 1,
+            "floorY": 0,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": false,
+          "airborne": true,
+          "attackTime": 0,
+          "clip": "jump",
+          "clipTime": 0.800000011920929,
+          "timeScale": 0,
+          "groundSpeed": 2.8478442192808293,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": [
+            {
+              "id": "kindling",
+              "name": "薪火"
+            },
+            {
+              "id": "evolve",
+              "name": "生存与进化"
+            },
+            {
+              "id": "tough",
+              "name": "皮糙肉厚"
+            }
+          ]
+        }
+      },
+      "immediateRepeatRoll": true,
+      "hitCancel": true,
+      "attackCancel": true,
+      "reloadCanJump": true,
+      "switchCanRoll": true
+    },
+    {
+      "name": "desktop-tokyo",
+      "airChain": {
+        "jump": {
+          "mode": "playing",
+          "map": "riverside",
+          "time": 0.13,
+          "position": {
+            "x": 5,
+            "z": 8,
+            "y": 0.5302009998000001,
+            "vy": 5.380000000000001,
+            "crouch": false,
+            "roll": 0,
+            "rollX": 0,
+            "rollZ": 1,
+            "floorY": -3.8499997869133953,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": false,
+          "airborne": true,
+          "attackTime": 0,
+          "clip": "jump",
+          "clipTime": 0.8540000018051692,
+          "timeScale": 0,
+          "groundSpeed": 0,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": []
+        },
+        "roll": {
+          "mode": "playing",
+          "map": "riverside",
+          "time": 0.13,
+          "position": {
+            "x": 5,
+            "z": 8,
+            "y": 0.5302009998000001,
+            "vy": 5.380000000000001,
+            "crouch": false,
+            "roll": 0.72,
+            "rollX": -1,
+            "rollZ": 6.123233995736766e-17,
+            "floorY": -3.8499997869133953,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": true,
+          "airborne": true,
+          "attackTime": 0.72,
+          "clip": "roll",
+          "clipTime": 0,
+          "timeScale": 3.2870368825064764,
+          "groundSpeed": 0,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": []
+        },
+        "resumed": {
+          "mode": "playing",
+          "map": "riverside",
+          "time": 0.25333499999999914,
+          "position": {
+            "x": 4.753396221053293,
+            "z": 8,
+            "y": 1.024940099449998,
+            "vy": 3.1599700000000173,
+            "crouch": false,
+            "roll": 0,
+            "rollX": -1,
+            "rollZ": 6.123233995736766e-17,
+            "floorY": -3.8499997869133953,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": false,
+          "airborne": true,
+          "attackTime": 0,
+          "clip": "jump",
+          "clipTime": 0.9280009879426441,
+          "timeScale": 0,
+          "groundSpeed": 0,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": []
+        }
+      },
+      "immediateRepeatRoll": true,
+      "hitCancel": true,
+      "attackCancel": true,
+      "reloadCanJump": true,
+      "switchCanRoll": true
+    },
+    {
+      "name": "android-sea",
+      "airChain": {
+        "jump": {
+          "mode": "playing",
+          "map": "tidewater",
+          "time": 0.19998999999999978,
+          "position": {
+            "x": -20,
+            "z": -10,
+            "y": 0.4166574998000048,
+            "vy": 5.800029999999984,
+            "crouch": false,
+            "roll": 0,
+            "rollX": 0,
+            "rollZ": 1,
+            "floorY": 0,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": false,
+          "airborne": true,
+          "attackTime": 0,
+          "clip": "jump",
+          "clipTime": 0.8399990044279615,
+          "timeScale": 0,
+          "groundSpeed": 0,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": [
+            {
+              "id": "tough",
+              "name": "皮糙肉厚"
+            },
+            {
+              "id": "frenzy",
+              "name": "狂杀"
+            },
+            {
+              "id": "air",
+              "name": "空气传播"
+            }
+          ]
+        },
+        "roll": {
+          "mode": "playing",
+          "map": "tidewater",
+          "time": 0.2666549999999988,
+          "position": {
+            "x": -20,
+            "z": -10,
+            "y": 0.7533189995499996,
+            "vy": 4.60006,
+            "crouch": false,
+            "roll": 0.72,
+            "rollX": 0,
+            "rollZ": 1,
+            "floorY": 0,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": true,
+          "airborne": true,
+          "attackTime": 0.72,
+          "clip": "roll",
+          "clipTime": 0,
+          "timeScale": 3.2870368825064764,
+          "groundSpeed": 0,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": [
+            {
+              "id": "tough",
+              "name": "皮糙肉厚"
+            },
+            {
+              "id": "frenzy",
+              "name": "狂杀"
+            },
+            {
+              "id": "air",
+              "name": "空气传播"
+            }
+          ]
+        },
+        "resumed": {
+          "mode": "playing",
+          "map": "tidewater",
+          "time": 0.3999849999999987,
+          "position": {
+            "x": -20,
+            "z": -9.601364272468494,
+            "y": 1.1866539988999996,
+            "vy": 2.2001200000000014,
+            "crouch": false,
+            "roll": 0,
+            "rollX": 0,
+            "rollZ": 1,
+            "floorY": 0,
+            "knock": 0
+          },
+          "attackCd": 0,
+          "reloadTime": 0,
+          "switchTime": 0,
+          "hitStop": 0,
+          "rolling": false,
+          "airborne": true,
+          "attackTime": 0,
+          "clip": "jump",
+          "clipTime": 0.800000011920929,
+          "timeScale": 0,
+          "groundSpeed": 4.082635083774753,
+          "baseSpeed": 2.3,
+          "sprintSpeed": 3.1739999999999995,
+          "sprinting": false,
+          "choices": [
+            {
+              "id": "tough",
+              "name": "皮糙肉厚"
+            },
+            {
+              "id": "frenzy",
+              "name": "狂杀"
+            },
+            {
+              "id": "air",
+              "name": "空气传播"
+            }
+          ]
+        }
+      },
+      "immediateRepeatRoll": true,
+      "hitCancel": true
+    }
+  ],
+  "errors": [],
+  "ignoredDiagnostics": [
+    {
+      "name": "production-button",
+      "url": "http://127.0.0.1:5230/favicon.ico"
+    },
+    {
+      "name": "production-button",
+      "url": "http://127.0.0.1:5230/favicon.ico"
+    },
+    {
+      "name": "production-Escape",
+      "url": "http://127.0.0.1:5230/favicon.ico"
+    }
+  ],
+  "success": true,
+  "verification": {
+    "date": "2026-11-06",
+    "version": "0.3.72",
+    "baseCommit": "736033e",
+    "mainTests": {
+      "passed": 423,
+      "failed": 0
+    },
+    "mobileTests": {
+      "passed": 6,
+      "failed": 0
+    },
+    "webBuild": "passed",
+    "mobileDevice": "Chrome Android UA and touch emulation",
+    "nativeInstallersRebuilt": false,
+    "steadyStateFrameRateMeasured": false
+  }
+}

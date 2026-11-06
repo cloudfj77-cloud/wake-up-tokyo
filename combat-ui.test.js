@@ -166,3 +166,9 @@ test('quiet passive infection still reports a successful awakening',()=>{
  ui.baseline([u],s,p,b);stepSimulation(s,[u],p,.5,'playing',ui.silenceInfection);ui.observe([u],s,p,b);ui.tick(.016,true,s);
  assert.equal(u.converted,true);assert.deepEqual(hud.children[0].children.filter(n=>n.className.startsWith('combatPop')).map(n=>n.children[1].textContent),['觉醒']);
 });
+
+
+test('personal infection and awakening feedback is larger than ordinary damage but remains bounded',()=>{
+ for(const value of [1,10,50,10000])assert.ok(combatFeedbackScale(value,'infection')>combatFeedbackScale(value,'damage'));
+ assert.ok(combatFeedbackScale(0,'awaken')>=1.1);assert.ok(combatFeedbackScale(1e9,'infection')<=1.6);
+});

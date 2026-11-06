@@ -102,6 +102,12 @@ const COMIC_INTRO_CSS = `
 .comicIntro{position:fixed;inset:0;z-index:4000;display:flex;align-items:center;justify-content:center;
   background:#17141c;opacity:1;transition:opacity .35s ease}
 .comicIntro.closing{opacity:0}
+.comicSkip{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));z-index:100;
+  min-height:44px;padding:10px 20px;border:2px solid #fff9e9;background:#cf253f;color:#fff9e9;
+  font:900 15px 'PingFang SC','Microsoft YaHei',sans-serif;cursor:pointer;transform:skew(-7deg);box-shadow:5px 5px #111}
+.comicSkip:hover{background:#ef3451}.comicSkip:focus-visible{outline:3px solid #ffda46;outline-offset:4px}
+.comicSkip kbd{margin-left:12px;font:700 11px sans-serif;opacity:.8}
+@media(pointer:coarse){.comicSkip{min-height:48px}.comicSkip kbd{display:none}}
 /* 高度撑满浏览器视口，宽度按原画比例自动算；窗口太窄时由 max-width 收住，仍然等比 */
 .comicStage{position:relative;height:100vh;height:100dvh;width:auto;max-width:100vw;
   background:#f2eee4;overflow:hidden;transition:opacity .32s ease;
@@ -137,19 +143,12 @@ let introPlayed = false;
 export function comicIntroPlayed() { return introPlayed; }
 export function resetComicIntro() { introPlayed = false; }
 
-/* 新开局必须完整播放分镜；按 pages 顺序连播，全部播完后 resolve。 */
+/* 新开局按页播放，按钮或 Esc 可结束整个过场；退出时一并回收计时器和动图。 */
 export async function playComicIntro(doc = document, options = {}) {
+  if(options.skip&&import.meta.env?.DEV)return false;
   const { pages = ['./comic/page1.json'], assetBase = './comic/', lead, minGap, sizeGap, onPanel = null } = options;
   if (introPlayed) return false;
   introPlayed = true;
-
-  const loaded = [];
-  for (const url of pages) {
-    if (typeof url === 'object' && url) { loaded.push(url); continue; }
-    const data = await fetch(url).then(r => r.ok ? r.json() : null).catch(() => null);
-    if (data && Array.isArray(data.pieces) && data.pieces.length) loaded.push(data);
-  }
-  if (!loaded.length) { introPlayed = false; return false; }
 
   const host = doc.body || doc.documentElement;
   if (!doc.getElementById('comicIntroStyle')) {
@@ -160,15 +159,32 @@ export async function playComicIntro(doc = document, options = {}) {
   }
   const root = doc.createElement('div');
   root.className = 'comicIntro';
-  root.innerHTML = '<div class="comicStage"><div class="comicLines"></div></div>';
+  root.innerHTML = '<div class="comicStage"><div class="comicLines"></div></div><button class="comicSkip" type="button" aria-label="跳过剧情">跳过剧情 <kbd>Esc</kbd> ↗</button>';
   const stageEl = root.querySelector('.comicStage');
   const lines = root.querySelector('.comicLines');
+  const skipButton=root.querySelector('.comicSkip');
   host.appendChild(root);
 
-  const timers = [];
+  let skipped=false,resolveSkip;
+  const cancelled=new Promise(resolve=>{resolveSkip=resolve;}),request=new AbortController(),timers=new Set();
+  const schedule=(fn,ms)=>{const id=setTimeout(()=>{timers.delete(id);if(!skipped)fn();},ms);timers.add(id);return id;};
+  const wait=ms=>Promise.race([new Promise(resolve=>schedule(resolve,ms)),cancelled]);
+  const skip=event=>{event?.preventDefault();event?.stopImmediatePropagation();if(skipped)return;skipped=true;request.abort();resolveSkip(null);};
+  const keydown=event=>{if(event.code==='Escape'||event.key==='Escape')skip(event);};
   const releaseVideos=()=>root.querySelectorAll('video').forEach(video=>{video.pause();video.removeAttribute('src');video.load();});
-  try {
+  skipButton.onclick=skip;doc.addEventListener('keydown',keydown,true);
+  try{
+  // 按钮先出现，元数据或切片尚未载入时也能跳过，避免慢加载把玩家困在开场。
+  const loaded = [];
+  for (const url of pages) {
+    if(skipped)break;
+    if (typeof url === 'object' && url) { loaded.push(url); continue; }
+    const data = await Promise.race([fetch(url,{signal:request.signal}).then(r => r.ok ? r.json() : null).catch(() => null),cancelled]);
+    if (data && Array.isArray(data.pieces) && data.pieces.length) loaded.push(data);
+  }
+  if(!loaded.length&&!skipped){introPlayed=false;return false;}
   for (let pageIndex = 0; pageIndex < loaded.length; pageIndex++) {
+    if(skipped)break;
     const data = loaded[pageIndex];
     // 每页用自己的画面比例
     stageEl.style.aspectRatio = `${data.width || 1080} / ${data.height || 905}`;
@@ -176,7 +192,9 @@ export async function playComicIntro(doc = document, options = {}) {
     releaseVideos();
     stageEl.querySelectorAll('.comicPiece, .comicClip').forEach(el => el.remove());
 
-    const sequence = comicIntroSequence(await measureComicFill(data.pieces, assetBase));
+    const measured=await Promise.race([measureComicFill(data.pieces,assetBase),cancelled]);
+    if(skipped)break;
+    const sequence = comicIntroSequence(measured);
     const base = sequence.base;
     const panels = applyComicOrder(sequence.panels, data.order);
     const { steps, total } = comicIntroTimeline(panels, { lead, minGap, sizeGap });
@@ -228,42 +246,42 @@ export async function playComicIntro(doc = document, options = {}) {
       box.appendChild(video);
       stageEl.insertBefore(box, lines);
       const step = steps[Math.min(clip.panel || 0, steps.length - 1)];
-      timers.push(setTimeout(() => {
+      schedule(() => {
         // 和所属那一格同一时刻、同一条动画登场；loop=false 时播完停在最后一帧
         box.style.animation = `comicPanelIn ${step ? step.duration : .58}s cubic-bezier(.2,1.22,.3,1) forwards`;
         const played = video.play();
         if (played && typeof played.catch === 'function') played.catch(() => {});
-      }, ((step ? step.delay : 0) + (clip.delay || 0)) * 1000));
+      }, ((step ? step.delay : 0) + (clip.delay || 0)) * 1000);
     }
 
     if (pageIndex > 0) {
       stageEl.classList.add('turning');
-      await new Promise(r => setTimeout(r, 40));
+      await wait(40);if(skipped)break;
       stageEl.classList.remove('turning');
     }
     panels.forEach((p, i) => {
       const step = steps[i];
-      timers.push(setTimeout(() => {
+      schedule(() => {
         p.el.style.animation = `comicPanelIn ${step.duration}s cubic-bezier(.2,1.22,.3,1) forwards`;
         lines.style.animation = 'none';
         void lines.offsetWidth;
         lines.style.animation = 'comicLinesFlash .55s ease-out forwards';
         if (onPanel) { try { onPanel(i, pageIndex); } catch (e) {} }
-      }, step.delay * 1000));
+      }, step.delay * 1000);
     });
     // hold：整页不切的页面可以额外多停留一会儿（秒）
-    await new Promise(r => setTimeout(r, (total + .35 + (Number(data.hold) || 0)) * 1000));
+    await wait((total + .35 + (Number(data.hold) || 0)) * 1000);if(skipped)break;
     if (pageIndex < loaded.length - 1) {
       stageEl.classList.add('turning');
-      await new Promise(r => setTimeout(r, 340));
+      await wait(340);
     }
   }
 
-  } finally {
-    timers.forEach(clearTimeout);releaseVideos();
-  }
-  root.classList.add('done');
-  root.classList.add('closing');
-  setTimeout(() => root.remove(), 380);
   return true;
+  }finally{
+   timers.forEach(clearTimeout);request.abort();doc.removeEventListener('keydown',keydown,true);skipButton.onclick=null;
+   releaseVideos();
+   if(skipped||!introPlayed)root.remove();
+   else{root.classList.add('done');root.classList.add('closing');setTimeout(()=>root.remove(),380);}
+  }
 }

@@ -205,3 +205,11 @@ test('converted allies match cadence to measured ground travel and stop running 
  assert.equal(v.groundSpeed,0);
  releaseCharacterVisual(v);assert.equal(v.groundSpeed,undefined);clearCharacterPool();
 });
+
+
+test('cancel animation lets an air roll replace jump until the player switches back',()=>{
+ const a=createCharacterVisual(asset,'player');a.airborne=true;playCharacterJump(a,.78);updateCharacterVisual(a,true,.1);
+ playCharacterAttack(a,'rush',.72);updateCharacterVisual(a,true,.1);
+ assert.ok(a.attackTime>.5,'jump playback must not overwrite the new roll');assert.equal(a.rolling,true);assert.ok(a.current.getEffectiveTimeScale()>0);
+ playCharacterJump(a,.78);updateCharacterVisual(a,true,.016);assert.equal(a.rolling,false);assert.equal(a.attackTime,0);assert.equal(a.current.getEffectiveTimeScale(),0);
+});

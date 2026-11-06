@@ -89,7 +89,7 @@ function startFixture(){
  const calls={intro:0,music:0},menu={hidden:false},hud={hidden:true};
  const context=vm.createContext({
   objectiveFeedback:{reset(){}},objectiveFeedbackKey:null,tutorialActive,assets:{},starting:false,state:{time:0,infected:0,pending:0},conversionCount:0,
-  touchMode:false,document:{},playComicIntro:()=>{calls.intro++;return intro;},
+  touchMode:false,document:{},pointerLock:{release(){}},captureView(){},playComicIntro:()=>{calls.intro++;return intro;},
   loadSaved:()=>null,music:{start:async()=>{calls.music++;}},
   playerVisual:{holder:{rotation:{y:0}}},yaw:0,
   $:id=>({menu,hud})[id],mode:'menu',
@@ -158,18 +158,22 @@ function playbackFixture(t,loadImages=true){
 const flushPlayback=async()=>{for(let i=0;i<12;i++)await Promise.resolve();};
 const playbackPage={width:100,height:100,pieces:[{src:'panel.png',x:0,y:0,w:100,h:100}],clips:[{src:'panel.mp4',x:0,y:0,w:100,h:100}]};
 
-test('new games have no skip control and Escape cannot finish any remaining comic page',async t=>{
- t.mock.timers.enable({apis:['setTimeout']});const f=playbackFixture(t);let panels=0,finished=false;
- const playing=playComicIntro(f.doc,{pages:[playbackPage,playbackPage,playbackPage],skip:true,onPanel:()=>panels++}).then(value=>{finished=true;return value;});await flushPlayback();
- assert.equal(f.root().querySelector('.comicSkip'),undefined);assert.equal(finished,false);
- const escape=f.listeners.get('keydown');escape?.({code:'Escape',preventDefault(){},stopImmediatePropagation(){}});await flushPlayback();assert.equal(finished,false);
- for(let i=0;i<12;i++){t.mock.timers.tick(10000);await flushPlayback();}
- assert.equal(await playing,true);assert.equal(panels,3);assert.equal(f.videos.length,3);assert.ok(f.videos.every(v=>v.pauses===1));assert.equal(f.listeners.size,0);
-});
-
 test('comic plays every page naturally and releases each video',async t=>{
  t.mock.timers.enable({apis:['setTimeout']});const f=playbackFixture(t);let panels=0;
  const playing=playComicIntro(f.doc,{pages:[playbackPage,playbackPage],onPanel:()=>panels++});await flushPlayback();
  for(let i=0;i<8;i++){t.mock.timers.tick(10000);await flushPlayback();}
  assert.equal(await playing,true);assert.equal(panels,2);assert.equal(f.videos.length,2);assert.ok(f.videos.every(v=>v.pauses===1));assert.equal(f.listeners.size,0);
+});
+
+
+test('restored skip control exits even during pending image decoding',async t=>{
+ const f=playbackFixture(t,false),playing=playComicIntro(f.doc,{pages:[playbackPage]});await flushPlayback();
+ const skip=f.root()?.querySelector('.comicSkip');assert.ok(skip,'opening must provide its skip button');skip.onclick({preventDefault(){},stopImmediatePropagation(){}});
+ assert.equal(await playing,true);assert.equal(f.doc.body.children.length,0);assert.equal(f.listeners.size,0);
+});
+test('restored Escape skips the rest of the opening and releases video and timers',async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});const f=playbackFixture(t);let panels=0;
+ const playing=playComicIntro(f.doc,{pages:[playbackPage,playbackPage],onPanel:()=>panels++});await flushPlayback();
+ const escape=f.listeners.get('keydown');assert.equal(typeof escape,'function');escape({code:'Escape',preventDefault(){},stopImmediatePropagation(){}});
+ await playing;t.mock.timers.tick(60000);await flushPlayback();assert.equal(panels,0);assert.equal(f.videos[0].pauses,1);assert.equal(f.listeners.size,0);
 });

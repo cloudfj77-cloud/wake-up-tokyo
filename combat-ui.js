@@ -13,7 +13,8 @@ export function combatDelta(before, after) {
 }
 // 整张爆贴按数值缓慢放大，底板、标签和数字使用同一个倍率；大伤害有上限。
 export function combatFeedbackScale(amount,kind='damage'){
- if(kind==='awaken')return .85;
+ if(kind==='awaken')return 1.25;
+ if(kind==='infection')return Math.min(1.6,1+.2*Math.log2(1+Math.max(0,amount)/10));
  return Math.min(1.24,.58+.16*Math.log2(1+Math.max(0,amount)/10));
 }
 // 数字避开身体投影；接近屏幕边缘时换到另一侧，保留可读空间。
@@ -32,7 +33,7 @@ export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,si
  let now=0,hpHold=0,trail=1;
  const descriptors=(units,state,player,boss)=>[
   {key:'player',entity:state,anchor:player,side:'player'},
-  ...units.map(u=>({key:u.id,entity:u,anchor:u,side:u.converted?'ally':'enemy'})),
+  ...units.map(u=>({key:u.id,entity:u,anchor:u,side:(u.converted||u.kind==='ally')?'ally':'enemy'})),
   ...(boss.active?[{key:'boss',entity:boss,anchor:boss,side:'enemy'}]:[])
  ];
  function baseline(units,state,player,boss){
@@ -107,7 +108,7 @@ export function createCombatUI(doc, project, onImpact=()=>{}, feedbackTone=(_,si
    if(active.length>=32){const i=Math.max(0,active.findIndex(a=>a.subdued));active.splice(i,1)[0].node.remove();}
    const node=doc.createElement('div');node.className=`combatPop ${item.kind} ${item.side} ${item.subdued?'subdued':''}`;
    const tag=doc.createElement('small'),number=doc.createElement('b');
-   tag.textContent=item.kind==='infection'?'污染':item.kind==='awaken'?'WAKE UP!':item.kind==='shield'?'护盾':item.side==='player'?'受击':item.side==='ally'?'同伴受击':'HIT';
+   tag.textContent=item.kind==='infection'?'☣ 污染':item.kind==='awaken'?'WAKE UP!':item.kind==='shield'?'护盾':item.side==='player'?'受击':item.side==='ally'?'同伴受击':'HIT';
    number.textContent=item.kind==='awaken'?'觉醒':`${item.kind==='infection'?'+':'−'}${combatAmount(item.amount)}`;
    node.style.setProperty('--combat-scale',combatFeedbackScale(item.amount,item.kind)*(item.subdued?.7:1));
    node.append(tag,number);host.append(node);active.push({...item,node,born:now,started:now});

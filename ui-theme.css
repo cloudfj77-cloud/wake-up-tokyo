@@ -159,3 +159,31 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 .pauseResume span{font-size:24px;line-height:1}
 .pauseActions .pauseEnd{border-color:#fffdf270;color:var(--ui-secondary)}
 @media(max-height:420px){.dialog.pauseDialog,.touch-mode .dialog.pauseDialog{padding:18px 22px 20px}.pauseMenu header{margin-bottom:20px}.dialog.pauseDialog h2,.touch-mode .dialog.pauseDialog h2{font-size:28px}.pauseActions .action{min-height:42px}.pauseActions .pauseResume{min-height:50px}}
+
+
+/* 阵营同时使用文字、形状与颜色，友军不再只靠小菱形辨认。 */
+:root{--friend:#68e6c4}
+.unitLabel.friendly .name{color:var(--friend);border-color:var(--friend)}
+.unitLabel.friendly .health{border-color:var(--friend)}
+.unitLabel.friendly .health i{background:var(--friend)}
+.unitLabel.hostile .name{border-color:var(--rebel)}
+.unitLabel.neutral .name{color:#e1dfd8;border-color:#aaa9a2}
+.unitLabel.neutral .health i{background:#aaa9a2}
+.unitLabel.compact{width:110px}.unitLabel.compact .name{font-size:9px;padding:3px 5px}.unitLabel.compact .health{height:6px}
+.allyDot,.allyDot small{color:var(--friend)}.mapLegend .ally{background:var(--friend)}
+#hud.holdingGun #primaryLabel{font-size:19px;color:var(--paper);border-left:4px solid var(--purple);padding-left:8px}
+/* 直接感染和觉醒更有冲击，持续感染仍沿用静默与遮挡规则。 */
+.combatPop.infection b{font-size:32px}.combatPop.infection small{font-size:10px;letter-spacing:1px}
+.combatPop.awaken b{font-size:34px}.combatPop.awaken:before{background:#c58aff}
+.combatImpact.pollutionImpact{width:96px;height:96px}.combatImpact.pollutionImpact.heavy{width:130px;height:130px}
+#infectionFeedback{display:block;top:26%;left:50%;right:auto;bottom:auto;width:min(340px,76vw);padding:24px 20px 18px;transform:translate(-50%,-50%) rotate(-4deg);text-align:center;border:3px solid var(--paper);background:linear-gradient(145deg,#672b87f2,#22112ef2);box-shadow:8px 9px #09090c;clip-path:polygon(3% 4%,96% 0,100% 92%,6% 100%,0 12%);z-index:15}
+#infectionFeedback>.infectionSeal{display:grid;width:100px;height:100px;margin:0 auto 13px;border:3px solid #e7c5ff;background:radial-gradient(circle,#c55bff80 0 38%,#381044 39% 59%,transparent 60%);box-shadow:0 0 20px #c36fff,0 0 48px #8c25d999}
+#infectionFeedback .infectionSeal i{font-size:72px;line-height:1;color:#fff3ff;text-shadow:3px 4px #13071d,0 0 14px #e9b2ff}
+#infectionFeedback>b{font-size:32px;line-height:1.15;letter-spacing:2px;color:var(--paper);text-shadow:3px 4px #0b0610}
+#infectionFeedback>small{display:block;margin-top:7px;font-size:12px;letter-spacing:3px;color:#f0dcff}
+#infectionFeedback.active{animation:awakening-stamp .38s cubic-bezier(.16,1.45,.35,1)}
+@keyframes awakening-stamp{0%{transform:translate(-50%,-50%) rotate(-14deg) scale(.45);filter:brightness(1.8)}55%{transform:translate(-50%,-50%) rotate(2deg) scale(1.12)}100%{transform:translate(-50%,-50%) rotate(-4deg) scale(1);filter:brightness(1)}}
+@media(max-height:600px),(max-width:760px){#infectionFeedback{display:block;top:29%;width:min(280px,70vw);padding:17px 14px 13px}#infectionFeedback>.infectionSeal{width:70px;height:70px;margin-bottom:9px}#infectionFeedback .infectionSeal i{font-size:50px}#infectionFeedback>b{font-size:26px}#infectionFeedback>small{font-size:10px;letter-spacing:2px}}
+@media(prefers-reduced-motion:reduce){#infectionFeedback.active{animation:none}}
+
+#hud.holdingGun .weaponHeading{display:block}#hud.holdingGun #primaryLabel{display:block;white-space:nowrap}

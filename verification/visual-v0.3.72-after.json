@@ -1,0 +1,80 @@
+{
+  "name": "after",
+  "errors": [],
+  "guns": [
+    {
+      "id": "pistol",
+      "gap": 0,
+      "clip": "toyAim",
+      "palm": [
+        -20.087811684200545,
+        0.5567451689499648,
+        -9.88731222707189
+      ],
+      "grip": [
+        -20.087811684200545,
+        0.5567451689499648,
+        -9.88731222707189
+      ]
+    },
+    {
+      "id": "rifle",
+      "gap": 0,
+      "clip": "toyAim",
+      "palm": [
+        -20.086647136299476,
+        0.558155331127663,
+        -9.89151990025345
+      ],
+      "grip": [
+        -20.086647136299476,
+        0.558155331127663,
+        -9.89151990025345
+      ]
+    }
+  ],
+  "labels": {
+    "text": "○ 路人 · 厨师0 / 20○ 路人 · 教师0 / 20○ 路人 · 教师0 / 20▼ 敌方 · 持棍巡警0 / 50◆ 友军 · 狂暴持棍巡警▼ 敌方 · 持棍巡警0 / 50",
+    "friendlyBars": 1,
+    "enemyBars": 2,
+    "colors": [
+      {
+        "className": "unitLabel neutral   locked",
+        "color": "rgb(170, 169, 162)"
+      },
+      {
+        "className": "unitLabel neutral   ",
+        "color": "rgb(170, 169, 162)"
+      },
+      {
+        "className": "unitLabel neutral   ",
+        "color": "rgb(170, 169, 162)"
+      },
+      {
+        "className": "unitLabel hostile   ",
+        "color": "rgb(237, 24, 60)"
+      },
+      {
+        "className": "unitLabel friendly compact",
+        "color": "rgb(104, 230, 196)"
+      },
+      {
+        "className": "unitLabel hostile   ",
+        "color": "rgb(237, 24, 60)"
+      }
+    ]
+  },
+  "awaken": {
+    "text": "☣觉醒成功 ×1加入反抗群落",
+    "width": 354.6435546875,
+    "icon": "grid",
+    "fontSize": "32px"
+  },
+  "success": true,
+  "verification": {
+    "date": "2026-11-06",
+    "version": "0.3.72",
+    "weaponRigTests": "five firearms across aim, strafe, recoil and jump FBX; crouch/scale/yaw and fallback wrist checked",
+    "comparison": "visual-v0.3.72-before.json"
+  }
+}

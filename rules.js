@@ -19,7 +19,7 @@ export const MELEE={
  light:{mult:1,cd:.7,range:2.8,aoe:0},
  heavy:{mult:2,cd:1.2,range:3.2,aoe:2.6}
 };
-export const WALK_SPEED=4.6;
+export const WALK_SPEED=2.3;
 export const SPRINT_MULT=1.38;
 export const ENEMIES=[
  // 类型下标保持现有存档含义。数值和技能按飞书《敌人相关系统》6.1；转化后满状态砍半。

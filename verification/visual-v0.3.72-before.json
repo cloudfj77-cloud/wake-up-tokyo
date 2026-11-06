@@ -1,0 +1,66 @@
+{
+  "name": "before",
+  "errors": [],
+  "guns": [
+    {
+      "id": "pistol",
+      "gap": 0.43802830044867763,
+      "clip": "toyAim",
+      "palm": [
+        -20.087801927045593,
+        0.5567661462659719,
+        -9.887276243154401
+      ],
+      "grip": [
+        -20.50630564798002,
+        0.5712,
+        -10.015787298804801
+      ]
+    },
+    {
+      "id": "rifle",
+      "gap": 0.47191832081842605,
+      "clip": "toyAim",
+      "palm": [
+        -20.08671156089323,
+        0.5580766098804772,
+        -9.891371552437736
+      ],
+      "grip": [
+        -20.525222591920084,
+        0.5882000000000001,
+        -10.063149195219202
+      ]
+    }
+  ],
+  "labels": {
+    "text": "持棍巡警6 / 50持棍巡警6 / 50厨师6 / 20◆狂暴持棍巡警持棍巡警0 / 50",
+    "friendlyBars": 0,
+    "enemyBars": 4,
+    "colors": [
+      {
+        "className": "unitLabel hostile polluted  ",
+        "color": "rgb(237, 24, 60)"
+      },
+      {
+        "className": "unitLabel hostile polluted  ",
+        "color": "rgb(237, 24, 60)"
+      },
+      {
+        "className": "unitLabel hostile polluted  ",
+        "color": "rgb(237, 24, 60)"
+      },
+      {
+        "className": "unitLabel hostile polluted  locked",
+        "color": "rgb(237, 24, 60)"
+      }
+    ]
+  },
+  "awaken": {
+    "text": "☣觉醒成功 ×1加入反抗群落",
+    "width": 99.03125,
+    "icon": "none",
+    "fontSize": "13px"
+  },
+  "success": true
+}
