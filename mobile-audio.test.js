@@ -26,3 +26,10 @@ test('mobile audio handles music replacement, effects, pause, resume and disposa
   a.dispose();assert.equal(a.snapshot().voices,0);assert.equal(a.postEvent('menu',77),0);
  }finally{globalThis.Audio=original;}
 });
+
+test('mobile per-object conversion gain cannot make other effects louder and releases with its emitter',async()=>{
+ const original=globalThis.Audio,created=[];globalThis.Audio=class extends FakeAudio{constructor(url){super(url);created.push(this);}};
+ try{const a=await createMobileAudio();a.setRTPC('SFX_GainDb',-12);a.setRTPC('SFX_GainDb',-4,1000);a.postEvent('sfx.convert',1000);a.postEvent('sfx.convert',1001);
+ assert.ok(created[0].volume>created[1].volume*2.4);a.unregisterGameObject(1000);a.postEvent('sfx.convert',1000);assert.ok(Math.abs(created[2].volume-created[1].volume)<1e-6);a.dispose();
+ }finally{globalThis.Audio=original;}
+});

@@ -13,7 +13,7 @@ export function mobileDialogCopy(html) {
   return html.replace(/进入游戏后鼠标隐藏并转向[^<]*<br>左键 \/ J 轻击[^<]*<br>1 徒手[^<]*<br>/,
     '左下摇杆移动，推至外圈奔跑；在右侧空白处拖动转向。<br>右下可攻击、重击、闪避、跳跃、换武器和换弹；按住攻击或重击可连续出招。<br>右上打开地图或暂停；切到后台会自动暂停。<br>')
     .replace('鼠标锁定不可用时，可拖动右键或使用方向键转动镜头。', '在屏幕右侧空白处拖动镜头；可在这里调节视角灵敏度。')
-    .replace('短按 Shift 闪避 / 长按奔跑，R 装填旧档枪械，F 号令，Tab 地图。', '左侧摇杆移动，外圈奔跑；右侧按键攻击、闪避、跳跃、换武器与换弹。');
+    .replace('空格翻滚 / Shift 跳跃 / 按住 E 奔跑，R 装填旧档枪械，F 号令，Tab 地图。', '左侧摇杆移动，外圈奔跑；右侧按键攻击、闪避、跳跃、换武器与换弹。');
 }
 const TOUCH_ICONS={"primary":"<path d=\"m5 19 8-14M10 20 8-14M16 19l5-9M3 13l3 1M16 3l1 3\"/>","heavy":"<path d=\"M5 13V9l3-1V5l4 1 3-2 3 2v3l3 2-2 9H8l-5-5zM8 8v5m4-7v6m4-6v6\"/>","roll":"<path d=\"m7 5 7 7-7 7m7-14 7 7-7 7M3 9h3m-4 5h3\"/>","jump":"<path d=\"M12 20V4m-7 7 7-7 7 7M4 21h16\"/>","weapon":"<path d=\"M3 7h17m-5-5 5 5-5 5M21 17H4m5-5-5 5 5 5\"/>","reload":"<path d=\"M19 8a8 8 0 1 0 1 7M19 3v6h-6M9 9h5v8H9z\"/>"};
 export function createTouchControls(doc = document, hooks = {}) {

@@ -162,7 +162,7 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 
 
 /* 阵营同时使用文字、形状与颜色，友军不再只靠小菱形辨认。 */
-:root{--friend:#68e6c4}
+:root{--friend:#3be870;--enemy:#ef3048}
 .unitLabel.friendly .name{color:var(--friend);border-color:var(--friend)}
 .unitLabel.friendly .health{border-color:var(--friend)}
 .unitLabel.friendly .health i{background:var(--friend)}
@@ -176,26 +176,48 @@ body.awakened .dialog h2.winTitle{color:var(--paper);text-shadow:4px 4px var(--r
 .combatPop.infection b{font-size:32px}.combatPop.infection small{font-size:10px;letter-spacing:1px}
 .combatPop.awaken b{font-size:34px}.combatPop.awaken:before{background:#c58aff}
 .combatImpact.pollutionImpact{width:96px;height:96px}.combatImpact.pollutionImpact.heavy{width:130px;height:130px}
-/* 透明圆徽章避开准星；六尖逐个点亮，不再用整块印章遮挡画面。 */
+/* 紫色圆徽章避开准星；六尖逐个点亮，不再用整块印章遮挡画面。 */
 #infectionFeedback{display:flex;position:absolute;top:73%;left:50%;right:auto;bottom:auto;width:144px;padding:0;transform:translate(-50%,-50%);flex-direction:column;align-items:center;gap:3px;text-align:center;border:0;border-radius:50%;background:none;box-shadow:none;clip-path:none;pointer-events:none;z-index:5;transition:opacity .06s linear}
-#infectionFeedback .conversionSeal{display:block;width:112px;height:112px;overflow:visible;filter:drop-shadow(0 1px 3px #09071066)}
-.conversionSeal .sealDisc{fill:#20152922;stroke:#fff5d07a;stroke-width:1.4}.conversionSeal .sealRim{fill:none;stroke:#d8b7ef38;stroke-width:1}
-.conversionSeal .sealPoint{fill:#e8dbbb14;stroke:#fff4d52e;stroke-width:.8;transition:fill .09s,stroke .09s}
-.conversionSeal .sealPoint .sealFacet{fill:#fff9d00a;stroke:none}
-.conversionSeal .sealPoint.lit{fill:#efd08199;stroke:#fff0b9cc}.conversionSeal .sealPoint.lit .sealFacet{fill:#fff2b44d}
-.conversionSeal .sealCore{fill:#fff1b7a6;stroke:#29202b55;stroke-width:1}
-#infectionFeedback>b{display:block;font-size:15px;line-height:1.2;letter-spacing:2px;color:#fff4d9cc;text-shadow:0 1px 3px #100b18}
-#infectionFeedback>small{display:block;margin:0;font-size:10px;letter-spacing:2px;color:#fff4d999}
+#infectionFeedback .conversionSeal{display:block;width:112px;height:112px;overflow:visible;filter:drop-shadow(0 2px 0 #160921) drop-shadow(0 0 8px #ad45ff88)}
+.conversionSeal .sealDisc{fill:#29103f;stroke:#f2d5ff;stroke-width:2}.conversionSeal .sealRim{fill:none;stroke:#bc7bed;stroke-width:1}
+.conversionSeal .sealPoint{fill:#563070;stroke:#ac78ce;stroke-width:.8;transition:fill .09s,stroke .09s}
+.conversionSeal .sealPoint .sealFacet{fill:#6a3b8a;stroke:none}
+.conversionSeal .sealPoint.lit{fill:#bb4dff;stroke:#fff1ff}.conversionSeal .sealPoint.lit .sealFacet{fill:#edb0ff}
+.conversionSeal .sealCore{fill:#fff4ff;stroke:#7c2bb0;stroke-width:1}
+#infectionFeedback>b{display:block;font-size:23px;font-weight:1000;line-height:1.2;letter-spacing:3px;color:#f0c1ff;text-shadow:2px 2px #1c082b,-1px -1px #1c082b,0 0 9px #a73fff}
+#infectionFeedback>small{display:block;margin:0;font-size:10px;letter-spacing:2px;color:#efd6ff}
 #infectionFeedback.active .conversionSeal{animation:conversion-seal-pop .18s ease-out}
-@keyframes conversion-seal-pop{from{transform:scale(.78) rotate(-12deg);opacity:.25}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes conversion-seal-pop{0%{transform:scale(1.4) rotate(-12deg)}45%{transform:scale(.9) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
 #infectionFeed{display:flex;position:absolute;top:210px;right:auto;left:24px;bottom:auto;flex-direction:column;gap:5px;width:194px;max-width:24vw;max-height:min(230px,max(40px,calc(100dvh - 410px)));overflow:hidden;pointer-events:none;text-align:left;font-size:11px}
 #infectionFeed:empty{display:none}
 #infectionFeed>.infectionEntry{box-sizing:border-box;display:grid;gap:3px;flex:none;margin:0;padding:7px 10px;border:0;border-left:2px solid #b478f199;border-radius:0;background:#19121d80;box-shadow:none;animation:conversion-feed-in .18s ease-out}
 #infectionFeed>.infectionEntry.personal{border-left-color:#efd081bb}
 .infectionEntry b{font-size:11px;line-height:1.2;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fffdf2cf}.infectionEntry small{font-size:9px;line-height:1.2;letter-spacing:1px;color:#d5c1dfb3}
 @keyframes conversion-feed-in{from{max-height:0;opacity:0;transform:translateX(14px);padding-top:0;padding-bottom:0}to{max-height:48px;opacity:1;transform:translateX(0)}}
-@media(max-height:600px),(max-width:760px){#infectionFeedback{top:77%;width:108px}#infectionFeedback .conversionSeal{width:76px;height:76px}#infectionFeedback>b{font-size:12px}#infectionFeedback>small{font-size:9px}#infectionFeed{left:12px;width:164px}}
+@media(max-height:600px),(max-width:760px){#infectionFeedback{top:77%;width:108px}#infectionFeedback .conversionSeal{width:76px;height:76px}#infectionFeedback>b{font-size:16px}#infectionFeedback>small{font-size:9px}#infectionFeed{left:12px;width:164px}}
 @media(prefers-reduced-motion:reduce){#infectionFeedback.active .conversionSeal,#infectionFeed>.infectionEntry{animation:none}#infectionFeedback,.conversionSeal .sealPoint{transition:none}}
 
 
 #hud.holdingGun .weaponHeading{display:block}#hud.holdingGun #primaryLabel{display:block;white-space:nowrap}
+
+/* Launcher sights keep the center open; three bars replace nested charge circles. */
+#crosshair{width:112px;height:112px;color:#f4dcff}
+#crosshair.locked{color:#d991ff}#crosshair.ready{color:#fff0ff}
+#crosshair .aimRing,#crosshair .aimDot{display:none}
+.rocketReticle{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:square;filter:drop-shadow(0 1px 1px #120b1b) drop-shadow(0 0 2px #120b1b)}
+.reticleCenter{stroke:#fff2ff;stroke-width:2}.reticleTicks{stroke-width:1.7;opacity:.85}
+#chargeRings{transform:none}.chargeTrack path{fill:none;stroke:#e8caff55;stroke-width:5;stroke-linecap:square}
+.chargeFill path{fill:none;stroke:#cc7aff;stroke-width:5;stroke-linecap:square;opacity:0;transition:opacity .1s}
+.chargeFill path.filled{opacity:1}#crosshair.ready .chargeFill path{stroke:#ffe3ff;filter:drop-shadow(0 0 3px #b84dff)}
+#crosshair.ready .reticleCorners{stroke-width:3.6;filter:drop-shadow(0 0 4px #c263ff)}
+#crosshair.ready #chargeStatus{background:#7d24b7;color:#fff2ff;border:1px solid #dfa1ff}
+#chargeStatus{font-size:10px;letter-spacing:1px;color:#f2daff}
+@media(max-height:600px),(max-width:760px){#crosshair{width:96px;height:96px}}
+
+/* 阵营生命条使用实色；玩家与同伴同绿，敌方统一红。 */
+.unitLabel,.unitLabel.friendly,.allyDot{opacity:1}
+.unitLabel .name{background:#15151b;opacity:1}.unitLabel .health{background:#111416;opacity:1}.unitLabel .health i{opacity:1}
+.unitLabel.hostile .health i{background:var(--enemy)}.unitLabel.friendly .health i{background:var(--friend)}
+.unitLabel.hostile .name{color:#fff4f4;border-color:var(--enemy)}.unitLabel.friendly .name{color:var(--friend)}
+.bar.hp #hpBar{background:var(--friend);opacity:1}.bar.hp #hpTrail{background:#1d9c46;opacity:1}.bar.hp{background:#111416}
+#bossHp{background:var(--enemy)}

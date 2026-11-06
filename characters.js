@@ -1,3 +1,4 @@
+import {clearConversionTransition,stepConversionTransition} from './conversion-transition.js';
 import {prepareCharacterDetails,setCharacterDetail} from './character-detail.js';
 import {restoreCharacterFlash,stepCharacterFlash} from './hit-response.js';
 import * as THREE from 'three';
@@ -27,7 +28,7 @@ const CLIP_ALIASES = {
 };
 
 // 脚下光环色。持盾/持棍两套警察模型和警卫同阵营但兵种不同，给两个可分辨的颜色。
-const accents = { player: 0xbf78ff, ally: 0x68e6c4, human: 0xbca77c, guard: 0x76b9ee, shieldCop: 0x2f6fbf, batonCop: 0x8fbf6a, gunCop: 0x4f8fa8, infectedCop: 0x68e6c4 };
+const accents = { player: 0x3be870, ally: 0x3be870, human: 0xbca77c, guard: 0xef3048, shieldCop: 0xef3048, batonCop: 0xef3048, gunCop: 0xef3048, infectedCop: 0x3be870 };
 
 // 城市和车辆在载入时统一缩小到原尺寸的 55%，人物也必须做同样换算。
 // 例如现实中 1.82 米的主角，在游戏画面里应约为 1 个单位，才能和汽车比例一致。
@@ -225,7 +226,7 @@ export function playCharacterJump(visual, duration = 7 / 9) {
 export function updateCharacterVisual(visual, moving, dt, distance = 0, sprinting = false, groundSpeed) {
   setCharacterDetail(visual,distance);
   visual.groundSpeed=groundSpeed;
-  stepCharacterFlash(visual,dt);
+  stepCharacterFlash(visual,dt);stepConversionTransition(visual,dt);
   if (visual.attackTime > 0) visual.attackTime -= dt;
   if (visual.attackTime <= 0) visual.rolling=false;
   if (visual.airborne && !visual.rolling) {
@@ -278,7 +279,7 @@ const POOL_CAP={human:36,guard:72,ally:36};
 const visualPools={human:[],guard:[],ally:[]};
 export function visualPoolKey(kind){return kind==='human'||kind==='ally'?kind:'guard';}
 function parkPooledVisual(visual){
- restoreCharacterFlash(visual);
+ clearConversionTransition(visual);restoreCharacterFlash(visual);
  visual.holder.removeFromParent();
  visual.holder.visible=false;
  visual.holder.position.set(0,-120,0);

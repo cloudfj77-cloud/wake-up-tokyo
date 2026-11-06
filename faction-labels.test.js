@@ -25,3 +25,8 @@ test('hostile patrols and neutral civilians have explicit, different faction lab
 test('a revivable friendly corpse keeps its countdown instead of showing a living health bar',()=>{
  const html=labels([{id:1,kind:'corpse',converted:true,type:1,hp:0,maxHp:100,hurt:0,corpseTime:5,threshold:50,infection:10}]);assert.match(html,/corpseLabel/);assert.doesNotMatch(html,/unitLabel friendly/);
 });
+
+test('players and both patrol factions use opaque red/green health bars',()=>{
+ const css=readFileSync(new URL('./ui-theme.css',import.meta.url),'utf8'),legacy=readFileSync(new URL('./ui.css',import.meta.url),'utf8');
+ assert.match(css,/--friend:#3be870/);assert.match(css,/--enemy:#ef3048/);assert.match(css,/#hpBar\{background:var\(--friend\);opacity:1/);assert.doesNotMatch(legacy,/\.unitLabel\.friendly,\.allyDot\{opacity:\.55/);
+});

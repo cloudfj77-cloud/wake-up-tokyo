@@ -41,7 +41,7 @@ test('combat rays pass below an overpass but stop at walls, upper floors and liv
  const wall=new T.Mesh(new T.PlaneGeometry(4,4),floor.material);wall.position.set(4,1,1.5);root.add(wall);
  const collision=new WalkCollision(root),towers=[],worldSource=readFileSync(new URL('./tokyo-world.js',import.meta.url),'utf8');
  const begin=worldSource.indexOf('combatClear(a,b){'),end=worldSource.indexOf('guideTo(p)',begin);
- const ctx=vm.createContext({T,collision,towers,nav:{heightAt:(x,z,h)=>h??0}});
+ const ctx=vm.createContext({T,collision,towers,metro:{raycast:()=>false},nav:{heightAt:(x,z,h)=>h??0}});
  vm.runInContext('clear=({'+worldSource.slice(begin,end)+'}).combatClear;',ctx);
  const player={x:0,z:0,floorY:0};assert.equal(ctx.clear(player,{x:0,z:3,floorY:0}),true);
  assert.equal(ctx.clear(player,{x:0,z:3,floorY:3.3}),false);

@@ -46,3 +46,10 @@ test('pause, stop and ending stingers never trigger the loop watchdog',async()=>
 test('a still-registered but stalled music source is replaced after a grace period',async()=>{
  let now=0;const a=fake(),stops=[];a.playingStatus=()=>({playing:true,positionMs:3000});a.stopPlaying=(...args)=>stops.push(args);const d=new MusicDirector({createAudio:async()=>a,now:()=>now});d.setScene('street');await d.start();now=2000;d.checkPlayback();now=9000;d.checkPlayback();assert.equal(a.events.length,1);now=10100;d.checkPlayback();assert.deepEqual(stops,[[1,0]]);assert.deepEqual(a.events,['street','street']);assert.equal(d.recoveries[0].reason,'source-stalled');d.dispose();
 });
+
+test('infection impact briefly ducks music and expires without cancelling a radio duck',async()=>{
+ let now=0;const a=fake(),d=new MusicDirector({createAudio:async()=>a,now:()=>now});await d.start();
+ d.accent();assert.equal(a.params.filter(p=>p[0]==='Music_DuckDb').at(-1)[1],-12);
+ now=600;d.update({mode:'playing'});assert.equal(a.params.filter(p=>p[0]==='Music_DuckDb').at(-1)[1],0);
+ d.duck(true);d.accent();now=1200;d.update({mode:'playing'});assert.equal(a.params.filter(p=>p[0]==='Music_DuckDb').at(-1)[1],-9);d.dispose();
+});

@@ -1,0 +1,702 @@
+{
+  "version": "0.3.74",
+  "cases": [
+    {
+      "name": "desktop-tokyo",
+      "movingRoll": {
+        "mode": "playing",
+        "map": "riverside",
+        "time": 0.20666500000000088,
+        "position": {
+          "x": 4.8083409999999995,
+          "z": 8,
+          "y": 0,
+          "vy": 0,
+          "crouch": false,
+          "roll": 0.72,
+          "rollX": -1,
+          "rollZ": 6.123233995736766e-17,
+          "floorY": -3.8499997869133953,
+          "knock": 0
+        },
+        "attackCd": 0,
+        "reloadTime": 0,
+        "switchTime": 0,
+        "hitStop": 0,
+        "rolling": true,
+        "airborne": false,
+        "attackTime": 0.72,
+        "clip": "roll",
+        "clipTime": 0,
+        "timeScale": 3.2870368825064764,
+        "groundSpeed": 2.3000000000000203,
+        "baseSpeed": 2.3,
+        "sprintSpeed": 3.1739999999999995,
+        "sprinting": false,
+        "choices": []
+      },
+      "jumpToRoll": {
+        "mode": "playing",
+        "map": "riverside",
+        "time": 0.22332999999999992,
+        "position": {
+          "x": 4.77765309620793,
+          "z": 8,
+          "y": 0,
+          "vy": 7,
+          "crouch": false,
+          "roll": 0.72,
+          "rollX": -1,
+          "rollZ": 6.123233995736766e-17,
+          "floorY": -3.8499997869133953,
+          "knock": 0
+        },
+        "attackCd": 0,
+        "reloadTime": 0,
+        "switchTime": 0,
+        "hitStop": 0,
+        "rolling": true,
+        "airborne": true,
+        "attackTime": 0.72,
+        "clip": "roll",
+        "clipTime": 0,
+        "timeScale": 3.2870368825064764,
+        "groundSpeed": 1.8414583733615861,
+        "baseSpeed": 2.3,
+        "sprintSpeed": 3.1739999999999995,
+        "sprinting": false,
+        "choices": []
+      },
+      "sprint": true,
+      "weapon": {
+        "wrist": [
+          4.9459049973614135,
+          -3.2922837213929546,
+          7.849854244548272
+        ],
+        "head": [
+          4.967079003619902,
+          -3.2204652241160905,
+          7.970183074112945
+        ],
+        "visible": true,
+        "gripGap": 0,
+        "scale": 0.44880000000000003,
+        "width": 105.82050256939488,
+        "height": 115.8494586757916,
+        "barrel": [
+          -0.9968017063026192,
+          -0.0799146939691727,
+          2.220446049250313e-16
+        ]
+      },
+      "reticle": {
+        "width": 112,
+        "color": "rgb(217, 145, 255)",
+        "corners": true,
+        "dot": "none",
+        "center": {
+          "x": 640,
+          "y": 400
+        }
+      },
+      "charges": [
+        1,
+        2,
+        3
+      ],
+      "poweredShot": true,
+      "jet": {
+        "from": "launcher",
+        "power": false,
+        "jet": true,
+        "velocity": [
+          -34.5151479797675,
+          10.229964879718114,
+          -0.2288634843870542
+        ]
+      },
+      "success": {
+        "converted": true,
+        "hitStop": 0.055,
+        "impactKick": 0.13
+      },
+      "feedback": {
+        "text": "感染成功1 / 6",
+        "opacity": 1,
+        "observedAt": 16485.769999999553,
+        "fill": "rgb(187, 77, 255)",
+        "fontSize": "23px"
+      },
+      "transition": {
+        "model": "infectedCop",
+        "uuid": "505b9f26-ff62-4a97-96ce-3e79326c4e60",
+        "emissive": 12999679,
+        "intensity": 1.6,
+        "opacity": 1,
+        "transparent": false,
+        "marker": 3926128
+      },
+      "transitionAfter": {
+        "model": "infectedCop",
+        "uuid": "66b2a006-45d2-4d38-afce-919033f035f7",
+        "emissive": 16777215,
+        "intensity": 0.22,
+        "opacity": 1,
+        "transparent": false,
+        "marker": 3926128
+      },
+      "conversionGain": [
+        "SFX_GainDb",
+        -0.4043280676637959,
+        1005,
+        0
+      ],
+      "bars": {
+        "player": "rgb(59, 232, 112)",
+        "units": [
+          {
+            "side": "friend",
+            "opacity": "1",
+            "color": "rgb(59, 232, 112)"
+          },
+          {
+            "side": "enemy",
+            "opacity": "1",
+            "color": "rgb(239, 48, 72)"
+          },
+          {
+            "side": "neutral",
+            "opacity": "1",
+            "color": "rgb(170, 169, 162)"
+          }
+        ]
+      },
+      "trains": {
+        "before": {
+          "time": 6.500000000000002,
+          "sourceMeshes": 219,
+          "drawMeshes": 4,
+          "trains": [
+            {
+              "x": -11.9970703125,
+              "z": 5.225000000000001,
+              "visible": true,
+              "phase": 6.5,
+              "bounds": {
+                "min": [
+                  -27.100070343725385,
+                  -4.441250001639129,
+                  4.42200100757182
+                ],
+                "max": [
+                  3.1059297187253847,
+                  -2.502499789372087,
+                  6.0279989924281825
+                ]
+              }
+            },
+            {
+              "x": -11.9970703125,
+              "z": 11.275000000000002,
+              "visible": true,
+              "phase": 14.5,
+              "bounds": {
+                "min": [
+                  -22.081320819072424,
+                  -4.441250001639129,
+                  10.472001007571818
+                ],
+                "max": [
+                  -1.912819805927576,
+                  -2.502499789372087,
+                  12.077998992428187
+                ]
+              }
+            }
+          ]
+        },
+        "after": {
+          "time": 7.239975000000001,
+          "sourceMeshes": 219,
+          "drawMeshes": 4,
+          "trains": [
+            {
+              "x": -3.297042067147433,
+              "z": 5.225000000000001,
+              "visible": true,
+              "phase": 7.239975000000001,
+              "bounds": {
+                "min": [
+                  -18.40004209837282,
+                  -4.441250001639129,
+                  4.42200100757182
+                ],
+                "max": [
+                  11.805957964077951,
+                  -2.502499789372087,
+                  6.0279989924281825
+                ]
+              }
+            },
+            {
+              "x": -24.867988601675812,
+              "z": 11.275000000000002,
+              "visible": true,
+              "phase": 15.239975000000001,
+              "bounds": {
+                "min": [
+                  -34.952239108248236,
+                  -4.441250001639129,
+                  10.472001007571818
+                ],
+                "max": [
+                  -14.783738095103388,
+                  -2.502499789372087,
+                  12.077998992428187
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "trainsPause": true
+    },
+    {
+      "name": "desktop-sea",
+      "movingRoll": {
+        "mode": "playing",
+        "map": "tidewater",
+        "time": 0.1733249999999989,
+        "position": {
+          "x": -20,
+          "z": -9.770011499999999,
+          "y": 0,
+          "vy": 0,
+          "crouch": false,
+          "roll": 0.72,
+          "rollX": 0,
+          "rollZ": 1,
+          "floorY": 0,
+          "knock": 0
+        },
+        "attackCd": 0,
+        "reloadTime": 0,
+        "switchTime": 0,
+        "hitStop": 0,
+        "rolling": true,
+        "airborne": false,
+        "attackTime": 0.72,
+        "clip": "roll",
+        "clipTime": 0,
+        "timeScale": 3.2870368825064764,
+        "groundSpeed": 2.3000000000000047,
+        "baseSpeed": 2.3,
+        "sprintSpeed": 3.1739999999999995,
+        "sprinting": false,
+        "choices": [
+          {
+            "id": "kindling",
+            "name": "薪火"
+          },
+          {
+            "id": "evolve",
+            "name": "生存与进化"
+          },
+          {
+            "id": "command",
+            "name": "听我号令"
+          }
+        ]
+      },
+      "jumpToRoll": {
+        "mode": "playing",
+        "map": "tidewater",
+        "time": 0.18999499999999897,
+        "position": {
+          "x": -20,
+          "z": -9.739312684124341,
+          "y": 0.11168799980000048,
+          "vy": 6.699939999999999,
+          "crouch": false,
+          "roll": 0.7033299999999999,
+          "rollX": 0,
+          "rollZ": 1,
+          "floorY": 0,
+          "knock": 0
+        },
+        "attackCd": 0,
+        "reloadTime": 0,
+        "switchTime": 0,
+        "hitStop": 0,
+        "rolling": true,
+        "airborne": true,
+        "attackTime": 0.7033299999999999,
+        "clip": "roll",
+        "clipTime": 0.054794904831383204,
+        "timeScale": 3.2870368825064764,
+        "groundSpeed": 1.8415606404113785,
+        "baseSpeed": 2.3,
+        "sprintSpeed": 3.1739999999999995,
+        "sprinting": false,
+        "choices": [
+          {
+            "id": "kindling",
+            "name": "薪火"
+          },
+          {
+            "id": "evolve",
+            "name": "生存与进化"
+          },
+          {
+            "id": "command",
+            "name": "听我号令"
+          }
+        ]
+      },
+      "sprint": true,
+      "weapon": {
+        "wrist": [
+          -20.15014575546067,
+          0.5577160655021101,
+          -9.945904997408057
+        ],
+        "head": [
+          -20.02981692588705,
+          0.6295345627973047,
+          -9.967079003619904
+        ],
+        "visible": true,
+        "gripGap": 0,
+        "scale": 0.44880000000000003,
+        "width": 105.82050332137283,
+        "height": 115.84946140852446,
+        "barrel": [
+          0,
+          -0.07991469396917268,
+          0.9968017063026194
+        ]
+      },
+      "reticle": {
+        "width": 112,
+        "color": "rgb(217, 145, 255)",
+        "corners": true,
+        "dot": "none",
+        "center": {
+          "x": 640,
+          "y": 400
+        }
+      },
+      "charges": [
+        1,
+        2,
+        3
+      ],
+      "poweredShot": true,
+      "jet": {
+        "from": "launcher",
+        "power": false,
+        "jet": true,
+        "velocity": [
+          -0.22820533477808871,
+          10.23036920005165,
+          34.51503249825811
+        ]
+      },
+      "success": {
+        "converted": true,
+        "hitStop": 0.055,
+        "impactKick": 0.13
+      },
+      "feedback": {
+        "text": "感染成功1 / 6",
+        "opacity": 1,
+        "observedAt": 16901.82500000298,
+        "fill": "rgb(187, 77, 255)",
+        "fontSize": "23px"
+      },
+      "transition": {
+        "model": "infectedCop",
+        "uuid": "7f2a544a-0b72-403b-b24f-5331b6c2b17b",
+        "emissive": 12999679,
+        "intensity": 1.6,
+        "opacity": 1,
+        "transparent": false,
+        "marker": 3926128
+      },
+      "transitionAfter": {
+        "model": "infectedCop",
+        "uuid": "0132ff4e-0692-4aa2-bf2b-c355ae0e18b8",
+        "emissive": 16777215,
+        "intensity": 0.22,
+        "opacity": 1,
+        "transparent": false,
+        "marker": 3926128
+      },
+      "conversionGain": [
+        "SFX_GainDb",
+        -0.4043280676637959,
+        1000,
+        0
+      ],
+      "bars": {
+        "player": "rgb(59, 232, 112)",
+        "units": [
+          {
+            "side": "neutral",
+            "opacity": "1",
+            "color": "rgb(170, 169, 162)"
+          },
+          {
+            "side": "friend",
+            "opacity": "1",
+            "color": "rgb(59, 232, 112)"
+          },
+          {
+            "side": "enemy",
+            "opacity": "1",
+            "color": "rgb(239, 48, 72)"
+          },
+          {
+            "side": "neutral",
+            "opacity": "1",
+            "color": "rgb(170, 169, 162)"
+          },
+          {
+            "side": "enemy",
+            "opacity": "1",
+            "color": "rgb(239, 48, 72)"
+          },
+          {
+            "side": "neutral",
+            "opacity": "1",
+            "color": "rgb(170, 169, 162)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "touch-tokyo",
+      "touchActions": true,
+      "weapon": {
+        "wrist": [
+          4.9459445724795374,
+          -3.292291796200323,
+          7.849842124126332
+        ],
+        "head": [
+          4.967125892176812,
+          -3.220457710621463,
+          7.970163056912029
+        ],
+        "visible": true,
+        "gripGap": 0,
+        "scale": 0.44880000000000003,
+        "width": 51.58819716844346,
+        "height": 56.47821835969242,
+        "barrel": [
+          -0.9968017063026192,
+          -0.0799146939691727,
+          2.220446049250313e-16
+        ]
+      },
+      "reticle": {
+        "width": 96,
+        "color": "rgb(217, 145, 255)",
+        "corners": true,
+        "dot": "none",
+        "center": {
+          "x": 422,
+          "y": 195
+        }
+      },
+      "charges": [
+        1,
+        2,
+        3
+      ],
+      "poweredShot": true,
+      "jet": {
+        "from": "launcher",
+        "power": false,
+        "jet": true,
+        "velocity": [
+          -34.51522064179132,
+          10.229709998732485,
+          -0.22929760202609367
+        ]
+      },
+      "success": {
+        "converted": true,
+        "hitStop": 0.055,
+        "impactKick": 0.13
+      },
+      "feedback": {
+        "text": "感染成功1 / 6",
+        "opacity": 1,
+        "observedAt": 15617.469999998808,
+        "fill": "rgb(187, 77, 255)",
+        "fontSize": "16px"
+      },
+      "transition": {
+        "model": "infectedCop",
+        "uuid": "41675282-2c26-48f4-85dc-cfd05efa4af4",
+        "emissive": 12999679,
+        "intensity": 1.6,
+        "opacity": 1,
+        "transparent": false,
+        "marker": 3926128
+      },
+      "transitionAfter": {
+        "model": "infectedCop",
+        "uuid": "452fb57f-325a-494f-bd40-0e7396398b0c",
+        "emissive": 16777215,
+        "intensity": 0.22,
+        "opacity": 1,
+        "transparent": false,
+        "marker": 3926128
+      },
+      "conversionGain": [
+        "SFX_GainDb",
+        -0.4043280676637959,
+        1005,
+        0
+      ],
+      "bars": {
+        "player": "rgb(59, 232, 112)",
+        "units": [
+          {
+            "side": "friend",
+            "opacity": "1",
+            "color": "rgb(59, 232, 112)"
+          },
+          {
+            "side": "enemy",
+            "opacity": "1",
+            "color": "rgb(239, 48, 72)"
+          },
+          {
+            "side": "neutral",
+            "opacity": "1",
+            "color": "rgb(170, 169, 162)"
+          }
+        ]
+      },
+      "trains": {
+        "before": {
+          "time": 6.500000000000002,
+          "sourceMeshes": 219,
+          "drawMeshes": 4,
+          "trains": [
+            {
+              "x": -11.9970703125,
+              "z": 5.225000000000001,
+              "visible": true,
+              "phase": 6.5,
+              "bounds": {
+                "min": [
+                  -27.100070343725385,
+                  -4.441250001639129,
+                  4.42200100757182
+                ],
+                "max": [
+                  3.1059297187253847,
+                  -2.502499789372087,
+                  6.0279989924281825
+                ]
+              }
+            },
+            {
+              "x": -11.9970703125,
+              "z": 11.275000000000002,
+              "visible": true,
+              "phase": 14.5,
+              "bounds": {
+                "min": [
+                  -22.081320819072424,
+                  -4.441250001639129,
+                  10.472001007571818
+                ],
+                "max": [
+                  -1.912819805927576,
+                  -2.502499789372087,
+                  12.077998992428187
+                ]
+              }
+            }
+          ]
+        },
+        "after": {
+          "time": 7.2399700000000005,
+          "sourceMeshes": 219,
+          "drawMeshes": 4,
+          "trains": [
+            {
+              "x": -3.297083981317337,
+              "z": 5.225000000000001,
+              "visible": true,
+              "phase": 7.23997,
+              "bounds": {
+                "min": [
+                  -18.40008401254272,
+                  -4.441250001639129,
+                  4.42200100757182
+                ],
+                "max": [
+                  11.805916049908047,
+                  -2.502499789372087,
+                  6.0279989924281825
+                ]
+              }
+            },
+            {
+              "x": -24.86789032241313,
+              "z": 11.275000000000002,
+              "visible": true,
+              "phase": 15.23997,
+              "bounds": {
+                "min": [
+                  -34.952140828985556,
+                  -4.441250001639129,
+                  10.472001007571818
+                ],
+                "max": [
+                  -14.783639815840704,
+                  -2.502499789372087,
+                  12.077998992428187
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "trainsPause": true
+    }
+  ],
+  "errors": [],
+  "production": {
+    "version": "0.3.74",
+    "stage": "demo",
+    "title": "Wake up 打工人！",
+    "label": "Demo v0.3.74"
+  },
+  "success": true,
+  "verification": {
+    "date": "2026-11-06",
+    "baseCommit": "3f4ec01",
+    "mainTests": {
+      "pass": 441,
+      "fail": 0
+    },
+    "mobileTests": {
+      "pass": 7,
+      "fail": 0
+    },
+    "webBuild": "passed",
+    "touchDevice": "Chrome Android UA and touch emulation",
+    "nativeInstallersRebuilt": false,
+    "steadyStateFrameRateMeasured": false,
+    "sound": "Actual conversion event posting, per-object gain and music duck verified; no device speaker loudness measurement.",
+    "screenshots": "../pr31-32-qa/v0.3.74-*.png"
+  }
+}

@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import * as rules from './rules.js';
 import {createConversionFeedback,CONVERSION_FEEDBACK_SECONDS} from './conversion-feedback.js';
 
-function fixture(){
+function fixture(withPaint=false,visualReady=()=>true){
  class Node{
   constructor(){this.children=[];this.style={};this.dataset={};this.classes=new Set();this.classList={add:c=>this.classes.add(c),remove:c=>this.classes.delete(c),toggle:(c,on)=>on?this.classes.add(c):this.classes.delete(c)};}
   setAttribute(k,v){this[k]=v;} append(...nodes){nodes.forEach(n=>{n.parent=this;this.children.push(n);});}
@@ -13,11 +13,11 @@ function fixture(){
   querySelectorAll(){return this.points??=[];} querySelector(s){return (this.parts??={})[s]??=new Node();}
   set innerHTML(v){this.html=v;this.points=Array.from({length:6},()=>new Node());} get innerHTML(){return this.html;}
  }
- const emblem=new Node(),feed=new Node(),sounds=[];let now=0;
- const doc={getElementById:id=>id==='infectionFeedback'?emblem:feed,createElement:()=>new Node()};
- const ui=createConversionFeedback(doc,u=>u.name,()=>sounds.push('convert'),()=>now);
+ const emblem=new Node(),feed=new Node(),sounds=[],frames=[];let now=0;
+ const doc={getElementById:id=>id==='infectionFeedback'?emblem:feed,createElement:()=>new Node(),defaultView:withPaint?{requestAnimationFrame:cb=>frames.push(cb)}:undefined};
+ const ui=createConversionFeedback(doc,u=>u.name,()=>sounds.push('convert'),()=>now,visualReady);
  const personal=u=>{ui.markPersonal(u);ui.record(u);ui.tick(true);};
- return{ui,personal,emblem,feed,sounds,advance:t=>{now+=t;ui.tick(true);}};
+ return{ui,personal,emblem,feed,sounds,paint:()=>{frames.splice(0).forEach(cb=>cb());},advance:t=>{now+=t;ui.tick(true);}};
 }
 
 test('all conversions scroll into a bounded feed; only direct personal success lights the emblem and sound',()=>{
@@ -59,4 +59,12 @@ test('the real hit path marks only direct player conversions, even when gameplay
  const direct=rules.makeUnit(1,0,0,0),army=rules.makeUnit(2,0,0,0),mixed=rules.makeUnit(3,0,0,0);mixed.playerInfection=true;
  for(const [u,fromArmy]of [[direct,false],[army,true],[mixed,true]]){ctx.unit=u;ctx.army=fromArmy;vm.runInContext('applyHit(unit,unit.threshold,0,army)',ctx);}
  assert.deepEqual(marked,[1]);assert.equal(mixed.fromArmy,false,'gameplay attribution stays unchanged');
+});
+
+test('the short success lifetime survives the first character upload and stale paint callbacks cannot revive a reset',()=>{
+ const {ui,personal,emblem,advance,paint}=fixture(true);personal({name:'首个巡警'});advance(1.2);assert.equal(emblem.style.opacity,'1');paint();paint();advance(.5);assert.ok(+emblem.style.opacity>0);advance(.176);assert.equal(emblem.style.opacity,'0');personal({name:'旧事件'});ui.reset();paint();advance(.1);assert.equal(emblem.style.opacity,'0');
+});
+
+test('conversion lifetime waits for the actor swap, then counts the short visible duration',()=>{
+ let ready=false;const {personal,emblem,advance,paint}=fixture(true,()=>ready);personal({name:'等待换装的巡警'});paint();paint();advance(.4);assert.equal(emblem.style.opacity,'1');ready=true;paint();advance(.5);assert.ok(+emblem.style.opacity>0);advance(.176);assert.equal(emblem.style.opacity,'0');
 });
