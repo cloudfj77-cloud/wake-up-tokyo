@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "external-asset-package",
+  "source": "sfx-powerImpact-0.ogg",
+  "importer": "audio",
+  "importSettings": {
+    "playback": "buffer"
+  },
+  "subAssets": [
+    {
+      "guid": "19edb11d-4c48-5bb8-9957-d3e9274e71a6",
+      "kind": "audio",
+      "sourceKey": "audio:audio",
+      "sourceIndex": 0
+    }
+  ]
+}

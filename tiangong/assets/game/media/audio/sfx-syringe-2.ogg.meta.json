@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "external-asset-package",
+  "source": "sfx-syringe-2.ogg",
+  "importer": "audio",
+  "importSettings": {
+    "playback": "buffer"
+  },
+  "subAssets": [
+    {
+      "guid": "7fa61406-def2-540f-bfc8-c12ec761cf89",
+      "kind": "audio",
+      "sourceKey": "audio:audio",
+      "sourceIndex": 0
+    }
+  ]
+}

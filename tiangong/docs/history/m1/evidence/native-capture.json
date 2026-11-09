@@ -1,0 +1,260 @@
+{
+  "schemaVersion": "3.0.0",
+  "runId": "2026-11-06T14-15-05-013Z-0dca91da",
+  "ok": true,
+  "mode": "browser-compositor",
+  "root": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample",
+  "url": "http://localhost:55047/",
+  "target": {
+    "kind": "project"
+  },
+  "carrier": "private-browser",
+  "launchProfile": "development",
+  "report": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/capture.json",
+  "backendRequested": "hardware",
+  "backend": "hardware",
+  "deterministicRequested": false,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1,
+    "colorProfile": "srgb",
+    "colorScheme": "light",
+    "locale": "en-US",
+    "timezone": "UTC"
+  },
+  "browser": {
+    "version": "157.0.8103.38",
+    "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  },
+  "display": null,
+  "lavapipeIcd": null,
+  "captures": [
+    {
+      "index": 1,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/01-native-spawn.png",
+      "digest": "sha256:0a485e9506472382cf538941219827458bca64291ce49c05ccbed4bb601931cf",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 35,
+        "lumaMax": 234,
+        "lumaRange": 199,
+        "varyingPixels": 2621,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工迁移样板",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 14,
+          "textWitness": ""
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 955,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 2,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/02-native-infected.png",
+      "digest": "sha256:a211edfa2a57b97a8d8a49a956b36c5fa7eac575af038a0568b02e796e4360bf",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 36,
+        "lumaMax": 233,
+        "lumaRange": 197,
+        "varyingPixels": 2648,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工迁移样板",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 14,
+          "textWitness": ""
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 1035,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 3,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/03-native-after-actions.png",
+      "digest": "sha256:6cdd00f18af260bc1b0fcbe91b6b825c87696f5a17f95114779a2ad85c039850",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 34,
+        "lumaMax": 234,
+        "lumaRange": 200,
+        "varyingPixels": 2992,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工迁移样板",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 14,
+          "textWitness": ""
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 1099,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 4,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/04-native-reloaded.png",
+      "digest": "sha256:081152c151efcf8ab92e85865a7571ca82ca3c074e23bc255b5794511ee2f767",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 35,
+        "lumaMax": 233,
+        "lumaRange": 198,
+        "varyingPixels": 2619,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工迁移样板",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 14,
+          "textWitness": ""
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 54,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 5,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/05-final.png",
+      "digest": "sha256:7fc3533aa18a88a208ede979bff7b682300306ebabe9c887ec634e7eafe703d9",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 35,
+        "lumaMax": 235,
+        "lumaRange": 200,
+        "varyingPixels": 2621,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工迁移样板",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 14,
+          "textWitness": ""
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 91,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    }
+  ],
+  "requests": {
+    "total": 7058,
+    "documents": 2,
+    "http": 7056,
+    "https": 0,
+    "failed": 0,
+    "resourceMisses": 0,
+    "pending": 0,
+    "notable": []
+  },
+  "singleHtml": null,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "inputWarnings": [],
+  "boundary": "Browser-compositor capture is visual iteration evidence, not physical-GPU performance, HDR-display output, or release acceptance.",
+  "closedAt": "2026-11-06T14:18:09.528Z"
+}

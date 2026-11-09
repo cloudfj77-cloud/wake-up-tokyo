@@ -1,5 +1,7 @@
 # Wake up 打工人！ / WAKE UP TOKYO
 
+天工原生版 `v0.3.76-tiangong.1` 已加入独立的 [`tiangong/`](tiangong/README.md) 工程，包含源码、资源和队友启动说明；原 Three.js 版仍使用仓库根目录。天工优化入口见 [团队开发说明](tiangong/docs/team-development.md)。
+
 Android 手机试玩版：左侧摇杆＋右侧战斗按键，支持横屏离线安装。安装、构建和验证说明见 [Android 手机试玩版](docs/android-mobile.md)。
 
 整合试玩版默认进入海滨钟楼广场；菜单可切换东京立体街区，也可通过 `?map=riverside` 直接进入东京。两张地图继续使用各自的存档。

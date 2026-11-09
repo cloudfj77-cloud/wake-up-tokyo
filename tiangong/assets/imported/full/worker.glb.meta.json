@@ -1,0 +1,184 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "node-b88283f2a5f618ec",
+        "material",
+        "mixamorigHips",
+        "mixamorigSpine",
+        "mixamorigSpine1",
+        "mixamorigSpine2",
+        "mixamorigNeck",
+        "mixamorigHead",
+        "mixamorigHeadTop_End",
+        "mixamorigLeftShoulder",
+        "mixamorigLeftArm",
+        "mixamorigLeftForeArm",
+        "mixamorigLeftHand",
+        "mixamorigLeftHandThumb1",
+        "mixamorigLeftHandThumb2",
+        "mixamorigLeftHandThumb3",
+        "mixamorigLeftHandThumb4",
+        "mixamorigLeftHandIndex1",
+        "mixamorigLeftHandIndex2",
+        "mixamorigLeftHandIndex3",
+        "mixamorigLeftHandIndex4",
+        "mixamorigRightShoulder",
+        "mixamorigRightArm",
+        "mixamorigRightForeArm",
+        "mixamorigRightHand",
+        "mixamorigRightHandThumb1",
+        "mixamorigRightHandThumb2",
+        "mixamorigRightHandThumb3",
+        "mixamorigRightHandThumb4",
+        "mixamorigRightHandIndex1",
+        "mixamorigRightHandIndex2",
+        "mixamorigRightHandIndex3",
+        "mixamorigRightHandIndex4",
+        "mixamorigLeftUpLeg",
+        "mixamorigLeftLeg",
+        "mixamorigLeftFoot",
+        "mixamorigLeftToeBase",
+        "mixamorigLeftToe_End",
+        "mixamorigRightUpLeg",
+        "mixamorigRightLeg",
+        "mixamorigRightFoot",
+        "mixamorigRightToeBase",
+        "mixamorigRightToe_End"
+      ],
+      "unsupportedExtensions": []
+    },
+    "compressionMode": "none",
+    "downscaleMaxDimension": 1024,
+    "mipmap": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "worker.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-1df1b469b11844dd"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:mesh-1df1b469b11844dd": {
+      "materialSlots": [
+        {
+          "defaultMaterialGuid": "01a1b169-a819-714a-997d-517673a19301",
+          "slotName": "material-ebc57833e3f7bfb7",
+          "sourceKey": "material:material-ebc57833e3f7bfb7"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b169-a819-714a-997d-51753d977a6f",
+      "kind": "mesh",
+      "name": "mesh-1df1b469b11844dd",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:mesh-1df1b469b11844dd"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-517673a19301",
+      "kind": "material",
+      "name": "material-ebc57833e3f7bfb7",
+      "sourceIndex": 0,
+      "sourceKey": "material:material-ebc57833e3f7bfb7"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-5177ebe2de71",
+      "kind": "scene",
+      "name": "worker",
+      "sourceIndex": 0,
+      "sourceKey": "scene:worker"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-517806fd1a53",
+      "kind": "texture",
+      "name": "image-c69574da1ec687c0",
+      "sourceIndex": 0,
+      "sourceKey": "texture:image-c69574da1ec687c0"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-5179432bf501",
+      "kind": "texture",
+      "name": "image-baf0c5655d33ab05",
+      "sourceIndex": 1,
+      "sourceKey": "texture:image-baf0c5655d33ab05"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-517a99da9494",
+      "kind": "sampler",
+      "name": "sampler-817198516c7ac8c6",
+      "sourceIndex": 0,
+      "sourceKey": "sampler:sampler-817198516c7ac8c6"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-517b15a703ed",
+      "kind": "skeleton",
+      "sourceIndex": 0,
+      "sourceKey": "skeleton"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-517c7ad487c0",
+      "kind": "skin",
+      "sourceIndex": 0,
+      "sourceKey": "skin"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-517daf3d5ba7",
+      "kind": "animation-clip",
+      "name": "idle",
+      "sourceIndex": 0,
+      "sourceKey": "animation-clip:idle"
+    },
+    {
+      "guid": "01a1b169-a819-714a-997d-517e5485afb5",
+      "kind": "animation-clip",
+      "name": "zombie",
+      "sourceIndex": 1,
+      "sourceKey": "animation-clip:zombie"
+    }
+  ]
+}

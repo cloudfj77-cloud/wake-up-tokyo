@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "external-asset-package",
+  "source": "sfx-shieldDash-0.ogg",
+  "importer": "audio",
+  "importSettings": {
+    "playback": "buffer"
+  },
+  "subAssets": [
+    {
+      "guid": "4ba30f79-0884-5318-ab03-8ba3d7eb8dd3",
+      "kind": "audio",
+      "sourceKey": "audio:audio",
+      "sourceIndex": 0
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "external-asset-package",
+  "source": "sfx-reload-1.ogg",
+  "importer": "audio",
+  "importSettings": {
+    "playback": "buffer"
+  },
+  "subAssets": [
+    {
+      "guid": "e5dc4791-f16b-5c52-860c-bfa163787e2a",
+      "kind": "audio",
+      "sourceKey": "audio:audio",
+      "sourceIndex": 0
+    }
+  ]
+}

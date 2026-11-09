@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "external-asset-package",
+  "source": "sfx-land-2.ogg",
+  "importer": "audio",
+  "importSettings": {
+    "playback": "buffer"
+  },
+  "subAssets": [
+    {
+      "guid": "eb51b7d1-d3eb-5893-9566-f20c3498d4b8",
+      "kind": "audio",
+      "sourceKey": "audio:audio",
+      "sourceIndex": 0
+    }
+  ]
+}

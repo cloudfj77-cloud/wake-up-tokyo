@@ -1,0 +1,8 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+// Three uses the default (0,0) UV attribute when a textured mesh has no authored UVs.
+// Make that original behavior explicit for the strict native importer.
+for(const name of ['baton-cop','shield-cop']){
+ const path='assets/imported/full/'+name+'.glb',bytes=readFileSync(path),jl=bytes.readUInt32LE(12),g=JSON.parse(bytes.subarray(20,20+jl));let bin=Buffer.from(bytes.subarray(28+jl)),changed=0;
+ for(const mesh of g.meshes)for(const primitive of mesh.primitives){if(primitive.attributes.TEXCOORD_0!==undefined)continue;const m=g.materials[primitive.material];if(!m||!JSON.stringify(m).includes('Texture'))continue;const count=g.accessors[primitive.attributes.POSITION].count,pad=Buffer.alloc((4-bin.length%4)%4),offset=bin.length+pad.length,data=Buffer.alloc(count*8);bin=Buffer.concat([bin,pad,data]);const view=g.bufferViews.length;g.bufferViews.push({buffer:0,byteOffset:offset,byteLength:data.length});const id=g.accessors.length;g.accessors.push({bufferView:view,componentType:5126,count,type:'VEC2',min:[0,0],max:[0,0]});primitive.attributes.TEXCOORD_0=id;changed++;}
+ if(!changed)continue;g.buffers[0].byteLength=bin.length;const raw=Buffer.from(JSON.stringify(g)),json=Buffer.alloc(Math.ceil(raw.length/4)*4,32);raw.copy(json);const out=Buffer.alloc(28+json.length+bin.length);out.writeUInt32LE(0x46546c67);out.writeUInt32LE(2,4);out.writeUInt32LE(out.length,8);out.writeUInt32LE(json.length,12);out.writeUInt32LE(0x4e4f534a,16);json.copy(out,20);out.writeUInt32LE(bin.length,20+json.length);out.writeUInt32LE(0x004e4942,24+json.length);bin.copy(out,28+json.length);writeFileSync(path,out);console.log(name,changed);
+}

@@ -1,0 +1,85 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "tokyo-shape-11"
+      ],
+      "unsupportedExtensions": []
+    },
+    "meshCollision": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "tokyo-shape-11.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:tokyo-shape-11"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:tokyo-shape-11": {
+      "materialSlots": [
+        {
+          "slotName": "Default",
+          "sourceKey": "gltf:default"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b1ae-d15d-7571-832d-7f27b9e906b0",
+      "kind": "mesh",
+      "name": "tokyo-shape-11",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:tokyo-shape-11"
+    },
+    {
+      "guid": "01a1b1ae-d15d-7571-832d-7f28f8856da3",
+      "kind": "scene",
+      "name": "tokyo-shape-11",
+      "sourceIndex": 0,
+      "sourceKey": "scene:tokyo-shape-11"
+    }
+  ]
+}

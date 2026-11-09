@@ -1,0 +1,3 @@
+import {createNavigationMesh} from '@forgeax/engine/navigation';import fs from 'node:fs';
+const entries=JSON.parse(fs.readFileSync('assets/game/navigation.pack.json')).assets;
+for(const [map,route]of [['tidewater',[[-7.75,0,-28.75],[14.25,0,23.75]]],['riverside',[[5,-3.85,8],[-2.75,-3.85,9.35],[-7.15,-1.65,9.35],[-8.25,-1.65,7.15],[-7.15,-1.65,4.95],[-2.75,0,4.95],[-3.2,0,.5]]]]){const nav=createNavigationMesh(entries['navigation/'+map].payload).unwrap();for(let n=1;n<route.length;n++){const r=nav.findPath(route[n-1],route[n],{maxProjection:2,maxVisited:12000});console.log(map,route[n-1],route[n],r.ok?{points:r.value.points.length/3}:r.error);if(!r.ok)process.exitCode=1;}}

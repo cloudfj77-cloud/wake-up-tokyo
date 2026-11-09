@@ -1,0 +1,596 @@
+{
+  "schemaVersion": "3.0.0",
+  "runId": "2026-11-06T20-56-00-358Z-02bdc002",
+  "ok": true,
+  "mode": "browser-compositor",
+  "root": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample",
+  "url": "http://localhost:65410/",
+  "target": {
+    "kind": "project"
+  },
+  "carrier": "private-browser",
+  "launchProfile": "development",
+  "report": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/capture.json",
+  "backendRequested": "hardware",
+  "backend": "hardware",
+  "deterministicRequested": false,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1,
+    "colorProfile": "srgb",
+    "colorScheme": "light",
+    "locale": "en-US",
+    "timezone": "UTC"
+  },
+  "browser": {
+    "version": "157.0.8103.38",
+    "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  },
+  "display": null,
+  "lavapipeIcd": null,
+  "captures": [
+    {
+      "index": 1,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/01-native-main-menu.png",
+      "digest": "sha256:ef2c6aedcf8d8ce5a841daeae70a6f55d4d6b43a24d187abfa8660ef82b77368",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 126,
+        "lumaMax": 255,
+        "lumaRange": 129,
+        "varyingPixels": 267,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "Wake up 打工人！ 地图 海滨钟楼广场 东京立体街区 开始觉醒 ↵ 选项设置 游戏说明 天工原生世界已就绪 觉醒进度 0.0% 已感染人数 0 已唤醒人数 0 觉醒区域 海滨钟楼广场 N 切换 Tab 选择 ↵ Wake up 打工人！ / 天工原生版 · v0.3.76-tiangong.1"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 30,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 2,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/02-native-upgrade-cards.png",
+      "digest": "sha256:cdd2a8d96fc5db34ede21243b3710d0154de2dc925c81e329e06a557e3f5b613",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 2779,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 100 / 100 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:00 + + + + + + + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 × 换弹中 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 街区行动 0% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ GENETIC RECOMBINATION / LV.1 反抗，正在进化。 点击一张卡片，立即获得能力。每张卡本级可刷新一次。 机动系 / 新能力 ↟ 急速 Lv.0 → Lv.1 移动速度提高 15%。 点击获得 ↗ 刷新这张 感染系 / 新能力 ◌ 空气传播 Lv.0 → Lv.1 持续散播反抗因子，使自身半径 5m 内的敌人每 0.5 秒累积 2 点感染值。 点击获得 ↗ 刷新这张 指挥系 / 新能力 ⚑ 听我号令 Lv.0 → Lv.1 获得 2 名 2 级护卫，护卫死亡一段时间后自动再生。 点击获得 ↗ 刷新这张"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 62,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 3,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/03-native-jump.png",
+      "digest": "sha256:70f93ed7ecddd4913bcc65e7fb0fa2613aa802836c8a4af5c4e93c0225ffa1b8",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 35,
+        "lumaMax": 255,
+        "lumaRange": 220,
+        "varyingPixels": 2161,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "○ 路人 · 苦逼打工人 零号母体 100 / 100 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:00 ↟ 1 + + + + + + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 × 换弹中 获得能力 · 急速 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 街区行动 0% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 88,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 4,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/04-native-roll.png",
+      "digest": "sha256:8a9b69a48708a06ab77eb3c2f39f5458593bc00194bc9972428f8dc465e70409",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 34,
+        "lumaMax": 255,
+        "lumaRange": 221,
+        "varyingPixels": 1902,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 100 / 100 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:00 ↟ 1 + + + + + + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 × 换弹中 获得能力 · 急速 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 街区行动 0% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 90,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 5,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/05-native-restored.png",
+      "digest": "sha256:ac0f782cb573eb5fb03b04c2b9c0b29de65c8dce17e02843522ea5520337bf5d",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 2738,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "○ 路人 · 苦逼打工人 ○ 路人 · 苦逼打工人 零号母体 100 / 100 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:00 ↟ 1 + + + + + + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 × 换弹中 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 街区行动 0% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 41,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 6,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/06-tokyo-station-trains.png",
+      "digest": "sha256:e13c9d5d518aef415e771267660bc9f14f7ba016ba20a364d413e110aa63dad0",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 0,
+        "lumaMax": 255,
+        "lumaRange": 255,
+        "varyingPixels": 2906,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 110 / 110 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:01 ✶ 1 + + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 × 换弹中 获得能力 · 生存与进化 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 地铁站教学 1 / 3 0% 沿站台向前走 WASD 移动，方向键或右键拖动观察。走到黄色光圈。 ◇ 沿站台向前走 ◇ 唤醒第一位打工人 ◇ 走出地铁站 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 405,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 7,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/07-tokyo-infection-friendly-green.png",
+      "digest": "sha256:ce420e0830bbbac5afb86a5c2a90ef9984e2e2c4c669f228efdfa8996034c0e3",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 0,
+        "lumaMax": 255,
+        "lumaRange": 255,
+        "varyingPixels": 3308,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "◆ 友军 · 普通狂暴者 零号母体 110 / 110 存活队伍 1 累计感染 1 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:04 ✶ 1 + + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 你唤醒了 苦逼打工人 × 换弹中 获得能力 · 生存与进化 ? 操作 ♫ 音乐 开 LV 1 变异因子 1.0 / 8 地铁站教学 3 / 3 2% 走出地铁站 跟随黄色光圈，沿楼梯上行，前往下沉广场。 ◆ 沿站台向前走 ◆ 唤醒第一位打工人 ◇ 走出地铁站 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 567,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 8,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/08-cafe-shoulder-injector.png",
+      "digest": "sha256:030247fa67034127975207e165a6ab8270cf0a2032cf28b776c9d182551ac597",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 0,
+        "lumaMax": 255,
+        "lumaRange": 255,
+        "varyingPixels": 3179,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 110 / 110 存活队伍 1 累计感染 1 城市警戒 THREAT 1 尚未警觉 I II III IV V 下一级 · 10 00:21 ✶ 1 ◎ 1 + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 变异因子 1.0 / 8 街区行动 2% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 可感染注射器 滚轮 / 数字键切换 · R 装填 1 徒手 2 注射器 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 1742,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 9,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/09-native-purple-spray-and-paint.png",
+      "digest": "sha256:078a47da52c4a781e32b466c5694b0fe9c1ad9644b3d2392148fa4aa8626399f",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 5,
+        "lumaMax": 255,
+        "lumaRange": 250,
+        "varyingPixels": 2965,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 110 / 110 存活队伍 1 累计感染 1 城市警戒 THREAT 1 尚未警觉 I II III IV V 下一级 · 10 00:24 ✶ 1 ◎ 1 + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 变异因子 1.0 / 8 街区行动 2% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 可感染注射器 滚轮 / 数字键切换 · R 装填 1 徒手 2 注射器 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 1917,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 10,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/10-mobile-native-controls.png",
+      "digest": "sha256:d0a41fdb49a19bc4c71ca2bf7e51b7375980d6786b1ace17ecbf4d93cb59258e",
+      "pixels": {
+        "width": 844,
+        "height": 390,
+        "sampledPixels": 4115,
+        "lumaMin": 0,
+        "lumaMax": 255,
+        "lumaRange": 255,
+        "varyingPixels": 2622,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 844,
+          "height": 390
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 110 / 110 城市警戒 THREAT 2 尚未警觉 00:35 ✶ 1 ◎ 1 + + + + + + + 东京街区 N ↑ 同伴唤醒了 苦逼打工人 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 街区行动 5% 在街区集结同伴 可感染注射器 1 徒手 2 注射器 Ⅱ 喷射 / 攻击 翻滚 跳跃 装填 奔跑 换武器"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 2600,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 11,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/11-mobile-native-portrait.png",
+      "digest": "sha256:a584383e380a3089820713a23b1c582d0020b80f334393f20d3174cba8f8aafd",
+      "pixels": {
+        "width": 390,
+        "height": 844,
+        "sampledPixels": 4115,
+        "lumaMin": 8,
+        "lumaMax": 255,
+        "lumaRange": 247,
+        "varyingPixels": 2155,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 390,
+          "height": 844
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 110 / 110 00:35 ✶ 1 ◎ 1 + + + + + + + 东京街区 N ↑ 同伴唤醒了 苦逼打工人 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 街区行动 5% 在街区集结同伴 可感染注射器 1 徒手 2 注射器 Ⅱ 喷射 / 攻击 翻滚 跳跃 装填 奔跑 换武器"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 2615,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 12,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/12-final.png",
+      "digest": "sha256:b3178b283e9809b5bd21c70173213c9d0a9fe2af6388ed06a87be8cc02d5b6af",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 3,
+        "lumaMax": 255,
+        "lumaRange": 252,
+        "varyingPixels": 3207,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 110 / 110 存活队伍 2 累计感染 2 城市警戒 THREAT 2 尚未警觉 I II III IV V 下一级 · 10 00:36 ✶ 1 ◎ 1 + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 同伴唤醒了 苦逼打工人 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 变异因子 2.0 / 8 街区行动 5% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 可感染注射器 滚轮 / 数字键切换 · R 装填 1 徒手 2 注射器 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 2671,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 13,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/full-gameplay/13-viewport-1280x600.png",
+      "digest": "sha256:650e8d3cad43faaf1c26fc8c82f2e5adf28a13819b34e0e54de2266c90a1b8c7",
+      "pixels": {
+        "width": 1280,
+        "height": 600,
+        "sampledPixels": 4107,
+        "lumaMin": 0,
+        "lumaMax": 255,
+        "lumaRange": 255,
+        "varyingPixels": 3252,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 600
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 110 / 110 存活队伍 2 累计感染 2 城市警戒 THREAT 3 尚未警觉 I II III IV V 下一级 · 10 00:36 ✶ 1 ◎ 1 + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 同伴唤醒了 苦逼打工人 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 变异因子 2.0 / 8 街区行动 5% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 可感染注射器 滚轮 / 数字键切换 · R 装填 1 徒手 2 注射器 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 2708,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    }
+  ],
+  "requests": {
+    "total": 7522,
+    "documents": 2,
+    "http": 7520,
+    "https": 0,
+    "failed": 0,
+    "resourceMisses": 0,
+    "pending": 0,
+    "notable": []
+  },
+  "singleHtml": null,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "inputWarnings": [],
+  "boundary": "Browser-compositor capture is visual iteration evidence, not physical-GPU performance, HDR-display output, or release acceptance.",
+  "closedAt": "2026-11-06T21:00:14.818Z"
+}

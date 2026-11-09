@@ -1,0 +1,85 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "tokyo-shape-7"
+      ],
+      "unsupportedExtensions": []
+    },
+    "meshCollision": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "tokyo-shape-7.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:tokyo-shape-7"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:tokyo-shape-7": {
+      "materialSlots": [
+        {
+          "slotName": "Default",
+          "sourceKey": "gltf:default"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b1af-1336-7c6a-9566-770dbd6a3d44",
+      "kind": "mesh",
+      "name": "tokyo-shape-7",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:tokyo-shape-7"
+    },
+    {
+      "guid": "01a1b1af-1337-7eba-a0a3-48b3b9485314",
+      "kind": "scene",
+      "name": "tokyo-shape-7",
+      "sourceIndex": 0,
+      "sourceKey": "scene:tokyo-shape-7"
+    }
+  ]
+}

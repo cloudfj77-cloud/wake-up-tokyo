@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "passed": false,
+  "root": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample",
+  "script": "scripts/playthrough.mjs",
+  "outputDir": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough",
+  "report": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/play.json",
+  "captureReport": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/capture.json",
+  "url": "http://localhost:53568/",
+  "backend": "hardware",
+  "timings": {
+    "openMs": 139724,
+    "readyMs": 6271,
+    "totalMs": 146631
+  },
+  "steps": [],
+  "screenshots": [],
+  "viewports": [
+    "1280x720"
+  ],
+  "layout": [],
+  "errors": {
+    "console": [],
+    "page": [],
+    "inputWarnings": 0
+  },
+  "log": [],
+  "failure": {
+    "code": "play-not-ready",
+    "reason": "startup-failed",
+    "message": "Error plugin-startup-failed\nexpected: the root and all required startup descendants to become ACTIVE\nhint: inspect native dependencies and domain residuals, repair the owner, then start a new session\ndetail.reason: failed\ndetail.cause: AppError app-execution-bootstrap-failed: [AppError app-execution-bootstrap-failed] expected: the bootstrap URL imports a module whose default export completes as…",
+    "screenshot": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/.forgeax/diag/artifacts/play/scripts/playthrough/01-failure.png"
+  }
+}

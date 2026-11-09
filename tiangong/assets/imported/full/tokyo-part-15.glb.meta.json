@@ -1,0 +1,4433 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "node-a65c0c71d9955c01",
+        "Tokyo static group 15",
+        "Tokyo static group 39",
+        "Tokyo static group 63",
+        "Tokyo static group 87",
+        "Tokyo static group 111",
+        "Tokyo static group 135",
+        "Tokyo static group 159",
+        "Tokyo static group 183",
+        "Tokyo static group 207",
+        "Tokyo static group 231",
+        "Tokyo static group 255",
+        "Tokyo static group 279",
+        "Tokyo static group 303",
+        "Tokyo static group 327",
+        "Tokyo static group 351",
+        "Tokyo static group 375",
+        "Tokyo static group 399",
+        "Tokyo static group 423",
+        "Tokyo static group 447",
+        "Tokyo static group 471",
+        "Tokyo static group 495",
+        "Tokyo static group 519",
+        "Tokyo static group 543",
+        "Tokyo static group 567",
+        "Tokyo static group 591",
+        "Tokyo static group 615",
+        "Tokyo static group 639",
+        "Tokyo static group 663",
+        "Tokyo static group 687",
+        "Tokyo static group 711",
+        "Tokyo static group 735",
+        "Tokyo static group 759",
+        "Tokyo static group 783",
+        "Tokyo static group 807",
+        "Tokyo static group 831",
+        "Tokyo static group 855",
+        "Tokyo static group 879",
+        "Tokyo static group 903",
+        "Tokyo static group 927",
+        "Tokyo static group 951",
+        "Tokyo static group 975",
+        "Tokyo static group 999",
+        "Tokyo static group 1023",
+        "Tokyo static group 1047",
+        "Tokyo static group 1071",
+        "Tokyo static group 1095",
+        "Tokyo static group 1119",
+        "Tokyo static group 1143",
+        "Tokyo static group 1167",
+        "Tokyo static group 1191",
+        "Tokyo static group 1215",
+        "Tokyo static group 1239",
+        "Tokyo static group 1263",
+        "Tokyo static group 1287",
+        "Tokyo static group 1311",
+        "Tokyo static group 1335",
+        "Tokyo static group 1359",
+        "Tokyo static group 1383",
+        "Tokyo static group 1407",
+        "Tokyo static group 1431",
+        "Tokyo static group 1455",
+        "Tokyo static group 1479",
+        "Tokyo static group 1503",
+        "Tokyo static group 1527",
+        "Tokyo static group 1551",
+        "Tokyo static group 1575",
+        "Tokyo static group 1599",
+        "Tokyo static group 1623",
+        "Tokyo static group 1647",
+        "Tokyo static group 1671",
+        "Tokyo static group 1695",
+        "Tokyo static group 1719",
+        "Tokyo static group 1743",
+        "Tokyo static group 1767",
+        "Tokyo static group 1791",
+        "Tokyo static group 1815",
+        "Tokyo static group 1839",
+        "Tokyo static group 1863",
+        "Tokyo static group 1887",
+        "Tokyo static group 1911",
+        "Tokyo static group 1935",
+        "Tokyo static group 1959",
+        "Tokyo static group 1983",
+        "Tokyo static group 2007",
+        "Tokyo static group 2031",
+        "Tokyo static group 2055",
+        "Tokyo static group 2079"
+      ],
+      "unsupportedExtensions": []
+    },
+    "downscaleMaxDimension": 1024
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "tokyo-part-15.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-beacba22a130f541"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-b767e68b0f32a53a"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-86cd818efca47691"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-693a0dd42d07b08a"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-8f89ad1c69350ea9"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-289efffba92d569f"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-765d2bcf3f61b415"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-49a13fa6b6945182"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-239b72684d5ba45d"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-01cc7ea801604e44"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-c7cbd0d47b0f1bfe"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-0abe8e7014f32eeb"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-571b829338466dbf"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-c739cfd903bd4fd6"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-45582ce76f4981f6"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-a76ad49092009ff7"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-44d4c10287746bcd"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-6a65de91fc41a4e7"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-5aa06a31f36a17db"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-116b6c2f016e7497"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-9d6c336afb3fd6bd"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-325eb0efdb42e146"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-a6b3d9762bca9e77"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-0366c00bd5dece79"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-73572ebf1de720f1"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-b7fdf98a4a52e1e1"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-620f7bf563d7ebe4"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-6d2c1efd3555034a"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-e837118da8625271"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-973e1dae8cfb9cfc"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-f8a9099d4954289c"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-68829db038406348"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-0b15cbe8688c3e9b"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-8ee0228b8de4ef9a"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-e9cb5c570cacee87"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-728e874669126b06"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-c578d5b373ca35a4"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-c520ec59aa016216"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-4725e32bb02ea988"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-35ecbfb7ad6727f2"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-781fe91affc21660"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-c0b9fd0d38f043e4"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-2ce19ec865ceeb79"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-0e32c48a205e6e9b"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-a091fb1257c84bf6"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-21d76e3dd7971599"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-539cc9f14de78439"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-5b8ebe15f71f7268"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-41a8821fd6d362e4"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-6a35ec2f354e6c35"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-c481199c85d499f7"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-9425790c6558046b"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-bdf4a4a6bba73c02"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-2811c02598617ad3"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-cfaa41c2cf2db83c"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-6f2acf3a97e6ca06"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-85262e3fc6512274"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-111632942158e370"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-4e56a3da4c93e340"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-f7b20836966f1de9"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-944198d510ff62ac"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-d24c9b426318df35"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-64d11679cf2a055d"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-c7aafc1e460bb57c"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-1fe68e31392144b4"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-0a0435bd8d30b3d7"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-60345d1ddc0cbbe9"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-ffd778e59adb4436"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-3c073f4d45331540"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-bd00895098bd4eb1"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-512e54532c22f1d7"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-c835dd29f66df4df"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-fe1359ba0230de5d"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-43aac4bcae9a8d67"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-4b70ede6b9c612a6"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-44364f1d7dd59464"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-3d8fa5f65712fe96"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-50f6044989e0d093"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-44494fc2375d8e14"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-676badc1a65fcbb9"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-ca7be99e9ad75698"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-f9a5043008993f57"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-9556902ca876c03e"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:mesh-beacba22a130f541": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "3661c06b-75f7-5760-8ff4-11cbb2c3b65e"
+      }
+    },
+    "mesh:mesh-b767e68b0f32a53a": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "fbf97d5d-e428-5f45-8202-7f3f625c0eef"
+      }
+    },
+    "mesh:mesh-86cd818efca47691": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "d7889d79-e58b-55cf-ac43-a1b4e48d774a"
+      }
+    },
+    "mesh:mesh-693a0dd42d07b08a": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "9aa277b5-2e1a-584a-a6b8-e85f7e98c485"
+      }
+    },
+    "mesh:mesh-8f89ad1c69350ea9": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-289efffba92d569f": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-765d2bcf3f61b415": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "dd29b95f-4e3e-59af-9e67-c8b39bb3cdb9"
+      }
+    },
+    "mesh:mesh-49a13fa6b6945182": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "71d3fc75-56f7-5650-bc41-c3f43cb4b83c"
+      }
+    },
+    "mesh:mesh-239b72684d5ba45d": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "e824bd55-7eb7-5aee-9a65-fea843536d57"
+      }
+    },
+    "mesh:mesh-01cc7ea801604e44": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-c7cbd0d47b0f1bfe": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "57caab2e-fd36-5727-ae25-7f4d0f849166"
+      }
+    },
+    "mesh:mesh-0abe8e7014f32eeb": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "dd29b95f-4e3e-59af-9e67-c8b39bb3cdb9"
+      }
+    },
+    "mesh:mesh-571b829338466dbf": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-c739cfd903bd4fd6": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "fbb958eb-c110-51fc-983f-c6ccd71e53bc"
+      }
+    },
+    "mesh:mesh-45582ce76f4981f6": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "765ac59f-7c85-5444-bda2-6546c5b7269a"
+      }
+    },
+    "mesh:mesh-a76ad49092009ff7": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "9c7d1de6-dcfd-5a65-a9c2-d60143b7b086"
+      }
+    },
+    "mesh:mesh-44d4c10287746bcd": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "57caab2e-fd36-5727-ae25-7f4d0f849166"
+      }
+    },
+    "mesh:mesh-6a65de91fc41a4e7": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "88443397-dae0-5bec-864b-5c54d10f7026"
+      }
+    },
+    "mesh:mesh-5aa06a31f36a17db": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "39a3b029-8cd2-5bfd-8a11-ccb52562b956"
+      }
+    },
+    "mesh:mesh-116b6c2f016e7497": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-9d6c336afb3fd6bd": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "fbb958eb-c110-51fc-983f-c6ccd71e53bc"
+      }
+    },
+    "mesh:mesh-325eb0efdb42e146": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "dd29b95f-4e3e-59af-9e67-c8b39bb3cdb9"
+      }
+    },
+    "mesh:mesh-a6b3d9762bca9e77": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "57caab2e-fd36-5727-ae25-7f4d0f849166"
+      }
+    },
+    "mesh:mesh-0366c00bd5dece79": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "fbb958eb-c110-51fc-983f-c6ccd71e53bc"
+      }
+    },
+    "mesh:mesh-73572ebf1de720f1": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "6e9fcfc3-0991-56e5-99d8-be3e787951fc"
+      }
+    },
+    "mesh:mesh-b7fdf98a4a52e1e1": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "6e9fcfc3-0991-56e5-99d8-be3e787951fc"
+      }
+    },
+    "mesh:mesh-620f7bf563d7ebe4": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-6d2c1efd3555034a": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-e837118da8625271": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "765ac59f-7c85-5444-bda2-6546c5b7269a"
+      }
+    },
+    "mesh:mesh-973e1dae8cfb9cfc": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-f8a9099d4954289c": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "c8687132-879f-5ce1-8330-86bdf35782e0"
+      }
+    },
+    "mesh:mesh-68829db038406348": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "6e9fcfc3-0991-56e5-99d8-be3e787951fc"
+      }
+    },
+    "mesh:mesh-0b15cbe8688c3e9b": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "dd29b95f-4e3e-59af-9e67-c8b39bb3cdb9"
+      }
+    },
+    "mesh:mesh-8ee0228b8de4ef9a": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "6e9fcfc3-0991-56e5-99d8-be3e787951fc"
+      }
+    },
+    "mesh:mesh-e9cb5c570cacee87": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "dd29b95f-4e3e-59af-9e67-c8b39bb3cdb9"
+      }
+    },
+    "mesh:mesh-728e874669126b06": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "57caab2e-fd36-5727-ae25-7f4d0f849166"
+      }
+    },
+    "mesh:mesh-c578d5b373ca35a4": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "6e9fcfc3-0991-56e5-99d8-be3e787951fc"
+      }
+    },
+    "mesh:mesh-c520ec59aa016216": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "39a3b029-8cd2-5bfd-8a11-ccb52562b956"
+      }
+    },
+    "mesh:mesh-4725e32bb02ea988": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-35ecbfb7ad6727f2": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-781fe91affc21660": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-c0b9fd0d38f043e4": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-2ce19ec865ceeb79": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-0e32c48a205e6e9b": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-a091fb1257c84bf6": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-21d76e3dd7971599": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-539cc9f14de78439": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-5b8ebe15f71f7268": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-41a8821fd6d362e4": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-6a35ec2f354e6c35": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2f439048-86c2-51cb-9702-6271dca6cd25"
+      }
+    },
+    "mesh:mesh-c481199c85d499f7": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0d950c54-dba4-5d65-a82b-094a9b130abe"
+      }
+    },
+    "mesh:mesh-9425790c6558046b": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "765ac59f-7c85-5444-bda2-6546c5b7269a"
+      }
+    },
+    "mesh:mesh-bdf4a4a6bba73c02": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "146bd6b9-7535-5c31-b136-f5c58d81c188"
+      }
+    },
+    "mesh:mesh-2811c02598617ad3": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "34febf53-d684-5d1d-a0f6-cda18aad0346"
+      }
+    },
+    "mesh:mesh-cfaa41c2cf2db83c": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "82c59227-fa51-5e85-b0b8-0173b85822f1"
+      }
+    },
+    "mesh:mesh-6f2acf3a97e6ca06": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "96b82379-7f29-54be-a3f2-1a90fad761eb"
+      }
+    },
+    "mesh:mesh-85262e3fc6512274": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "12933ad5-de60-5d61-98c9-5a2b6884facb"
+      }
+    },
+    "mesh:mesh-111632942158e370": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0fa751cb-062c-596c-bc7e-0b59277a7284"
+      }
+    },
+    "mesh:mesh-4e56a3da4c93e340": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "6aae5b1b-234e-5a6f-b1d7-0f9f95617b9d"
+      }
+    },
+    "mesh:mesh-f7b20836966f1de9": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "6aae5b1b-234e-5a6f-b1d7-0f9f95617b9d"
+      }
+    },
+    "mesh:mesh-944198d510ff62ac": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "6aae5b1b-234e-5a6f-b1d7-0f9f95617b9d"
+      }
+    },
+    "mesh:mesh-d24c9b426318df35": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "bf02f947-42a2-5c55-a6df-a4e206c570f6"
+      }
+    },
+    "mesh:mesh-64d11679cf2a055d": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "b0dd0129-2317-5041-9c18-3d4218076ce1"
+      }
+    },
+    "mesh:mesh-c7aafc1e460bb57c": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0277a6ae-36d8-5555-93d4-a767b143f604"
+      }
+    },
+    "mesh:mesh-1fe68e31392144b4": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "de001b81-1133-57f8-9f9f-ef81072f08ba"
+      }
+    },
+    "mesh:mesh-0a0435bd8d30b3d7": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "8b68e9d5-3973-54fa-b9ee-1de28954d3f7"
+      }
+    },
+    "mesh:mesh-60345d1ddc0cbbe9": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "2e6fefd4-cb1c-5c2d-aa5b-65e549cd0cab"
+      }
+    },
+    "mesh:mesh-ffd778e59adb4436": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "8b68e9d5-3973-54fa-b9ee-1de28954d3f7"
+      }
+    },
+    "mesh:mesh-3c073f4d45331540": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "64f79547-983d-5ef4-b921-eb82bb46ed3e"
+      }
+    },
+    "mesh:mesh-bd00895098bd4eb1": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "8b68e9d5-3973-54fa-b9ee-1de28954d3f7"
+      }
+    },
+    "mesh:mesh-512e54532c22f1d7": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "657f6633-abec-5c2a-90ed-eec29f1c90ec"
+      }
+    },
+    "mesh:mesh-c835dd29f66df4df": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "cc36c621-d773-57fb-9e8c-c20f605bf88f"
+      }
+    },
+    "mesh:mesh-fe1359ba0230de5d": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "b0dd0129-2317-5041-9c18-3d4218076ce1"
+      }
+    },
+    "mesh:mesh-43aac4bcae9a8d67": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0277a6ae-36d8-5555-93d4-a767b143f604"
+      }
+    },
+    "mesh:mesh-4b70ede6b9c612a6": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "0277a6ae-36d8-5555-93d4-a767b143f604"
+      }
+    },
+    "mesh:mesh-44364f1d7dd59464": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "64f79547-983d-5ef4-b921-eb82bb46ed3e"
+      }
+    },
+    "mesh:mesh-3d8fa5f65712fe96": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "3a9d2ed2-6fa6-5458-a292-cc3e5c05933f"
+      }
+    },
+    "mesh:mesh-50f6044989e0d093": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "407fba22-d04d-541d-a9d3-a342edf1437e"
+      }
+    },
+    "mesh:mesh-44494fc2375d8e14": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "e8e6a751-7b5a-513d-99e2-24e1f3ee6a52"
+      }
+    },
+    "mesh:mesh-676badc1a65fcbb9": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "b3ca5fe9-5e0a-5c7b-ae39-ddc9d915a22b"
+      }
+    },
+    "mesh:mesh-ca7be99e9ad75698": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "663c4651-bd0b-56dd-82ca-2f1d46a28531"
+      }
+    },
+    "mesh:mesh-f9a5043008993f57": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "32328ad5-6e08-5f6b-9632-189298862ff8"
+      }
+    },
+    "mesh:mesh-9556902ca876c03e": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "e8e6a751-7b5a-513d-99e2-24e1f3ee6a52"
+      }
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f48fe0b29fb",
+      "kind": "mesh",
+      "name": "mesh-beacba22a130f541",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:mesh-beacba22a130f541"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f4938f0da2e",
+      "kind": "mesh",
+      "name": "mesh-b767e68b0f32a53a",
+      "sourceIndex": 1,
+      "sourceKey": "mesh:mesh-b767e68b0f32a53a"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f4aae54745b",
+      "kind": "mesh",
+      "name": "mesh-86cd818efca47691",
+      "sourceIndex": 2,
+      "sourceKey": "mesh:mesh-86cd818efca47691"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f4b05d3e711",
+      "kind": "mesh",
+      "name": "mesh-693a0dd42d07b08a",
+      "sourceIndex": 3,
+      "sourceKey": "mesh:mesh-693a0dd42d07b08a"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f4c2e4e65b3",
+      "kind": "mesh",
+      "name": "mesh-8f89ad1c69350ea9",
+      "sourceIndex": 4,
+      "sourceKey": "mesh:mesh-8f89ad1c69350ea9"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f4db456c109",
+      "kind": "mesh",
+      "name": "mesh-289efffba92d569f",
+      "sourceIndex": 5,
+      "sourceKey": "mesh:mesh-289efffba92d569f"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f4e1f749aca",
+      "kind": "mesh",
+      "name": "mesh-765d2bcf3f61b415",
+      "sourceIndex": 6,
+      "sourceKey": "mesh:mesh-765d2bcf3f61b415"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f4fed67a635",
+      "kind": "mesh",
+      "name": "mesh-49a13fa6b6945182",
+      "sourceIndex": 7,
+      "sourceKey": "mesh:mesh-49a13fa6b6945182"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f505929bcc1",
+      "kind": "mesh",
+      "name": "mesh-239b72684d5ba45d",
+      "sourceIndex": 8,
+      "sourceKey": "mesh:mesh-239b72684d5ba45d"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5193a098a8",
+      "kind": "mesh",
+      "name": "mesh-01cc7ea801604e44",
+      "sourceIndex": 9,
+      "sourceKey": "mesh:mesh-01cc7ea801604e44"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f52ebf50a2f",
+      "kind": "mesh",
+      "name": "mesh-c7cbd0d47b0f1bfe",
+      "sourceIndex": 10,
+      "sourceKey": "mesh:mesh-c7cbd0d47b0f1bfe"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f53fbe6995a",
+      "kind": "mesh",
+      "name": "mesh-0abe8e7014f32eeb",
+      "sourceIndex": 11,
+      "sourceKey": "mesh:mesh-0abe8e7014f32eeb"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5442c4591b",
+      "kind": "mesh",
+      "name": "mesh-571b829338466dbf",
+      "sourceIndex": 12,
+      "sourceKey": "mesh:mesh-571b829338466dbf"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f55de03aa8d",
+      "kind": "mesh",
+      "name": "mesh-c739cfd903bd4fd6",
+      "sourceIndex": 13,
+      "sourceKey": "mesh:mesh-c739cfd903bd4fd6"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f56ccf5538f",
+      "kind": "mesh",
+      "name": "mesh-45582ce76f4981f6",
+      "sourceIndex": 14,
+      "sourceKey": "mesh:mesh-45582ce76f4981f6"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f571dc4dda7",
+      "kind": "mesh",
+      "name": "mesh-a76ad49092009ff7",
+      "sourceIndex": 15,
+      "sourceKey": "mesh:mesh-a76ad49092009ff7"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5892b72b42",
+      "kind": "mesh",
+      "name": "mesh-44d4c10287746bcd",
+      "sourceIndex": 16,
+      "sourceKey": "mesh:mesh-44d4c10287746bcd"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f592ebc4f1c",
+      "kind": "mesh",
+      "name": "mesh-6a65de91fc41a4e7",
+      "sourceIndex": 17,
+      "sourceKey": "mesh:mesh-6a65de91fc41a4e7"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5a9d2429e2",
+      "kind": "mesh",
+      "name": "mesh-5aa06a31f36a17db",
+      "sourceIndex": 18,
+      "sourceKey": "mesh:mesh-5aa06a31f36a17db"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5bd1890418",
+      "kind": "mesh",
+      "name": "mesh-116b6c2f016e7497",
+      "sourceIndex": 19,
+      "sourceKey": "mesh:mesh-116b6c2f016e7497"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5ca088c8b8",
+      "kind": "mesh",
+      "name": "mesh-9d6c336afb3fd6bd",
+      "sourceIndex": 20,
+      "sourceKey": "mesh:mesh-9d6c336afb3fd6bd"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5dd5e2d40e",
+      "kind": "mesh",
+      "name": "mesh-325eb0efdb42e146",
+      "sourceIndex": 21,
+      "sourceKey": "mesh:mesh-325eb0efdb42e146"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5e27ce91e3",
+      "kind": "mesh",
+      "name": "mesh-a6b3d9762bca9e77",
+      "sourceIndex": 22,
+      "sourceKey": "mesh:mesh-a6b3d9762bca9e77"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f5ff69d4f59",
+      "kind": "mesh",
+      "name": "mesh-0366c00bd5dece79",
+      "sourceIndex": 23,
+      "sourceKey": "mesh:mesh-0366c00bd5dece79"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f606cdf119c",
+      "kind": "mesh",
+      "name": "mesh-73572ebf1de720f1",
+      "sourceIndex": 24,
+      "sourceKey": "mesh:mesh-73572ebf1de720f1"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f613a553c0d",
+      "kind": "mesh",
+      "name": "mesh-b7fdf98a4a52e1e1",
+      "sourceIndex": 25,
+      "sourceKey": "mesh:mesh-b7fdf98a4a52e1e1"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6259799f5f",
+      "kind": "mesh",
+      "name": "mesh-620f7bf563d7ebe4",
+      "sourceIndex": 26,
+      "sourceKey": "mesh:mesh-620f7bf563d7ebe4"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6326f7a8b3",
+      "kind": "mesh",
+      "name": "mesh-6d2c1efd3555034a",
+      "sourceIndex": 27,
+      "sourceKey": "mesh:mesh-6d2c1efd3555034a"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6434d5f77e",
+      "kind": "mesh",
+      "name": "mesh-e837118da8625271",
+      "sourceIndex": 28,
+      "sourceKey": "mesh:mesh-e837118da8625271"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f65d66ca9d2",
+      "kind": "mesh",
+      "name": "mesh-973e1dae8cfb9cfc",
+      "sourceIndex": 29,
+      "sourceKey": "mesh:mesh-973e1dae8cfb9cfc"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f664c69a79f",
+      "kind": "mesh",
+      "name": "mesh-f8a9099d4954289c",
+      "sourceIndex": 30,
+      "sourceKey": "mesh:mesh-f8a9099d4954289c"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f67b0254f4a",
+      "kind": "mesh",
+      "name": "mesh-68829db038406348",
+      "sourceIndex": 31,
+      "sourceKey": "mesh:mesh-68829db038406348"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f68398fb3d0",
+      "kind": "mesh",
+      "name": "mesh-0b15cbe8688c3e9b",
+      "sourceIndex": 32,
+      "sourceKey": "mesh:mesh-0b15cbe8688c3e9b"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f69247dd574",
+      "kind": "mesh",
+      "name": "mesh-8ee0228b8de4ef9a",
+      "sourceIndex": 33,
+      "sourceKey": "mesh:mesh-8ee0228b8de4ef9a"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6abc6715d1",
+      "kind": "mesh",
+      "name": "mesh-e9cb5c570cacee87",
+      "sourceIndex": 34,
+      "sourceKey": "mesh:mesh-e9cb5c570cacee87"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6b7991d730",
+      "kind": "mesh",
+      "name": "mesh-728e874669126b06",
+      "sourceIndex": 35,
+      "sourceKey": "mesh:mesh-728e874669126b06"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6c8e8ee31f",
+      "kind": "mesh",
+      "name": "mesh-c578d5b373ca35a4",
+      "sourceIndex": 36,
+      "sourceKey": "mesh:mesh-c578d5b373ca35a4"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6db71e409e",
+      "kind": "mesh",
+      "name": "mesh-c520ec59aa016216",
+      "sourceIndex": 37,
+      "sourceKey": "mesh:mesh-c520ec59aa016216"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6e17ffac66",
+      "kind": "mesh",
+      "name": "mesh-4725e32bb02ea988",
+      "sourceIndex": 38,
+      "sourceKey": "mesh:mesh-4725e32bb02ea988"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f6f00583c5b",
+      "kind": "mesh",
+      "name": "mesh-35ecbfb7ad6727f2",
+      "sourceIndex": 39,
+      "sourceKey": "mesh:mesh-35ecbfb7ad6727f2"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f70cabbd63f",
+      "kind": "mesh",
+      "name": "mesh-781fe91affc21660",
+      "sourceIndex": 40,
+      "sourceKey": "mesh:mesh-781fe91affc21660"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f71b0ed298b",
+      "kind": "mesh",
+      "name": "mesh-c0b9fd0d38f043e4",
+      "sourceIndex": 41,
+      "sourceKey": "mesh:mesh-c0b9fd0d38f043e4"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f724ba82839",
+      "kind": "mesh",
+      "name": "mesh-2ce19ec865ceeb79",
+      "sourceIndex": 42,
+      "sourceKey": "mesh:mesh-2ce19ec865ceeb79"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f73dcb641ea",
+      "kind": "mesh",
+      "name": "mesh-0e32c48a205e6e9b",
+      "sourceIndex": 43,
+      "sourceKey": "mesh:mesh-0e32c48a205e6e9b"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f74efccb62c",
+      "kind": "mesh",
+      "name": "mesh-a091fb1257c84bf6",
+      "sourceIndex": 44,
+      "sourceKey": "mesh:mesh-a091fb1257c84bf6"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f7553b71e3e",
+      "kind": "mesh",
+      "name": "mesh-21d76e3dd7971599",
+      "sourceIndex": 45,
+      "sourceKey": "mesh:mesh-21d76e3dd7971599"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f766969949d",
+      "kind": "mesh",
+      "name": "mesh-539cc9f14de78439",
+      "sourceIndex": 46,
+      "sourceKey": "mesh:mesh-539cc9f14de78439"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f77d0bfc40f",
+      "kind": "mesh",
+      "name": "mesh-5b8ebe15f71f7268",
+      "sourceIndex": 47,
+      "sourceKey": "mesh:mesh-5b8ebe15f71f7268"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f789f3adc6e",
+      "kind": "mesh",
+      "name": "mesh-41a8821fd6d362e4",
+      "sourceIndex": 48,
+      "sourceKey": "mesh:mesh-41a8821fd6d362e4"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f796a0c563a",
+      "kind": "mesh",
+      "name": "mesh-6a35ec2f354e6c35",
+      "sourceIndex": 49,
+      "sourceKey": "mesh:mesh-6a35ec2f354e6c35"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f7a4ff8ccac",
+      "kind": "mesh",
+      "name": "mesh-c481199c85d499f7",
+      "sourceIndex": 50,
+      "sourceKey": "mesh:mesh-c481199c85d499f7"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f7b088b8b90",
+      "kind": "mesh",
+      "name": "mesh-9425790c6558046b",
+      "sourceIndex": 51,
+      "sourceKey": "mesh:mesh-9425790c6558046b"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f7cee50803f",
+      "kind": "mesh",
+      "name": "mesh-bdf4a4a6bba73c02",
+      "sourceIndex": 52,
+      "sourceKey": "mesh:mesh-bdf4a4a6bba73c02"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f7d88eaef46",
+      "kind": "mesh",
+      "name": "mesh-2811c02598617ad3",
+      "sourceIndex": 53,
+      "sourceKey": "mesh:mesh-2811c02598617ad3"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f7ea89351e0",
+      "kind": "mesh",
+      "name": "mesh-cfaa41c2cf2db83c",
+      "sourceIndex": 54,
+      "sourceKey": "mesh:mesh-cfaa41c2cf2db83c"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f7f61204692",
+      "kind": "mesh",
+      "name": "mesh-6f2acf3a97e6ca06",
+      "sourceIndex": 55,
+      "sourceKey": "mesh:mesh-6f2acf3a97e6ca06"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f801e9d56b6",
+      "kind": "mesh",
+      "name": "mesh-85262e3fc6512274",
+      "sourceIndex": 56,
+      "sourceKey": "mesh:mesh-85262e3fc6512274"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f819a86810a",
+      "kind": "mesh",
+      "name": "mesh-111632942158e370",
+      "sourceIndex": 57,
+      "sourceKey": "mesh:mesh-111632942158e370"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f825ee8110f",
+      "kind": "mesh",
+      "name": "mesh-4e56a3da4c93e340",
+      "sourceIndex": 58,
+      "sourceKey": "mesh:mesh-4e56a3da4c93e340"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f83edea1362",
+      "kind": "mesh",
+      "name": "mesh-f7b20836966f1de9",
+      "sourceIndex": 59,
+      "sourceKey": "mesh:mesh-f7b20836966f1de9"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f843626cae4",
+      "kind": "mesh",
+      "name": "mesh-944198d510ff62ac",
+      "sourceIndex": 60,
+      "sourceKey": "mesh:mesh-944198d510ff62ac"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f8575e2e9dc",
+      "kind": "mesh",
+      "name": "mesh-d24c9b426318df35",
+      "sourceIndex": 61,
+      "sourceKey": "mesh:mesh-d24c9b426318df35"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f860fffb956",
+      "kind": "mesh",
+      "name": "mesh-64d11679cf2a055d",
+      "sourceIndex": 62,
+      "sourceKey": "mesh:mesh-64d11679cf2a055d"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f87ac150752",
+      "kind": "mesh",
+      "name": "mesh-c7aafc1e460bb57c",
+      "sourceIndex": 63,
+      "sourceKey": "mesh:mesh-c7aafc1e460bb57c"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f888cc73a99",
+      "kind": "mesh",
+      "name": "mesh-1fe68e31392144b4",
+      "sourceIndex": 64,
+      "sourceKey": "mesh:mesh-1fe68e31392144b4"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f89b38d5418",
+      "kind": "mesh",
+      "name": "mesh-0a0435bd8d30b3d7",
+      "sourceIndex": 65,
+      "sourceKey": "mesh:mesh-0a0435bd8d30b3d7"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f8a1d6abcb5",
+      "kind": "mesh",
+      "name": "mesh-60345d1ddc0cbbe9",
+      "sourceIndex": 66,
+      "sourceKey": "mesh:mesh-60345d1ddc0cbbe9"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f8b8443eb11",
+      "kind": "mesh",
+      "name": "mesh-ffd778e59adb4436",
+      "sourceIndex": 67,
+      "sourceKey": "mesh:mesh-ffd778e59adb4436"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f8cc69c9d65",
+      "kind": "mesh",
+      "name": "mesh-3c073f4d45331540",
+      "sourceIndex": 68,
+      "sourceKey": "mesh:mesh-3c073f4d45331540"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f8d4822f152",
+      "kind": "mesh",
+      "name": "mesh-bd00895098bd4eb1",
+      "sourceIndex": 69,
+      "sourceKey": "mesh:mesh-bd00895098bd4eb1"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f8ed16ca861",
+      "kind": "mesh",
+      "name": "mesh-512e54532c22f1d7",
+      "sourceIndex": 70,
+      "sourceKey": "mesh:mesh-512e54532c22f1d7"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f8f1155c9cb",
+      "kind": "mesh",
+      "name": "mesh-c835dd29f66df4df",
+      "sourceIndex": 71,
+      "sourceKey": "mesh:mesh-c835dd29f66df4df"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f9096b8725f",
+      "kind": "mesh",
+      "name": "mesh-fe1359ba0230de5d",
+      "sourceIndex": 72,
+      "sourceKey": "mesh:mesh-fe1359ba0230de5d"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f9191cc7ce5",
+      "kind": "mesh",
+      "name": "mesh-43aac4bcae9a8d67",
+      "sourceIndex": 73,
+      "sourceKey": "mesh:mesh-43aac4bcae9a8d67"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f92df32c15d",
+      "kind": "mesh",
+      "name": "mesh-4b70ede6b9c612a6",
+      "sourceIndex": 74,
+      "sourceKey": "mesh:mesh-4b70ede6b9c612a6"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f93ef17e556",
+      "kind": "mesh",
+      "name": "mesh-44364f1d7dd59464",
+      "sourceIndex": 75,
+      "sourceKey": "mesh:mesh-44364f1d7dd59464"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f943826b042",
+      "kind": "mesh",
+      "name": "mesh-3d8fa5f65712fe96",
+      "sourceIndex": 76,
+      "sourceKey": "mesh:mesh-3d8fa5f65712fe96"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f95a034ce34",
+      "kind": "mesh",
+      "name": "mesh-50f6044989e0d093",
+      "sourceIndex": 77,
+      "sourceKey": "mesh:mesh-50f6044989e0d093"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f960fe01765",
+      "kind": "mesh",
+      "name": "mesh-44494fc2375d8e14",
+      "sourceIndex": 78,
+      "sourceKey": "mesh:mesh-44494fc2375d8e14"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f97d371a77c",
+      "kind": "mesh",
+      "name": "mesh-676badc1a65fcbb9",
+      "sourceIndex": 79,
+      "sourceKey": "mesh:mesh-676badc1a65fcbb9"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f98c59837d0",
+      "kind": "mesh",
+      "name": "mesh-ca7be99e9ad75698",
+      "sourceIndex": 80,
+      "sourceKey": "mesh:mesh-ca7be99e9ad75698"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f992374f4a3",
+      "kind": "mesh",
+      "name": "mesh-f9a5043008993f57",
+      "sourceIndex": 81,
+      "sourceKey": "mesh:mesh-f9a5043008993f57"
+    },
+    {
+      "guid": "01a1b1ae-56dc-7194-8be4-4f9a085edc1a",
+      "kind": "mesh",
+      "name": "mesh-9556902ca876c03e",
+      "sourceIndex": 82,
+      "sourceKey": "mesh:mesh-9556902ca876c03e"
+    },
+    {
+      "guid": "01a1b1ae-56dd-7b4a-8ba3-558a14eb08e6",
+      "kind": "scene",
+      "name": "tokyo-part-15",
+      "sourceIndex": 0,
+      "sourceKey": "scene:tokyo-part-15"
+    }
+  ]
+}

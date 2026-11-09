@@ -1,0 +1,263 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "node-b88283f2a5f618ec",
+        "material",
+        "mixamorigHips",
+        "mixamorigSpine",
+        "mixamorigSpine1",
+        "mixamorigSpine2",
+        "mixamorigNeck",
+        "mixamorigHead",
+        "mixamorigHeadTop_End",
+        "mixamorigLeftShoulder",
+        "mixamorigLeftArm",
+        "mixamorigLeftForeArm",
+        "mixamorigLeftHand",
+        "mixamorigLeftHandThumb1",
+        "mixamorigLeftHandThumb2",
+        "mixamorigLeftHandThumb3",
+        "mixamorigLeftHandThumb4",
+        "mixamorigLeftHandIndex1",
+        "mixamorigLeftHandIndex2",
+        "mixamorigLeftHandIndex3",
+        "mixamorigLeftHandIndex4",
+        "mixamorigLeftHandMiddle1",
+        "mixamorigLeftHandMiddle2",
+        "mixamorigLeftHandMiddle3",
+        "mixamorigLeftHandMiddle4",
+        "mixamorigLeftHandRing1",
+        "mixamorigLeftHandRing2",
+        "mixamorigLeftHandRing3",
+        "mixamorigLeftHandRing4",
+        "mixamorigRightShoulder",
+        "mixamorigRightArm",
+        "mixamorigRightForeArm",
+        "mixamorigRightHand",
+        "mixamorigRightHandThumb1",
+        "mixamorigRightHandThumb2",
+        "mixamorigRightHandThumb3",
+        "mixamorigRightHandThumb4",
+        "mixamorigRightHandIndex1",
+        "mixamorigRightHandIndex2",
+        "mixamorigRightHandIndex3",
+        "mixamorigRightHandIndex4",
+        "mixamorigRightHandMiddle1",
+        "mixamorigRightHandMiddle2",
+        "mixamorigRightHandMiddle3",
+        "mixamorigRightHandMiddle4",
+        "mixamorigRightHandRing1",
+        "mixamorigRightHandRing2",
+        "mixamorigRightHandRing3",
+        "mixamorigRightHandRing4",
+        "mixamorigLeftUpLeg",
+        "mixamorigLeftLeg",
+        "mixamorigLeftFoot",
+        "mixamorigLeftToeBase",
+        "mixamorigLeftToe_End",
+        "mixamorigRightUpLeg",
+        "mixamorigRightLeg",
+        "mixamorigRightFoot",
+        "mixamorigRightToeBase",
+        "mixamorigRightToe_End"
+      ],
+      "unsupportedExtensions": []
+    },
+    "compressionMode": "none",
+    "downscaleMaxDimension": 1024,
+    "mipmap": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "player.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-835f2c7fb08c098c"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:mesh-835f2c7fb08c098c": {
+      "materialSlots": [
+        {
+          "defaultMaterialGuid": "01a1b168-8892-7230-b3ae-70f04cd03ac6",
+          "slotName": "material-ebc57833e3f7bfb7",
+          "sourceKey": "material:material-ebc57833e3f7bfb7"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b168-8891-7fd3-bfcd-5a5964c817d1",
+      "kind": "mesh",
+      "name": "mesh-835f2c7fb08c098c",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:mesh-835f2c7fb08c098c"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f04cd03ac6",
+      "kind": "material",
+      "name": "material-ebc57833e3f7bfb7",
+      "sourceIndex": 0,
+      "sourceKey": "material:material-ebc57833e3f7bfb7"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f1affcf879",
+      "kind": "scene",
+      "name": "player",
+      "sourceIndex": 0,
+      "sourceKey": "scene:player"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f26083833b",
+      "kind": "texture",
+      "name": "image-994adb986eb192ad",
+      "sourceIndex": 0,
+      "sourceKey": "texture:image-994adb986eb192ad"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f327f9541e",
+      "kind": "texture",
+      "name": "image-cc5787434fd23369",
+      "sourceIndex": 1,
+      "sourceKey": "texture:image-cc5787434fd23369"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f4fc656438",
+      "kind": "sampler",
+      "name": "sampler-817198516c7ac8c6",
+      "sourceIndex": 0,
+      "sourceKey": "sampler:sampler-817198516c7ac8c6"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f575f2494b",
+      "kind": "skeleton",
+      "sourceIndex": 0,
+      "sourceKey": "skeleton"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f64547a20d",
+      "kind": "skin",
+      "sourceIndex": 0,
+      "sourceKey": "skin"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f7f4b09817",
+      "kind": "animation-clip",
+      "name": "idle",
+      "sourceIndex": 0,
+      "sourceKey": "animation-clip:idle"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f888dbb878",
+      "kind": "animation-clip",
+      "name": "walk",
+      "sourceIndex": 1,
+      "sourceKey": "animation-clip:walk"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70f95031d6f7",
+      "kind": "animation-clip",
+      "name": "jump",
+      "sourceIndex": 2,
+      "sourceKey": "animation-clip:jump"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70fa6b50d6d9",
+      "kind": "animation-clip",
+      "name": "toyAim",
+      "sourceIndex": 3,
+      "sourceKey": "animation-clip:toyAim"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70fbe757b402",
+      "kind": "animation-clip",
+      "name": "toyRecoil",
+      "sourceIndex": 4,
+      "sourceKey": "animation-clip:toyRecoil"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70fcb991d934",
+      "kind": "animation-clip",
+      "name": "flurry",
+      "sourceIndex": 5,
+      "sourceKey": "animation-clip:flurry"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70fd2c0c3c1e",
+      "kind": "animation-clip",
+      "name": "heavyPunch",
+      "sourceIndex": 6,
+      "sourceKey": "animation-clip:heavyPunch"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70fea84b1a10",
+      "kind": "animation-clip",
+      "name": "roll",
+      "sourceIndex": 7,
+      "sourceKey": "animation-clip:roll"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-70ff6c26c57d",
+      "kind": "animation-clip",
+      "name": "fallRoll",
+      "sourceIndex": 8,
+      "sourceKey": "animation-clip:fallRoll"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-7100aa967a53",
+      "kind": "animation-clip",
+      "name": "strafe",
+      "sourceIndex": 9,
+      "sourceKey": "animation-clip:strafe"
+    },
+    {
+      "guid": "01a1b168-8892-7230-b3ae-7101d1da0a88",
+      "kind": "animation-clip",
+      "name": "diveRoll",
+      "sourceIndex": 10,
+      "sourceKey": "animation-clip:diveRoll"
+    }
+  ]
+}

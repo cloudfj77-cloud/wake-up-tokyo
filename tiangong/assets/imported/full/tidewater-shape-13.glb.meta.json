@@ -1,0 +1,85 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "tidewater-shape-13"
+      ],
+      "unsupportedExtensions": []
+    },
+    "meshCollision": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "tidewater-shape-13.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:tidewater-shape-13"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:tidewater-shape-13": {
+      "materialSlots": [
+        {
+          "slotName": "Default",
+          "sourceKey": "gltf:default"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b1ad-e87c-75dc-a55e-82d6d4d57760",
+      "kind": "mesh",
+      "name": "tidewater-shape-13",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:tidewater-shape-13"
+    },
+    {
+      "guid": "01a1b1ad-e87c-75dc-a55e-82d77085f359",
+      "kind": "scene",
+      "name": "tidewater-shape-13",
+      "sourceIndex": 0,
+      "sourceKey": "scene:tidewater-shape-13"
+    }
+  ]
+}

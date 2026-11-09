@@ -1,0 +1,76 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [],
+      "unsupportedExtensions": []
+    },
+    "downscaleMaxDimension": 1024,
+    "compressionMode": "none",
+    "mipmap": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "materials-tidewater.glb",
+  "sourceOverrideDescriptors": [],
+  "subAssets": [
+    {
+      "guid": "01a1b22a-8f91-7638-bb3c-d33102cfd1ee",
+      "kind": "material",
+      "name": "srgb-import-hint-0",
+      "sourceIndex": 0,
+      "sourceKey": "material:srgb-import-hint-0"
+    },
+    {
+      "guid": "01a1b22a-8f91-7638-bb3c-d33246dc8d28",
+      "kind": "material",
+      "name": "srgb-import-hint-1",
+      "sourceIndex": 1,
+      "sourceKey": "material:srgb-import-hint-1"
+    },
+    {
+      "guid": "01a1b22a-8f91-7638-bb3c-d333342c52c5",
+      "kind": "material",
+      "name": "srgb-import-hint-2",
+      "sourceIndex": 2,
+      "sourceKey": "material:srgb-import-hint-2"
+    },
+    {
+      "guid": "01a1b1ac-9eeb-770e-b644-eaec2e6a6a1e",
+      "kind": "scene",
+      "name": "materials-tidewater",
+      "sourceIndex": 0,
+      "sourceKey": "scene:materials-tidewater"
+    },
+    {
+      "guid": "01a1b16e-01f3-7f09-a74b-d9db5254c37f",
+      "kind": "texture",
+      "name": "image-34404755dc7c4922",
+      "sourceIndex": 0,
+      "sourceKey": "texture:image-34404755dc7c4922"
+    },
+    {
+      "guid": "01a1b16e-01f3-7f09-a74b-d9dc06856d2b",
+      "kind": "texture",
+      "name": "image-e18bd8ad8fbdaa85",
+      "sourceIndex": 1,
+      "sourceKey": "texture:image-e18bd8ad8fbdaa85"
+    },
+    {
+      "guid": "01a1b16e-01f3-7f09-a74b-d9ddc35cb6d5",
+      "kind": "texture",
+      "name": "image-6495383a97a11e68",
+      "sourceIndex": 2,
+      "sourceKey": "texture:image-6495383a97a11e68"
+    },
+    {
+      "guid": "01a1b16e-01f3-7f09-a74b-d9de52cf1556",
+      "kind": "sampler",
+      "name": "sampler-817198516c7ac8c6",
+      "sourceIndex": 0,
+      "sourceKey": "sampler:sampler-817198516c7ac8c6"
+    }
+  ]
+}

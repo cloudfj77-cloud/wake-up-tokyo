@@ -1,0 +1,12 @@
+$ forgeax project test
+
+ RUN  v4.1.12 /Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample
+
+ ✓ |@local/wakeup-tiangong-sample| assets/spike/__tests__/rules.test.ts (3 tests) 2ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  22:22:17
+   Duration  152ms (transform 34ms, setup 0ms, import 45ms, tests 2ms, environment 0ms)
+
+{"root":"/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample"}

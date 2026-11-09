@@ -1,0 +1,47 @@
+{
+  "importSettings": {},
+  "importer": "fbx",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "player.fbx",
+  "subAssets": [
+    {
+      "guid": "01a1b124-4e67-7edb-803a-e566b1e4c519",
+      "kind": "mesh",
+      "name": "materialmesh",
+      "sourceIndex": 0,
+      "sourceKey": "fbx:mesh:materialmesh"
+    },
+    {
+      "guid": "01a1b124-4e67-7edb-803a-e567a49655f4",
+      "kind": "material",
+      "sourceIndex": 0,
+      "sourceKey": "fbx:material"
+    },
+    {
+      "guid": "01a1b124-4e67-7edb-803a-e568dba4dd80",
+      "kind": "skeleton",
+      "sourceIndex": 0,
+      "sourceKey": "fbx:skeleton"
+    },
+    {
+      "guid": "01a1b124-4e67-7edb-803a-e5699f999bf0",
+      "kind": "skin",
+      "sourceIndex": 0,
+      "sourceKey": "fbx:skin"
+    },
+    {
+      "guid": "01a1b124-4e67-7edb-803a-e56a03971111",
+      "kind": "animation-clip",
+      "name": "mixamo.com",
+      "sourceIndex": 0,
+      "sourceKey": "fbx:animation-clip:mixamo.com"
+    },
+    {
+      "guid": "01a1b124-4e67-7edb-803a-e56b620ab8b6",
+      "kind": "scene",
+      "sourceIndex": 0,
+      "sourceKey": "fbx:scene"
+    }
+  ]
+}

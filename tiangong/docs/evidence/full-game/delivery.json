@@ -1,0 +1,48 @@
+{
+  "version": "0.3.76-tiangong.1",
+  "nativeOwnerPlay": {
+    "passed": true,
+    "steps": 223,
+    "result": "won",
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "layoutFindings": 0,
+    "evidence": "run42/play.json"
+  },
+  "productionZip": {
+    "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/release/wakeup-tiangong-0.3.76-tiangong.1-web.zip",
+    "bytes": 147666728,
+    "sha256": "43ed0a79bd84afd6dcafc2a8686f3307c7c4e6fff7ae35da1426cb4ef7fc0951"
+  },
+  "productionBrowser": {
+    "passed": true,
+    "maps": [
+      "tidewater",
+      "riverside"
+    ],
+    "backend": "hardware",
+    "launchProfile": "release",
+    "screenshots": 6,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "failedRequests": 0,
+    "missingResources": 0,
+    "evidence": "production/run.json"
+  },
+  "playBundle": {
+    "folder": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/release/WakeUp-Tiangong-0.3.76-tiangong.1",
+    "bundle": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/release/WakeUp-Tiangong-0.3.76-tiangong.1-play.zip",
+    "sha256": "ed3cdad95ae80d810ec94d3315fd074b22c6db8f2cb7a09a8ac032247971a88f",
+    "officialZipSha256": "43ed0a79bd84afd6dcafc2a8686f3307c7c4e6fff7ae35da1426cb4ef7fc0951"
+  },
+  "preservation": {
+    "originalGameClean": true,
+    "legacyExistingMilestoneEditPreserved": true,
+    "archiveSha256": "a84bf698755f59da9cef76e6b883f7aabb02dfbe8028ff3e57614a69a53885e8"
+  },
+  "limits": [
+    "Native lighting differs from original global comic outlines",
+    "Physical mobile devices not tested",
+    "FPS windows are desktop samples, not a whole-session guarantee"
+  ]
+}
