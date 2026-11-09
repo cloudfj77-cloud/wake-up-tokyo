@@ -1,0 +1,34 @@
+dist/
+node_modules/
+.forgeax/
+.assetlib/
+artifacts/
+
+# SDK-installed assistants stay local; project sources and AGENTS.md are tracked.
+skills/
+.agents/
+.cursor/
+.claude/
+.codebuddy/
+.workbuddy/
+.DS_Store
+
+.forgeax-debug/
+
+release/
+
+tools/migrate-assets/exports/
+
+tools/migrate-assets/whole/
+
+tools/migrate-assets/shared-material-stage/
+
+tools/migrate-assets/animation-channel-originals/
+
+__pycache__/
+
+# Offline intermediate duplicates; active native assets are under assets/imported/full.
+tools/migrate-assets/split/
+
+# Vite dependency prebundles are machine-local build caches.
+.vite/

@@ -1,0 +1,10 @@
+import {createRequire} from 'node:module';
+import {fileURLToPath} from 'node:url';
+import {resolve} from 'node:path';
+import {writeFile} from 'node:fs/promises';
+const root=fileURLToPath(new URL('./',import.meta.url));
+const project=resolve(root,'../..');
+const original=resolve(project,'../.tools/pr31-32-integration');
+const require=createRequire(resolve(project,'reference/package.json'));
+const {defineConfig}=require('vite');
+export default defineConfig({root,publicDir:resolve(original,'public'),cacheDir:resolve(root,'.vite'),resolve:{alias:[{find:/^three\/addons\//,replacement:resolve(project,'reference/node_modules/three/examples/jsm')+'/'},{find:/^three$/,replacement:resolve(project,'reference/node_modules/three/build/three.module.js')}]},server:{host:'127.0.0.1',port:5234,strictPort:true,fs:{allow:[resolve(project,'..')]}},plugins:[{name:'offline-asset-receipt',configureServer(server){server.middlewares.use('/__export',async(req,res)=>{try{if(req.method!=='POST'||req.headers.origin!=='http://127.0.0.1:5234')throw Error('same-origin POST required');const name=new URL(req.url,'http://127.0.0.1').searchParams.get('name');if(!name||! /^(prop-(?:shield|baton|gun)|player|worker|guard|shield-cop|baton-cop|infected-cop|ally-[0-9]+|metro-[0-9]+|tidewater|tokyo|tidewater-collision|tokyo-collision|weapons|boss|tidewater-nav|tidewater-exact-graph|tokyo-nav|dimensions|report)\.(glb|json)$/.test(name))throw Error('invalid export name');const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>512*1024*1024)throw Error('export size exceeded');chunks.push(chunk);}const bytes=Buffer.concat(chunks);if(name.endsWith('.glb')&&bytes.readUInt32LE(0)!==0x46546c67)throw Error('invalid GLB header');if(name.endsWith('.json'))JSON.parse(bytes.toString());await writeFile(resolve(root,'exports',name),bytes);res.end(JSON.stringify({name,bytes:size}));}catch(e){res.statusCode=400;res.end(String(e));}});}}]});

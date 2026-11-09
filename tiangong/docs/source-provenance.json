@@ -1,0 +1,37 @@
+{
+  "version": "0.3.76-tiangong.1",
+  "baseVersion": "v0.3.76",
+  "baseCommit": "e2436475c5d52c5ecb0012260fab52405cffdf71",
+  "sdk": "@forgeax/engine@0.4.19",
+  "runtime": "Native Engine World/ECS + WebGPU + Rapier character controller + native navigation",
+  "runtimeThreeJs": false,
+  "runtimeIframe": false,
+  "maps": [
+    "tidewater",
+    "riverside"
+  ],
+  "authorConversions": {
+    "mapParts": "geometry-only primitives with gltf:default slot -> shared original material GUID",
+    "textures": "original image colors, 1024 max uncompressed native import profile",
+    "collision": "native trimesh copied from original collision source",
+    "tokyoRoutes": "exact 169491-node / 673660-edge original graph, native decoder",
+    "characters": "original skinned meshes, texture atlases and animation clips, stable alias joints and missing rest channels only",
+    "media": "original OGG, comic panels and videos in native cooked assets",
+    "seasideRoutes": "exact 11586-node / 42956-directed-edge original connected graph; original clear-tested cardinal adjacency, native decoder"
+  },
+  "files": [
+    {
+      "name": "rules.js",
+      "originalSha256": "92f8226c0ad690d7536bb64812d5982cf7a263e2fef1636ae7a053532a1b7006",
+      "nativeSha256": "92f8226c0ad690d7536bb64812d5982cf7a263e2fef1636ae7a053532a1b7006",
+      "identical": true
+    },
+    {
+      "name": "combat-space.js",
+      "originalSha256": "f56999ae9d5dc2436f0938e1f03cba6ba17f8468b532e84ed58530fbfbb827dd",
+      "nativeSha256": "f56999ae9d5dc2436f0938e1f03cba6ba17f8468b532e84ed58530fbfbb827dd",
+      "identical": true
+    }
+  ],
+  "history": "docs/history/m1 records the earlier partial cafe prototype; its metrics do not describe this full-game build."
+}

@@ -1,0 +1,24 @@
+{
+  "repository": "https://github.com/cloudfj77-cloud/wake-up-tokyo",
+  "pullRequest": 33,
+  "approvedVersion": "0.3.76",
+  "acceptedHead": "d4c0c5e1867d2474dc8aa81df3febf549ed852d2",
+  "mergeCommit": "e2436475c5d52c5ecb0012260fab52405cffdf71",
+  "mergedAt": "2026-11-06T13:37:52Z",
+  "mergeTreeMatchesAcceptedHead": true,
+  "tagPushed": "v0.3.76",
+  "protectionRuleChange": false,
+  "prototypeVersion": "0.1.0",
+  "originalGameDirectory": "../.tools/pr31-32-integration",
+  "legacyDirectory": "../wake-up-tokyo-forgeax",
+  "legacyArchive": "../备份与存档/archives/forgeax-compat-v0.3.33-20261106/wake-up-tokyo-forgeax.tar.gz",
+  "legacyArchiveSha256": "a84bf698755f59da9cef76e6b883f7aabb02dfbe8028ff3e57614a69a53885e8",
+  "legacyArchiveVerifiedFiles": 2368,
+  "legacyArchiveVerifiedSymlinks": 112,
+  "preserved": [
+    "original game",
+    "legacy compatibility directory",
+    "full legacy archive"
+  ],
+  "nativeVersion": "0.3.76-tiangong.1"
+}

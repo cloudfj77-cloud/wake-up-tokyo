@@ -1,0 +1,974 @@
+{
+  "schemaVersion": "3.0.0",
+  "runId": "2026-11-06T23-29-20-636Z-9d6fcd4c",
+  "ok": true,
+  "mode": "browser-compositor",
+  "root": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample",
+  "url": "http://localhost:62940/",
+  "target": {
+    "kind": "project"
+  },
+  "carrier": "private-browser",
+  "launchProfile": "development",
+  "report": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/capture.json",
+  "backendRequested": "hardware",
+  "backend": "hardware",
+  "deterministicRequested": false,
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "deviceScaleFactor": 1,
+    "colorProfile": "srgb",
+    "colorScheme": "light",
+    "locale": "en-US",
+    "timezone": "UTC"
+  },
+  "browser": {
+    "version": "157.0.8103.38",
+    "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  },
+  "display": null,
+  "lavapipeIcd": null,
+  "captures": [
+    {
+      "index": 1,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/01-native-main-menu.png",
+      "digest": "sha256:7b75dbaeed97277a6425e47226c9660e02cfcef80a7053b7c2241f9902612d37",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 126,
+        "lumaMax": 255,
+        "lumaRange": 129,
+        "varyingPixels": 269,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "Wake up 打工人！ 地图 海滨钟楼广场 东京立体街区 开始觉醒 ↵ 选项设置 游戏说明 天工原生世界已就绪 觉醒进度 0.0% 已感染人数 0 已唤醒人数 0 觉醒区域 海滨钟楼广场 N 切换 Tab 选择 ↵ Wake up 打工人！ / 天工原生版 · v0.3.76-tiangong.1"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 33,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 2,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/02-native-upgrade-cards.png",
+      "digest": "sha256:be1f19774e75c186b102ba099993fc72f41f81d5d086108138ce7ae60c2807aa",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 2779,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "GENETIC RECOMBINATION / LV.1 反抗，正在进化。 点击一张卡片，立即获得能力。每张卡本级可刷新一次。 母体系 / 新能力 ⚔ 狂杀 Lv.0 → Lv.1 由你完成击杀或同化时，恢复 1 点生命，并永久提升 1 点生命上限。攻击、感染武器、空气传播及持续感染造成的同化均可触发。 点击获得 ↗ 刷新这张 武器系 / 新能力 ◎ 可感染注射器 Lv.0 → Lv.1 解锁感染针，按准星方向瞄准射击，命中时累积感染值，但不造成伤害。 点击获得 ↗ 刷新这张 母体系 / 新能力 ✚ 皮糙肉厚 Lv.0 → Lv.1 受到的伤害降低 15%。 点击获得 ↗ 刷新这张"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 66,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 3,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/03-native-jump.png",
+      "digest": "sha256:d9da66a0974a7b1f081d6a916d78a2164756aae8fc6e9182733cbad8693f3109",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 2789,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "○ 路人 · 苦逼打工人 零号母体 100 / 100 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:00 ⚔ 1 + + + + + + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 × 换弹中 获得能力 · 狂杀 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 街区行动 0% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 96,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 4,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/04-native-roll.png",
+      "digest": "sha256:c106e3b248d93bd0cf5c51ae1b39dc2d28ef91b95b4df39d275272520ec71db3",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 2458,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "○ 路人 · 苦逼打工人 零号母体 100 / 100 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:00 ⚔ 1 + + + + + + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 × 换弹中 获得能力 · 狂杀 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 街区行动 0% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 100,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 5,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/05-native-restored.png",
+      "digest": "sha256:5773df0cccaf81fe087d41c5cbb622aee2503676249c5744a7ad6f7109845b24",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 2784,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "○ 路人 · 苦逼打工人 零号母体 100 / 100 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:00 ⚔ 1 + + + + + + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 × 换弹中 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 街区行动 0% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 45,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 6,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/06-tokyo-station-trains.png",
+      "digest": "sha256:5ae8a40188361ea4ccf39e2001fee7ab1cd39b561c0784bf4c609079a5532a5a",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 23,
+        "lumaMax": 255,
+        "lumaRange": 232,
+        "varyingPixels": 2909,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "○ 路人 · 苦逼打工人 ○ 路人 · 苦逼打工人 零号母体 100 / 100 存活队伍 0 累计感染 0 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:01 ⚔ 1 + + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 × 换弹中 获得能力 · 狂杀 ? 操作 ♫ 音乐 开 LV 1 变异因子 0.0 / 8 地铁站教学 1 / 3 0% 沿站台向前走 WASD 移动，方向键或右键拖动观察。走到黄色光圈。 ◇ 沿站台向前走 ◇ 唤醒第一位打工人 ◇ 走出地铁站 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 370,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 7,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/07-tokyo-infection-friendly-green.png",
+      "digest": "sha256:f1459482a19e94e7a04de39e371c96d81ba147afd30906cd688244a4d06c8df4",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 0,
+        "lumaMax": 255,
+        "lumaRange": 255,
+        "varyingPixels": 3250,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "◆ 友军 · 普通狂暴者 ○ 路人 · 苦逼打工人 零号母体 101 / 101 存活队伍 1 累计感染 1 城市警戒 THREAT 0 尚未警觉 I II III IV V 下一级 · 10 00:03 ⚔ 1 + + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 你唤醒了 苦逼打工人 × 换弹中 获得能力 · 狂杀 ? 操作 ♫ 音乐 开 LV 1 变异因子 1.0 / 8 地铁站教学 3 / 3 2% 走出地铁站 跟随黄色光圈，沿楼梯上行，前往下沉广场。 ◆ 沿站台向前走 ◆ 唤醒第一位打工人 ◇ 走出地铁站 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 538,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 8,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/08-cafe-shoulder-injector.png",
+      "digest": "sha256:2074194c2d43a989bc6a5e1f264f9133ecf126de4feadceea326cce1a67f7895",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 0,
+        "lumaMax": 255,
+        "lumaRange": 255,
+        "varyingPixels": 3268,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "○ 路人 · 苦逼打工人 零号母体 101 / 101 存活队伍 1 累计感染 1 城市警戒 THREAT 1 尚未警觉 I II III IV V 下一级 · 10 00:20 ⚔ 1 ◎ 1 + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 变异因子 1.0 / 8 街区行动 2% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 可感染注射器 滚轮 / 数字键切换 · R 装填 1 徒手 2 注射器 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 1713,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 9,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/09-native-purple-spray-and-paint.png",
+      "digest": "sha256:f2b68796bb5a60916ac86d50a15a78f535bec5b4301002a65df229163121f1b4",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 5,
+        "lumaMax": 255,
+        "lumaRange": 250,
+        "varyingPixels": 3029,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 101 / 101 存活队伍 1 累计感染 1 城市警戒 THREAT 1 尚未警觉 I II III IV V 下一级 · 10 00:23 ⚔ 1 ◎ 1 + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 变异因子 1.0 / 8 街区行动 2% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 可感染注射器 滚轮 / 数字键切换 · R 装填 1 徒手 2 注射器 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 1891,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 10,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/10-mobile-native-controls.png",
+      "digest": "sha256:b2283243b378df03923b70b03a6871fbaa847ac551526f364f549da2d0d39f86",
+      "pixels": {
+        "width": 844,
+        "height": 390,
+        "sampledPixels": 4115,
+        "lumaMin": 0,
+        "lumaMax": 255,
+        "lumaRange": 255,
+        "varyingPixels": 2725,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 844,
+          "height": 390
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 101 / 101 城市警戒 THREAT 3 尚未警觉 00:34 ⚔ 1 ◎ 1 + + + + + + + 东京街区 N ↑ × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 街区行动 7% 在街区集结同伴 可感染注射器 1 徒手 2 注射器 Ⅱ 喷射 / 攻击 翻滚 跳跃 装填 奔跑 换武器"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 2638,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 11,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/11-mobile-native-portrait.png",
+      "digest": "sha256:3f102b2a26bde00080a2636e80bbc60cb9ecbf720d8f94b1953e55278878a399",
+      "pixels": {
+        "width": 390,
+        "height": 844,
+        "sampledPixels": 4115,
+        "lumaMin": 2,
+        "lumaMax": 255,
+        "lumaRange": 253,
+        "varyingPixels": 2157,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 390,
+          "height": 844
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 101 / 101 00:35 ⚔ 1 ◎ 1 + + + + + + + 东京街区 N ↑ × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 街区行动 7% 在街区集结同伴 可感染注射器 1 徒手 2 注射器 Ⅱ 喷射 / 攻击 翻滚 跳跃 装填 奔跑 换武器"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 2655,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 12,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/12-native-original-tuning-console.png",
+      "digest": "sha256:3de1b630642cf7a68cfa0c176de07ab3f67cc25d01423a85975b93ac2d5dde58",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 6,
+        "lumaMax": 255,
+        "lumaRange": 249,
+        "varyingPixels": 3251,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "零号母体 101 / 101 存活队伍 3 累计感染 3 城市警戒 THREAT 3 尚未警觉 I II III IV V 下一级 · 10 00:37 ⚔ 1 ◎ 1 + + + + + + + 東京 / CYBER DISTRICT N ↑ 同伴 敌军 削弱设施 × 换弹中 已拾取 · 感染注射器 ? 操作 ♫ 音乐 开 LV 1 变异因子 3.0 / 8 街区行动 7% 在街区集结同伴 唤醒打工人，集结军队；警戒到 500 后开启镇压倒计时。 可感染注射器 滚轮 / 数字键切换 · R 装填 1 徒手 2 注射器 Ⅱ 开发调参台 · F3 调整立即生效；恢复默认可回到正式规则。 时间 00:37 · 警戒 1 · 敌方 56 · 同伴 3 城市警戒 按累计经验升档，不看等级。每 3 点经验加 1 点警戒，10 / 100 / 300 / 500 升档。时间每秒再加 0.1。感染人数本身不加。 局部警情警戒值 城市封锁警戒值 I 档最高兵级 II 档最高兵级 III 档最高兵级 击杀+转化折算秒数 动态难度 按等级和转化友军阶级计算权重；护卫不计队伍权重。按敌方权重缺口投放，耗材库"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 2851,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 13,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/13-restored-actual-seaside-natural-checkpoint.png",
+      "digest": "sha256:b6ca83d2c8d14816dc69c5ccfa4ccf228d0bdefe7b9e68c2d4427f1eab8986c5",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 38,
+        "lumaMax": 255,
+        "lumaRange": 217,
+        "varyingPixels": 2920,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "◆ 友军 · 狂暴持枪特警 ◆ 友军 · 狂暴持盾特警 零号母体 662 / 662 存活队伍 139 累计感染 340 城市警戒 THREAT 549 全面镇压 I II III IV V 击败巨像，解除封锁 43:14 ◌ 3 ⌁ 1 ⚑ 3 ⚔ 2 ✶ 3 ✚ 3 + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 终局 · 秩序巨像 5437 / 6000 Ⅰ 炮火苏醒 × 换弹中 ? 操作 ♫ 音乐 开 LV 14 变异因子 16.8 / 114 终局行动 100% 击败秩序巨像 摧毁三座设施，削弱巨像的护盾、火力和增援。 ◆ 防护削弱 ◆ 火力削弱 ◆ 增援削弱 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 50,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 14,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/14-natural-combat-0.png",
+      "digest": "sha256:aca8fcdbac30cc513d196b79347ce7a054c3942618fae582430b6e267c8625f1",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 38,
+        "lumaMax": 255,
+        "lumaRange": 217,
+        "varyingPixels": 2929,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "◆ 友军 · 狂暴持盾特警 零号母体 664 / 664 存活队伍 140 累计感染 341 城市警戒 THREAT 550 全面镇压 I II III IV V 击败巨像，解除封锁 43:15 ◌ 3 ⌁ 1 ⚑ 3 ⚔ 2 ✶ 3 ✚ 3 + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 感染成功 你唤醒了 持枪特警 终局 · 秩序巨像 5385 / 6000 Ⅰ 炮火苏醒 ⚠ 落点预警 · 离开黄色圆环 × 换弹中 ? 操作 ♫ 音乐 开 LV 14 变异因子 18.8 / 114 终局行动 100% 击败秩序巨像 摧毁三座设施，削弱巨像的护盾、火力和增援。 ◆ 防护削弱 ◆ 火力削弱 ◆ 增援削弱 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 85,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 15,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/15-natural-boss-phase-1.png",
+      "digest": "sha256:945c5b5e3035a69d893562eb0121397a9985377bdfe317f55065e6e247f0ecf3",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 34,
+        "lumaMax": 255,
+        "lumaRange": 221,
+        "varyingPixels": 3047,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "◆ 友军 · 狂暴持盾特警 零号母体 664 / 664 存活队伍 140 累计感染 341 城市警戒 THREAT 550 全面镇压 I II III IV V 击败巨像，解除封锁 43:15 ◌ 3 ⌁ 1 ⚑ 3 ⚔ 2 ✶ 3 ✚ 3 + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 你唤醒了 持枪特警 终局 · 秩序巨像 5365 / 6000 Ⅰ 炮火苏醒 ⚠ 落点预警 · 离开黄色圆环 × 换弹中 ? 操作 ♫ 音乐 开 LV 14 变异因子 18.8 / 114 终局行动 100% 击败秩序巨像 摧毁三座设施，削弱巨像的护盾、火力和增援。 ◆ 防护削弱 ◆ 火力削弱 ◆ 增援削弱 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 107,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 16,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/16-natural-boss-phase-2.png",
+      "digest": "sha256:43b0abaa510c061efe3697c7f3decf7deaf50536a2e1992550a185065a097632",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 3321,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "◆ 友军 · 狂暴持盾特警 ◆ 友军 · 狂暴持枪特警 ◆ 友军 · 狂暴持枪特警 ◆ 友军 · 狂暴持枪特警 ◆ 友军 · 狂暴持盾特警 ◆ 友军 · 狂暴持枪特警 ◆ 友军 · 狂暴持盾特警 零号母体 645 / 664 存活队伍 139 累计感染 341 城市警戒 THREAT 550 全面镇压 I II III IV V 击败巨像，解除封锁 43:22 ◌ 3 ⌁ 1 ⚑ 3 ⚔ 2 ✶ 3 ✚ 3 + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 终局 · 秩序巨像 3856 / 6000 Ⅱ 连续轰击 核心过热 · 集中攻击！ × 换弹中 ? 操作 ♫ 音乐 开 LV 14 变异因子 18.8 / 114 终局行动 100% 击败秩序巨像 摧毁三座设施，削弱巨像的护盾、火力和增援。 ◆ 防护削弱 ◆ 火力削弱 ◆ 增援削弱 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 436,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 17,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/17-natural-boss-phase-3.png",
+      "digest": "sha256:64049500e7683b359a44883304c8b06388957340bed7d58655fa61b1744f28bd",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 3090,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "◆ 友军 · 狂暴持枪特警 ◆ 友军 · 狂暴持盾特警 零号母体 655 / 664 存活队伍 137 累计感染 341 城市警戒 THREAT 551 全面镇压 I II III IV V 击败巨像，解除封锁 43:26 ◌ 3 ⌁ 1 ⚑ 3 ⚔ 2 ✶ 3 ✚ 3 + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 终局 · 秩序巨像 1527 / 6000 Ⅲ 狂热炮击 核心过热 · 集中攻击！ × 换弹中 ? 操作 ♫ 音乐 开 LV 14 变异因子 18.8 / 114 终局行动 100% 击败秩序巨像 摧毁三座设施，削弱巨像的护盾、火力和增援。 ◆ 防护削弱 ◆ 火力削弱 ◆ 增援削弱 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 659,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 18,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/18-natural-boss-defeated-aftermath.png",
+      "digest": "sha256:718d25bc48089e6011678d706e3a95f0092f1fa63e5962e07549eac7c2ffb54a",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 1,
+        "lumaMax": 255,
+        "lumaRange": 254,
+        "varyingPixels": 3261,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "◆ 友军 · 狂暴持盾特警 ◆ 友军 · 狂暴持盾特警 ◆ 友军 · 狂暴持盾特警 零号母体 664 / 664 存活队伍 137 累计感染 341 城市警戒 THREAT 551 失去警戒能力 I II III IV V 警戒解除 43:27 ◌ 3 ⌁ 1 ⚑ 3 ⚔ 2 ✶ 3 ✚ 3 + + + 海滨 / TIDEWATER N ↑ 同伴 敌军 削弱设施 镇压解除 · 胜利 结束本局 × 换弹中 ? 操作 ♫ 音乐 开 LV 14 变异因子 18.8 / 114 终局行动 100% 秩序失去警戒 摧毁三座设施，削弱巨像的护盾、火力和增援。 ◆ 防护削弱 ◆ 火力削弱 ◆ 增援削弱 徒手 滚轮 / 数字键切换 · R 装填 1 徒手 Ⅱ"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 729,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 19,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/19-natural-victory-result.png",
+      "digest": "sha256:03569465837d6638c9e4057c1bd3d933dda51189bce9235566b248c4d9890b5d",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 29,
+        "lumaMax": 255,
+        "lumaRange": 226,
+        "varyingPixels": 3260,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "RUN RESULT 都醒过来了！ 存活 43:27 · 感染 341 · 击杀 176 · 同伴 137 能力构筑 · Lv.14 00:00 空气传播 Lv.1 00:32 空气传播 Lv.2 00:43 持续感染 Lv.1 01:05 听我号令 Lv.1 01:55 空气传播 Lv.3 03:11 狂杀 Lv.1 04:24 生存与进化 Lv.1 33:56 生存与进化 Lv.2 35:23 生存与进化 Lv.3 37:13 听我号令 Lv.2 38:29 听我号令 Lv.3 39:00 皮糙肉厚 Lv.1 39:31 皮糙肉厚 Lv.2 40:51 皮糙肉厚 Lv.3 42:47 狂杀 Lv.2 最后受击 秩序爆炸 · 20 伤害 重新觉醒返回主菜单"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 760,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 20,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/20-natural-combat-final.png",
+      "digest": "sha256:6112a183b8d0082d0c04829412207bddb3009864e50003921c41f36dcfd2ac98",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 29,
+        "lumaMax": 255,
+        "lumaRange": 226,
+        "varyingPixels": 3260,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "RUN RESULT 都醒过来了！ 存活 43:27 · 感染 341 · 击杀 176 · 同伴 137 能力构筑 · Lv.14 00:00 空气传播 Lv.1 00:32 空气传播 Lv.2 00:43 持续感染 Lv.1 01:05 听我号令 Lv.1 01:55 空气传播 Lv.3 03:11 狂杀 Lv.1 04:24 生存与进化 Lv.1 33:56 生存与进化 Lv.2 35:23 生存与进化 Lv.3 37:13 听我号令 Lv.2 38:29 听我号令 Lv.3 39:00 皮糙肉厚 Lv.1 39:31 皮糙肉厚 Lv.2 40:51 皮糙肉厚 Lv.3 42:47 狂杀 Lv.2 最后受击 秩序爆炸 · 20 伤害 重新觉醒返回主菜单"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 787,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 21,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/21-final.png",
+      "digest": "sha256:b9642923746be798d5592e660c2e7693542574cc29f5ba22d2576b28c941fa85",
+      "pixels": {
+        "width": 1280,
+        "height": 720,
+        "sampledPixels": 4096,
+        "lumaMin": 29,
+        "lumaMax": 255,
+        "lumaRange": 226,
+        "varyingPixels": 3259,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "RUN RESULT 都醒过来了！ 存活 43:27 · 感染 341 · 击杀 176 · 同伴 137 能力构筑 · Lv.14 00:00 空气传播 Lv.1 00:32 空气传播 Lv.2 00:43 持续感染 Lv.1 01:05 听我号令 Lv.1 01:55 空气传播 Lv.3 03:11 狂杀 Lv.1 04:24 生存与进化 Lv.1 33:56 生存与进化 Lv.2 35:23 生存与进化 Lv.3 37:13 听我号令 Lv.2 38:29 听我号令 Lv.3 39:00 皮糙肉厚 Lv.1 39:31 皮糙肉厚 Lv.2 40:51 皮糙肉厚 Lv.3 42:47 狂杀 Lv.2 最后受击 秩序爆炸 · 20 伤害 重新觉醒返回主菜单"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 813,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    },
+    {
+      "index": 22,
+      "checkpoint": null,
+      "ok": true,
+      "output": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/22-viewport-1280x600.png",
+      "digest": "sha256:b2ffb6d7b1add3d8e249fd85fb9faf46edbcb400ca58aa68c6cdef7ecf7e0fe1",
+      "pixels": {
+        "width": 1280,
+        "height": 600,
+        "sampledPixels": 4107,
+        "lumaMin": 24,
+        "lumaMax": 255,
+        "lumaRange": 231,
+        "varyingPixels": 3086,
+        "rendered": true
+      },
+      "runtime": {
+        "title": "Wake up 打工人！· 天工原生版",
+        "canvas": {
+          "width": 1280,
+          "height": 600
+        },
+        "domUi": {
+          "rootChildren": 1,
+          "openShadowRoots": 1,
+          "textWitness": "RUN RESULT 都醒过来了！ 存活 43:27 · 感染 341 · 击杀 176 · 同伴 137 能力构筑 · Lv.14 00:00 空气传播 Lv.1 00:32 空气传播 Lv.2 00:43 持续感染 Lv.1 01:05 听我号令 Lv.1 01:55 空气传播 Lv.3 03:11 狂杀 Lv.1 04:24 生存与进化 Lv.1 33:56 生存与进化 Lv.2 35:23 生存与进化 Lv.3 37:13 听我号令 Lv.2 38:29 听我号令 Lv.3 39:00 皮糙肉厚 Lv.1 39:31 皮糙肉厚 Lv.2 40:51 皮糙肉厚 Lv.3 42:47 狂杀 Lv.2 最后受击 秩序爆炸 · 20 伤害 重新觉醒返回主菜单"
+        },
+        "adapter": {
+          "vendor": "apple",
+          "architecture": "metal-3",
+          "device": "",
+          "description": ""
+        },
+        "adapterError": null,
+        "engineFrameId": 837,
+        "captureReady": null,
+        "fatalError": null,
+        "rendererError": null,
+        "singleHtml": null,
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+      }
+    }
+  ],
+  "requests": {
+    "total": 10480,
+    "documents": 3,
+    "http": 10477,
+    "https": 0,
+    "failed": 0,
+    "resourceMisses": 0,
+    "pending": 0,
+    "notable": []
+  },
+  "singleHtml": null,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "inputWarnings": [],
+  "boundary": "Browser-compositor capture is visual iteration evidence, not physical-GPU performance, HDR-display output, or release acceptance.",
+  "closedAt": "2026-11-06T23:34:04.562Z"
+}

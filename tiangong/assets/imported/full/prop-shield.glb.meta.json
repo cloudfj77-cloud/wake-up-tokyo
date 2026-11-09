@@ -1,0 +1,117 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "node-d0a6f6075f8d9b51",
+        "tripo_node_e8980298-57df-4ac1-88c9-f9a49e6a7a1e"
+      ],
+      "unsupportedExtensions": []
+    },
+    "compressionMode": "none",
+    "downscaleMaxDimension": 1024,
+    "mipmap": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "prop-shield.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-9af0939abbb86aba"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:mesh-9af0939abbb86aba": {
+      "materialSlots": [
+        {
+          "defaultMaterialGuid": "01a1b2a2-35a8-7779-8ee5-c600df701318",
+          "slotName": "material-21dccf10c7a044a1",
+          "sourceKey": "material:material-21dccf10c7a044a1"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b2a2-35a7-7032-9ef3-adeafbc4cdb2",
+      "kind": "mesh",
+      "name": "mesh-9af0939abbb86aba",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:mesh-9af0939abbb86aba"
+    },
+    {
+      "guid": "01a1b2a2-35a8-7779-8ee5-c600df701318",
+      "kind": "material",
+      "name": "material-21dccf10c7a044a1",
+      "sourceIndex": 0,
+      "sourceKey": "material:material-21dccf10c7a044a1"
+    },
+    {
+      "guid": "01a1b2a2-35a8-7779-8ee5-c601610ada66",
+      "kind": "scene",
+      "name": "prop-shield",
+      "sourceIndex": 0,
+      "sourceKey": "scene:prop-shield"
+    },
+    {
+      "guid": "01a1b2a2-35a8-7779-8ee5-c602e261207b",
+      "kind": "texture",
+      "name": "image-8cfef8801ee10628",
+      "sourceIndex": 0,
+      "sourceKey": "texture:image-8cfef8801ee10628"
+    },
+    {
+      "guid": "01a1b2a2-35a8-7779-8ee5-c6035d20985a",
+      "kind": "texture",
+      "name": "image-374d674cf06cb853",
+      "sourceIndex": 1,
+      "sourceKey": "texture:image-374d674cf06cb853"
+    },
+    {
+      "guid": "01a1b2a2-35a8-7779-8ee5-c6040b5412cf",
+      "kind": "sampler",
+      "name": "sampler-817198516c7ac8c6",
+      "sourceIndex": 0,
+      "sourceKey": "sampler:sampler-817198516c7ac8c6"
+    }
+  ]
+}
