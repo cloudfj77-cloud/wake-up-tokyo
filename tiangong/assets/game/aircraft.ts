@@ -7,7 +7,7 @@ export function updateAircraft(game:NativeGame,dt:number){
  let a=game.aircraft;
  if(a?.mode==='crash'){
   a.crash-=dt;a.x+=a.vx*dt;a.z+=a.vz*dt;const floor=game.ground.floor(a.x,a.z,p.floorY)+.4;a.y=Math.max(floor,a.y-dt*(6+(1.35-Math.max(0,a.crash))*10));a.pitch=Math.min(1.2,(a.pitch??0)+dt*1.15);a.bank+=dt*2.6;
-  if(a.y<=floor+.05||a.crash<=0){game.splashes.push({id:++game.id,x:a.x,y:floor,z:a.z,time:.6,radius:4.4,enemy:true});game.emit('planeCrash');game.aircraft=null;}return;
+  if(a.y<=floor+.05||a.crash<=0){game.splashes.push({id:++game.id,x:a.x,y:floor,z:a.z,time:.6,radius:4.4,enemy:true});game.emit('planeCrash',{x:a.x,y:floor,z:a.z});game.aircraft=null;}return;
  }
  if(s.aftermath||!phase){game.aircraft=null;return;}
  if(!a&&!game.planeSpent[phase]){game.planeSpent[phase]=true;game.aircraft=a={id:-2,aircraftBody:true,mode:'orbit',x:p.x+spec.orbit,z:p.z,y:p.floorY+spec.height,yaw:0,pitch:0,bank:.38,angle:0,cx:p.x,cz:p.z,hp:spec.hp,drop:.9,strafe:3.6,shots:0};game.emit('planeArrival');}
@@ -20,8 +20,8 @@ export function updateAircraft(game:NativeGame,dt:number){
   if(a.dive<=0){a.mode='orbit';a.strafe=spec.strafeGap;a.cx=p.x;a.cz=p.z;a.angle=Math.atan2(a.z-p.z,a.x-p.x);a.pitch=0;}return;
  }
  a.cx+=(p.x-a.cx)*Math.min(1,dt*.4);a.cz+=(p.z-a.cz)*Math.min(1,dt*.4);a.angle+=dt*spec.spin;a.x=a.cx+Math.cos(a.angle)*spec.orbit;a.z=a.cz+Math.sin(a.angle)*spec.orbit;a.y=game.ground.floor(a.x,a.z,p.floorY)+spec.height;a.yaw=-a.angle;a.bank=.38;
- if(a.mode==='warn'){a.warn-=dt;if(a.warn<=0){a.mode='dive';a.dive=spec.strafeTime;a.from={x:a.x,y:a.y,z:a.z};game.emit('planeDive');}return;}
+ if(a.mode==='warn'){a.warn-=dt;if(a.warn<=0){a.mode='dive';a.dive=spec.strafeTime;a.from={x:a.x,y:a.y,z:a.z};game.emit('planeDive',{x:a.x,y:a.y,z:a.z});}return;}
  a.drop-=dt;a.strafe-=dt;
- if(a.drop<=0){a.drop=spec.interval;const q=game.ground.nearest(p.x+(Math.random()-.5)*8,p.z+(Math.random()-.5)*8,p.floorY,10);game.projectiles.push({id:++game.id,x:a.x,y:a.y,z:a.z,sx:a.x,sy:a.y,sz:a.z,tx:q.x,ty:q.floorY??p.floorY,tz:q.z,total:spec.fall,life:spec.fall,lob:true,arc:1.5,splash:spec.radius,damage:spec.damage,infection:0,ally:false});game.emit('planeBomb');}
+ if(a.drop<=0){a.drop=spec.interval;const q=game.ground.nearest(p.x+(Math.random()-.5)*8,p.z+(Math.random()-.5)*8,p.floorY,10);game.projectiles.push({id:++game.id,x:a.x,y:a.y,z:a.z,sx:a.x,sy:a.y,sz:a.z,tx:q.x,ty:q.floorY??p.floorY,tz:q.z,total:spec.fall,life:spec.fall,lob:true,arc:1.5,splash:spec.radius,damage:spec.damage,infection:0,ally:false});game.emit('planeBomb',{x:q.x,y:q.floorY??p.floorY,z:q.z});}
  if(a.strafe<=0){const yaw=Math.random()*Math.PI*2,side=(Math.random()-.5)*2.4,dx=Math.sin(yaw),dz=Math.cos(yaw),mx=p.x-dz*side,mz=p.z+dx*side;a.lane={x:mx-dx*spec.strafeLength/2,z:mz-dz*spec.strafeLength/2,dx,dz,len:spec.strafeLength};a.mode='warn';a.warn=spec.strafeWarn;a.shots=0;game.emit('planeWarning');}
 }

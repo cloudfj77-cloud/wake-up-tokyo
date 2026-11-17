@@ -5,6 +5,9 @@
   "type": "module",
   "license": "UNLICENSED",
   "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "dev": "forgeax dev start",
     "build": "forgeax project build",
@@ -12,7 +15,10 @@
     "serve": "forgeax project preview",
     "preview": "forgeax project preview",
     "doctor": "forgeax project check",
-    "test": "forgeax project test",
+    "test": "forgeax project test && node --test assets/game/original-rules.test.mjs",
+    "test:unit": "forgeax project test",
+    "test:rules": "node --test assets/game/original-rules.test.mjs",
+    "test:all": "pnpm test && pnpm typecheck && pnpm exec forgeax project check --json",
     "typecheck": "pnpm exec tsc --noEmit"
   },
   "forgeax": {

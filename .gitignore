@@ -28,3 +28,10 @@ packaging/android/.gradle/
 packaging/android/local.properties
 packaging/android/**/build/
 packaging/android/app/src/main/assets/www/
+
+# 实验本地 API 密钥与 Python 缓存，禁止入库
+.env.local
+**/.env.local
+.pycache/
+**/.pycache/
+

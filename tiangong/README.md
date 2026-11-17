@@ -52,6 +52,15 @@ pnpm dev
 
 源码、原始运行资源、锁文件均随仓库提供；`node_modules`、`.forgeax`、`dist`、`release` 由每台电脑自行生成。开发不需要启动旧 Three.js 版。仓库不包含之前本机生成的发布 ZIP，可按下方命令自行构建，再使用本目录的“打开天工原生版.command”运行构建结果。
 
+全新克隆不含 `dist/` 与发布 ZIP，双击启动器前先生成构建产物：
+
+```sh
+pnpm build
+# 或：pnpm exec forgeax project package --format web-zip --json，再把 release/*-web.zip 解压到 tiangong/dist/
+```
+
+`打开天工原生版.command` 等价于 `node tools/serve-web.mjs --dir ../dist --port 5240 --open`；也可用 `--dir release/verified-web` 指向已解压的正式包。正式 ZIP 必须经 HTTP(S) 运行，不能直接双击 ZIP 内的 `index.html`。
+
 工程分工与优化入口见 [团队开发说明](docs/team-development.md)。
 
 WASD 移动；E 奔跑；空格翻滚；Shift 跳跃；C 蹲伏；左键 / J 攻击或射击；右键 / K 重击；数字键 / 滚轮切武器；R 装填；F 号令；V 归队；Tab 地图；Esc / P 暂停。触屏可在设置中开启。
@@ -60,13 +69,17 @@ WASD 移动；E 奔跑；空格翻滚；Shift 跳跃；C 蹲伏；左键 / J 攻
 
 ```sh
 pnpm typecheck
-pnpm test
-node --test assets/game/original-rules.test.mjs
+pnpm test                         # 43 项原生回归（含 4 项差异补全回归）+ 58 项原版纯规则
+pnpm test:unit                    # 仅 43 项原生回归
+pnpm test:rules                   # 仅 58 项原版纯规则
 pnpm exec forgeax project check --json
 NODE_OPTIONS=--max-old-space-size=16384 pnpm exec forgeax project play scripts/playthrough.mjs --backend hardware --headless true --json
+NODE_OPTIONS=--max-old-space-size=16384 pnpm exec forgeax project play scripts/seaside-resume.mjs --backend hardware --headless true --json
 NODE_OPTIONS=--max-old-space-size=16384 pnpm exec forgeax project package --format web-zip --json
 pnpm serve
 ```
+
+`playthrough.mjs`（→ `full-gameplay.mjs` → `full-playthrough.mjs`）是常规双地图流程，约 125 步；`seaside-resume.mjs` 在其后追加 F3 调参台、帮助、真实存档恢复、自然战斗、Boss 三阶段与胜利结算，是迁移报告所述 223 步最终 owner 验收脚本，证据在 `docs/evidence/full-game/run42/`。
 
 最终测试记录、性能窗口与画面差异见 [迁移报告](docs/migration-report.md)。正式 ZIP 需要通过 HTTP(S) 运行，不能双击里面的 index.html。源码在天工独立分支中协作，未发布公网试玩站点。
 

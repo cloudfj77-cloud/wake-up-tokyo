@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {spawn} from 'node:child_process';
 // Local release launcher: built files only, no SDK or original-game server.
 const args=process.argv.slice(2),arg=(name,fallback)=>{const i=args.indexOf(name);return i<0?fallback:args[i+1];};
-const root=await realpath(resolve(arg('--dir',fileURLToPath(new URL('../dist',import.meta.url)))));
+let root;try{root=await realpath(resolve(arg('--dir',fileURLToPath(new URL('../dist',import.meta.url)))));}catch{console.error('未找到构建产物：请先在本目录执行 pnpm build，或把官方 web-zip 解压到 tiangong/dist/ 后重试。');process.exit(1);}
 const port=Number(arg('--port','5240'));
 if(!Number.isInteger(port)||port<0||port>65535)throw Error('Invalid port');
 await stat(resolve(root,'index.html'));

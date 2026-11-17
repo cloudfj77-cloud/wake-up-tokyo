@@ -2,11 +2,18 @@
 
 天工原生版 `v0.3.76-tiangong.1` 已加入独立的 [`tiangong/`](tiangong/README.md) 工程，包含源码、资源和队友启动说明；原 Three.js 版仍使用仓库根目录。天工优化入口见 [团队开发说明](tiangong/docs/team-development.md)。
 
+## 天工原生版（与根目录原版并存）
+
+- 版本：`0.3.76-tiangong.1`，基于已验收的 Three.js `v0.3.76`，独立工程位于 `tiangong/`，使用 `@forgeax/engine 0.4.19` / WebGPU；运行时不加载 Three.js，也不用 iframe 播放旧游戏。
+- 启动（需 Node.js 24、pnpm 12.15.0、开启硬件加速且支持 WebGPU 的 Chrome / Edge）：`cd tiangong && pnpm install --frozen-lockfile && NODE_OPTIONS=--max-old-space-size=16384 pnpm dev`，开发地址以 `pnpm exec forgeax dev status --json` 返回为准。完整说明见 [tiangong/README.md](tiangong/README.md)。
+- 两个工程分别有 `package.json`、锁文件、依赖和存档格式；**不要用根目录的 `npm` 脚本启动天工版**，两版存档互不覆盖。
+- 迁移范围、实机证据与已知画面差异见 [迁移报告](tiangong/docs/migration-report.md)；发布记录见 [CHANGELOG.md](CHANGELOG.md) 的 `0.3.76-tiangong.1` 条目。
+
 Android 手机试玩版：左侧摇杆＋右侧战斗按键，支持横屏离线安装。安装、构建和验证说明见 [Android 手机试玩版](docs/android-mobile.md)。
 
 整合试玩版默认进入海滨钟楼广场；菜单可切换东京立体街区，也可通过 `?map=riverside` 直接进入东京。两张地图继续使用各自的存档。
 
-当前版本以 `package.json` 和游戏主菜单为准。本批整合试玩版本为 **Demo v0.3.76**，包含 PR31 的手机／电脑版、隐私与画质修正，以及 PR32 的东京性能、人口与寻路更新；更新记录见 [CHANGELOG.md](CHANGELOG.md)，编号规则见 [VERSIONING.md](VERSIONING.md)。
+当前版本以 `package.json` 和游戏主菜单为准。**仓库根目录原 Three.js 版**为 **Demo v0.3.76**，包含 PR31 的手机／电脑版、隐私与画质修正，以及 PR32 的东京性能、人口与寻路更新；独立的天工原生版版本号见上一节。更新记录见 [CHANGELOG.md](CHANGELOG.md)，编号规则见 [VERSIONING.md](VERSIONING.md)。
 
 支持桌面键鼠和手机触屏的第三人称体素感染游戏。Windows EXE、HTML 资源包和 APK 的构建步骤见 [双端构建说明](docs/android-mobile.md)。能力设计依据为用户提供的漫画技能包；补兵、掉落等系统沿用企业微信「代号：Wake Up」的详细配置，已核实范围与适配值见 [企微设计对齐说明](docs/wecom-design-alignment.md)。DESIGN.md 保留历史方案。能力树以用户提供的漫画技能包为准：八种三级变异，人物整体移速已下调。
 

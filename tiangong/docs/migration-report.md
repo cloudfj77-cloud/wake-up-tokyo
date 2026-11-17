@@ -23,7 +23,7 @@
 
 - 使用原模型/贴图/动作和原版 LUT；原生 Standard 光照仍与旧 Three.js 的漫画黑描边/法线后处理不同，当前不是逐像素复刻。
 - 原资源复制件经过稳定命名、重复几何清理、无效顶点色约束、缺失 UV/静止动画通道补齐。贴图最大 1024，无压缩导入以避开首次大图切换的帧看门狗；原文件保留。
-- 声音使用原音频样本；脚步和反馈已接入，空间环境混音与旧游戏仍有差异。
+- 声音使用原音频样本；脚步和反馈已接入，五条日语电台播报与中文字幕已对齐原版，爆炸／炮击／空袭等世界事件接入 Web Audio 空间声源并跟随相机听者；Wwise 环境床、衰减曲线与完整空间混音仍与旧游戏有差异。
 - 原游戏和天工版使用各自独立存档格式；不直接覆盖原存档。
 
 ## 导航与后期流程
@@ -38,10 +38,12 @@ Play 41 从真实游戏自动存档接着自然游玩，达到 341 次感染；�
 
 Play 42 在最终代码上通过 223 步官方 owner 验收：双地图、原引导/武器拾取、触屏横竖屏、调参/帮助、真实存档恢复、Boss 三阶段、战后按钮与胜利结算。游戏状态为 won，感染 341、击杀 176、同伴 137，游戏时间 43:27。console/page 错误为 0，1280×720 / 1280×600 的布局发现为 0。已打开检查实际 Boss、胜利结算与触屏 PNG。正式工程 test gate、类型与配置检查通过。
 
-正式发布包已经由 forgeax project package --format web-zip 构建：527 文件、126 个资源包、2,143 个资源条目，SDK 运行时随包携带。
+正式发布包已经由 forgeax project package --format web-zip 构建：527 文件、126 个资源包、2,143 个资源条目，SDK 运行时随包携带。以下 `release/` 路径与 5240 地址均为**作者本机构建产物**；`release/` 已 gitignore、不入库，队友需按 README 自行构建，`127.0.0.1:5240` 也只在运行该服务的电脑上有效。
 
 - 官方 Web ZIP：release/wakeup-tiangong-0.3.76-tiangong.1-web.zip，147,666,728 字节；SHA-256：43ed0a79bd84afd6dcafc2a8686f3307c7c4e6fff7ae35da1426cb4ef7fc0951。
-- Mac 启动器游戏包：release/WakeUp-Tiangong-0.3.76-tiangong.1-play.zip；解压后双击“打开游戏.command”。使用本机 Node.js 24 与支持 WebGPU 的 Chrome / Edge。
+- Mac 启动器游戏包：release/WakeUp-Tiangong-0.3.76-tiangong.1-play.zip；解压后双击「打开天工原生版.command」。使用本机 Node.js 24 与支持 WebGPU 的 Chrome / Edge。
 - 当前本机试玩：http://127.0.0.1:5240/，运行的是官方 ZIP 解压出的 release/verified-web，不依赖原游戏或开发资源服务器。该地址仅本机可用，不是公网分享地址。
+
+`docs/evidence/full-game/asset-authoring-verify.json` 中 `unproducedAssetCount: 4` 的 `wakeup-story`（media/story.pack.json）、`navigation-mesh`（navigation.pack.json）、`plugin`（physics.pack.json）、`wakeup-routes`（routes.pack.json）是 ScriptablePack 自定义类型，不产出独立 engine asset，而由原生代码直接读取 pack 数据（如 `scripts/full-gameplay.mjs:16` 读 `routes.pack.json`、`media.ts` 读故事 pack）。本次 `emittedAssetCount 26/26`、`unknownAssetCount 0`、`ok: true`，这 4 条 `status: unproduced / availability: unknown` 与 2 条 `unmaterializedScriptablePack` 是预期结果，不表示资源缺失，也不等于全量资源已逐项验证。
 
 正式 ZIP 的 CRC / SHA-256 校验通过；通过官方 SDK createBrowserCapture 的 release / hardware 配置启动，实际展示菜单、中文漫画、卡片和原生场景，WASD 位移写入真实存档；重新加载继续游戏后坐标一致。浏览器无 console/page 错误、无失败请求和资源缺失。第二张地图的生产复验也保存到同一证据目录。旧 docs/history/m1 的样板产物不用于本次交付。

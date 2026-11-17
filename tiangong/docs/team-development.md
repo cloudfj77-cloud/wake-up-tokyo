@@ -24,7 +24,13 @@
 
 从协作分支再切自己的分支，例如 `git switch -c feat/tiangong-performance`，完成后提 PR 到 `feat/tiangong-native-v0.3.76-1`。如果想把天工工程并入主线，审查的是新增独立目录的 PR；不会用天工代码覆盖根目录游戏。
 
-版本修改同步 package.json；SDK 和依赖使用 pnpm 官方命令更新，不编辑 SDK 内部或生成缓存。实际帧率用完整渲染帧时间窗口测量，区分冷启动资源编译和稳定运行。原生光照与旧版全屏漫画描边仍有差异，物理手机性能尚未验证。
+版本修改需要同步 4 处：`package.json`、`assets/game/interface.html` 菜单页脚、`scripts/release-acceptance.mjs` 的版本断言、`docs/source-provenance.json`；建议后续改为从 package.json 注入。SDK 和依赖使用 pnpm 官方命令更新，不编辑 SDK 内部或生成缓存。实际帧率用完整渲染帧时间窗口测量，区分冷启动资源编译和稳定运行。原生光照与旧版全屏漫画描边仍有差异，物理手机性能尚未验证。
+
+## 测试覆盖与原版对照
+
+- `pnpm test` = 43 项原生 vitest 回归（其中 4 项覆盖电台字幕、事件坐标与结算字段）+ 58 项原版纯规则；`pnpm test:unit` / `pnpm test:rules` 可单独运行，`pnpm test:all` 再加类型与工程检查。
+- 根目录原版的 49 个测试文件 / 454 项主检查 + 7 项手机检查中，依赖 Three.js 网格、场景、资源与 Wwise 音频的用例没有迁移到原生工程（见 `docs/feedback.md` 与 `assets/game/original-rules.test.mjs` 开头），由 125 / 223 步 owner 实机与正式包复验间接覆盖，**不等价于 454 项全覆盖**。
+- `rules.js` 与 `combat-space.js` 与根目录 v0.3.76 基准文件字节一致；改动这两份文件必须先在原版同步并重新做双端回归。
 
 ## 提交前检查
 
@@ -32,7 +38,6 @@
 pnpm exec forgeax project check --json
 pnpm test
 pnpm typecheck
-node --test assets/game/original-rules.test.mjs
 ```
 
 修改画面、玩法或输入后，按 README 的官方 owner 实机流程验收。已有完整通关与正式包证据见 `docs/evidence/full-game/run42`、`docs/evidence/full-game/production` 和迁移报告。历史性能窗口不是队友机器的性能保证。
