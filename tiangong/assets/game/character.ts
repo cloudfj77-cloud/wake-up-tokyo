@@ -61,14 +61,22 @@ export class CharacterVisual{
  constructor(public world:World,public root:EntityHandle,public name:ModelName,public names:string[],count:number,private propRoot?:EntityHandle){this.weights=Array(count).fill(0);if(name==='player'){const nodes=new Map(descendants(world,root).map(e=>[world.get(e,Name).ok?world.get(e,Name).unwrap().value:'',e]));for(const side of ['Right','Left']){const joints=['Arm','ForeArm','Hand'].map(j=>nodes.get('mixamorig'+side+j));if(joints.every(j=>j!==undefined))this.hands.push(createIKSolver(world,{joints:joints as EntityHandle[],maxIterations:12,tolerance:.005}).unwrap());}}}
  pose(growth=1,crouch=false,lift=0){const shape=growth+','+crouch+','+lift;if(shape===this.shape)return;this.shape=shape;const ref=FULL_ASSETS[this.name],fit=ref.height/ref.sourceHeight,scale=fit*growth;this.world.set(this.root,Transform,{scale:[scale,scale*(crouch?.7:1),scale],pos:[0,-ref.minY*scale-(crouch?.15:0)+lift,0]}).unwrap();}
  grip(targets:number[][],poles:number[][]){for(let n=0;n<this.hands.length;n++)this.hands[n].solve(vec3.create(...targets[n] as [number,number,number]),{pole:vec3.create(...poles[n] as [number,number,number])}).unwrap();}
- update(dt:number,action:string,movingSpeed=0,visible=true,token:unknown=0,jumpPhase?:number){if(visible!==this.shown){this.shown=visible;this.world.set(this.root,Visibility,{state:visible?VisibilityStateValue.inherited:VisibilityStateValue.hidden}).unwrap();}if(!this.names.length)return;const requested=this.names.includes(action)?action:this.names.includes(action==='walk'?'zombie':'idle')?(action==='walk'?'zombie':'idle'):action==='strafe'&&this.names.includes('walk')?'walk':this.names[0];
+ update(dt:number,action:string,movingSpeed=0,visible=true,token:unknown=0,jumpPhase?:number){if(visible!==this.shown){this.shown=visible;this.world.set(this.root,Visibility,{state:visible?VisibilityStateValue.inherited:VisibilityStateValue.hidden}).unwrap();}if(!this.names.length)return;
+  const locomotionFallback=action==='strafe'?'walk':action==='walk'?'zombie':undefined;
+  const requested=this.names.includes(action)?action:
+   locomotionFallback&&this.names.includes(locomotionFallback)?locomotionFallback:
+   this.names.includes('idle')?'idle':this.names[0];
   // 原版一次挥击大约播 0.65 秒，翻滚 0.72 秒。命中窗口更短，但动作不能跟着提前切回待机。
   const interrupt=requested==='jump'||requested==='roll'||requested==='diveRoll';
   const oneShot=!interrupt&&!LOOPING.includes(requested);
   if(oneShot&&(this.token!==token||this.hold!==requested)){this.hold=requested;this.holdLeft=clipSpan(requested);}
   if(interrupt){this.hold='';this.holdLeft=0;}else if(this.holdLeft>0)this.holdLeft=Math.max(0,this.holdLeft-dt);
   if(this.holdLeft<=0)this.hold='';
-  const selected=this.hold&&this.names.includes(this.hold)?this.hold:requested;const index=this.names.indexOf(selected),player=this.world.get(this.root,AnimationPlayer).unwrap();const changed=this.action!==selected||this.token!==token;this.token=token;this.action=selected;
+  const selected=this.hold&&this.names.includes(this.hold)?this.hold:requested;const index=this.names.indexOf(selected),player=this.world.get(this.root,AnimationPlayer).unwrap();
+  // A fallback request while a swing is held must not restart that swing.
+  const changed=this.action!==selected||(selected===requested&&this.token!==token);
+  if(selected===requested)this.token=token;
+  this.action=selected;
   const fade=interrupt ? .025 : LOOPING.includes(selected) ? .18 : .07,step=Math.min(1,dt/Math.max(fade,.001));this.weights=this.weights.map((w,i)=>w+((i===index?1:0)-w)*step);
   const durations=FULL_ASSETS[this.name].durations as Record<string,number>,speeds=this.names.map(()=>1);
   // 步频用真实移动速度除以原版兜底步幅：工人 0.55、同伴 1.9、其余 2，上限 4 倍。
