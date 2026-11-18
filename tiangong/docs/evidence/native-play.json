@@ -1,0 +1,1103 @@
+{
+  "schemaVersion": "1.0.0",
+  "passed": true,
+  "root": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample",
+  "script": "scripts/playthrough.mjs",
+  "outputDir": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough",
+  "report": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/play.json",
+  "captureReport": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/capture.json",
+  "url": "http://localhost:55047/",
+  "backend": "hardware",
+  "timings": {
+    "openMs": 148926,
+    "readyMs": 8331,
+    "scriptMs": 26208,
+    "verifyMs": 648,
+    "totalMs": 184533
+  },
+  "steps": [
+    {
+      "name": "steady completed frame window",
+      "ok": true,
+      "ms": 15005
+    },
+    {
+      "name": "spawn real cafe",
+      "ok": true,
+      "ms": 668
+    },
+    {
+      "name": "walk and pick up",
+      "ok": true,
+      "ms": 277
+    },
+    {
+      "name": "infect by three real shots",
+      "ok": true,
+      "ms": 1120
+    },
+    {
+      "name": "fourth shot consumes charged attack",
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "name": "moving roll",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "name": "jump cancels roll immediately",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "roll cancels jump immediately",
+      "ok": true,
+      "ms": 66
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "native-spawn",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/01-native-spawn.png",
+      "rendered": true,
+      "digest": "sha256:0a485e9506472382cf538941219827458bca64291ce49c05ccbed4bb601931cf"
+    },
+    {
+      "name": "native-infected",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/02-native-infected.png",
+      "rendered": true,
+      "digest": "sha256:a211edfa2a57b97a8d8a49a956b36c5fa7eac575af038a0568b02e796e4360bf"
+    },
+    {
+      "name": "native-after-actions",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/03-native-after-actions.png",
+      "rendered": true,
+      "digest": "sha256:6cdd00f18af260bc1b0fcbe91b6b825c87696f5a17f95114779a2ad85c039850"
+    },
+    {
+      "name": "native-reloaded",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/04-native-reloaded.png",
+      "rendered": true,
+      "digest": "sha256:081152c151efcf8ab92e85865a7571ca82ca3c074e23bc255b5794511ee2f767"
+    },
+    {
+      "name": "final",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/playthrough/05-final.png",
+      "rendered": true,
+      "digest": "sha256:7fc3533aa18a88a208ede979bff7b682300306ebabe9c887ec634e7eafe703d9"
+    }
+  ],
+  "viewports": [
+    "1280x720"
+  ],
+  "layout": [],
+  "returned": {
+    "benchmark": {
+      "durationMs": 10000.354999996722,
+      "completedFrames": 601,
+      "completedFps": 60.097866525758036,
+      "before": {
+        "state": "alive",
+        "frameId": 316,
+        "execution": {
+          "schemaVersion": 4,
+          "workers": {
+            "engine": {
+              "requested": "auto",
+              "enabled": true,
+              "reason": "enabled",
+              "missingCapabilities": []
+            },
+            "render": {
+              "requested": "auto",
+              "enabled": true,
+              "reason": "enabled",
+              "missingCapabilities": []
+            },
+            "kernels": {
+              "requested": "auto",
+              "enabled": true,
+              "reason": "enabled",
+              "missingCapabilities": []
+            }
+          },
+          "capabilities": {
+            "worker": {
+              "available": true,
+              "reason": "Worker constructor observed"
+            },
+            "offscreenCanvas": {
+              "available": true,
+              "reason": "canvas transferControlToOffscreen observed"
+            },
+            "workerAnimationFrame": {
+              "available": true,
+              "reason": "requestAnimationFrame observed in DedicatedWorker"
+            },
+            "workerWebGpu": {
+              "available": true,
+              "reason": "navigator.gpu observed in DedicatedWorker"
+            },
+            "crossOriginIsolated": {
+              "available": true,
+              "reason": "crossOriginIsolated is true"
+            },
+            "sharedArrayBuffer": {
+              "available": true,
+              "reason": "SharedArrayBuffer constructor observed"
+            },
+            "atomicsWait": {
+              "available": true,
+              "reason": "Atomics.wait observed in DedicatedWorker"
+            }
+          },
+          "engine": {
+            "realm": "worker",
+            "health": "running"
+          },
+          "world": {
+            "identity": "world-f39a3a23-4c2d-4e9f-87f3-6154de50e379-1",
+            "health": "healthy",
+            "partialWrite": false,
+            "retryable": true
+          },
+          "kernelDispatch": {
+            "eligible": false,
+            "usedShared": false,
+            "reason": "no-eligible-kernel",
+            "dispatched": 0,
+            "completed": 0
+          },
+          "frame": {
+            "submitted": 316,
+            "completed": 316,
+            "inFlight": 0,
+            "highWater": 1,
+            "throttledTicks": 0
+          },
+          "performance": {
+            "hostFrameMs": {
+              "samples": 316,
+              "p50": 1.2299999967217445,
+              "p95": 1.5449999943375587,
+              "p99": 2.125,
+              "jitter": 0.16861924678710713
+            },
+            "engineUpdateMs": {
+              "samples": 316,
+              "p50": 0.4099999964237213,
+              "p95": 0.5450000017881393,
+              "p99": 0.8049999997019768,
+              "jitter": 0.07769874483346939
+            },
+            "kernelWaitMs": {
+              "samples": 316,
+              "p50": 0,
+              "p95": 0,
+              "p99": 0,
+              "jitter": 0
+            },
+            "hostAudioMs": {
+              "samples": 316,
+              "p50": 0.030000001192092896,
+              "p95": 0.04500000178813934,
+              "p99": 0.06000000238418579,
+              "jitter": 0.00675732340024605
+            }
+          },
+          "audio": {
+            "owner": "host",
+            "cache": {
+              "sources": 0,
+              "encodedBytes": 0,
+              "decodedBytes": 0,
+              "bytesHighWater": 0,
+              "pendingPlays": 0
+            },
+            "music": {
+              "epoch": 0,
+              "phase": "empty",
+              "bpm": 0,
+              "beat": 0,
+              "sampleRate": 0,
+              "pending": 0,
+              "nodes": 0,
+              "pendingHighWater": 0,
+              "nodeHighWater": 0,
+              "receipts": []
+            },
+            "streaming": {
+              "encodedBytes": 0,
+              "pcmBytes": 0,
+              "pendingBytes": 0,
+              "pendingReads": 0,
+              "underruns": 0
+            },
+            "contextState": "suspended",
+            "activeSourceCount": 0,
+            "lastError": null
+          },
+          "fault": null,
+          "render": {
+            "epoch": 1,
+            "state": "alive",
+            "submittedFrame": 316,
+            "completedFrame": 316,
+            "capabilities": {
+              "backendKind": "webgpu",
+              "compute": true,
+              "storageBuffer": true
+            },
+            "limits": {
+              "maxStorageBuffersPerShaderStage": 8
+            }
+          }
+        },
+        "rendererError": null
+      },
+      "after": {
+        "state": "alive",
+        "frameId": 916,
+        "execution": {
+          "schemaVersion": 4,
+          "workers": {
+            "engine": {
+              "requested": "auto",
+              "enabled": true,
+              "reason": "enabled",
+              "missingCapabilities": []
+            },
+            "render": {
+              "requested": "auto",
+              "enabled": true,
+              "reason": "enabled",
+              "missingCapabilities": []
+            },
+            "kernels": {
+              "requested": "auto",
+              "enabled": true,
+              "reason": "enabled",
+              "missingCapabilities": []
+            }
+          },
+          "capabilities": {
+            "worker": {
+              "available": true,
+              "reason": "Worker constructor observed"
+            },
+            "offscreenCanvas": {
+              "available": true,
+              "reason": "canvas transferControlToOffscreen observed"
+            },
+            "workerAnimationFrame": {
+              "available": true,
+              "reason": "requestAnimationFrame observed in DedicatedWorker"
+            },
+            "workerWebGpu": {
+              "available": true,
+              "reason": "navigator.gpu observed in DedicatedWorker"
+            },
+            "crossOriginIsolated": {
+              "available": true,
+              "reason": "crossOriginIsolated is true"
+            },
+            "sharedArrayBuffer": {
+              "available": true,
+              "reason": "SharedArrayBuffer constructor observed"
+            },
+            "atomicsWait": {
+              "available": true,
+              "reason": "Atomics.wait observed in DedicatedWorker"
+            }
+          },
+          "engine": {
+            "realm": "worker",
+            "health": "running"
+          },
+          "world": {
+            "identity": "world-f39a3a23-4c2d-4e9f-87f3-6154de50e379-1",
+            "health": "healthy",
+            "partialWrite": false,
+            "retryable": true
+          },
+          "kernelDispatch": {
+            "eligible": false,
+            "usedShared": false,
+            "reason": "no-eligible-kernel",
+            "dispatched": 0,
+            "completed": 0
+          },
+          "frame": {
+            "submitted": 917,
+            "completed": 917,
+            "inFlight": 0,
+            "highWater": 1,
+            "throttledTicks": 0
+          },
+          "performance": {
+            "hostFrameMs": {
+              "samples": 917,
+              "p50": 1.0799999982118607,
+              "p95": 1.405000001192093,
+              "p99": 1.5700000002980232,
+              "jitter": 0.16774058625663174
+            },
+            "engineUpdateMs": {
+              "samples": 917,
+              "p50": 0.35499999672174454,
+              "p95": 0.5,
+              "p99": 0.6150000020861626,
+              "jitter": 0.07696652727271723
+            },
+            "kernelWaitMs": {
+              "samples": 917,
+              "p50": 0,
+              "p95": 0,
+              "p99": 0,
+              "jitter": 0
+            },
+            "hostAudioMs": {
+              "samples": 917,
+              "p50": 0.030000001192092896,
+              "p95": 0.03999999910593033,
+              "p99": 0.06499999761581421,
+              "jitter": 0.006715481937181002
+            }
+          },
+          "audio": {
+            "owner": "host",
+            "cache": {
+              "sources": 0,
+              "encodedBytes": 0,
+              "decodedBytes": 0,
+              "bytesHighWater": 0,
+              "pendingPlays": 0
+            },
+            "music": {
+              "epoch": 0,
+              "phase": "empty",
+              "bpm": 0,
+              "beat": 0,
+              "sampleRate": 0,
+              "pending": 0,
+              "nodes": 0,
+              "pendingHighWater": 0,
+              "nodeHighWater": 0,
+              "receipts": []
+            },
+            "streaming": {
+              "encodedBytes": 0,
+              "pcmBytes": 0,
+              "pendingBytes": 0,
+              "pendingReads": 0,
+              "underruns": 0
+            },
+            "contextState": "suspended",
+            "activeSourceCount": 0,
+            "lastError": null
+          },
+          "fault": null,
+          "render": {
+            "epoch": 1,
+            "state": "alive",
+            "submittedFrame": 916,
+            "completedFrame": 916,
+            "capabilities": {
+              "backendKind": "webgpu",
+              "compute": true,
+              "storageBuffer": true
+            },
+            "limits": {
+              "maxStorageBuffersPerShaderStage": 8
+            }
+          }
+        },
+        "rendererError": null
+      },
+      "viewport": [
+        1280,
+        720,
+        1
+      ]
+    },
+    "start": {
+      "version": "0.1.0",
+      "base": "v0.3.76",
+      "position": [
+        -3,
+        0.008,
+        4.5
+      ],
+      "action": "walk",
+      "grounded": true,
+      "shots": 0,
+      "hits": 0,
+      "charge": 0,
+      "empowered": 0,
+      "converted": 0,
+      "flash": 0,
+      "equipped": false,
+      "rolls": 0,
+      "jumps": 0,
+      "actors": [
+        {
+          "position": [
+            -3,
+            0.05,
+            1.2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.315145599865152,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.6677470556550813,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.0500017197336446,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.4322548026970215,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.2151470311885941,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -7.005407476133288,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.320990374836075,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.6632445891298397,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.0392915586713665,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.4251838197859328,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.2120778068695524,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        }
+      ],
+      "puddles": 0,
+      "time": 16.02817000000183,
+      "playerSourceHeight": 1.178976058959961,
+      "renderer": "native-webgpu"
+    },
+    "walked": {
+      "version": "0.1.0",
+      "base": "v0.3.76",
+      "position": [
+        -3,
+        0.008,
+        4.037907000008227
+      ],
+      "action": "walk",
+      "grounded": true,
+      "shots": 0,
+      "hits": 0,
+      "charge": 0,
+      "empowered": 0,
+      "converted": 0,
+      "flash": 0,
+      "equipped": true,
+      "rolls": 0,
+      "jumps": 0,
+      "actors": [
+        {
+          "position": [
+            -3,
+            0.05,
+            1.2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.29166185912336,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.650547049981107,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.0548990550222497,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.45474689146908154,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.1957393116225294,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -7.003887458627602,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.299940117343446,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.642017601310754,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.0374038352334227,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.44437092495229263,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.1894564091029705,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        }
+      ],
+      "puddles": 0,
+      "time": 16.22907999999825,
+      "playerSourceHeight": 1.178976058959961,
+      "renderer": "native-webgpu"
+    },
+    "final": {
+      "version": "0.1.0",
+      "base": "v0.3.76",
+      "position": [
+        -2.466639999985695,
+        0,
+        1.375306999984385
+      ],
+      "action": "walk",
+      "grounded": true,
+      "shots": 4,
+      "hits": 4,
+      "charge": 0,
+      "empowered": 1,
+      "converted": 2,
+      "flash": 0,
+      "equipped": true,
+      "rolls": 2,
+      "jumps": 1,
+      "actors": [
+        {
+          "position": [
+            -3,
+            0.05,
+            1.2
+          ],
+          "ally": true,
+          "hits": 3
+        },
+        {
+          "position": [
+            -5.119716836178581,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.686119537406467,
+            0.05,
+            -0.6
+          ],
+          "ally": true,
+          "hits": 3
+        },
+        {
+          "position": [
+            -2.2652838719298005,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.6465172074333114,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.1988962407050097,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -6.808705750537926,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.092182792537646,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.6126957860933038,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.2134758712907603,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.6639569943310998,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.128242725916525,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        }
+      ],
+      "puddles": 4,
+      "time": 18.412464999996175,
+      "playerSourceHeight": 1.178976058959961,
+      "renderer": "native-webgpu"
+    },
+    "reloaded": {
+      "version": "0.1.0",
+      "base": "v0.3.76",
+      "position": [
+        -3,
+        0.008,
+        4.5
+      ],
+      "action": "walk",
+      "grounded": true,
+      "shots": 0,
+      "hits": 0,
+      "charge": 0,
+      "empowered": 0,
+      "converted": 0,
+      "flash": 0,
+      "equipped": false,
+      "rolls": 0,
+      "jumps": 0,
+      "actors": [
+        {
+          "position": [
+            -3,
+            0.05,
+            1.2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.313714774201444,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.6665922531076576,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.0501846604389757,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.43360729181430346,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.2138684659164725,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -7.005436610545464,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.319743292344115,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.6618678516256296,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.0390509322671306,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.42630053528801753,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.210630452543765,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        }
+      ],
+      "puddles": 0,
+      "time": 0.33272500000149013,
+      "playerSourceHeight": 1.178976058959961,
+      "renderer": "native-webgpu"
+    }
+  },
+  "state": {
+    "version": "0.1.0",
+    "base": "v0.3.76",
+    "position": [
+      -3,
+      0.008,
+      4.5
+    ],
+    "action": "walk",
+    "grounded": true,
+    "shots": 0,
+    "hits": 0,
+    "charge": 0,
+    "empowered": 0,
+    "converted": 0,
+    "flash": 0,
+    "equipped": false,
+    "rolls": 0,
+    "jumps": 0,
+    "actors": [
+      {
+        "position": [
+          -3,
+          0.05,
+          1.2
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -5.1668852179729745,
+          0.05,
+          -0.6
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -3.6159973389093483,
+          0.05,
+          -0.6
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -2.1423411190543518,
+          0.05,
+          -0.6
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -0.5837869001936697,
+          0.05,
+          -0.6
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          1.1437401471283557,
+          0.05,
+          -0.6
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -6.93103798686185,
+          0.05,
+          -2
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -5.16921947769665,
+          0.05,
+          -2
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -3.5736097470250594,
+          0.05,
+          -2
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -2.094202632060116,
+          0.05,
+          -2
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          -0.5741558210299819,
+          0.05,
+          -2
+        ],
+        "ally": false,
+        "hits": 0
+      },
+      {
+        "position": [
+          1.1060090486943972,
+          0.05,
+          -2
+        ],
+        "ally": false,
+        "hits": 0
+      }
+    ],
+    "puddles": 0,
+    "time": 1.6489249999970201,
+    "playerSourceHeight": 1.178976058959961,
+    "renderer": "native-webgpu"
+  },
+  "execution": "healthy",
+  "errors": {
+    "console": [],
+    "page": [],
+    "inputWarnings": 0
+  },
+  "log": []
+}

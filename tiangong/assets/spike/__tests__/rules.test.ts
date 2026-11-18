@@ -1,0 +1,5 @@
+import {expect,it} from 'vitest';
+import {createRun,neutral,tick} from '../rules.ts';
+it('roll and jump interrupt one another on each fresh press',()=>{const s=createRun();tick(s,{...neutral(),roll:true,z:1},.016);expect(s.rolls).toBe(1);tick(s,{...neutral(),jump:true},.016);expect(s.roll).toBe(0);expect(s.vy).toBeGreaterThan(0);tick(s,{...neutral(),roll:true},.016);expect(s.rolls).toBe(2);expect(s.roll).toBeGreaterThan(0);});
+it('three hits arm the NEXT shot and converted patrols become allies',()=>{const s=createRun();s.equipped=true;s.pitch=0;for(let n=0;n<3;n++){tick(s,{...neutral(),fire:true},.01);for(let f=0;f<5;f++)tick(s,neutral(),.05);}expect(s.hits).toBe(3);expect(s.charge).toBe(3);expect(s.converted).toBe(1);expect(s.actors[0].ally).toBe(true);tick(s,{...neutral(),fire:true},.01);expect(s.empowered).toBe(1);expect(s.charge).toBe(0);});
+it('weapon pickup proximity works and movement stays in baked floor',()=>{const s=createRun();for(let n=0;n<30;n++)tick(s,{...neutral(),z:1},.016);expect(s.z).toBeLessThan(4.5);expect(s.equipped).toBe(true);});

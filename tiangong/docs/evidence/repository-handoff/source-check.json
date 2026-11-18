@@ -1,0 +1,26 @@
+{
+  "version": "0.3.76-tiangong.1",
+  "repository": "cloudfj77-cloud/wake-up-tokyo",
+  "branch": "feat/tiangong-native-v0.3.76-1",
+  "projectDirectory": "tiangong",
+  "runtimeSourceMatchesAcceptedGame": true,
+  "comparedFiles": {
+    "assets/game": 441,
+    "assets/imported/full": 162,
+    "assets/ui": 1
+  },
+  "freshNodeModulesInstallPassed": true,
+  "nativeTestsPassed": 39,
+  "originalRuleTestsPassed": 58,
+  "typecheckPassed": true,
+  "projectCheckPassed": true,
+  "engineVersion": "0.4.19",
+  "sourceDirectoriesNotRequired": [
+    "previous Three.js working directory",
+    ".tools",
+    "previous SDK caches"
+  ],
+  "note": "Install used pinned lockfile and the machine package store; not a claim of network download to an empty store or cross-platform runtime acceptance.",
+  "freshSourceBuildPassed": true,
+  "buildRequiresPreviousGameDirectory": false
+}

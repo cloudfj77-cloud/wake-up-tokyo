@@ -1,0 +1,33 @@
+{
+  "baseCommit": "e2436475c5d52c5ecb0012260fab52405cffdf71",
+  "source": "assets/scenes/tokyo-district.glb",
+  "sourceSha256": "5c20c8e7b7c916dfd0041ec07aa1d46bbb962204b7128662e1ce0ee50e2bd0df",
+  "sliceSha256": "4eb4ce6b202cfd15bb658a4845ee6d0774c7e23a0c34dafa92a1d832724dd09e",
+  "bounds": {
+    "min": [
+      -12,
+      -4.5,
+      -6
+    ],
+    "max": [
+      8,
+      5.5,
+      14
+    ]
+  },
+  "sourceBytes": 82722060,
+  "bytes": 11755816,
+  "nodes": 1866,
+  "sourceSelectedNodes": 1874,
+  "identicalNodeDuplicates": 8,
+  "meshes": 216,
+  "materials": 70,
+  "images": 25,
+  "namePolicy": "Stable source names plus geometry/image/pose digests; no ordinal sourceIndex identities.",
+  "colorRepair": {
+    "count": 288,
+    "min": 0.2865034341812134,
+    "max": 1.0700000524520874,
+    "policy": "Clamp only invalid glTF vertex COLOR_0 components to [0,1] in both comparison assets; original source unchanged."
+  }
+}

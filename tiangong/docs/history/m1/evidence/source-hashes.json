@@ -1,0 +1,9 @@
+{
+  "assets/imported/cafe.glb": "4eb4ce6b202cfd15bb658a4845ee6d0774c7e23a0c34dafa92a1d832724dd09e",
+  "assets/imported/player.fbx": "4623ac449b071080a39d51c6622d6a65de93838761f63b992ffee5b84f26639b",
+  "assets/spike/runtime.ts": "b232866ad14d887a4e1467e75fe19e0257ba84ea976aee6d35d072aa1acf1e3e",
+  "assets/spike/rules.ts": "4998dbfb7525d56adf5323d74671031e845e90f4da8c7e5638dad839d40bccfa",
+  "assets/spike/floor.ts": "c24d680564a061032fa4e94f88008fea59b1fd8624463aeba752bb6c938ef16c",
+  "forge.json": "083400c7fd1eb8c5a7409fdaa0c6bf0ff4984a89c2b229281a4b8af0aa9f8fd6",
+  "pnpm-lock.yaml": "2d0314e413aa79e52c646bf7a362dde1fa1cff5f7f68f23edef70eb5629b0c54"
+}

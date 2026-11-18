@@ -1,0 +1,117 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "node-d0a6f6075f8d9b51",
+        "tripo_node_9e78bf9a-5962-467d-b6bc-6fd2b497ae74"
+      ],
+      "unsupportedExtensions": []
+    },
+    "compressionMode": "none",
+    "downscaleMaxDimension": 1024,
+    "mipmap": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "prop-baton.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-b4a73b9365e6e628"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:mesh-b4a73b9365e6e628": {
+      "materialSlots": [
+        {
+          "defaultMaterialGuid": "01a1b2a2-3c97-7bfb-bb79-c22804ae3f62",
+          "slotName": "material-21dccf10c7a044a1",
+          "sourceKey": "material:material-21dccf10c7a044a1"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b2a2-3c97-7bfb-bb79-c227d3153828",
+      "kind": "mesh",
+      "name": "mesh-b4a73b9365e6e628",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:mesh-b4a73b9365e6e628"
+    },
+    {
+      "guid": "01a1b2a2-3c97-7bfb-bb79-c22804ae3f62",
+      "kind": "material",
+      "name": "material-21dccf10c7a044a1",
+      "sourceIndex": 0,
+      "sourceKey": "material:material-21dccf10c7a044a1"
+    },
+    {
+      "guid": "01a1b2a2-3c97-7bfb-bb79-c229c4ab074a",
+      "kind": "scene",
+      "name": "prop-baton",
+      "sourceIndex": 0,
+      "sourceKey": "scene:prop-baton"
+    },
+    {
+      "guid": "01a1b2a2-3c97-7bfb-bb79-c22af2db41b9",
+      "kind": "texture",
+      "name": "image-1190600b89ca3955",
+      "sourceIndex": 0,
+      "sourceKey": "texture:image-1190600b89ca3955"
+    },
+    {
+      "guid": "01a1b2a2-3c97-7bfb-bb79-c22b3e17fcba",
+      "kind": "texture",
+      "name": "image-342934f16c6727e7",
+      "sourceIndex": 1,
+      "sourceKey": "texture:image-342934f16c6727e7"
+    },
+    {
+      "guid": "01a1b2a2-3c97-7bfb-bb79-c22ca6b1b921",
+      "kind": "sampler",
+      "name": "sampler-817198516c7ac8c6",
+      "sourceIndex": 0,
+      "sourceKey": "sampler:sampler-817198516c7ac8c6"
+    }
+  ]
+}

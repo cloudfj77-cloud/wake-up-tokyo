@@ -1,0 +1,1399 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [],
+      "unsupportedExtensions": []
+    },
+    "downscaleMaxDimension": 1024,
+    "compressionMode": "none",
+    "mipmap": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "materials-tokyo.glb",
+  "sourceOverrideDescriptors": [],
+  "subAssets": [
+    {
+      "guid": "01a1b22a-96ce-79d1-b778-9fbdad45aefa",
+      "kind": "material",
+      "name": "srgb-import-hint-1",
+      "sourceIndex": 0,
+      "sourceKey": "material:srgb-import-hint-1"
+    },
+    {
+      "guid": "01a1b22a-96ce-79d1-b778-9fbe12234df5",
+      "kind": "material",
+      "name": "srgb-import-hint-3",
+      "sourceIndex": 1,
+      "sourceKey": "material:srgb-import-hint-3"
+    },
+    {
+      "guid": "01a1b22a-96ce-79d1-b778-9fbf8393f795",
+      "kind": "material",
+      "name": "srgb-import-hint-5",
+      "sourceIndex": 2,
+      "sourceKey": "material:srgb-import-hint-5"
+    },
+    {
+      "guid": "01a1b22a-96ce-79d1-b778-9fc0a83803a7",
+      "kind": "material",
+      "name": "srgb-import-hint-7",
+      "sourceIndex": 3,
+      "sourceKey": "material:srgb-import-hint-7"
+    },
+    {
+      "guid": "01a1b22a-96ce-79d1-b778-9fc1ae7ef359",
+      "kind": "material",
+      "name": "srgb-import-hint-9",
+      "sourceIndex": 4,
+      "sourceKey": "material:srgb-import-hint-9"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34e2c38b15bb",
+      "kind": "material",
+      "name": "srgb-import-hint-10",
+      "sourceIndex": 5,
+      "sourceKey": "material:srgb-import-hint-10"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34e3537d4a19",
+      "kind": "material",
+      "name": "srgb-import-hint-11",
+      "sourceIndex": 6,
+      "sourceKey": "material:srgb-import-hint-11"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34e4464d0928",
+      "kind": "material",
+      "name": "srgb-import-hint-12",
+      "sourceIndex": 7,
+      "sourceKey": "material:srgb-import-hint-12"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34e506f36b1a",
+      "kind": "material",
+      "name": "srgb-import-hint-13",
+      "sourceIndex": 8,
+      "sourceKey": "material:srgb-import-hint-13"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34e6bf63fd3a",
+      "kind": "material",
+      "name": "srgb-import-hint-14",
+      "sourceIndex": 9,
+      "sourceKey": "material:srgb-import-hint-14"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34e7e44f9ca4",
+      "kind": "material",
+      "name": "srgb-import-hint-15",
+      "sourceIndex": 10,
+      "sourceKey": "material:srgb-import-hint-15"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34e8f3033ec6",
+      "kind": "material",
+      "name": "srgb-import-hint-16",
+      "sourceIndex": 11,
+      "sourceKey": "material:srgb-import-hint-16"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34e950baff90",
+      "kind": "material",
+      "name": "srgb-import-hint-17",
+      "sourceIndex": 12,
+      "sourceKey": "material:srgb-import-hint-17"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34eaa4463d2a",
+      "kind": "material",
+      "name": "srgb-import-hint-18",
+      "sourceIndex": 13,
+      "sourceKey": "material:srgb-import-hint-18"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34eb84211bd5",
+      "kind": "material",
+      "name": "srgb-import-hint-19",
+      "sourceIndex": 14,
+      "sourceKey": "material:srgb-import-hint-19"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34ec1884f384",
+      "kind": "material",
+      "name": "srgb-import-hint-20",
+      "sourceIndex": 15,
+      "sourceKey": "material:srgb-import-hint-20"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34ede62824c3",
+      "kind": "material",
+      "name": "srgb-import-hint-21",
+      "sourceIndex": 16,
+      "sourceKey": "material:srgb-import-hint-21"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34ee56f3368d",
+      "kind": "material",
+      "name": "srgb-import-hint-22",
+      "sourceIndex": 17,
+      "sourceKey": "material:srgb-import-hint-22"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34ef25678f3c",
+      "kind": "material",
+      "name": "srgb-import-hint-23",
+      "sourceIndex": 18,
+      "sourceKey": "material:srgb-import-hint-23"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f0c6467be2",
+      "kind": "material",
+      "name": "srgb-import-hint-24",
+      "sourceIndex": 19,
+      "sourceKey": "material:srgb-import-hint-24"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f1b6bd28c3",
+      "kind": "material",
+      "name": "srgb-import-hint-25",
+      "sourceIndex": 20,
+      "sourceKey": "material:srgb-import-hint-25"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f2f75fa32b",
+      "kind": "material",
+      "name": "srgb-import-hint-26",
+      "sourceIndex": 21,
+      "sourceKey": "material:srgb-import-hint-26"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f30efa60b1",
+      "kind": "material",
+      "name": "srgb-import-hint-27",
+      "sourceIndex": 22,
+      "sourceKey": "material:srgb-import-hint-27"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f4f9b00674",
+      "kind": "material",
+      "name": "srgb-import-hint-28",
+      "sourceIndex": 23,
+      "sourceKey": "material:srgb-import-hint-28"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f58bc3c057",
+      "kind": "material",
+      "name": "srgb-import-hint-29",
+      "sourceIndex": 24,
+      "sourceKey": "material:srgb-import-hint-29"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f6882323d7",
+      "kind": "material",
+      "name": "srgb-import-hint-30",
+      "sourceIndex": 25,
+      "sourceKey": "material:srgb-import-hint-30"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f7c197b294",
+      "kind": "material",
+      "name": "srgb-import-hint-31",
+      "sourceIndex": 26,
+      "sourceKey": "material:srgb-import-hint-31"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f8a0088227",
+      "kind": "material",
+      "name": "srgb-import-hint-32",
+      "sourceIndex": 27,
+      "sourceKey": "material:srgb-import-hint-32"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34f9b41dde40",
+      "kind": "material",
+      "name": "srgb-import-hint-33",
+      "sourceIndex": 28,
+      "sourceKey": "material:srgb-import-hint-33"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34facdb2e78d",
+      "kind": "material",
+      "name": "srgb-import-hint-34",
+      "sourceIndex": 29,
+      "sourceKey": "material:srgb-import-hint-34"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34fb78beafe0",
+      "kind": "material",
+      "name": "srgb-import-hint-35",
+      "sourceIndex": 30,
+      "sourceKey": "material:srgb-import-hint-35"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34fc3f28f6e4",
+      "kind": "material",
+      "name": "srgb-import-hint-36",
+      "sourceIndex": 31,
+      "sourceKey": "material:srgb-import-hint-36"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34fd2dd0a2d3",
+      "kind": "material",
+      "name": "srgb-import-hint-37",
+      "sourceIndex": 32,
+      "sourceKey": "material:srgb-import-hint-37"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34feb2339cf5",
+      "kind": "material",
+      "name": "srgb-import-hint-38",
+      "sourceIndex": 33,
+      "sourceKey": "material:srgb-import-hint-38"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-34ff1f424b18",
+      "kind": "material",
+      "name": "srgb-import-hint-39",
+      "sourceIndex": 34,
+      "sourceKey": "material:srgb-import-hint-39"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3500a42803f5",
+      "kind": "material",
+      "name": "srgb-import-hint-40",
+      "sourceIndex": 35,
+      "sourceKey": "material:srgb-import-hint-40"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3501db4eec0e",
+      "kind": "material",
+      "name": "srgb-import-hint-41",
+      "sourceIndex": 36,
+      "sourceKey": "material:srgb-import-hint-41"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3502339a3c2f",
+      "kind": "material",
+      "name": "srgb-import-hint-42",
+      "sourceIndex": 37,
+      "sourceKey": "material:srgb-import-hint-42"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3503f1705f45",
+      "kind": "material",
+      "name": "srgb-import-hint-43",
+      "sourceIndex": 38,
+      "sourceKey": "material:srgb-import-hint-43"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3504accb4502",
+      "kind": "material",
+      "name": "srgb-import-hint-44",
+      "sourceIndex": 39,
+      "sourceKey": "material:srgb-import-hint-44"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35058ebf6739",
+      "kind": "material",
+      "name": "srgb-import-hint-45",
+      "sourceIndex": 40,
+      "sourceKey": "material:srgb-import-hint-45"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3506d2213ef9",
+      "kind": "material",
+      "name": "srgb-import-hint-46",
+      "sourceIndex": 41,
+      "sourceKey": "material:srgb-import-hint-46"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3507211b367d",
+      "kind": "material",
+      "name": "srgb-import-hint-47",
+      "sourceIndex": 42,
+      "sourceKey": "material:srgb-import-hint-47"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35082f019ed4",
+      "kind": "material",
+      "name": "srgb-import-hint-48",
+      "sourceIndex": 43,
+      "sourceKey": "material:srgb-import-hint-48"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35098594fbd9",
+      "kind": "material",
+      "name": "srgb-import-hint-49",
+      "sourceIndex": 44,
+      "sourceKey": "material:srgb-import-hint-49"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-350a3278774e",
+      "kind": "material",
+      "name": "srgb-import-hint-50",
+      "sourceIndex": 45,
+      "sourceKey": "material:srgb-import-hint-50"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-350bc0e20296",
+      "kind": "material",
+      "name": "srgb-import-hint-51",
+      "sourceIndex": 46,
+      "sourceKey": "material:srgb-import-hint-51"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-350c2ef76484",
+      "kind": "material",
+      "name": "srgb-import-hint-52",
+      "sourceIndex": 47,
+      "sourceKey": "material:srgb-import-hint-52"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-350d4323300d",
+      "kind": "material",
+      "name": "srgb-import-hint-53",
+      "sourceIndex": 48,
+      "sourceKey": "material:srgb-import-hint-53"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-350e7f9a1f03",
+      "kind": "material",
+      "name": "srgb-import-hint-54",
+      "sourceIndex": 49,
+      "sourceKey": "material:srgb-import-hint-54"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-350fb405af45",
+      "kind": "material",
+      "name": "srgb-import-hint-55",
+      "sourceIndex": 50,
+      "sourceKey": "material:srgb-import-hint-55"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351028c728dc",
+      "kind": "material",
+      "name": "srgb-import-hint-56",
+      "sourceIndex": 51,
+      "sourceKey": "material:srgb-import-hint-56"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3511b1e5000e",
+      "kind": "material",
+      "name": "srgb-import-hint-57",
+      "sourceIndex": 52,
+      "sourceKey": "material:srgb-import-hint-57"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35129f504b37",
+      "kind": "material",
+      "name": "srgb-import-hint-58",
+      "sourceIndex": 53,
+      "sourceKey": "material:srgb-import-hint-58"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351308664323",
+      "kind": "material",
+      "name": "srgb-import-hint-59",
+      "sourceIndex": 54,
+      "sourceKey": "material:srgb-import-hint-59"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3514be46208e",
+      "kind": "material",
+      "name": "srgb-import-hint-60",
+      "sourceIndex": 55,
+      "sourceKey": "material:srgb-import-hint-60"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35151b7857e5",
+      "kind": "material",
+      "name": "srgb-import-hint-61",
+      "sourceIndex": 56,
+      "sourceKey": "material:srgb-import-hint-61"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351671504f05",
+      "kind": "material",
+      "name": "srgb-import-hint-62",
+      "sourceIndex": 57,
+      "sourceKey": "material:srgb-import-hint-62"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351724a42ce7",
+      "kind": "material",
+      "name": "srgb-import-hint-63",
+      "sourceIndex": 58,
+      "sourceKey": "material:srgb-import-hint-63"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3518bf9beecc",
+      "kind": "material",
+      "name": "srgb-import-hint-64",
+      "sourceIndex": 59,
+      "sourceKey": "material:srgb-import-hint-64"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351998f63e82",
+      "kind": "material",
+      "name": "srgb-import-hint-65",
+      "sourceIndex": 60,
+      "sourceKey": "material:srgb-import-hint-65"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351ace597629",
+      "kind": "material",
+      "name": "srgb-import-hint-66",
+      "sourceIndex": 61,
+      "sourceKey": "material:srgb-import-hint-66"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351b4cd1cf23",
+      "kind": "material",
+      "name": "srgb-import-hint-67",
+      "sourceIndex": 62,
+      "sourceKey": "material:srgb-import-hint-67"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351ca566a91d",
+      "kind": "material",
+      "name": "srgb-import-hint-68",
+      "sourceIndex": 63,
+      "sourceKey": "material:srgb-import-hint-68"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351d70ca6266",
+      "kind": "material",
+      "name": "srgb-import-hint-69",
+      "sourceIndex": 64,
+      "sourceKey": "material:srgb-import-hint-69"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351e471e3cbb",
+      "kind": "material",
+      "name": "srgb-import-hint-70",
+      "sourceIndex": 65,
+      "sourceKey": "material:srgb-import-hint-70"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-351fa6f635b1",
+      "kind": "material",
+      "name": "srgb-import-hint-71",
+      "sourceIndex": 66,
+      "sourceKey": "material:srgb-import-hint-71"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352053dcca01",
+      "kind": "material",
+      "name": "srgb-import-hint-74",
+      "sourceIndex": 67,
+      "sourceKey": "material:srgb-import-hint-74"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35215cda6fc7",
+      "kind": "material",
+      "name": "srgb-import-hint-76",
+      "sourceIndex": 68,
+      "sourceKey": "material:srgb-import-hint-76"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352241213c4c",
+      "kind": "material",
+      "name": "srgb-import-hint-77",
+      "sourceIndex": 69,
+      "sourceKey": "material:srgb-import-hint-77"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3523c71e10bb",
+      "kind": "material",
+      "name": "srgb-import-hint-78",
+      "sourceIndex": 70,
+      "sourceKey": "material:srgb-import-hint-78"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35247aa87ab1",
+      "kind": "material",
+      "name": "srgb-import-hint-79",
+      "sourceIndex": 71,
+      "sourceKey": "material:srgb-import-hint-79"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35251dc3b3f9",
+      "kind": "material",
+      "name": "srgb-import-hint-80",
+      "sourceIndex": 72,
+      "sourceKey": "material:srgb-import-hint-80"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3526004af4fe",
+      "kind": "material",
+      "name": "srgb-import-hint-81",
+      "sourceIndex": 73,
+      "sourceKey": "material:srgb-import-hint-81"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352775010afc",
+      "kind": "material",
+      "name": "srgb-import-hint-82",
+      "sourceIndex": 74,
+      "sourceKey": "material:srgb-import-hint-82"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3528ca63cad1",
+      "kind": "material",
+      "name": "srgb-import-hint-84",
+      "sourceIndex": 75,
+      "sourceKey": "material:srgb-import-hint-84"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3529c23b3e96",
+      "kind": "material",
+      "name": "srgb-import-hint-85",
+      "sourceIndex": 76,
+      "sourceKey": "material:srgb-import-hint-85"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352a8b3e014b",
+      "kind": "material",
+      "name": "srgb-import-hint-86",
+      "sourceIndex": 77,
+      "sourceKey": "material:srgb-import-hint-86"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352bc9a66daf",
+      "kind": "material",
+      "name": "srgb-import-hint-87",
+      "sourceIndex": 78,
+      "sourceKey": "material:srgb-import-hint-87"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352ccc4d8ea9",
+      "kind": "material",
+      "name": "srgb-import-hint-88",
+      "sourceIndex": 79,
+      "sourceKey": "material:srgb-import-hint-88"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352d85eefd4a",
+      "kind": "material",
+      "name": "srgb-import-hint-89",
+      "sourceIndex": 80,
+      "sourceKey": "material:srgb-import-hint-89"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352eb7c5e8ab",
+      "kind": "material",
+      "name": "srgb-import-hint-90",
+      "sourceIndex": 81,
+      "sourceKey": "material:srgb-import-hint-90"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-352f8d8a89f7",
+      "kind": "material",
+      "name": "srgb-import-hint-91",
+      "sourceIndex": 82,
+      "sourceKey": "material:srgb-import-hint-91"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35305b0d2cb0",
+      "kind": "material",
+      "name": "srgb-import-hint-92",
+      "sourceIndex": 83,
+      "sourceKey": "material:srgb-import-hint-92"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-35313941d6fb",
+      "kind": "material",
+      "name": "srgb-import-hint-93",
+      "sourceIndex": 84,
+      "sourceKey": "material:srgb-import-hint-93"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-353296626824",
+      "kind": "material",
+      "name": "srgb-import-hint-94",
+      "sourceIndex": 85,
+      "sourceKey": "material:srgb-import-hint-94"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3533f0b0e9e5",
+      "kind": "material",
+      "name": "srgb-import-hint-95",
+      "sourceIndex": 86,
+      "sourceKey": "material:srgb-import-hint-95"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3534ec48563f",
+      "kind": "material",
+      "name": "srgb-import-hint-96",
+      "sourceIndex": 87,
+      "sourceKey": "material:srgb-import-hint-96"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3535c05c86bd",
+      "kind": "material",
+      "name": "srgb-import-hint-97",
+      "sourceIndex": 88,
+      "sourceKey": "material:srgb-import-hint-97"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3536ed55d8cb",
+      "kind": "material",
+      "name": "srgb-import-hint-98",
+      "sourceIndex": 89,
+      "sourceKey": "material:srgb-import-hint-98"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-3537d253345b",
+      "kind": "material",
+      "name": "srgb-import-hint-99",
+      "sourceIndex": 90,
+      "sourceKey": "material:srgb-import-hint-99"
+    },
+    {
+      "guid": "01a1b22a-96cf-7b57-9b12-353841c63c15",
+      "kind": "material",
+      "name": "srgb-import-hint-100",
+      "sourceIndex": 91,
+      "sourceKey": "material:srgb-import-hint-100"
+    },
+    {
+      "guid": "01a1b1ac-a4a7-74f8-9e73-242cdd42cc62",
+      "kind": "scene",
+      "name": "materials-tokyo",
+      "sourceIndex": 0,
+      "sourceKey": "scene:materials-tokyo"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baccf591860e",
+      "kind": "texture",
+      "name": "image-e84dbf766d11a2c3",
+      "sourceIndex": 0,
+      "sourceKey": "texture:image-e84dbf766d11a2c3"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bacddaf8c6e5",
+      "kind": "texture",
+      "name": "image-9efa6826a7b081f8",
+      "sourceIndex": 1,
+      "sourceKey": "texture:image-9efa6826a7b081f8"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bace24f2a9f8",
+      "kind": "texture",
+      "name": "image-fbbac7672f06baa4",
+      "sourceIndex": 2,
+      "sourceKey": "texture:image-fbbac7672f06baa4"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bacf9eccdbed",
+      "kind": "texture",
+      "name": "image-7884d9c6ffb993b5",
+      "sourceIndex": 3,
+      "sourceKey": "texture:image-7884d9c6ffb993b5"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad0639d5803",
+      "kind": "texture",
+      "name": "image-0a7ba6539f5145c6",
+      "sourceIndex": 4,
+      "sourceKey": "texture:image-0a7ba6539f5145c6"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad1db6e2b45",
+      "kind": "texture",
+      "name": "image-4304f4bf787e993a",
+      "sourceIndex": 5,
+      "sourceKey": "texture:image-4304f4bf787e993a"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad27667cd0c",
+      "kind": "texture",
+      "name": "image-632fe8c19e774d00",
+      "sourceIndex": 6,
+      "sourceKey": "texture:image-632fe8c19e774d00"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad3f7cc98f8",
+      "kind": "texture",
+      "name": "image-5e499d2a74aa2939",
+      "sourceIndex": 7,
+      "sourceKey": "texture:image-5e499d2a74aa2939"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad47155cf90",
+      "kind": "texture",
+      "name": "image-fba4de2b1d80d866",
+      "sourceIndex": 8,
+      "sourceKey": "texture:image-fba4de2b1d80d866"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad5ce3d80a2",
+      "kind": "texture",
+      "name": "image-25af58f43189280f",
+      "sourceIndex": 9,
+      "sourceKey": "texture:image-25af58f43189280f"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad6edccc09e",
+      "kind": "texture",
+      "name": "image-c47b700e663ba0b5",
+      "sourceIndex": 10,
+      "sourceKey": "texture:image-c47b700e663ba0b5"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad7b65d9a83",
+      "kind": "texture",
+      "name": "image-545828698deffdb6",
+      "sourceIndex": 11,
+      "sourceKey": "texture:image-545828698deffdb6"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad8b83ad114",
+      "kind": "texture",
+      "name": "image-4a6a026183a42535",
+      "sourceIndex": 12,
+      "sourceKey": "texture:image-4a6a026183a42535"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bad99a01887b",
+      "kind": "texture",
+      "name": "image-7d09fa886f37fbd4",
+      "sourceIndex": 13,
+      "sourceKey": "texture:image-7d09fa886f37fbd4"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bada20fd2153",
+      "kind": "texture",
+      "name": "image-dbe3dec81be449e0",
+      "sourceIndex": 14,
+      "sourceKey": "texture:image-dbe3dec81be449e0"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-badbc3407d39",
+      "kind": "texture",
+      "name": "image-08ec04afc481f5ac",
+      "sourceIndex": 15,
+      "sourceKey": "texture:image-08ec04afc481f5ac"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-badc1fc46d54",
+      "kind": "texture",
+      "name": "image-9306babb893863df",
+      "sourceIndex": 16,
+      "sourceKey": "texture:image-9306babb893863df"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baddf02c1f77",
+      "kind": "texture",
+      "name": "image-3955ae6939158f96",
+      "sourceIndex": 17,
+      "sourceKey": "texture:image-3955ae6939158f96"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baded6e47e7f",
+      "kind": "texture",
+      "name": "image-eeae2d88335c4569",
+      "sourceIndex": 18,
+      "sourceKey": "texture:image-eeae2d88335c4569"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-badf687f479f",
+      "kind": "texture",
+      "name": "image-8acff211c8b530d8",
+      "sourceIndex": 19,
+      "sourceKey": "texture:image-8acff211c8b530d8"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae0f910113d",
+      "kind": "texture",
+      "name": "image-7e72255960c6f3e5",
+      "sourceIndex": 20,
+      "sourceKey": "texture:image-7e72255960c6f3e5"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae1269473ff",
+      "kind": "texture",
+      "name": "image-00812597cd6aacfb",
+      "sourceIndex": 21,
+      "sourceKey": "texture:image-00812597cd6aacfb"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae28acf74dd",
+      "kind": "texture",
+      "name": "image-76bbde9332ea4544",
+      "sourceIndex": 22,
+      "sourceKey": "texture:image-76bbde9332ea4544"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae3cff352f8",
+      "kind": "texture",
+      "name": "image-7cfbe40a0b1e0472",
+      "sourceIndex": 23,
+      "sourceKey": "texture:image-7cfbe40a0b1e0472"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae43c4fdc4d",
+      "kind": "texture",
+      "name": "image-6d8ad67b6bf382c8",
+      "sourceIndex": 24,
+      "sourceKey": "texture:image-6d8ad67b6bf382c8"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae5d1baf83e",
+      "kind": "texture",
+      "name": "image-613e65c0a8928f2d",
+      "sourceIndex": 25,
+      "sourceKey": "texture:image-613e65c0a8928f2d"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae6f3c9cb57",
+      "kind": "texture",
+      "name": "image-2ba25b589db46901",
+      "sourceIndex": 26,
+      "sourceKey": "texture:image-2ba25b589db46901"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae7e77207d5",
+      "kind": "texture",
+      "name": "image-53356560e48c5e6c",
+      "sourceIndex": 27,
+      "sourceKey": "texture:image-53356560e48c5e6c"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae8053b2973",
+      "kind": "texture",
+      "name": "image-e8d8fe648b08456f",
+      "sourceIndex": 28,
+      "sourceKey": "texture:image-e8d8fe648b08456f"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bae9afddbdb4",
+      "kind": "texture",
+      "name": "image-5cbbdd02b0e9d6b7",
+      "sourceIndex": 29,
+      "sourceKey": "texture:image-5cbbdd02b0e9d6b7"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baeaaea18a1b",
+      "kind": "texture",
+      "name": "image-3625e0606cc67388",
+      "sourceIndex": 30,
+      "sourceKey": "texture:image-3625e0606cc67388"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baebe2d749bf",
+      "kind": "texture",
+      "name": "image-7b962d36158fd489",
+      "sourceIndex": 31,
+      "sourceKey": "texture:image-7b962d36158fd489"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baeca91669ce",
+      "kind": "texture",
+      "name": "image-37390237564f0b2d",
+      "sourceIndex": 32,
+      "sourceKey": "texture:image-37390237564f0b2d"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baed12999482",
+      "kind": "texture",
+      "name": "image-20f67e5ecf71cafe",
+      "sourceIndex": 33,
+      "sourceKey": "texture:image-20f67e5ecf71cafe"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baee9ea7c072",
+      "kind": "texture",
+      "name": "image-a53faf134c0669a6",
+      "sourceIndex": 34,
+      "sourceKey": "texture:image-a53faf134c0669a6"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baef79ba7fcc",
+      "kind": "texture",
+      "name": "image-6bc89ee7c3c1270c",
+      "sourceIndex": 35,
+      "sourceKey": "texture:image-6bc89ee7c3c1270c"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf0d9f06a41",
+      "kind": "texture",
+      "name": "image-4b632c229a9238e5",
+      "sourceIndex": 36,
+      "sourceKey": "texture:image-4b632c229a9238e5"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf1ea2f28aa",
+      "kind": "texture",
+      "name": "image-ca7ae7064f5bf40d",
+      "sourceIndex": 37,
+      "sourceKey": "texture:image-ca7ae7064f5bf40d"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf2d4fd2850",
+      "kind": "texture",
+      "name": "image-1e582a9a132af12f",
+      "sourceIndex": 38,
+      "sourceKey": "texture:image-1e582a9a132af12f"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf3ae4f3c90",
+      "kind": "texture",
+      "name": "image-a27f52206898f543",
+      "sourceIndex": 39,
+      "sourceKey": "texture:image-a27f52206898f543"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf41df03181",
+      "kind": "texture",
+      "name": "image-e732005ab3bff731",
+      "sourceIndex": 40,
+      "sourceKey": "texture:image-e732005ab3bff731"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf578f70eab",
+      "kind": "texture",
+      "name": "image-fd870d6d48964f18",
+      "sourceIndex": 41,
+      "sourceKey": "texture:image-fd870d6d48964f18"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf69df3ea4b",
+      "kind": "texture",
+      "name": "image-d56c1d8934d7f903",
+      "sourceIndex": 42,
+      "sourceKey": "texture:image-d56c1d8934d7f903"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf77fae5ae7",
+      "kind": "texture",
+      "name": "image-82c4ec18d80ad9b6",
+      "sourceIndex": 43,
+      "sourceKey": "texture:image-82c4ec18d80ad9b6"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf8aa72e9c9",
+      "kind": "texture",
+      "name": "image-3d5bff7e831a1a59",
+      "sourceIndex": 44,
+      "sourceKey": "texture:image-3d5bff7e831a1a59"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baf92ae67b40",
+      "kind": "texture",
+      "name": "image-c64e08e67108069e",
+      "sourceIndex": 45,
+      "sourceKey": "texture:image-c64e08e67108069e"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bafa08ebc543",
+      "kind": "texture",
+      "name": "image-9ac4ab12a4149b8d",
+      "sourceIndex": 46,
+      "sourceKey": "texture:image-9ac4ab12a4149b8d"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bafb7a07cdcb",
+      "kind": "texture",
+      "name": "image-d8653fec61e975b1",
+      "sourceIndex": 47,
+      "sourceKey": "texture:image-d8653fec61e975b1"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bafc66bd8d91",
+      "kind": "texture",
+      "name": "image-0b374cd6d7ec1a7a",
+      "sourceIndex": 48,
+      "sourceKey": "texture:image-0b374cd6d7ec1a7a"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bafdf16c6c34",
+      "kind": "texture",
+      "name": "image-50f676b4c3804ba9",
+      "sourceIndex": 49,
+      "sourceKey": "texture:image-50f676b4c3804ba9"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bafe37679601",
+      "kind": "texture",
+      "name": "image-47855d0319ed29f5",
+      "sourceIndex": 50,
+      "sourceKey": "texture:image-47855d0319ed29f5"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-baff9dc84aa5",
+      "kind": "texture",
+      "name": "image-9ae169fb6a11e76c",
+      "sourceIndex": 51,
+      "sourceKey": "texture:image-9ae169fb6a11e76c"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb00d2e2386b",
+      "kind": "texture",
+      "name": "image-d0f9887e04f2022e",
+      "sourceIndex": 52,
+      "sourceKey": "texture:image-d0f9887e04f2022e"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0155231327",
+      "kind": "texture",
+      "name": "image-bb36b00b6be29019",
+      "sourceIndex": 53,
+      "sourceKey": "texture:image-bb36b00b6be29019"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0288ecb936",
+      "kind": "texture",
+      "name": "image-add943ce8c4387ac",
+      "sourceIndex": 54,
+      "sourceKey": "texture:image-add943ce8c4387ac"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb03742f7146",
+      "kind": "texture",
+      "name": "image-6077acef0a4ea66b",
+      "sourceIndex": 55,
+      "sourceKey": "texture:image-6077acef0a4ea66b"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb04af858de9",
+      "kind": "texture",
+      "name": "image-fd6cae5ae0b358c0",
+      "sourceIndex": 56,
+      "sourceKey": "texture:image-fd6cae5ae0b358c0"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb053b8c6ef5",
+      "kind": "texture",
+      "name": "image-3c8e12a604b071fd",
+      "sourceIndex": 57,
+      "sourceKey": "texture:image-3c8e12a604b071fd"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb06e1d6576b",
+      "kind": "texture",
+      "name": "image-ecb5b6d2c565018c",
+      "sourceIndex": 58,
+      "sourceKey": "texture:image-ecb5b6d2c565018c"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0778c9f6e9",
+      "kind": "texture",
+      "name": "image-c998dabbeb77178d",
+      "sourceIndex": 59,
+      "sourceKey": "texture:image-c998dabbeb77178d"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb087630244f",
+      "kind": "texture",
+      "name": "image-e349541a538c1eda",
+      "sourceIndex": 60,
+      "sourceKey": "texture:image-e349541a538c1eda"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb09f562e350",
+      "kind": "texture",
+      "name": "image-6b2b6ffc94295d56",
+      "sourceIndex": 61,
+      "sourceKey": "texture:image-6b2b6ffc94295d56"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0a098ab8d6",
+      "kind": "texture",
+      "name": "image-bd07ceed57e8c2d0",
+      "sourceIndex": 62,
+      "sourceKey": "texture:image-bd07ceed57e8c2d0"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0b39e3b2ec",
+      "kind": "texture",
+      "name": "image-d093b83b0dd68aa5",
+      "sourceIndex": 63,
+      "sourceKey": "texture:image-d093b83b0dd68aa5"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0c3d86db3e",
+      "kind": "texture",
+      "name": "image-4a9200e93b886a96",
+      "sourceIndex": 64,
+      "sourceKey": "texture:image-4a9200e93b886a96"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0d9d36d092",
+      "kind": "texture",
+      "name": "image-61887d6894e05d7f",
+      "sourceIndex": 65,
+      "sourceKey": "texture:image-61887d6894e05d7f"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0e5a80c8ba",
+      "kind": "texture",
+      "name": "image-f4f695a435a07a18",
+      "sourceIndex": 66,
+      "sourceKey": "texture:image-f4f695a435a07a18"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb0f219f5961",
+      "kind": "texture",
+      "name": "image-2be64dddea8a1fe0",
+      "sourceIndex": 67,
+      "sourceKey": "texture:image-2be64dddea8a1fe0"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb102750b581",
+      "kind": "texture",
+      "name": "image-74d868dd38a61eff",
+      "sourceIndex": 68,
+      "sourceKey": "texture:image-74d868dd38a61eff"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb11f3c9308f",
+      "kind": "texture",
+      "name": "image-f3d94b649282ea0f",
+      "sourceIndex": 69,
+      "sourceKey": "texture:image-f3d94b649282ea0f"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb128d0faad5",
+      "kind": "texture",
+      "name": "image-8b1edba6536b7dd0",
+      "sourceIndex": 70,
+      "sourceKey": "texture:image-8b1edba6536b7dd0"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb130e92d935",
+      "kind": "texture",
+      "name": "image-6a100722a2eed00c",
+      "sourceIndex": 71,
+      "sourceKey": "texture:image-6a100722a2eed00c"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb147ac8c980",
+      "kind": "texture",
+      "name": "image-e1472a69dffb55fb",
+      "sourceIndex": 72,
+      "sourceKey": "texture:image-e1472a69dffb55fb"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb151f4c93dc",
+      "kind": "texture",
+      "name": "image-499f90a882b0b781",
+      "sourceIndex": 73,
+      "sourceKey": "texture:image-499f90a882b0b781"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb16c5fd4ff8",
+      "kind": "texture",
+      "name": "image-082a4554e310ac07",
+      "sourceIndex": 74,
+      "sourceKey": "texture:image-082a4554e310ac07"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb1745936c31",
+      "kind": "texture",
+      "name": "image-5920668782cee74d",
+      "sourceIndex": 75,
+      "sourceKey": "texture:image-5920668782cee74d"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb183db3d2bd",
+      "kind": "texture",
+      "name": "image-4665f98b3e51ef63",
+      "sourceIndex": 76,
+      "sourceKey": "texture:image-4665f98b3e51ef63"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb19e67213b4",
+      "kind": "texture",
+      "name": "image-c5e2c77c9ab0cd0e",
+      "sourceIndex": 77,
+      "sourceKey": "texture:image-c5e2c77c9ab0cd0e"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb1a8d77fa0f",
+      "kind": "texture",
+      "name": "image-e40cdb3e20b2b414",
+      "sourceIndex": 78,
+      "sourceKey": "texture:image-e40cdb3e20b2b414"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb1bdfca5282",
+      "kind": "texture",
+      "name": "image-53442634a4c99f5a",
+      "sourceIndex": 79,
+      "sourceKey": "texture:image-53442634a4c99f5a"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb1c6cbc9676",
+      "kind": "texture",
+      "name": "image-db9f1a21d33a6397",
+      "sourceIndex": 80,
+      "sourceKey": "texture:image-db9f1a21d33a6397"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb1dc16f662f",
+      "kind": "texture",
+      "name": "image-c33e0135f7c21610",
+      "sourceIndex": 81,
+      "sourceKey": "texture:image-c33e0135f7c21610"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb1e611b3906",
+      "kind": "texture",
+      "name": "image-e1d5e0cc05046d66",
+      "sourceIndex": 82,
+      "sourceKey": "texture:image-e1d5e0cc05046d66"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb1f0a58580c",
+      "kind": "texture",
+      "name": "image-91a89fd610766755",
+      "sourceIndex": 83,
+      "sourceKey": "texture:image-91a89fd610766755"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb20928891e3",
+      "kind": "texture",
+      "name": "image-2eb973fe8e82f77e",
+      "sourceIndex": 84,
+      "sourceKey": "texture:image-2eb973fe8e82f77e"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb21c1a07541",
+      "kind": "texture",
+      "name": "image-76ea7d35e5f6f759",
+      "sourceIndex": 85,
+      "sourceKey": "texture:image-76ea7d35e5f6f759"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb222995d876",
+      "kind": "texture",
+      "name": "image-309a488a77020868",
+      "sourceIndex": 86,
+      "sourceKey": "texture:image-309a488a77020868"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb2332a37274",
+      "kind": "texture",
+      "name": "image-ed3e676271616a26",
+      "sourceIndex": 87,
+      "sourceKey": "texture:image-ed3e676271616a26"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb24aa8655a0",
+      "kind": "texture",
+      "name": "image-3bd316dfb08013ba",
+      "sourceIndex": 88,
+      "sourceKey": "texture:image-3bd316dfb08013ba"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb254e55047f",
+      "kind": "texture",
+      "name": "image-c53c2f271e91d51a",
+      "sourceIndex": 89,
+      "sourceKey": "texture:image-c53c2f271e91d51a"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb26a7c92f5b",
+      "kind": "texture",
+      "name": "image-f7badba368e5a804",
+      "sourceIndex": 90,
+      "sourceKey": "texture:image-f7badba368e5a804"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb27ac642796",
+      "kind": "texture",
+      "name": "image-f5618d1100d4d63f",
+      "sourceIndex": 91,
+      "sourceKey": "texture:image-f5618d1100d4d63f"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb28849dc70f",
+      "kind": "texture",
+      "name": "image-acefbf410115a1b6",
+      "sourceIndex": 92,
+      "sourceKey": "texture:image-acefbf410115a1b6"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb29224161e1",
+      "kind": "texture",
+      "name": "image-bfaa16a5e95b35b9",
+      "sourceIndex": 93,
+      "sourceKey": "texture:image-bfaa16a5e95b35b9"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb2a26052b33",
+      "kind": "texture",
+      "name": "image-4844014153f91d27",
+      "sourceIndex": 94,
+      "sourceKey": "texture:image-4844014153f91d27"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb2b08ac7d76",
+      "kind": "texture",
+      "name": "image-2cbdfb99c0d012d5",
+      "sourceIndex": 95,
+      "sourceKey": "texture:image-2cbdfb99c0d012d5"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb2c231280ee",
+      "kind": "texture",
+      "name": "image-dc574247c1601b61",
+      "sourceIndex": 96,
+      "sourceKey": "texture:image-dc574247c1601b61"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb2d295c76a7",
+      "kind": "texture",
+      "name": "image-3a96ab786783c33d",
+      "sourceIndex": 97,
+      "sourceKey": "texture:image-3a96ab786783c33d"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb2e7eb6f03f",
+      "kind": "texture",
+      "name": "image-789b8621d3a24fa3",
+      "sourceIndex": 98,
+      "sourceKey": "texture:image-789b8621d3a24fa3"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb2faa54cc97",
+      "kind": "texture",
+      "name": "image-aec2a1fdb5d4dcfa",
+      "sourceIndex": 99,
+      "sourceKey": "texture:image-aec2a1fdb5d4dcfa"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb30367261ea",
+      "kind": "texture",
+      "name": "image-589cc9df38dccbb3",
+      "sourceIndex": 100,
+      "sourceKey": "texture:image-589cc9df38dccbb3"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb31d390961f",
+      "kind": "sampler",
+      "name": "sampler-1268f0e498c7bd20",
+      "sourceIndex": 0,
+      "sourceKey": "sampler:sampler-1268f0e498c7bd20"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb324ac3bf9d",
+      "kind": "sampler",
+      "name": "sampler-817198516c7ac8c6",
+      "sourceIndex": 1,
+      "sourceKey": "sampler:sampler-817198516c7ac8c6"
+    },
+    {
+      "guid": "01a1b16e-07dd-71eb-9aa4-bb33a02616e2",
+      "kind": "sampler",
+      "name": "sampler-1adb3e8538cc4571",
+      "sourceIndex": 2,
+      "sourceKey": "sampler:sampler-1adb3e8538cc4571"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "infected-cop",
+    "addedConstantBindPoseChannels": 24,
+    "clipDurationsUnchanged": true,
+    "sourceSha256": "cc576177b85910dd91e1ad9c2ed21fcac785538ef67bb8022d240aa794e00aa4",
+    "outputSha256": "3b81088661b0353081465c7796a604568447d0057d4e5d426e8b06c574fab720"
+  },
+  {
+    "name": "ally-0",
+    "addedConstantBindPoseChannels": 2,
+    "clipDurationsUnchanged": true,
+    "sourceSha256": "bb6d538fbacb1a0498f86176b8449ef2a96d9688991caf6dd847e9e0ef1cfe4c",
+    "outputSha256": "18735f754df29ae279ce788986db5ff8e8284205118d553b0378f86571e9e6e8"
+  }
+]

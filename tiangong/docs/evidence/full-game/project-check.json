@@ -1,0 +1,1 @@
+{"ok":true,"command":"project check","value":{"root":"/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample","projectId":"wake-up-tiangong","node":"24.18.1","pnpm":"12.15.0","workspaceDependencies":[],"uiAuthoringProfileVersion":"1"},"artifacts":[],"omitted":{"fields":["value.uiAuthoringProfile"],"flag":"--detail"}}

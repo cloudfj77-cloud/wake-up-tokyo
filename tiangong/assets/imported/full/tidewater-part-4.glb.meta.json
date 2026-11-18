@@ -1,0 +1,244 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "Tidewater Plaza",
+        "props",
+        "props:glow~ns",
+        "props:rubber",
+        "Tidewater architecture",
+        "decor",
+        "flags:poles"
+      ],
+      "unsupportedExtensions": []
+    },
+    "downscaleMaxDimension": 1024
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "tidewater-part-4.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-47a4be85dad72e84"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-f5014e0cf4eded99"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-9628b5b8b269d51b"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-bf6c7b4446195bf0"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:mesh-47a4be85dad72e84": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "02fda250-e9d9-5b55-b84f-3ff972aff32a"
+      }
+    },
+    "mesh:mesh-f5014e0cf4eded99": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "56774d1c-c847-5baf-927a-e0c42f22a85e"
+      }
+    },
+    "mesh:mesh-9628b5b8b269d51b": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "93ab4752-d13f-52ed-a143-2ce7be82a134"
+      }
+    },
+    "mesh:mesh-bf6c7b4446195bf0": {
+      "materialSlotDefaultOverrides": {
+        "gltf:default": "04f9803d-4535-54ce-ae34-a64dc9f599d8"
+      }
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b1ad-b13a-70bc-9694-ea7347775723",
+      "kind": "mesh",
+      "name": "mesh-47a4be85dad72e84",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:mesh-47a4be85dad72e84"
+    },
+    {
+      "guid": "01a1b1ad-b13a-70bc-9694-ea74c3077ed1",
+      "kind": "mesh",
+      "name": "mesh-f5014e0cf4eded99",
+      "sourceIndex": 1,
+      "sourceKey": "mesh:mesh-f5014e0cf4eded99"
+    },
+    {
+      "guid": "01a1b1ad-b13a-70bc-9694-ea7584b889c2",
+      "kind": "mesh",
+      "name": "mesh-9628b5b8b269d51b",
+      "sourceIndex": 2,
+      "sourceKey": "mesh:mesh-9628b5b8b269d51b"
+    },
+    {
+      "guid": "01a1b1ad-b13a-70bc-9694-ea76be309e34",
+      "kind": "mesh",
+      "name": "mesh-bf6c7b4446195bf0",
+      "sourceIndex": 3,
+      "sourceKey": "mesh:mesh-bf6c7b4446195bf0"
+    },
+    {
+      "guid": "01a1b1ad-b13a-70bc-9694-ea7b2fedc8f1",
+      "kind": "scene",
+      "name": "tidewater-part-4",
+      "sourceIndex": 0,
+      "sourceKey": "scene:tidewater-part-4"
+    }
+  ]
+}

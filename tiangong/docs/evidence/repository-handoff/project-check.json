@@ -1,0 +1,1 @@
+{"ok":true,"command":"project check","value":{"root":"/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/.tools/tiangong-source-publish-20261109/tiangong","projectId":"wake-up-tiangong","node":"24.18.1","pnpm":"12.15.0","workspaceDependencies":[],"uiAuthoringProfileVersion":"1"},"artifacts":[],"omitted":{"fields":["value.uiAuthoringProfile"],"flag":"--detail"}}

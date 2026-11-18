@@ -1,0 +1,6258 @@
+{
+  "schemaVersion": "1.0.0",
+  "passed": false,
+  "root": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample",
+  "script": "scripts/seaside-resume.mjs",
+  "outputDir": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume",
+  "report": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/play.json",
+  "captureReport": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/capture.json",
+  "url": "http://localhost:61505/",
+  "backend": "hardware",
+  "timings": {
+    "openMs": 194916,
+    "readyMs": 8023,
+    "scriptMs": 556092,
+    "totalMs": 759517
+  },
+  "steps": [
+    {
+      "name": "native menu and full seaside map",
+      "ok": true,
+      "ms": 310
+    },
+    {
+      "name": "start and choose a real upgrade",
+      "ok": true,
+      "ms": 897
+    },
+    {
+      "name": "move through native collision",
+      "ok": true,
+      "ms": 417
+    },
+    {
+      "name": "jump on Shift",
+      "ok": true,
+      "ms": 638
+    },
+    {
+      "name": "moving roll cancels jump",
+      "ok": true,
+      "ms": 450
+    },
+    {
+      "name": "pause and resume > advance 1.05 s",
+      "ok": true,
+      "ms": 232
+    },
+    {
+      "name": "pause and resume",
+      "ok": true,
+      "ms": 350
+    },
+    {
+      "name": "save survives reload",
+      "ok": true,
+      "ms": 7996
+    },
+    {
+      "name": "switch to the complete Tokyo station > advance 0.5 s",
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "name": "switch to the complete Tokyo station",
+      "ok": true,
+      "ms": 12337
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.24 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.24 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.23639699777312842 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.24 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.19210224446377408 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.2 s",
+      "ok": true,
+      "ms": 35
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.2 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.2 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker > advance 0.2 s",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "name": "follow the real station tutorial and personally infect a worker",
+      "ok": true,
+      "ms": 1083
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.1817567248962132 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 48
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 52
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.1726432142103385 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.16286224728220636 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.20113419485326792 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 52
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 48
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 48
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.24 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.19879388395175965 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.13411390861509878 s",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.07582169831337038 s",
+      "ok": true,
+      "ms": 19
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.08591368984148375 s",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12525657492622322 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.08786466216593311 s",
+      "ok": true,
+      "ms": 23
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.10328980762228544 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.07860681045288086 s",
+      "ok": true,
+      "ms": 21
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.11377468841263552 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12192023107955939 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.13007593804054499 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12835661900238896 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12663039564472908 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.058580330451772696 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.10537033669445067 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12362592549887114 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12189046564133243 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.13013287605452006 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12839796218829494 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12665672174136158 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.13491039545444744 s",
+      "ok": true,
+      "ms": 32
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12319347228585607 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.1314378510318245 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12971491133893248 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.06005159700395573 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.07259654527354675 s",
+      "ok": true,
+      "ms": 19
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12030124158304001 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.11859040690119083 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.0951073964749747 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12297611476252013 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12141842164952196 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12967474644478694 s",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12793298224662872 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.05801400588191757 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.09621219866894831 s",
+      "ok": true,
+      "ms": 21
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12445040744031578 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12271801392788242 s",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.13098409420096827 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12924944014561315 s",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.1275229821041632 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.05761067615987764 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.09579965813760614 s",
+      "ok": true,
+      "ms": 20
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.08216697604208643 s",
+      "ok": true,
+      "ms": 21
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.08761159016574224 s",
+      "ok": true,
+      "ms": 21
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.08281251874277752 s",
+      "ok": true,
+      "ms": 23
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.08826082752045344 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12388749292882613 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.1144781688796302 s",
+      "ok": true,
+      "ms": 33
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.1080290377286974 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.06063329755252825 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.10916587698751393 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.13398142852247222 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.12300879593540016 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.08748366852731423 s",
+      "ok": true,
+      "ms": 21
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.1016546501391574 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.0881800009817969 s",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.09331176649997 s",
+      "ok": true,
+      "ms": 23
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector > advance 0.08886408686651781 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "walk all station stairs to the cafe and pick up the injector",
+      "ok": true,
+      "ms": 6232
+    },
+    {
+      "name": "fire purple liquid and retain surface paint > advance 0.05 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "fire purple liquid and retain surface paint > advance 0.05 s",
+      "ok": true,
+      "ms": 23
+    },
+    {
+      "name": "fire purple liquid and retain surface paint > advance 0.05 s",
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "name": "fire purple liquid and retain surface paint > advance 0.05 s",
+      "ok": true,
+      "ms": 431
+    },
+    {
+      "name": "fire purple liquid and retain surface paint > advance 2 s",
+      "ok": true,
+      "ms": 362
+    },
+    {
+      "name": "fire purple liquid and retain surface paint",
+      "ok": true,
+      "ms": 1650
+    },
+    {
+      "name": "measure an ordinary completed-frame window",
+      "ok": true,
+      "ms": 10003
+    },
+    {
+      "name": "trusted mobile move, jump, roll and release > advance 1.05 s",
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "name": "trusted mobile move, jump, roll and release > advance 0.4 s",
+      "ok": true,
+      "ms": 84
+    },
+    {
+      "name": "trusted mobile move, jump, roll and release > advance 0.1 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "trusted mobile move, jump, roll and release > advance 0.1 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "trusted mobile move, jump, roll and release > advance 1.05 s",
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "name": "trusted mobile move, jump, roll and release",
+      "ok": true,
+      "ms": 1571
+    },
+    {
+      "name": "advance 0.6 s",
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "name": "advance 0.5 s",
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "name": "advance 2 s",
+      "ok": true,
+      "ms": 211
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 316
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 257
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 35
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.23425990695896082 s",
+      "ok": true,
+      "ms": 32
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.12590265109267362 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2032251987333272 s",
+      "ok": true,
+      "ms": 32
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10569096017204618 s",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 32
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2368350907399486 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1284706552349826 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2386984979670046 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1305182194668105 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.20674596302616924 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1203445051582707 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 55
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 33
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 21
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.16573866889803313 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 20
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07453302800636422 s",
+      "ok": true,
+      "ms": 19
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1843627124360724 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.09785943806125309 s",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 56
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2071257052258087 s",
+      "ok": true,
+      "ms": 52
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10962109213224587 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 55
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2218644421623944 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.16355225764596215 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1529604222154654 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.15294086286592357 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.15293431516137077 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.15293784851171768 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.15296800442878042 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.15294311990103834 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1529345896691444 s",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1529360109341587 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.0889150915372676 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 59
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.24541516044993625 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.12624700318993665 s",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07207481037799975 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1695080278256743 s",
+      "ok": true,
+      "ms": 33
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.08605481249264045 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 56
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2077214123208009 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11022374327336477 s",
+      "ok": true,
+      "ms": 35
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.15252923470529706 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07669474935181386 s",
+      "ok": true,
+      "ms": 32
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 52
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.242354055132604 s",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2163487947348505 s",
+      "ok": true,
+      "ms": 48
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 55
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.14731327182760293 s",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07143598989645528 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.18292300192102323 s",
+      "ok": true,
+      "ms": 32
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.09715882828510024 s",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.23238316722979824 s",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11321497792411363 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 56
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 55
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.23432114819660121 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.126051782276789 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 20
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1581219119321752 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1811782371268618 s",
+      "ok": true,
+      "ms": 52
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.08367878008552108 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 56
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2129854288196715 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11550261957042582 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2026408565748683 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10518079874598919 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.22677738249100243 s",
+      "ok": true,
+      "ms": 52
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.129267228770155 s",
+      "ok": true,
+      "ms": 32
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.0758126521442233 s",
+      "ok": true,
+      "ms": 35
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.17375029737682696 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.08719711142010453 s",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.14381675091106577 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07884177169605633 s",
+      "ok": true,
+      "ms": 23
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 48
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.12371753997518296 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 28
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.21182270820766766 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11432350060332865 s",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.20150179174746535 s",
+      "ok": true,
+      "ms": 52
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1149139328731782 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.21457647755444811 s",
+      "ok": true,
+      "ms": 55
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11726672861856839 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.20516237033642418 s",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10767385518402511 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 55
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2183134292997665 s",
+      "ok": true,
+      "ms": 55
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.12122406310540411 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 59
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 58
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2004951835409465 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11381263390194712 s",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 58
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 56
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.22409447750593184 s",
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10500569617105802 s",
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.21541840132062387 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10739553178226716 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07523012260776524 s",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.18530407482188493 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.09862336171902536 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 33
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1518403535871234 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07600792324751984 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 198
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 108
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11242307939712162 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.06912198384949689 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 59
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2008563650157447 s",
+      "ok": true,
+      "ms": 35
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11419027880400756 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 111
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.15340955241819454 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.22634031493473514 s",
+      "ok": true,
+      "ms": 58
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11800011157584943 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.20507772088223067 s",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11851203097873343 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2074406425001736 s",
+      "ok": true,
+      "ms": 59
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10999629777427261 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 48
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.14842590575931253 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.21035238324895839 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11285272535177103 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 59
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.08095832204979735 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.17890677901479415 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.09221750421200771 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.21287021082183985 s",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1263083262516616 s",
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1481656438590916 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 33
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2093858244029543 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.12271710942116926 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.06853066993772347 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.16624328579683692 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07955979223571386 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.16639052558345074 s",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.06924283125695198 s",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 55
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.18931635804115002 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10263589190427194 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 141
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.17305736635816538 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 25
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 58
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.15813179014229256 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07147781733351925 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.180109671776026 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.09347125499436092 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.19145044878597167 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.09393761201037765 s",
+      "ok": true,
+      "ms": 38
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.21525686865914012 s",
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11794312211184653 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.07536937785704863 s",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.19723397696989586 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11058229608689996 s",
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.20917568739256664 s",
+      "ok": true,
+      "ms": 58
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.12281310734468573 s",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2098742386742894 s",
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.12337632902576355 s",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.21592135739190704 s",
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.11838326573159794 s",
+      "ok": true,
+      "ms": 44
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.20551451655974023 s",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.1080792056251892 s",
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 59
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 33
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.2191280594757258 s",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.12162367883073605 s",
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.19782353643909042 s",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.025 s",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.10060281685659457 s",
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "name": "natural combat, upgrades and late-game progression through real input > advance 0.3 s",
+      "ok": true,
+      "ms": 78
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "native-main-menu",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/01-native-main-menu.png",
+      "rendered": true,
+      "digest": "sha256:2fc0ad4951723da1624680b92277753e95b717a86a40f82a97c40dde129314ad"
+    },
+    {
+      "name": "native-upgrade-cards",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/02-native-upgrade-cards.png",
+      "rendered": true,
+      "digest": "sha256:c457475ea53d093d058f70c086301ba501bdc1f65765846cf284fef9a54b7790"
+    },
+    {
+      "name": "native-jump",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/03-native-jump.png",
+      "rendered": true,
+      "digest": "sha256:9826c1c9479ffd34178b003cada784fff4dd5fb017d903a2b61f9528a5b796b4"
+    },
+    {
+      "name": "native-roll",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/04-native-roll.png",
+      "rendered": true,
+      "digest": "sha256:e61773f33c7e9f983c869b7e80ddbce446bf588cad46995a97a7b0314a271974"
+    },
+    {
+      "name": "native-restored",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/05-native-restored.png",
+      "rendered": true,
+      "digest": "sha256:518948862fe075c0c723b002a208a6b6cd77ec8632c6ec892837e12a48ac518f"
+    },
+    {
+      "name": "tokyo-station-trains",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/06-tokyo-station-trains.png",
+      "rendered": true,
+      "digest": "sha256:6d6ede72c923a7a26f32ac5e18d6875bfe94cbbfeab4cf96f6063adba4a0be61"
+    },
+    {
+      "name": "tokyo-infection-friendly-green",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/07-tokyo-infection-friendly-green.png",
+      "rendered": true,
+      "digest": "sha256:d4169e87608b5e0f4a6a0e22bc289506cda1b5f025e9f0a958134b75cf055ea1"
+    },
+    {
+      "name": "cafe-shoulder-injector",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/08-cafe-shoulder-injector.png",
+      "rendered": true,
+      "digest": "sha256:6a4221c92cfbf86c471fe2cce9a5f9bdc39fc77eec0b4d1b58c9d2d15f7560ae"
+    },
+    {
+      "name": "native-purple-spray-and-paint",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/09-native-purple-spray-and-paint.png",
+      "rendered": true,
+      "digest": "sha256:648a066512ae7caa0e78651d66ecf0abf505ca8cfc97189ccd1fec5e4ffdc3b4"
+    },
+    {
+      "name": "mobile-native-controls",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/10-mobile-native-controls.png",
+      "rendered": true,
+      "digest": "sha256:379d6d989451b4409aed7a83952d62362faac550601cb4bd2050794671a6f626"
+    },
+    {
+      "name": "mobile-native-portrait",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/11-mobile-native-portrait.png",
+      "rendered": true,
+      "digest": "sha256:f139f1ef50e44c4639db3f1b537527996d1e7b32e12141bf80ce8fdbd0634bc0"
+    },
+    {
+      "name": "native-original-tuning-console",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/12-native-original-tuning-console.png",
+      "rendered": true,
+      "digest": "sha256:b1dc1f8aee8bb02047fbc9a8cf04914afd217aabc4f6aa6efefa59c61bbd29c7"
+    },
+    {
+      "name": "restored-actual-seaside-natural-checkpoint",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/13-restored-actual-seaside-natural-checkpoint.png",
+      "rendered": true,
+      "digest": "sha256:f748852959cd3137a3192bd9934d2d4a0a37ac119393a1ffae97d4c21695c337"
+    },
+    {
+      "name": "natural-combat-0",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/14-natural-combat-0.png",
+      "rendered": true,
+      "digest": "sha256:43c2ba377f94459899be0b318282c59ffda4cd74e7409afbe6eefb1797198c6d"
+    },
+    {
+      "name": "natural-combat-120",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/15-natural-combat-120.png",
+      "rendered": true,
+      "digest": "sha256:e0bcf7763546e1b8207d4b96bea3766da33cc9baf619e4d213858b1746cde88e"
+    },
+    {
+      "name": "natural-late-combat-performance",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/16-natural-late-combat-performance.png",
+      "rendered": true,
+      "digest": "sha256:5bff4953ccfe8f7dff7f53b07d36125e9ec4829cf979d62ac40445eb499781c1"
+    },
+    {
+      "name": "natural-enemy-type-3",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/17-natural-enemy-type-3.png",
+      "rendered": true,
+      "digest": "sha256:461a11b9cbdcb862dee1513b08fbf97d0b051b414c5d20b442aad5749ac5258a"
+    },
+    {
+      "name": "natural-enemy-type-6",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/18-natural-enemy-type-6.png",
+      "rendered": true,
+      "digest": "sha256:5ec8d5a53efd74ed7d0314f05569d32e60654770adf2ae1e163c06494b059b4e"
+    },
+    {
+      "name": "natural-combat-240",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/19-natural-combat-240.png",
+      "rendered": true,
+      "digest": "sha256:43c613f718638312b51e815d346cb840aa3f7c2af0da6d8a8fcdceed1b29552a"
+    },
+    {
+      "name": "natural-combat-360",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/20-natural-combat-360.png",
+      "rendered": true,
+      "digest": "sha256:0be41b7cfa84c44e24e5d3720ed1c9ed2cc993558de81f42997aee45a6a2e0ee"
+    },
+    {
+      "name": "natural-combat-480",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/21-natural-combat-480.png",
+      "rendered": true,
+      "digest": "sha256:80e53954574b36f877401533394c05f50f4b72cf6472c1c57ad839fe08b4cdb0"
+    },
+    {
+      "name": "natural-combat-600",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/22-natural-combat-600.png",
+      "rendered": true,
+      "digest": "sha256:e25a8d3ca102ef685ae40ba8acb8ed9d33f77a7d5ba8c80801138bbae70b86cc"
+    },
+    {
+      "name": "natural-combat-720",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/23-natural-combat-720.png",
+      "rendered": true,
+      "digest": "sha256:60c8b23dae60131e769a1e20aafed113c5149339ff0362b9705e0659a2456bf3"
+    },
+    {
+      "name": "natural-enemy-type-1",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/24-natural-enemy-type-1.png",
+      "rendered": true,
+      "digest": "sha256:9091e8fbabbd85c20f350429f5784f3d6ca9b19b53067d358b77ecf310dd5a77"
+    },
+    {
+      "name": "natural-combat-840",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/25-natural-combat-840.png",
+      "rendered": true,
+      "digest": "sha256:8930810cf10e98e5edec46acfc45f4d89cc5b46bbafa0768ede5afeac9c8f10f"
+    },
+    {
+      "name": "natural-combat-960",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/26-natural-combat-960.png",
+      "rendered": true,
+      "digest": "sha256:d3f23b59a8f153fe7cec18a9ad1162bb9cef68dc141b66107164da55b79bb567"
+    },
+    {
+      "name": "natural-combat-1080",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/27-natural-combat-1080.png",
+      "rendered": true,
+      "digest": "sha256:3f1560fbf3ebddd6db7177746fc850bc3164663660643de64ab2df127244b225"
+    },
+    {
+      "name": "natural-combat-1200",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/28-natural-combat-1200.png",
+      "rendered": true,
+      "digest": "sha256:b277b57e2a08cd6dbfa66e9cd45a6d0ed91fce94b579b9142a06a7efcb201e60"
+    },
+    {
+      "name": "natural-combat-1320",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/29-natural-combat-1320.png",
+      "rendered": true,
+      "digest": "sha256:4099abf2b00ec2f46272ade09325b9ef48477abcfb3b12a7269241648b92de37"
+    },
+    {
+      "name": "natural-combat-1440",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/30-natural-combat-1440.png",
+      "rendered": true,
+      "digest": "sha256:e05f0125fb9709ff969ea458b038de1f5c84a72c0c2701b5464aa2e17c13c419"
+    },
+    {
+      "name": "natural-combat-1560",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/31-natural-combat-1560.png",
+      "rendered": true,
+      "digest": "sha256:3f75bc3a7906888827dc4ace0aed5b69e5e482461ac255062be0bf79391a4ae0"
+    },
+    {
+      "name": "natural-combat-1680",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/32-natural-combat-1680.png",
+      "rendered": true,
+      "digest": "sha256:77f9dbd7d7459caf980afa576f03f8fc083853807e82976052611cadff0ee61d"
+    },
+    {
+      "name": "natural-combat-1800",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/33-natural-combat-1800.png",
+      "rendered": true,
+      "digest": "sha256:a57fbffbb0a1c2143402b0e8b2d24a1c48ee49c3e5dc09cec64999dbc16b9a6f"
+    },
+    {
+      "name": "natural-combat-1920",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/34-natural-combat-1920.png",
+      "rendered": true,
+      "digest": "sha256:5a0cd8e4836ed9d74222236ba1915fb037663f764c09c33553eb9e341736cf61"
+    },
+    {
+      "name": "natural-combat-2040",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/35-natural-combat-2040.png",
+      "rendered": true,
+      "digest": "sha256:a27474f2c4d08886518c5ef66552b61b03ab4664924c26595d38d977b8c86415"
+    },
+    {
+      "name": "natural-combat-2160",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/36-natural-combat-2160.png",
+      "rendered": true,
+      "digest": "sha256:99ddb50a5803d17f0b0755efd344d697c552cc6741621e87e99a54e0b0ce5a0b"
+    },
+    {
+      "name": "natural-combat-2280",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/37-natural-combat-2280.png",
+      "rendered": true,
+      "digest": "sha256:3b3cf262d35354b927af70972c4a5fd0ff89947036bbea6a9e48d8d7772b81d6"
+    },
+    {
+      "name": "natural-combat-2400",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/38-natural-combat-2400.png",
+      "rendered": true,
+      "digest": "sha256:b2fbbb8efb4451fc9c94454319931a327da4c3e35009477344616df7febfccc6"
+    },
+    {
+      "name": "natural-boss-phase-1",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/39-natural-boss-phase-1.png",
+      "rendered": true,
+      "digest": "sha256:3105f2740fd5aae080f1e9c7e8e8df7302fb6f73805f959e03575c035df016b3"
+    },
+    {
+      "name": "natural-boss-phase-2",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/40-natural-boss-phase-2.png",
+      "rendered": true,
+      "digest": "sha256:4406df1cfb3cdeb5de62e72aa5877237412cd38e63a6788170d43a526c9b7a25"
+    },
+    {
+      "name": "natural-boss-phase-3",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/41-natural-boss-phase-3.png",
+      "rendered": true,
+      "digest": "sha256:6c58910b5a61f016e8d6c0c1a40e8df6ec00fd97ef91177ce399871dd1f64e58"
+    },
+    {
+      "name": "natural-boss-defeated-aftermath",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/artifacts/play/scripts/seaside-resume/42-natural-boss-defeated-aftermath.png",
+      "rendered": true,
+      "digest": "sha256:56966a67bd7cba3e3f5a0555ed1d691234d13f7d955accece32de5114586e784"
+    },
+    {
+      "name": "failure",
+      "path": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/.forgeax/diag/artifacts/play/scripts/seaside-resume/43-failure.png",
+      "rendered": true,
+      "digest": "sha256:2c6490341c34cbf68f870c5d009c99a1e46d3fd46031f4f379fd614130b4de69"
+    }
+  ],
+  "viewports": [
+    "1280x720",
+    "1280x600"
+  ],
+  "layout": [],
+  "state": {
+    "version": "0.3.76-tiangong.1",
+    "base": "v0.3.76",
+    "renderer": "native-webgpu",
+    "map": "tidewater",
+    "mode": "playing",
+    "state": {
+      "kindlingStacks": 0,
+      "kindlingTime": 0,
+      "kindlingPulses": [],
+      "hp": 665,
+      "maxHp": 665,
+      "stamina": 100,
+      "infected": 341,
+      "cityInfected": 161,
+      "kills": 177,
+      "towers": 3,
+      "destroyed": 0,
+      "xp": 20.8,
+      "xpEarned": 873.8,
+      "need": 114,
+      "level": 14,
+      "pending": 0,
+      "time": 2635.2833333392773,
+      "alert": 7,
+      "peakAlert": 7,
+      "abilities": {
+        "air": 3,
+        "guns": 0,
+        "launcher": 0,
+        "frenzy": 2,
+        "dot": 1,
+        "haste": 0,
+        "tough": 3,
+        "evolve": 3,
+        "command": 3,
+        "kindling": 0
+      },
+      "history": [
+        {
+          "id": "air",
+          "level": 1,
+          "time": 0
+        },
+        {
+          "id": "air",
+          "level": 2,
+          "time": 32.049999999999464
+        },
+        {
+          "id": "dot",
+          "level": 1,
+          "time": 43.683333333332136
+        },
+        {
+          "id": "command",
+          "level": 1,
+          "time": 65.99999999999754
+        },
+        {
+          "id": "air",
+          "level": 3,
+          "time": 115.69999999999472
+        },
+        {
+          "id": "frenzy",
+          "level": 1,
+          "time": 191.18333333337762
+        },
+        {
+          "id": "evolve",
+          "level": 1,
+          "time": 264.5333333334214
+        },
+        {
+          "id": "evolve",
+          "level": 2,
+          "time": 2036.5166666651432
+        },
+        {
+          "id": "evolve",
+          "level": 3,
+          "time": 2123.8833333327657
+        },
+        {
+          "id": "command",
+          "level": 2,
+          "time": 2233.8500000008326
+        },
+        {
+          "id": "command",
+          "level": 3,
+          "time": 2309.750000001799
+        },
+        {
+          "id": "tough",
+          "level": 1,
+          "time": 2340.033333335518
+        },
+        {
+          "id": "tough",
+          "level": 2,
+          "time": 2371.4500000025846
+        },
+        {
+          "id": "tough",
+          "level": 3,
+          "time": 2451.4333333369364
+        },
+        {
+          "id": "frenzy",
+          "level": 2,
+          "time": 2567.4500000050803
+        }
+      ],
+      "ammo": {
+        "pistol": 0,
+        "shotgun": 0,
+        "rifle": 0,
+        "sniper": 0,
+        "rpg": 0
+      },
+      "mags": {
+        "pistol": 0,
+        "shotgun": 0,
+        "rifle": 0,
+        "sniper": 0,
+        "rpg": 0
+      },
+      "clip": 0,
+      "clipMax": 0,
+      "weapon": -1,
+      "gunId": null,
+      "powerCharge": 0,
+      "weaponOrder": [],
+      "first": {
+        "name": "苦逼打工人",
+        "time": 4.266666666666657
+      },
+      "maxChain": 4,
+      "purifiers": 0,
+      "highestEnemy": 3,
+      "mission": 0,
+      "bossDefeated": true,
+      "lastPick": 2567.4500000050803,
+      "killRewards": [],
+      "frenzyHp": 124,
+      "armyFrenzy": 0,
+      "frenzyMarks": {
+        "500": true,
+        "1000": false
+      },
+      "burstTime": 0,
+      "commandStance": "follow",
+      "potionTime": 0,
+      "sprinting": false,
+      "sprintExhausted": false,
+      "alertTime": 2604.5500000055526,
+      "bossCountdown": 0,
+      "bossSpawned": true,
+      "aftermath": true,
+      "settle": false,
+      "airClouds": [
+        {
+          "x": 5.997079835402197,
+          "z": 13.899295044011593,
+          "floorY": 0.015070327520370463,
+          "time": 0.06666666666667231
+        },
+        {
+          "x": 7.291715230022672,
+          "z": 41.216492310098744,
+          "floorY": 0.015070327520370463,
+          "time": 0.5666666666666724
+        },
+        {
+          "x": 0.8745923537587323,
+          "z": 5.634360789381848,
+          "floorY": 0.015070327520370463,
+          "time": 1.0666666666666735
+        },
+        {
+          "x": 11.98293066218651,
+          "z": 0.4781815006167207,
+          "floorY": 0.015070327520370463,
+          "time": 1.5666666666666718
+        },
+        {
+          "x": -3.785560810480085,
+          "z": 23.3827071755609,
+          "floorY": 0.015070327520370463,
+          "time": 2.06666666666667
+        },
+        {
+          "x": 5.530443445272592,
+          "z": 5.295397234481431,
+          "floorY": 0.015070327520370463,
+          "time": 2.566666666666668
+        }
+      ],
+      "airDrops": [
+        {
+          "x": -2.167188612968303,
+          "z": 37.330721713604355,
+          "floorY": 0.015070327520370463,
+          "remaining": 0.06666666666666637
+        },
+        {
+          "x": -0.7121706401993233,
+          "z": 14.032645642778718,
+          "floorY": 0.015070327520370463,
+          "remaining": 0.5666666666666664
+        }
+      ],
+      "needGuards": false,
+      "airPulse": 0.08333333333333333,
+      "lastReflect": {
+        "taken": 19.5,
+        "reflected": 10.5,
+        "radius": 30,
+        "sprintDr": false
+      },
+      "lastDamage": "秩序爆炸 · 20 伤害",
+      "damageLog": [
+        {
+          "time": 2456.2166666703306,
+          "source": "秩序爆炸",
+          "damage": 19.5,
+          "before": 577.9
+        },
+        {
+          "time": 2461.6333333370662,
+          "source": "秩序爆炸",
+          "damage": 19.5,
+          "before": 566.4
+        },
+        {
+          "time": 2464.850000003774,
+          "source": "秩序爆炸",
+          "damage": 19.5,
+          "before": 546.9
+        },
+        {
+          "time": 2593.4500000054113,
+          "source": "秩序爆炸",
+          "damage": 19.5,
+          "before": 662
+        },
+        {
+          "time": 2602.0833333388546,
+          "source": "秩序爆炸",
+          "damage": 19.5,
+          "before": 664
+        }
+      ],
+      "personalFrenzy": 117,
+      "weakenTasks": {
+        "shield": true,
+        "fire": true,
+        "reinforce": true,
+        "closed": true
+      },
+      "rushReinforce": false
+    },
+    "player": {
+      "x": 14.029696464538574,
+      "z": 25.303560256958008,
+      "y": 0,
+      "floorY": 0.014970340728759746,
+      "vy": 0,
+      "roll": 0,
+      "rollX": 0.8461590498099375,
+      "rollZ": -0.5329304480180728,
+      "yaw": -196.42499999999964,
+      "crouch": false,
+      "isPlayer": true,
+      "knock": 0,
+      "pushX": 0,
+      "pushZ": 0,
+      "attackPose": 0,
+      "moving": false,
+      "groundSpeed": 0,
+      "attackAction": "heavyPunch",
+      "attackToken": 24
+    },
+    "camera": {
+      "eye": [
+        16.557095231856632,
+        0.9849703407287598,
+        25.133611058343345
+      ],
+      "target": [
+        4.7694770349397775,
+        -2.944234353401067,
+        24.603462654672313
+      ]
+    },
+    "yaw": -196.42499999999964,
+    "pitch": 0.38,
+    "boss": {
+      "id": -1,
+      "bossBody": true,
+      "active": true,
+      "dead": true,
+      "hp": 0,
+      "maxHp": 6000,
+      "phase": 3,
+      "x": 11.489876160200321,
+      "z": 26.924362776324678,
+      "floorY": 0,
+      "attack": 1.81666666666667,
+      "warning": 0,
+      "weak": 2.116666666666667,
+      "time": 18.550000000000228,
+      "shieldHp": 0,
+      "empowered": false,
+      "rush": false,
+      "orb": null,
+      "deadAt": 2604.5500000055526
+    },
+    "aircraft": null,
+    "choices": [],
+    "rerolled": [
+      false,
+      false,
+      false
+    ],
+    "canReroll": false,
+    "abilities": [
+      {
+        "id": "air",
+        "name": "空气传播",
+        "icon": "◌",
+        "group": "感染系",
+        "descriptions": [
+          "持续散播反抗因子，使自身半径 5m 内的敌人每 0.5 秒累积 2 点感染值。",
+          "传播半径扩大至 10m，每 0.5 秒累积 4 点感染值，并可感染尸体。",
+          "传播半径扩大至 15m，每 0.5 秒累积 6 点感染值。每隔 0.5 秒，在自身周围 30m 内随机引爆一片区域，形成半径 10m、持续 3 秒的感染气雾，每 0.5 秒施加 4 点感染值，不与自身传播效果叠加。"
+        ],
+        "level": 3
+      },
+      {
+        "id": "dot",
+        "name": "持续感染",
+        "icon": "⌁",
+        "group": "感染系",
+        "descriptions": [
+          "感染在目标体内扎根。敌人受到你施加的感染后，每秒额外累积 1 点感染值，直至同化完成。",
+          "持续感染提升至每秒 2 点，并可对尸体生效。感染目标发生病变，移动速度降低 15%。",
+          "持续感染提升至每秒 3 点，军队也能施加相同效果。目标感染值达到同化阈值的 50% 时，触发「深度寄生」：血肉触须将其禁锢 2 秒，此后受到的持续感染效果翻倍，直至同化完成。每个目标仅触发一次。"
+        ],
+        "level": 1
+      },
+      {
+        "id": "command",
+        "name": "听我号令",
+        "icon": "⚑",
+        "group": "指挥系",
+        "descriptions": [
+          "获得 2 名 2 级护卫，护卫死亡一段时间后自动再生。",
+          "护卫提升至 3 级，编制扩大至 5 名。",
+          "护卫提升至 4 级，编制扩大至 10 名，额外获得 100% 生命与攻击力加成，且会自动组成合适的阵容。"
+        ],
+        "level": 3
+      },
+      {
+        "id": "frenzy",
+        "name": "狂杀",
+        "icon": "⚔",
+        "group": "母体系",
+        "descriptions": [
+          "由你完成击杀或同化时，恢复 1 点生命，并永久提升 1 点生命上限。攻击、感染武器、空气传播及持续感染造成的同化均可触发。",
+          "亲自击杀或同化的提升量变为 2 点。军队每累计 2 次击杀或同化，额外为你恢复 1 点生命并永久提升 1 点生命上限。体型增大，近战攻击范围适度扩大。",
+          "亲自击杀或同化的提升量变为 3 点。军队提供成长的效率提升为 每次击杀或同化贡献 1 点。体型进一步增大，并解锁 「血潮」：每累计由你完成击杀或同化 10 个单位，向周围释放血肉冲击，造成范围伤害并击退敌人。感染武器、空气传播及持续感染造成的同化均计入进度；军队独立完成的不计入。"
+        ],
+        "level": 2
+      },
+      {
+        "id": "evolve",
+        "name": "生存与进化",
+        "icon": "✶",
+        "group": "成长系",
+        "descriptions": [
+          "获得相当于自身等级 ×10 的生命加成，以及与等级等量的攻击力加成。每次升级触发「适应修复」，恢复 10% 最大生命。",
+          "每生存 1 分钟，所有系数额外提高 5%。生命上限达到 500、1000 时，各额外获得一次能力进化。",
+          "等级上限提升至 50，后续升级不再获得新能力。新同化的敌人提升 1 级，随机进化为对应等级的兵种；原本已为 4 级的单位保留兵种，生命提高 28%。新同化单位触发「进化狂潮」，体型暂时增大，攻击速度与移动速度提高 30%，持续 5 秒。"
+        ],
+        "level": 3
+      },
+      {
+        "id": "tough",
+        "name": "皮糙肉厚",
+        "icon": "✚",
+        "group": "母体系",
+        "descriptions": [
+          "受到的伤害降低 15%。",
+          "减伤提升至 25%。受到来自 10m 内敌人的攻击时，将减免的伤害反弹给攻击者，并附加相当于反弹伤害一半的感染值。",
+          "自身减伤提升至 35%，反伤范围扩大至 30m。你的军队获得 15% 减伤。"
+        ],
+        "level": 3
+      }
+    ],
+    "weapons": [],
+    "units": [
+      {
+        "id": 105,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 23.75,
+        "z": -14.376666666666665,
+        "floorY": 3.700000047683716,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 4,
+        "convertedAt": 94.59999999999592,
+        "aiming": false
+      },
+      {
+        "id": 112,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.109475950289607,
+        "z": 14.03921392543441,
+        "floorY": 3.1558823585510254,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 77.74999999999687,
+        "aiming": false
+      },
+      {
+        "id": 142,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -20.431886313348514,
+        "z": 25.362300684002378,
+        "floorY": 3.700000047683716,
+        "hp": 60,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 37.59999999999915,
+        "aiming": false
+      },
+      {
+        "id": 145,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -7.003333333333334,
+        "z": 36.75,
+        "floorY": 1.5549999475479126,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 60.96666666666449,
+        "aiming": false
+      },
+      {
+        "id": 169,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -8.54846509066228,
+        "z": 42.039608902368165,
+        "floorY": 2.4000000953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 43.39999999999882,
+        "aiming": false
+      },
+      {
+        "id": 175,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -15.644606962717205,
+        "z": 38.59191044407581,
+        "floorY": 3.6031250953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2023.949999998488,
+        "aiming": false
+      },
+      {
+        "id": 185,
+        "type": 2,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -3.061642332040708,
+        "z": 38.66670618135673,
+        "floorY": 2.4000000953674316,
+        "hp": 30,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 62.86666666666438,
+        "aiming": false
+      },
+      {
+        "id": 186,
+        "type": 2,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -18.86329411085999,
+        "z": 11.523411778280021,
+        "floorY": 2.0676469802856445,
+        "hp": 50,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 59.39999999999791,
+        "aiming": false
+      },
+      {
+        "id": 190,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.373675642486518,
+        "z": 14.77736384293172,
+        "floorY": 3.3735294342041016,
+        "hp": 3,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 292.15000000006296,
+        "aiming": false
+      },
+      {
+        "id": 216,
+        "type": 5,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 14.75,
+        "z": -40.75,
+        "floorY": 2.7281250953674316,
+        "hp": 228,
+        "maxHp": 300,
+        "infection": 0,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 0,
+        "aiming": false
+      },
+      {
+        "id": 217,
+        "type": 7,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.42815771769109,
+        "z": -30.75000079435521,
+        "floorY": -0.20000000298023224,
+        "hp": 520,
+        "maxHp": 700,
+        "infection": 0,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 1,
+        "aiming": false
+      },
+      {
+        "id": 220,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -5.855393037282793,
+        "z": 37.6797379751448,
+        "floorY": 1.9883333444595337,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 135.83333333333357,
+        "aiming": false
+      },
+      {
+        "id": 228,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 1.8388732352917343,
+        "z": 37.389417219602954,
+        "floorY": 2.4000000953674316,
+        "hp": 40,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 83.83333333332986,
+        "aiming": false
+      },
+      {
+        "id": 229,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 1.75,
+        "z": 37.76333333333332,
+        "floorY": 2.4000000953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 88.29999999999627,
+        "aiming": false
+      },
+      {
+        "id": 234,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -1.7401084661856367,
+        "z": 37.7330749133998,
+        "floorY": 2.4000000953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 134.1499999999989,
+        "aiming": false
+      },
+      {
+        "id": 240,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -5.960932379845018,
+        "z": 36.97521566885156,
+        "floorY": 1.9883333444595337,
+        "hp": 60,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 92.54999999999603,
+        "aiming": false
+      },
+      {
+        "id": 243,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 2.757375591760555,
+        "z": 38.44526611618243,
+        "floorY": 2.4000000953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2018.21666666516,
+        "aiming": false
+      },
+      {
+        "id": 256,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -3.6192537971608534,
+        "z": 44.22952403526357,
+        "floorY": 2.4000000953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 191.33333333337774,
+        "aiming": false
+      },
+      {
+        "id": 257,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -16.6559143619903,
+        "z": 38.514785904975724,
+        "floorY": 3.6031250953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 202.0666666667196,
+        "aiming": false
+      },
+      {
+        "id": 260,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -17.022167652805525,
+        "z": 34.99061410881032,
+        "floorY": 3.700000047683716,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 175.35000000003168,
+        "aiming": false
+      },
+      {
+        "id": 273,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -18.75,
+        "z": 17.75,
+        "floorY": 3.700000047683716,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 205.38333333338892,
+        "aiming": false
+      },
+      {
+        "id": 276,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -23.179435771492724,
+        "z": 21.926410571268196,
+        "floorY": 3.700000047683716,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 197.73333333338283,
+        "aiming": false
+      },
+      {
+        "id": 278,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.41641010436002,
+        "z": 14.006632334789948,
+        "floorY": 3.1558823585510254,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 205.83333333338928,
+        "aiming": false
+      },
+      {
+        "id": 293,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.872369122689756,
+        "z": -8.035615305127816,
+        "floorY": -0.20000000298023224,
+        "hp": 30,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 158.26666666668476,
+        "aiming": false
+      },
+      {
+        "id": 308,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.429133717900598,
+        "z": 14.07086628209941,
+        "floorY": 3.1558823585510254,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 198.3333333333833,
+        "aiming": false
+      },
+      {
+        "id": 309,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -14.43416864566973,
+        "z": 38.836318837454044,
+        "floorY": 3.6031250953674316,
+        "hp": 3,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 196.75000000004871,
+        "aiming": false
+      },
+      {
+        "id": 314,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -18.80933865087104,
+        "z": 14.96790507157504,
+        "floorY": 3.5911765098571777,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 189.01666666670923,
+        "aiming": false
+      },
+      {
+        "id": 325,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.376666666666665,
+        "z": 14.25,
+        "floorY": 3.1558823585510254,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 198.3333333333833,
+        "aiming": false
+      },
+      {
+        "id": 326,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.488825214491484,
+        "z": 14.454428491015971,
+        "floorY": 3.3735294342041016,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 188.51666666670883,
+        "aiming": false
+      },
+      {
+        "id": 330,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -23.75,
+        "z": 14.50333333333333,
+        "floorY": 3.700000047683716,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 190.6166666667105,
+        "aiming": false
+      },
+      {
+        "id": 331,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.3560924791894,
+        "z": 14.819201375014455,
+        "floorY": 3.3735294342041016,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 191.18333333337762,
+        "aiming": false
+      },
+      {
+        "id": 333,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.56348400632604,
+        "z": 14.205216570524854,
+        "floorY": 3.1558823585510254,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 201.48333333338581,
+        "aiming": false
+      },
+      {
+        "id": 334,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -18.725158622882496,
+        "z": 14.874206885587515,
+        "floorY": 3.3735294342041016,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 204.10000000005456,
+        "aiming": false
+      },
+      {
+        "id": 339,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.2851310124276,
+        "z": 14.302696518641397,
+        "floorY": 3.1558823585510254,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 197.1666666667157,
+        "aiming": false
+      },
+      {
+        "id": 343,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -18.7299722414856,
+        "z": 14.6899167244568,
+        "floorY": 3.3735294342041016,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 200.11666666671806,
+        "aiming": false
+      },
+      {
+        "id": 345,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.25,
+        "z": 14.25,
+        "floorY": 3.1558823585510254,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 205.7333333333892,
+        "aiming": false
+      },
+      {
+        "id": 348,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -20.501586228824962,
+        "z": 13.299682754235008,
+        "floorY": 3.700000047683716,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 209.0500000000585,
+        "aiming": false
+      },
+      {
+        "id": 369,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -14.708945732843375,
+        "z": 39.36155841248665,
+        "floorY": 3.3843750953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 224.98333333340452,
+        "aiming": false
+      },
+      {
+        "id": 383,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.221676472285004,
+        "z": 14.193352944570005,
+        "floorY": 3.1558823585510254,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 251.38333333342553,
+        "aiming": false
+      },
+      {
+        "id": 388,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -5.439482786031207,
+        "z": 37.68789655720625,
+        "floorY": 1.9883333444595337,
+        "hp": 30,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2133.499999999555,
+        "aiming": false
+      },
+      {
+        "id": 390,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -20.370000000000005,
+        "z": 13.25,
+        "floorY": 3.700000047683716,
+        "hp": 60,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 248.23333333342302,
+        "aiming": false
+      },
+      {
+        "id": 398,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -23.082770441931743,
+        "z": 21.659809784852822,
+        "floorY": 3.700000047683716,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 255.6333333334289,
+        "aiming": false
+      },
+      {
+        "id": 426,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -1.420390505632997,
+        "z": 37.75730289046017,
+        "floorY": 2.4000000953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 284.066666666737,
+        "aiming": false
+      },
+      {
+        "id": 432,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.371962239608813,
+        "z": 14.895688750799787,
+        "floorY": 3.3735294342041016,
+        "hp": 60,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 286.983333333401,
+        "aiming": false
+      },
+      {
+        "id": 433,
+        "type": 0,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -15.608382361425013,
+        "z": 38.96676472285003,
+        "floorY": 3.3843750953674316,
+        "hp": 20,
+        "maxHp": 20,
+        "infection": 20,
+        "threshold": 20,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 287.316666666734,
+        "aiming": false
+      },
+      {
+        "id": 440,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -4.990333102172798,
+        "z": 37.16988896594239,
+        "floorY": 2.4000000953674316,
+        "hp": 60,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 295.9166666667262,
+        "aiming": false
+      },
+      {
+        "id": 454,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.173750417726822,
+        "z": 14.99158596602647,
+        "floorY": 3.3735294342041016,
+        "hp": 40,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 309.0833333333809,
+        "aiming": false
+      },
+      {
+        "id": 467,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.42418117341254,
+        "z": 14.825900716917756,
+        "floorY": 3.3735294342041016,
+        "hp": 60,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 317.83333333337293,
+        "aiming": false
+      },
+      {
+        "id": 477,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 19.412180047915,
+        "z": -9.055383942501997,
+        "floorY": 0.979411780834198,
+        "hp": 28,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 330.6333333333613,
+        "aiming": false
+      },
+      {
+        "id": 1020,
+        "type": 2,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 12.270938163994314,
+        "z": -2.750011824844412,
+        "floorY": -0.20000000298023224,
+        "hp": 8,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2056.3499999985725,
+        "aiming": true
+      },
+      {
+        "id": 1025,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -9.808803523756067,
+        "z": 36.72647859049757,
+        "floorY": 0.2549999952316284,
+        "hp": 100,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2060.566666665293,
+        "aiming": false
+      },
+      {
+        "id": 1044,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 3.804335403573144,
+        "z": -43.939208504412996,
+        "floorY": 2.4000000953674316,
+        "hp": 150,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2368.3000000025445,
+        "aiming": false
+      },
+      {
+        "id": 1055,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 3.089609197111314,
+        "z": -38.79579808067704,
+        "floorY": 2.4000000953674316,
+        "hp": 100,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2368.3000000025445,
+        "aiming": false
+      },
+      {
+        "id": 1088,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 7.1866666666666665,
+        "z": -37.25,
+        "floorY": 1.3383333683013916,
+        "hp": 30,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2072.899999998783,
+        "aiming": false
+      },
+      {
+        "id": 1105,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 17.196259884629825,
+        "z": -39.626180807591226,
+        "floorY": 3.3843750953674316,
+        "hp": 90,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2368.3000000025445,
+        "aiming": false
+      },
+      {
+        "id": 1159,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 12.041760683618314,
+        "z": -39.66869788229199,
+        "floorY": -0.20000000298023224,
+        "hp": 30,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2079.933333332206,
+        "aiming": false
+      },
+      {
+        "id": 1231,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -15.13670588914001,
+        "z": 39.47658822171998,
+        "floorY": 3.3843750953674316,
+        "hp": 10,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2098.9999999991155,
+        "aiming": false
+      },
+      {
+        "id": 1253,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -5.376666666666667,
+        "z": 36.75,
+        "floorY": 2.2049999237060547,
+        "hp": 60,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2102.5666666658276,
+        "aiming": false
+      },
+      {
+        "id": 1255,
+        "type": 1,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 6.1866666666666665,
+        "z": 36.75,
+        "floorY": 1.7716666460037231,
+        "hp": 60,
+        "maxHp": 60,
+        "infection": 50,
+        "threshold": 50,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2116.833333332676,
+        "aiming": false
+      },
+      {
+        "id": 1335,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.790595152162595,
+        "z": 4.71334779438838,
+        "floorY": -0.20000000298023224,
+        "hp": 70,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2131.516666666196,
+        "aiming": false
+      },
+      {
+        "id": 1364,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 9.864,
+        "z": -37.901999999999994,
+        "floorY": 0.2549999952316284,
+        "hp": 78,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2140.216666666307,
+        "aiming": false
+      },
+      {
+        "id": 1366,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -20.530828373980935,
+        "z": 16.37126997705503,
+        "floorY": 3.700000047683716,
+        "hp": 170,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2142.4499999996688,
+        "aiming": false
+      },
+      {
+        "id": 1390,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -7.75,
+        "z": 37.75,
+        "floorY": 1.121666669845581,
+        "hp": 54.03118359217807,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2153.3333333331407,
+        "aiming": false
+      },
+      {
+        "id": 1422,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.38435028842545,
+        "z": 14.384350288425443,
+        "floorY": 3.1558823585510254,
+        "hp": 150,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2196.383333333689,
+        "aiming": false
+      },
+      {
+        "id": 1447,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.33016370298576,
+        "z": 14.922260792763797,
+        "floorY": 3.3735294342041016,
+        "hp": 30,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2163.166666666599,
+        "aiming": false
+      },
+      {
+        "id": 1465,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 5.48820138147596,
+        "z": 25.44806918358197,
+        "floorY": -0.20000000298023224,
+        "hp": 104,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2177.6833333334507,
+        "aiming": false
+      },
+      {
+        "id": 1473,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 21.81144235834254,
+        "z": 10.265360589585635,
+        "floorY": 0,
+        "hp": 108,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2169.933333333352,
+        "aiming": false
+      },
+      {
+        "id": 1482,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 21.444899795319756,
+        "z": -22.558524118347485,
+        "floorY": 3.700000047683716,
+        "hp": 33,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2410.88333333642,
+        "aiming": false
+      },
+      {
+        "id": 1492,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -0.8905240497103915,
+        "z": 16.03921392543441,
+        "floorY": 0.33903345465660095,
+        "hp": 18,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2184.8333333335418,
+        "aiming": false
+      },
+      {
+        "id": 1497,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -1.2150411307969484,
+        "z": 5.736977806452395,
+        "floorY": 1.100000023841858,
+        "hp": 43,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2183.3333333335227,
+        "aiming": true
+      },
+      {
+        "id": 1501,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -2.2357584388248313,
+        "z": 38.075613667405506,
+        "floorY": 2.4000000953674316,
+        "hp": 150,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2177.2666666667787,
+        "aiming": false
+      },
+      {
+        "id": 1529,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 12.07086628209941,
+        "z": 25.570866282099402,
+        "floorY": 0,
+        "hp": 110,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2190.45000000028,
+        "aiming": false
+      },
+      {
+        "id": 1534,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 16.75,
+        "z": 3.25,
+        "floorY": -0.20000000298023224,
+        "hp": 101,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2191.9000000002984,
+        "aiming": false
+      },
+      {
+        "id": 1542,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 14.779520517778728,
+        "z": 25.407740955824664,
+        "floorY": 0,
+        "hp": 96,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2191.25000000029,
+        "aiming": false
+      },
+      {
+        "id": 1555,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -9.184594469747871,
+        "z": 35.25062077907785,
+        "floorY": -0.20000000298023224,
+        "hp": 110,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2194.3333333336627,
+        "aiming": true
+      },
+      {
+        "id": 1566,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -1.4261053083129172,
+        "z": 9.511322649866727,
+        "floorY": 0.6790697574615479,
+        "hp": 53,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2194.5333333336653,
+        "aiming": false
+      },
+      {
+        "id": 1580,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 1.6969887202511946,
+        "z": 25.784654225290794,
+        "floorY": -0.20000000298023224,
+        "hp": 26,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2214.3333333339174,
+        "aiming": false
+      },
+      {
+        "id": 1636,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -5.687528384823964,
+        "z": 37.73958806413733,
+        "floorY": 1.9883333444595337,
+        "hp": 170,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2208.6666666671786,
+        "aiming": false
+      },
+      {
+        "id": 1692,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 3.848478782921321,
+        "z": -39.876308497698275,
+        "floorY": 2.4000000953674316,
+        "hp": 60,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2368.8333333358846,
+        "aiming": false
+      },
+      {
+        "id": 1780,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -0.9256550621379893,
+        "z": 26.486517406793013,
+        "floorY": -0.03271375596523285,
+        "hp": 130,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2230.1166666674517,
+        "aiming": false
+      },
+      {
+        "id": 1800,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 3.2113016838358637,
+        "z": -44.648168807840804,
+        "floorY": 2.4000000953674316,
+        "hp": 60,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2368.8333333358846,
+        "aiming": false
+      },
+      {
+        "id": 1813,
+        "type": 4,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.42800719618266,
+        "z": -30.75000085359216,
+        "floorY": -0.20000000298023224,
+        "hp": 286,
+        "maxHp": 400,
+        "infection": 0,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 1,
+        "aiming": false
+      },
+      {
+        "id": 1814,
+        "type": 5,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 14.75,
+        "z": -40.75,
+        "floorY": 2.7281250953674316,
+        "hp": 150,
+        "maxHp": 300,
+        "infection": 0,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 2,
+        "aiming": false
+      },
+      {
+        "id": 1815,
+        "type": 7,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -4.90556349186104,
+        "z": 37.09443650813896,
+        "floorY": 2.4000000953674316,
+        "hp": 448,
+        "maxHp": 700,
+        "infection": 0,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 3,
+        "aiming": false
+      },
+      {
+        "id": 1875,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -15.6243114689496,
+        "z": 39.4699549293382,
+        "floorY": 3.3843750953674316,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2249.4166666676974,
+        "aiming": false
+      },
+      {
+        "id": 1918,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 15.519706944696317,
+        "z": 19.85555987143168,
+        "floorY": 0,
+        "hp": 26.019083287384905,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2251.8500000010617,
+        "aiming": true
+      },
+      {
+        "id": 2000,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 9.130040316955073,
+        "z": 15.068634467115881,
+        "floorY": -0.20000000298023224,
+        "hp": 130,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2265.016666667896,
+        "aiming": false
+      },
+      {
+        "id": 2013,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 4.179053498524154,
+        "z": -40.731623265080295,
+        "floorY": 2.4000000953674316,
+        "hp": 2,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2368.8333333358846,
+        "aiming": false
+      },
+      {
+        "id": 2022,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -1.8166489372591998,
+        "z": 20.93506487565263,
+        "floorY": 0.800000011920929,
+        "hp": 82,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2273.583333334672,
+        "aiming": false
+      },
+      {
+        "id": 2092,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 19.055886857670643,
+        "z": 6.587218349459153,
+        "floorY": 0,
+        "hp": 80,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2280.9500000014323,
+        "aiming": false
+      },
+      {
+        "id": 2106,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 2.5027230691648716,
+        "z": 13.818735712462757,
+        "floorY": -0.20000000298023224,
+        "hp": 12,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2291.200000001563,
+        "aiming": false
+      },
+      {
+        "id": 2131,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 4.425655062137988,
+        "z": 1.513482593206984,
+        "floorY": 1.100000023841858,
+        "hp": 138,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2282.8333333347896,
+        "aiming": false
+      },
+      {
+        "id": 2222,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -22.10607617710603,
+        "z": 12.304904778617471,
+        "floorY": 3.700000047683716,
+        "hp": 170,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2295.7833333349545,
+        "aiming": false
+      },
+      {
+        "id": 2223,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -18.774948222243346,
+        "z": 17.80821251856781,
+        "floorY": 3.700000047683716,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2296.3333333349615,
+        "aiming": false
+      },
+      {
+        "id": 2273,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.13670588914001,
+        "z": 14.023411778280021,
+        "floorY": 3.1558823585510254,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2297.3166666683073,
+        "aiming": false
+      },
+      {
+        "id": 2330,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 3.750371155691774,
+        "z": -43.49642939249636,
+        "floorY": 2.4000000953674316,
+        "hp": 110,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2369.583333335894,
+        "aiming": false
+      },
+      {
+        "id": 2388,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 10.7700277585144,
+        "z": 22.3100832755432,
+        "floorY": -0.20000000298023224,
+        "hp": 70,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2314.7333333351958,
+        "aiming": false
+      },
+      {
+        "id": 2408,
+        "type": 4,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.428157669534059,
+        "z": -30.750277440895797,
+        "floorY": -0.20000000298023224,
+        "hp": 244,
+        "maxHp": 400,
+        "infection": 0,
+        "threshold": 300,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 0,
+        "aiming": false
+      },
+      {
+        "id": 2409,
+        "type": 5,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.39129420566681,
+        "z": -30.750000697026888,
+        "floorY": -0.20000000298023224,
+        "hp": 90,
+        "maxHp": 300,
+        "infection": 0,
+        "threshold": 200,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 1,
+        "aiming": false
+      },
+      {
+        "id": 2410,
+        "type": 7,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.427884332003748,
+        "z": -30.75000090675023,
+        "floorY": -0.20000000298023224,
+        "hp": 586,
+        "maxHp": 700,
+        "infection": 0,
+        "threshold": 500,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 2,
+        "aiming": false
+      },
+      {
+        "id": 2411,
+        "type": 4,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.42815771769109,
+        "z": -30.75000079435521,
+        "floorY": -0.20000000298023224,
+        "hp": 250,
+        "maxHp": 400,
+        "infection": 0,
+        "threshold": 300,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 3,
+        "aiming": false
+      },
+      {
+        "id": 2412,
+        "type": 5,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -4.90556349186104,
+        "z": 37.09443650813896,
+        "floorY": 2.4000000953674316,
+        "hp": 4.799999999999997,
+        "maxHp": 300,
+        "infection": 0,
+        "threshold": 200,
+        "labelVisible": false,
+        "guard": true,
+        "profession": 0,
+        "aiming": false
+      },
+      {
+        "id": 2447,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 2.776643870004091,
+        "z": -44.749130452997946,
+        "floorY": 2.4000000953674316,
+        "hp": 30,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2370.6166666692407,
+        "aiming": false
+      },
+      {
+        "id": 2536,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -7.125386585738088,
+        "z": 34.772714344155915,
+        "floorY": -0.20000000298023224,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2322.383333335293,
+        "aiming": false
+      },
+      {
+        "id": 2593,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -4.286476210858143,
+        "z": -42.06102680172657,
+        "floorY": 2.4000000953674316,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2371.4500000025846,
+        "aiming": false
+      },
+      {
+        "id": 2699,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 6.046045265241656,
+        "z": 19.233596730382786,
+        "floorY": -0.20000000298023224,
+        "hp": 42,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2340.033333335518,
+        "aiming": false
+      },
+      {
+        "id": 2785,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 4.071043640094048,
+        "z": -40.14380655934814,
+        "floorY": 2.4000000953674316,
+        "hp": 90,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2369.216666669223,
+        "aiming": false
+      },
+      {
+        "id": 2907,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -9.894766681188731,
+        "z": 35.37536679751332,
+        "floorY": -0.20000000298023224,
+        "hp": 130,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2367.4833333358674,
+        "aiming": false
+      },
+      {
+        "id": 3007,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 19.320564228507276,
+        "z": -14.426410571268201,
+        "floorY": 3.1558823585510254,
+        "hp": 108,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2411.433333336427,
+        "aiming": false
+      },
+      {
+        "id": 3029,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 19.179737975144803,
+        "z": -14.855393037282795,
+        "floorY": 3.3735294342041016,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2411.433333336427,
+        "aiming": false
+      },
+      {
+        "id": 3167,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 4.1282892081558575,
+        "z": -42.03799302828698,
+        "floorY": 2.4000000953674316,
+        "hp": 130,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2407.4833333363767,
+        "aiming": false
+      },
+      {
+        "id": 3219,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -2.072687551568624,
+        "z": -38.29510020253129,
+        "floorY": 2.4000000953674316,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2407.4833333363767,
+        "aiming": false
+      },
+      {
+        "id": 3239,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 1.9636747547789877,
+        "z": 22.55801641965123,
+        "floorY": 0.800000011920929,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2408.3333333363876,
+        "aiming": false
+      },
+      {
+        "id": 3258,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -10.193352944570005,
+        "z": 37.278323527714996,
+        "floorY": 0.038333334028720856,
+        "hp": 47.5,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2423.1000000032423,
+        "aiming": false
+      },
+      {
+        "id": 3295,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -9.870166551086399,
+        "z": 37.709944482971196,
+        "floorY": 0.2549999952316284,
+        "hp": 85,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2428.216666669974,
+        "aiming": false
+      },
+      {
+        "id": 3306,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 12.663140265789076,
+        "z": 23.355222583732445,
+        "floorY": -0.20000000298023224,
+        "hp": 90,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2426.7500000032887,
+        "aiming": false
+      },
+      {
+        "id": 3337,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 17.39881527582419,
+        "z": 14.604847357910508,
+        "floorY": 0,
+        "hp": 73,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2429.066666669985,
+        "aiming": false
+      },
+      {
+        "id": 3353,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 8.219242185027532,
+        "z": -44.61933399449598,
+        "floorY": 2.4000000953674316,
+        "hp": 170,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2415.9000000031506,
+        "aiming": false
+      },
+      {
+        "id": 3393,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 11.19437722960202,
+        "z": 18.780285615799663,
+        "floorY": -0.20000000298023224,
+        "hp": 90,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2424.0500000032544,
+        "aiming": false
+      },
+      {
+        "id": 3437,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 17.044455172956265,
+        "z": 11.848944909237686,
+        "floorY": -0.20000000298023224,
+        "hp": 150,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2423.7500000032505,
+        "aiming": false
+      },
+      {
+        "id": 3469,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 8.981100065590194,
+        "z": -1.548950569437585,
+        "floorY": 0.8186046481132507,
+        "hp": 73,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2431.8666666700205,
+        "aiming": false
+      },
+      {
+        "id": 3545,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 4.960786074565586,
+        "z": 37.60947595028961,
+        "floorY": 2.4000000953674316,
+        "hp": 14,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2431.9833333366887,
+        "aiming": false
+      },
+      {
+        "id": 3720,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -16.811722232067815,
+        "z": 5.264194265732259,
+        "floorY": -0.20000000298023224,
+        "hp": 102,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2448.6833333369013,
+        "aiming": false
+      },
+      {
+        "id": 3845,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 14.271941694395645,
+        "z": 19.294622800769982,
+        "floorY": -0.20000000298023224,
+        "hp": 73,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2461.6333333370662,
+        "aiming": true
+      },
+      {
+        "id": 3941,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 8.410117667420032,
+        "z": 37.41994116628997,
+        "floorY": 0.6883333325386047,
+        "hp": 107.5,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2471.3333333371897,
+        "aiming": false
+      },
+      {
+        "id": 3966,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -10.953495760436471,
+        "z": 35.63881091016367,
+        "floorY": -0.20000000298023224,
+        "hp": 73,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2476.3166666705865,
+        "aiming": true
+      },
+      {
+        "id": 4001,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 13.894871889683971,
+        "z": 23.127068573670538,
+        "floorY": -0.20000000298023224,
+        "hp": 136,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2469.7000000038356,
+        "aiming": false
+      },
+      {
+        "id": 4049,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 2.301976381217091,
+        "z": 21.077154773065924,
+        "floorY": 0.800000011920929,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2481.1000000039808,
+        "aiming": false
+      },
+      {
+        "id": 4068,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 3.2315682498254743,
+        "z": 44.25960985486234,
+        "floorY": 2.4000000953674316,
+        "hp": 31,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2510.4666666710214,
+        "aiming": false
+      },
+      {
+        "id": 4192,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 4.271606221747709,
+        "z": 18.743450161132124,
+        "floorY": -0.20000000298023224,
+        "hp": 153,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2507.333333337648,
+        "aiming": false
+      },
+      {
+        "id": 4396,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 0.9199411662899839,
+        "z": 25.83497058314499,
+        "floorY": 0.33903345465660095,
+        "hp": 62.08128177498105,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2547.9000000048313,
+        "aiming": false
+      },
+      {
+        "id": 4454,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -2.9400000000000004,
+        "z": 21.25,
+        "floorY": 0.800000011920929,
+        "hp": 90,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2551.0333333382046,
+        "aiming": false
+      },
+      {
+        "id": 4492,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -8.919941166289984,
+        "z": 41.33497058314499,
+        "floorY": 2.4000000953674316,
+        "hp": 150,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 0,
+        "convertedAt": 2567.100000005076,
+        "aiming": false
+      },
+      {
+        "id": 4575,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": -19.550416377715997,
+        "z": 14.350138792572002,
+        "floorY": 3.1558823585510254,
+        "hp": 170,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": false,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2567.4500000050803,
+        "aiming": false
+      },
+      {
+        "id": 4603,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 17.556111928975728,
+        "z": 24.282697588091672,
+        "floorY": 0,
+        "hp": 91.8,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 3,
+        "convertedAt": 2588.8500000053527,
+        "aiming": true
+      },
+      {
+        "id": 4613,
+        "type": 6,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 5.021347983709281,
+        "z": 34.072697067888456,
+        "floorY": -0.20000000298023224,
+        "hp": 55.829028882773045,
+        "maxHp": 150,
+        "infection": 170,
+        "threshold": 170,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 1,
+        "convertedAt": 2579.9666666719063,
+        "aiming": false
+      },
+      {
+        "id": 4746,
+        "type": 3,
+        "kind": "ally",
+        "dead": false,
+        "converted": true,
+        "x": 12.868048651062397,
+        "z": 27.70672269558991,
+        "floorY": 0,
+        "hp": 170,
+        "maxHp": 170,
+        "infection": 220,
+        "threshold": 220,
+        "labelVisible": true,
+        "guard": false,
+        "profession": 2,
+        "convertedAt": 2595.150000005433,
+        "aiming": false
+      }
+    ],
+    "towers": [
+      {
+        "id": 4011,
+        "x": -10.25,
+        "z": -22.25,
+        "floorY": -0.20000000298023224,
+        "weaken": "shield",
+        "hp": -20,
+        "maxHp": 180,
+        "dead": true
+      },
+      {
+        "id": 4012,
+        "x": 12,
+        "z": -8,
+        "floorY": -0.20000000298023224,
+        "weaken": "fire",
+        "hp": -4,
+        "maxHp": 180,
+        "dead": true
+      },
+      {
+        "id": 4013,
+        "x": -12,
+        "z": 23,
+        "floorY": -0.20000000298023224,
+        "weaken": "reinforce",
+        "hp": -20,
+        "maxHp": 180,
+        "dead": true
+      }
+    ],
+    "pickups": [
+      {
+        "id": 159,
+        "type": "potion",
+        "x": -24.5,
+        "z": 1.5,
+        "floorY": 0
+      },
+      {
+        "id": 161,
+        "type": "factor",
+        "x": -25,
+        "z": -15.5,
+        "floorY": -0.10000000000000003
+      },
+      {
+        "id": 162,
+        "type": "potion",
+        "x": 13.5,
+        "z": -39,
+        "floorY": -0.19999999999999996
+      },
+      {
+        "id": 165,
+        "type": "potion",
+        "x": -13.5,
+        "z": -34.5,
+        "floorY": 0
+      },
+      {
+        "id": 166,
+        "type": "health",
+        "x": 11,
+        "z": -18,
+        "floorY": -0.20000000000000007
+      },
+      {
+        "id": 167,
+        "type": "factor",
+        "x": -23.5,
+        "z": 5,
+        "floorY": 0
+      },
+      {
+        "id": 904,
+        "type": "factor",
+        "x": -21.29859853878608,
+        "z": 29.752217559116417,
+        "floorY": 3.7
+      },
+      {
+        "id": 1468,
+        "type": "potion",
+        "x": 20.082479154835955,
+        "z": 9.483823291024578,
+        "floorY": 0
+      },
+      {
+        "id": 1511,
+        "type": "potion",
+        "x": 3.585731701210114,
+        "z": 1.731436944686271,
+        "floorY": 1.100000023841858
+      },
+      {
+        "id": 1651,
+        "type": "factor",
+        "x": -22.859350370507492,
+        "z": -12.966848298751877,
+        "floorY": 0
+      },
+      {
+        "id": 1726,
+        "type": "factor",
+        "x": -21.50314118854138,
+        "z": -23.516208011817167,
+        "floorY": -0.10000000149011612
+      },
+      {
+        "id": 1777,
+        "type": "health",
+        "x": -20.800715584021997,
+        "z": -25.029282177591444,
+        "floorY": 0
+      },
+      {
+        "id": 1868,
+        "type": "potion",
+        "x": 18.205333233747467,
+        "z": 12.808160620443047,
+        "floorY": 0
+      },
+      {
+        "id": 2873,
+        "type": "factor",
+        "x": 22.0420873644476,
+        "z": -7.511646276331754,
+        "floorY": 0
+      },
+      {
+        "id": 2932,
+        "type": "potion",
+        "x": -11.869493338281398,
+        "z": 1.3834393797351816,
+        "floorY": -0.01860465109348297
+      },
+      {
+        "id": 3297,
+        "type": "factor",
+        "x": -11.717177698309232,
+        "z": 2.5548298341302225,
+        "floorY": -0.20000000298023224
+      },
+      {
+        "id": 4491,
+        "type": "health",
+        "x": 5.016199032453863,
+        "z": -12.071002337842593,
+        "floorY": -0.20000000298023224
+      },
+      {
+        "id": 4508,
+        "type": "potion",
+        "x": -17.908773248351466,
+        "z": -17.796607944606464,
+        "floorY": 0
+      }
+    ],
+    "events": [
+      {
+        "id": 6491,
+        "kind": "allyFire",
+        "time": 2603.800000005543
+      },
+      {
+        "id": 6492,
+        "kind": "allyFire",
+        "time": 2603.800000005543
+      },
+      {
+        "id": 6493,
+        "kind": "hit",
+        "time": 2603.81666667221,
+        "unit": 4884
+      },
+      {
+        "id": 6494,
+        "kind": "allyFire",
+        "time": 2603.833333338877
+      },
+      {
+        "id": 6495,
+        "kind": "allyFire",
+        "time": 2603.9000000055444
+      },
+      {
+        "id": 6496,
+        "kind": "allyFire",
+        "time": 2603.933333338878
+      },
+      {
+        "id": 6497,
+        "kind": "allyFire",
+        "time": 2603.950000005545
+      },
+      {
+        "id": 6498,
+        "kind": "allyFire",
+        "time": 2603.9833333388788
+      },
+      {
+        "id": 6499,
+        "kind": "allyFire",
+        "time": 2604.0333333388794
+      },
+      {
+        "id": 6500,
+        "kind": "allyFire",
+        "time": 2604.0500000055463
+      },
+      {
+        "id": 6501,
+        "kind": "hit",
+        "time": 2604.066666672213,
+        "unit": 4862
+      },
+      {
+        "id": 6502,
+        "kind": "hit",
+        "time": 2604.066666672213,
+        "unit": 4862
+      },
+      {
+        "id": 6503,
+        "kind": "hit",
+        "time": 2604.066666672213,
+        "unit": 4862
+      },
+      {
+        "id": 6504,
+        "kind": "hit",
+        "time": 2604.08333333888,
+        "unit": 4862
+      },
+      {
+        "id": 6505,
+        "kind": "kill",
+        "time": 2604.08333333888,
+        "unit": 4862,
+        "personal": false
+      },
+      {
+        "id": 6506,
+        "kind": "allyFire",
+        "time": 2604.1333333388807
+      },
+      {
+        "id": 6507,
+        "kind": "hit",
+        "time": 2604.1333333388807,
+        "unit": 4884
+      },
+      {
+        "id": 6508,
+        "kind": "allyFire",
+        "time": 2604.1500000055476
+      },
+      {
+        "id": 6509,
+        "kind": "planeBomb",
+        "time": 2604.1500000055476
+      },
+      {
+        "id": 6510,
+        "kind": "allyFire",
+        "time": 2604.1666666722144
+      },
+      {
+        "id": 6511,
+        "kind": "allyFire",
+        "time": 2604.200000005548
+      },
+      {
+        "id": 6512,
+        "kind": "allyFire",
+        "time": 2604.216666672215
+      },
+      {
+        "id": 6513,
+        "kind": "allyFire",
+        "time": 2604.250000005549
+      },
+      {
+        "id": 6514,
+        "kind": "allyFire",
+        "time": 2604.2666666722157
+      },
+      {
+        "id": 6515,
+        "kind": "allyFire",
+        "time": 2604.2833333388826
+      },
+      {
+        "id": 6516,
+        "kind": "allyFire",
+        "time": 2604.3000000055495
+      },
+      {
+        "id": 6517,
+        "kind": "allyFire",
+        "time": 2604.35000000555
+      },
+      {
+        "id": 6518,
+        "kind": "allyFire",
+        "time": 2604.366666672217
+      },
+      {
+        "id": 6519,
+        "kind": "hit",
+        "time": 2604.4166666722176,
+        "unit": 4884
+      },
+      {
+        "id": 6520,
+        "kind": "allyFire",
+        "time": 2604.4333333388845
+      },
+      {
+        "id": 6521,
+        "kind": "allyFire",
+        "time": 2604.4500000055514
+      },
+      {
+        "id": 6522,
+        "kind": "allyFire",
+        "time": 2604.4500000055514
+      },
+      {
+        "id": 6523,
+        "kind": "bossImpact",
+        "time": 2604.4500000055514
+      },
+      {
+        "id": 6524,
+        "kind": "hit",
+        "time": 2604.4666666722183,
+        "unit": 4884
+      },
+      {
+        "id": 6525,
+        "kind": "allyFire",
+        "time": 2604.483333338885
+      },
+      {
+        "id": 6526,
+        "kind": "allyFire",
+        "time": 2604.5500000055526
+      },
+      {
+        "id": 6527,
+        "kind": "bossDeath",
+        "time": 2604.5500000055526
+      },
+      {
+        "id": 6528,
+        "kind": "hit",
+        "time": 2604.783333338889,
+        "unit": 4884
+      },
+      {
+        "id": 6529,
+        "kind": "allyFire",
+        "time": 2604.8166666722227
+      },
+      {
+        "id": 6530,
+        "kind": "kill",
+        "time": 2605.066666672226,
+        "unit": 4884,
+        "personal": false
+      }
+    ],
+    "personalConversions": 187,
+    "shots": 0,
+    "hits": 1971,
+    "rolls": 38,
+    "jumps": 7,
+    "paint": 0,
+    "projectiles": 0,
+    "reloading": 0,
+    "tutorial": null,
+    "settings": {
+      "volume": 0.38,
+      "voiceVolume": 0.8,
+      "sensitivity": 1,
+      "quality": "standard",
+      "music": true
+    },
+    "tune": {
+      "alert": {
+        "xpPerAlert": 3,
+        "perSecond": 0.1,
+        "stage2At": 10,
+        "stage3At": 100,
+        "stage4At": 300,
+        "bossAt": 500,
+        "countdown": 120,
+        "maxLevel1": 1,
+        "maxLevel2": 2,
+        "maxLevel3": 3,
+        "maxLevel4": 4,
+        "pressureTime": 0
+      },
+      "difficulty": {
+        "playerBase": 100,
+        "playerPerLevel": 20,
+        "allyRank1": 4,
+        "allyRank2": 8,
+        "allyRank3": 12,
+        "allyRank4": 16,
+        "maxWaveRatio": 0.25,
+        "bossWeightRatio": 1.25,
+        "intervalMin": 3,
+        "intervalMax": 5,
+        "bossIntervalMin": 2,
+        "bossIntervalMax": 4,
+        "regionCount": 4,
+        "civiliansPerRegion": 12,
+        "patrolsPerRegion": 2,
+        "fodderWaveRatio": 0.15,
+        "fodderCheck": 10,
+        "spawnPerBurst": 1,
+        "spawnGap": 0.18,
+        "spawnQueueMax": 18
+      },
+      "activity": {
+        "shambleSpeed": 0.55,
+        "shambleRadius": 4,
+        "shambleIdle": 6,
+        "fleeSpeed": 0.7,
+        "awakeSpeed": 3.8,
+        "awakeRadius": 34,
+        "awakeIdle": 1.05,
+        "chaseSpeed": 3.6,
+        "followSpeed": 4.4,
+        "structureSpeed": 3.2
+      }
+    },
+    "guide": null,
+    "loading": false,
+    "loadStage": "就绪",
+    "actorsReady": 23,
+    "metro": {
+      "time": 0,
+      "active": false,
+      "positions": []
+    },
+    "physicsReady": true,
+    "mapScene": [
+      217,
+      226,
+      235,
+      244,
+      252,
+      260,
+      268,
+      276
+    ]
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "inputWarnings": 0
+  },
+  "log": [],
+  "failure": {
+    "code": "play-step-failed",
+    "reason": "script-error",
+    "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#endAftermath')\u001b[22m\n\u001b[2m    - locator resolved to <button id=\"endAftermath\">结束本局</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b…",
+    "step": "natural combat, upgrades and late-game progression through real input",
+    "action": "natural combat, upgrades and late-game progression through real input: screenshot natural-boss-defeated-aftermath",
+    "screenshot": "/Users/cloud/Desktop/Cloud 硬盘/Games for Dev/Wake Up/wake-up-tiangong-sample/.forgeax/diag/artifacts/play/scripts/seaside-resume/43-failure.png"
+  }
+}

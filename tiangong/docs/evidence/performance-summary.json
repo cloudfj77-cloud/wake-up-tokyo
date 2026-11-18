@@ -1,0 +1,192 @@
+{
+  "scope": "idle cafe slice with 12 simplified actors; not full game, not stress test",
+  "warmupSeconds": 5,
+  "viewport": [
+    1280,
+    720,
+    1
+  ],
+  "native": {
+    "engine": "@forgeax/engine 0.4.19",
+    "backend": "WebGPU hardware",
+    "windowMs": 10000.354999996722,
+    "aggregateCompletedFrames": 601,
+    "renderCompletedFrames": 600,
+    "renderCompletedFps": 59.99787007563199,
+    "workers": {
+      "engine": {
+        "requested": "auto",
+        "enabled": true,
+        "reason": "enabled",
+        "missingCapabilities": []
+      },
+      "render": {
+        "requested": "auto",
+        "enabled": true,
+        "reason": "enabled",
+        "missingCapabilities": []
+      },
+      "kernels": {
+        "requested": "auto",
+        "enabled": true,
+        "reason": "enabled",
+        "missingCapabilities": []
+      }
+    },
+    "kernelDispatch": {
+      "eligible": false,
+      "usedShared": false,
+      "reason": "no-eligible-kernel",
+      "dispatched": 0,
+      "completed": 0
+    },
+    "note": "Use render.completedFrame endpoint delta; aggregate completion can be one frame ahead of the render snapshot."
+  },
+  "three": {
+    "durationMs": 10002.29999999702,
+    "submittedAndFencedFrames": 601,
+    "throughputFps": 60.08618017857683,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)",
+    "triangles": 96390,
+    "calls": 935,
+    "viewport": [
+      1280,
+      720,
+      1
+    ],
+    "state": {
+      "version": "0.1.0",
+      "base": "v0.3.76",
+      "position": [
+        -3,
+        0.008,
+        4.5
+      ],
+      "action": "walk",
+      "grounded": true,
+      "shots": 0,
+      "hits": 0,
+      "charge": 0,
+      "empowered": 0,
+      "converted": 0,
+      "flash": 0,
+      "equipped": false,
+      "rolls": 0,
+      "jumps": 0,
+      "actors": [
+        {
+          "position": [
+            -3,
+            0.05,
+            1.2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.4071345752205,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.7869112213312084,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.086782091361632,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.35283567622348133,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.3377480771439663,
+            0.05,
+            -0.6
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -6.95234334694378,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -5.386250078071481,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -3.786828654596075,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -2.1075773665159048,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            -0.3753897131926357,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        },
+        {
+          "position": [
+            1.3341713559360917,
+            0.05,
+            -2
+          ],
+          "ally": false,
+          "hits": 0
+        }
+      ],
+      "puddles": 0,
+      "time": 14.966099999999933
+    },
+    "gpuFence": "all sampled submitted commands completed; end-fence wait excluded from window"
+  },
+  "conclusion": "Both near display cadence (~60fps); no evidence of native speed advantage. Different frame counters and unmatched shading/skin appearance prohibit a speedup claim."
+}

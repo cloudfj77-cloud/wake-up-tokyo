@@ -1,0 +1,46 @@
+AppError app-execution-kernel-failed: [AppError app-execution-kernel-failed] expected: a shared kernel completes every dispatched shard without leaving a possibly partial World write; hint: do not retry or draw the poisoned World; inspect detail.kernelName and cause, then call app.execution.rebuild(); kernel: unknown; cause: SystemFailedError system-failed: System Update/wakeup-input failed; World is poisoned.
+expected: a shared kernel completes every dispatched shard without leaving a possibly partial World write
+hint: do not retry or draw the poisoned World; inspect detail.kernelName and cause, then call app.execution.rebuild()
+detail.cause: SystemFailedError system-failed: System Update/wakeup-input failed; World is poisoned.
+detail.cause.expected: a system completes without throwing or returning a failed Result
+detail.cause.hint: Inspect detail.cause, stop using this poisoned World, and rebuild it from the owning App.
+detail.cause.cause: StaleEntityError stale-entity: Operation on stale entity handle.
+  entity: 298 (index=298, generation=0)
+  operation: relationship-insert
+  component: ChildOf
+  hint: Entity was despawned. Operation "relationship-insert" on entity 298 (component: ChildOf) expected generation 0, found 1. Check entity lifecycle before access.
+detail.cause.cause.hint: Entity was despawned. Operation "relationship-insert" on entity 298 (component: ChildOf) expected generation 0, found 1. Check entity lifecycle before access.
+detail.cause.cause.component: ChildOf
+detail.cause.cause.operation: relationship-insert
+detail.cause.cause.expectedGeneration: 0
+detail.cause.cause.actualGeneration: 1
+detail.cause.cause.stack: StaleEntityError: Operation on stale entity handle.
+  entity: 298 (index=298, generation=0)
+  operation: relationship-insert
+  component: ChildOf
+  hint: Entity was despawned. Operation "relationship-insert" on entity 298 (component: ChildOf) expected generation 0, found 1. Check entity lifecycle before access.
+    at World.preflightComponentData (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-ecs/dist/index.mjs?v=91c7c7e1:6772:9)
+    at World.addComponentCore (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-ecs/dist/index.mjs?v=91c7c7e1:7684:28)
+    at World.addComponent (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-ecs/dist/index.mjs?v=91c7c7e1:7661:17)
+    at worldInstantiateSceneAsset (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-scene/dist/index.mjs?v=91c7c7e1:1443:23)
+    at worldInstantiateSceneRec (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-scene/dist/index.mjs?v=91c7c7e1:1095:12)
+    at worldInstantiateScene (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-scene/dist/index.mjs?v=91c7c7e1:1046:13)
+    at instantiate (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-assets-runtime/dist/index.mjs?v=91c7c7e1:6329:19)
+    at AssetRegistry.instantiate (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-assets-runtime/dist/index.mjs?v=91c7c7e1:8363:12)
+    at CharacterLibrary.instantiate (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/assets/game/character.ts?forgeax-program-session=e45589f0-98c8-490c-bc7a-2f0c5abc80ec:67:28)
+detail.cause.detail.cause: [Circular]
+detail.cause.detail.systemName: wakeup-input
+detail.cause.detail.schedule: Update
+detail.cause.detail.lastCommittedCommand: null
+detail.cause.stack: SystemFailedError: System Update/wakeup-input failed; World is poisoned.
+    at runScheduleBody (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-ecs/dist/index.mjs?v=91c7c7e1:4633:13)
+    at runSchedule (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-ecs/dist/index.mjs?v=91c7c7e1:4658:5)
+    at worldUpdate (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-ecs/dist/index.mjs?v=91c7c7e1:5823:7)
+    at World.update (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-ecs/dist/index.mjs?v=91c7c7e1:6479:12)
+    at http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-app/dist/engine-worker-runtime.mjs?worker_file&type=module:2466:19
+    at profilePhase (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-app/dist/engine-worker-runtime.mjs?worker_file&type=module:1505:12)
+    at advanceFrame (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-app/dist/engine-worker-runtime.mjs?worker_file&type=module:2463:20)
+    at runFrame (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-app/dist/engine-worker-runtime.mjs?worker_file&type=module:2451:9)
+    at scope.onmessage (http://localhost:58263/@fs/Users/cloud/Desktop/Cloud%20%E7%A1%AC%E7%9B%98/Games%20for%20Dev/Wake%20Up/wake-up-tiangong-sample/node_modules/.pnpm/@forgeax+engine@0.4.19_48eb1dc1d1b0f9a6a9ad276467f438dc/node_modules/@forgeax/engine/node_modules/@forgeax/engine-app/dist/engine-worker-runtime.mjs?worker_file&type=module:2585:12)
+detail.kernelName: unknown
+detail.worldIdentity: world-b76b42a5-a788-4247-94a0-b3798301f871-1

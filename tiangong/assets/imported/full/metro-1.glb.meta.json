@@ -1,0 +1,160 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "Metro train 2",
+        "node-a206742b52d2e770",
+        "node-4f2a0866f6c6f982"
+      ],
+      "unsupportedExtensions": []
+    },
+    "compressionMode": "uastc",
+    "downscaleMaxDimension": 1024,
+    "mipmap": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "metro-1.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-02a9cb32b5caf997"
+    },
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-b7fd5865aeb4689d"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:mesh-02a9cb32b5caf997": {
+      "materialSlots": [
+        {
+          "defaultMaterialGuid": "01a1b176-e868-7f3e-93fd-d0a963894dc3",
+          "slotName": "material-b06b9998684336b5",
+          "sourceKey": "material:material-b06b9998684336b5"
+        }
+      ]
+    },
+    "mesh:mesh-b7fd5865aeb4689d": {
+      "materialSlots": [
+        {
+          "defaultMaterialGuid": "01a1b176-e868-7f3e-93fd-d0aae71c63f8",
+          "slotName": "material-6c275a77be44ee61",
+          "sourceKey": "material:material-6c275a77be44ee61"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b176-e868-7f3e-93fd-d0a717a986b3",
+      "kind": "mesh",
+      "name": "mesh-02a9cb32b5caf997",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:mesh-02a9cb32b5caf997"
+    },
+    {
+      "guid": "01a1b176-e868-7f3e-93fd-d0a8b65c97f2",
+      "kind": "mesh",
+      "name": "mesh-b7fd5865aeb4689d",
+      "sourceIndex": 1,
+      "sourceKey": "mesh:mesh-b7fd5865aeb4689d"
+    },
+    {
+      "guid": "01a1b176-e868-7f3e-93fd-d0a963894dc3",
+      "kind": "material",
+      "name": "material-b06b9998684336b5",
+      "sourceIndex": 0,
+      "sourceKey": "material:material-b06b9998684336b5"
+    },
+    {
+      "guid": "01a1b176-e868-7f3e-93fd-d0aae71c63f8",
+      "kind": "material",
+      "name": "material-6c275a77be44ee61",
+      "sourceIndex": 1,
+      "sourceKey": "material:material-6c275a77be44ee61"
+    },
+    {
+      "guid": "01a1b176-e868-7f3e-93fd-d0ab428d021b",
+      "kind": "scene",
+      "name": "metro-1",
+      "sourceIndex": 0,
+      "sourceKey": "scene:metro-1"
+    }
+  ]
+}

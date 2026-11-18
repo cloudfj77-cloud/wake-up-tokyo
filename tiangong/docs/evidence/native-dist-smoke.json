@@ -1,0 +1,9 @@
+{
+  "url": "http://localhost:5232/",
+  "errors": [],
+  "inputOpen": true,
+  "pickup": true,
+  "infection": true,
+  "reload": true,
+  "text": "Wake up 打工人！\n天工 WebGPU · 独立迁移样板 0.1.0\n⌄\n● ● ●\n✦ 感染成功\n生命 100 / 100　同伴 1　命中 3　注射器已装备\nWASD 移动　E 奔跑\nShift 跳跃　空格 翻滚\n左键 / J 喷射　鼠标转向\n点击画面捕获鼠标 · Esc 释放\n咖啡店黄色标记：靠近拾取注射器\nGame 0.1.0 | Engine 0.4.19 | FPS 52.9"
+}

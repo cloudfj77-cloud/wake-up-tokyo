@@ -1,0 +1,236 @@
+{
+  "importSettings": {
+    "defaultSceneIndex": 0,
+    "diagnostics": {
+      "matrixTrsCoexistNodes": [],
+      "nodeNames": [
+        "node-b88283f2a5f618ec",
+        "tripo_node_a3a3f08a-2ad5-437b-8aec-c5c70a44848f",
+        "mixamorigHips",
+        "mixamorigRightUpLeg",
+        "mixamorigRightLeg",
+        "mixamorigRightFoot",
+        "mixamorigRightToeBase",
+        "mixamorigRightToe_End",
+        "mixamorigSpine",
+        "mixamorigSpine1",
+        "mixamorigSpine2",
+        "mixamorigNeck",
+        "mixamorigHead",
+        "mixamorigHeadTop_End",
+        "mixamorigLeftShoulder",
+        "mixamorigLeftArm",
+        "mixamorigLeftForeArm",
+        "mixamorigLeftHand",
+        "mixamorigLeftHandThumb1",
+        "mixamorigLeftHandThumb2",
+        "mixamorigLeftHandThumb3",
+        "mixamorigLeftHandThumb4",
+        "mixamorigLeftHandIndex1",
+        "mixamorigLeftHandIndex2",
+        "mixamorigLeftHandIndex3",
+        "mixamorigLeftHandIndex4",
+        "mixamorigLeftHandMiddle1",
+        "mixamorigLeftHandMiddle2",
+        "mixamorigLeftHandMiddle3",
+        "mixamorigLeftHandMiddle4",
+        "mixamorigLeftHandRing1",
+        "mixamorigLeftHandRing2",
+        "mixamorigLeftHandRing3",
+        "mixamorigLeftHandRing4",
+        "mixamorigLeftHandPinky1",
+        "mixamorigLeftHandPinky2",
+        "mixamorigLeftHandPinky3",
+        "mixamorigLeftHandPinky4",
+        "mixamorigRightShoulder",
+        "mixamorigRightArm",
+        "mixamorigRightForeArm",
+        "mixamorigRightHand",
+        "mixamorigRightHandThumb1",
+        "mixamorigRightHandThumb2",
+        "mixamorigRightHandThumb3",
+        "mixamorigRightHandThumb4",
+        "mixamorigRightHandIndex1",
+        "mixamorigRightHandIndex2",
+        "mixamorigRightHandIndex3",
+        "mixamorigRightHandIndex4",
+        "mixamorigRightHandMiddle1",
+        "mixamorigRightHandMiddle2",
+        "mixamorigRightHandMiddle3",
+        "mixamorigRightHandMiddle4",
+        "mixamorigRightHandRing1",
+        "mixamorigRightHandRing2",
+        "mixamorigRightHandRing3",
+        "mixamorigRightHandRing4",
+        "mixamorigRightHandPinky1",
+        "mixamorigRightHandPinky2",
+        "mixamorigRightHandPinky3",
+        "mixamorigRightHandPinky4",
+        "mixamorigLeftUpLeg",
+        "mixamorigLeftLeg",
+        "mixamorigLeftFoot",
+        "mixamorigLeftToeBase",
+        "mixamorigLeftToe_End"
+      ],
+      "unsupportedExtensions": []
+    },
+    "compressionMode": "none",
+    "downscaleMaxDimension": 1024,
+    "mipmap": true
+  },
+  "importer": "gltf",
+  "kind": "external-asset-package",
+  "schemaVersion": 1,
+  "source": "infected-cop.glb",
+  "sourceOverrideDescriptors": [
+    {
+      "payloadSchema": {
+        "additionalProperties": true,
+        "properties": {
+          "materialSlotDefaultOverrides": {
+            "additionalProperties": {
+              "nullable": true,
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "materialSlots": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "defaultMaterialGuid": {
+                  "type": "string"
+                },
+                "slotName": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sourceKey": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "slotName"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "semantic": "mesh-material-slot-defaults",
+      "sourceKey": "mesh:mesh-0ebf87b122cfe5b3"
+    }
+  ],
+  "sourceOverrides": {
+    "mesh:mesh-0ebf87b122cfe5b3": {
+      "materialSlots": [
+        {
+          "defaultMaterialGuid": "01a1b16d-de82-7d37-9443-b690a88c28d0",
+          "slotName": "material-d28daa270ef394a4",
+          "sourceKey": "material:material-d28daa270ef394a4"
+        }
+      ]
+    }
+  },
+  "subAssets": [
+    {
+      "guid": "01a1b16d-de81-7558-8ce9-f02c0b182a32",
+      "kind": "mesh",
+      "name": "mesh-0ebf87b122cfe5b3",
+      "sourceIndex": 0,
+      "sourceKey": "mesh:mesh-0ebf87b122cfe5b3"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b690a88c28d0",
+      "kind": "material",
+      "name": "material-d28daa270ef394a4",
+      "sourceIndex": 0,
+      "sourceKey": "material:material-d28daa270ef394a4"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b6914f448237",
+      "kind": "scene",
+      "name": "infected-cop",
+      "sourceIndex": 0,
+      "sourceKey": "scene:infected-cop"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b692e0a8980e",
+      "kind": "texture",
+      "name": "image-6fdf837f2392d166",
+      "sourceIndex": 0,
+      "sourceKey": "texture:image-6fdf837f2392d166"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b6938c7fd4ba",
+      "kind": "texture",
+      "name": "image-f0cd203721f82d70",
+      "sourceIndex": 1,
+      "sourceKey": "texture:image-f0cd203721f82d70"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b694748d6025",
+      "kind": "sampler",
+      "name": "sampler-817198516c7ac8c6",
+      "sourceIndex": 0,
+      "sourceKey": "sampler:sampler-817198516c7ac8c6"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b695cb3f6106",
+      "kind": "skeleton",
+      "sourceIndex": 0,
+      "sourceKey": "skeleton"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b6969519f7a7",
+      "kind": "skin",
+      "sourceIndex": 0,
+      "sourceKey": "skin"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b6978d213c75",
+      "kind": "animation-clip",
+      "name": "idle",
+      "sourceIndex": 0,
+      "sourceKey": "animation-clip:idle"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b698d6cc841d",
+      "kind": "animation-clip",
+      "name": "walk",
+      "sourceIndex": 1,
+      "sourceKey": "animation-clip:walk"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b699f6453037",
+      "kind": "animation-clip",
+      "name": "zombie",
+      "sourceIndex": 2,
+      "sourceKey": "animation-clip:zombie"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b69a733f562d",
+      "kind": "animation-clip",
+      "name": "jump",
+      "sourceIndex": 3,
+      "sourceKey": "animation-clip:jump"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b69b22533861",
+      "kind": "animation-clip",
+      "name": "heavyPunch",
+      "sourceIndex": 4,
+      "sourceKey": "animation-clip:heavyPunch"
+    },
+    {
+      "guid": "01a1b16d-de82-7d37-9443-b69c39de23c2",
+      "kind": "animation-clip",
+      "name": "flurry",
+      "sourceIndex": 5,
+      "sourceKey": "animation-clip:flurry"
+    }
+  ]
+}
